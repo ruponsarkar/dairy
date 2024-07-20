@@ -1,0 +1,37 @@
+import React, { useState, useEffect, useContext } from 'react'
+// import Navbar from '../components/common/nav'
+import Nav2 from '../components/common/navbar'
+import About from '../components/home/about'
+import Footer from '../components/common/footer'
+import api from '../API/api'
+import Skeleton from 'react-loading-skeleton'
+import 'react-loading-skeleton/dist/skeleton.css'
+import Overview from '../components/home/overview'
+import { ColorContext } from '../App'
+
+
+
+const Homepage = () => {
+
+    const [loader, setLoader] = useState(false);
+    const { colors, bio } = useContext(ColorContext);
+
+
+
+    return (
+        <>
+
+
+
+            <div className=''>
+                <Nav2 />
+                <Overview />
+                {/* <About bio={bio}/> */}
+               
+               {/* <Footer /> */}
+            </div>
+        </>
+    )
+}
+
+export default Homepage;
