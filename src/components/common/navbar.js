@@ -44,7 +44,7 @@ function CollapsibleExample() {
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="me-auto">
               <Nav.Link href="/#aboutMe">About</Nav.Link>
-              <Nav.Link href="/#latest-journal">Register</Nav.Link>
+              <Nav.Link href="/RegisterPage">Register</Nav.Link>
 
               {/* <NavDropdown title="Dropdown" id="collasible-nav-dropdown">
               <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>

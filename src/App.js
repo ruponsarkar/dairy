@@ -2,6 +2,8 @@ import './App.css';
 import { useState, useEffect } from 'react';
 import { Routes, Route } from "react-router-dom";
 import Homepage from './PublicPages/homepage';
+import RegisterPage from './PublicPages/registerpage';
+import Application from './components/register/application';
 
 import Login from './AdminPages/form/login';
 import Dashboard from './AdminPages/dashboard/dashboard';
@@ -50,6 +52,8 @@ function App() {
       <ColorContext.Provider value={{ colors: colors, setColors: setColors, bio : bio }}>
         <Routes>
           <Route path="/" element={<Homepage />} />
+          <Route path="/RegisterPage" element={<RegisterPage />} />
+          <Route path="/Application" element={<Application />} />
           <Route path="/login" element={<Login />} />
         </Routes>
 
