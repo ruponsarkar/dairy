@@ -35,13 +35,13 @@ function App() {
 
   }, [user]);
 
-  useEffect(() => {
-    api.getHeadlineColor().then((res) => {
-      setColors(res.data.headlineColor);
-      setBio(res.data.bio);
-      console.log("ffffffffff", res.data.headlineColor);
-    })
-  }, [])
+  // useEffect(() => {
+  //   api.getHeadlineColor().then((res) => {
+  //     setColors(res.data.headlineColor);
+  //     setBio(res.data.bio);
+  //     console.log("ffffffffff", res.data.headlineColor);
+  //   })
+  // }, [])
 
   return (
     <>
