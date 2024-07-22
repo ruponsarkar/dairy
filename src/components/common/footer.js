@@ -3,8 +3,9 @@ import { NavLink } from "react-router-dom";
 
 const Footer = () => {
     return (
-        <>
-            <section className="contact-area footer-bg p-5" id="contact">
+        <div className="footer">
+        
+            <section className="contact-area footer-bg pt-5" id="contact">
                 <div className="container">
                     <div className="row">
                         <div className="col-lg-6 offset-lg-3">
@@ -33,7 +34,7 @@ const Footer = () => {
             <footer>
                 <p>Copyright &copy; 2023, All Rights Reserved.</p>
             </footer>
-        </>
+        </div>
     );
 };
 

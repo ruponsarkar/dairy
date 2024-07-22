@@ -1,22 +1,19 @@
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import Nav2 from "../components/common/navbar";
+import Footer from "../components/common/footer";
 
 import RegisterForm from "../components/register/form";
 import Verify from "../components/register/verify";
 
 const RegisterPage = () => {
-
-    const [isVerified, setIsVerified] = useState(false)
+  const [isVerified, setIsVerified] = useState(false);
 
   return (
     <>
       <Nav2 />
-      {isVerified ? 
-      <RegisterForm /> 
-      :
-      <Verify setIsVerified={setIsVerified}/>
-      }
+      {isVerified ? <RegisterForm /> : <Verify setIsVerified={setIsVerified} />}
 
+      {/* <Footer /> */}
     </>
   );
 };
