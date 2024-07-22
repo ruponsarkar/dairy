@@ -17,10 +17,10 @@ const DashboardPage = () => {
     const [bio, setBio] = useState();
     const [count, setCount] = useState();
 
-    useEffect(() => {
-        getHeadlineColor();
-        countData();
-    }, []);
+    // useEffect(() => {
+    //     getHeadlineColor();
+    //     countData();
+    // }, []);
 
 
     const [open, setOpen] = React.useState(false);

@@ -9,6 +9,7 @@ import 'react-loading-skeleton/dist/skeleton.css'
 import Overview from '../components/home/overview'
 import { ColorContext } from '../App'
 import OverviewScheme from "../components/home/OverviewScheme";
+import Certificate from "../components/approvel/certificate";
 
 
 
@@ -29,8 +30,10 @@ const Homepage = () => {
                 <Overview />
                 <OverviewScheme />
                 {/* <About bio={bio}/> */}
+
+                {/* <Certificate /> */}
                
-               {/* <Footer /> */}
+               <Footer />
             </div>
         </>
     )
