@@ -61,7 +61,7 @@ function App() {
       </ColorContext.Provider>
 
 
-      {user === 'admin' &&
+      {/* {user === 'admin' && */}
         <Routes>
           {/* admin  */}
           <Route path='/admin' element={<Dashboard />}>
@@ -76,7 +76,7 @@ function App() {
           </Route>
 
         </Routes>
-      }
+      {/* } */}
     </>
   );
 }

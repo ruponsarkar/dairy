@@ -161,7 +161,7 @@ const Dashboard = (props) => {
           </List>
         </Collapse>
 
-        <ListItemButton onClick={blogClick}>
+        {/* <ListItemButton onClick={blogClick}>
           <ListItemIcon>
             <ClassIcon />
           </ListItemIcon>
@@ -177,18 +177,11 @@ const Dashboard = (props) => {
               </ListItemIcon>
               <ListItemText primary="Create Category" />
             </ListItemButton>
-
-            {/* <ListItemButton sx={{ pl: 4 }} onClick={() => navigate("/admin/allblog")}>
-              <ListItemIcon>
-                <CollectionsIcon />
-              </ListItemIcon>
-              <ListItemText primary="All Blogs" />
-            </ListItemButton> */}
           </List>
-        </Collapse>
+        </Collapse> */}
 
 
-        <ListItemButton onClick={publisherClick}>
+        {/* <ListItemButton onClick={publisherClick}>
           <ListItemIcon>
             <NewspaperIcon />
           </ListItemIcon>
@@ -204,24 +197,17 @@ const Dashboard = (props) => {
               </ListItemIcon>
               <ListItemText primary="Create Publisher" />
             </ListItemButton>
-
-            {/* <ListItemButton sx={{ pl: 4 }} onClick={() => navigate("/admin/allblog")}>
-              <ListItemIcon>
-                <CollectionsIcon />
-              </ListItemIcon>
-              <ListItemText primary="All Blogs" />
-            </ListItemButton> */}
           </List>
-        </Collapse>
+        </Collapse> */}
 
-        <ListItem disablePadding onClick={() => navigate("/admin/youtubelink")}>
+        {/* <ListItem disablePadding onClick={() => navigate("/admin/youtubelink")}>
           <ListItemButton>
             <ListItemIcon>
               <SubscriptionsIcon />
             </ListItemIcon>
             <ListItemText> Youtube Embaded </ListItemText>
           </ListItemButton>
-        </ListItem>
+        </ListItem> */}
 
         <ListItem disablePadding onClick={() => navigate("/admin/contactRequest")}>
           <ListItemButton>
