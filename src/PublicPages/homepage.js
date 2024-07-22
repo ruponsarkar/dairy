@@ -8,6 +8,7 @@ import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
 import Overview from '../components/home/overview'
 import { ColorContext } from '../App'
+import OverviewScheme from "../components/home/OverviewScheme";
 
 
 
@@ -26,6 +27,7 @@ const Homepage = () => {
             <div className=''>
                 <Nav2 />
                 <Overview />
+                <OverviewScheme />
                 {/* <About bio={bio}/> */}
                
                {/* <Footer /> */}
