@@ -128,7 +128,7 @@ const RegisterForm = () => {
             <input
               type="text"
               className="form-control"
-              name="pan_nameber"
+              name="pan_number"
               onChange={handleInput}
               id=""
             />
