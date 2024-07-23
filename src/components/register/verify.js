@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { Paper, Button } from "@mui/material";
 import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
 
 
 
 
 const Verify = ({ setIsVerified }) => {
+
+  const navigation = useNavigate();
   const [otp, setOtp] = useState();
 
   const [formdata, setFormData] = useState({
@@ -30,7 +33,9 @@ const Verify = ({ setIsVerified }) => {
 
     if (otp === formdata.otp) {
       console.log("verified");
+      navigation("/Certificate");
       setIsVerified(true)
+
     }
     else {
       console.log("not match");
