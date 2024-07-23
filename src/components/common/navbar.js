@@ -8,7 +8,7 @@ import TwitterIcon from '@mui/icons-material/Twitter';
 import EmailIcon from '@mui/icons-material/Email';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 
-function CollapsibleExample() {
+function Nav2() {
   return (
     <>
 
@@ -45,6 +45,7 @@ function CollapsibleExample() {
             <Nav className="me-auto">
               <Nav.Link href="/#aboutMe">About</Nav.Link>
               <Nav.Link href="/RegisterPage">Register</Nav.Link>
+              <Nav.Link href="/Certificate">Certificate</Nav.Link>
 
               {/* <NavDropdown title="Dropdown" id="collasible-nav-dropdown">
               <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
@@ -73,4 +74,4 @@ function CollapsibleExample() {
   );
 }
 
-export default CollapsibleExample;
+export default Nav2;

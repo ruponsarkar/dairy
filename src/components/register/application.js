@@ -12,7 +12,7 @@ const Application = () => {
 
     return (
         <>
-            <Nav2 />
+            {/* <Nav2 /> */}
             <div className="container">
                 <div className="row py-3">
                     <Paper>
@@ -109,7 +109,7 @@ const Application = () => {
 
                     </Paper>
 
-                    <Paper>
+                    {/* <Paper>
                         <div className="p-3">
                             <div className="d-flex justify-content-between">
                                 <div>
@@ -122,12 +122,12 @@ const Application = () => {
                                 </div>
                             </div>
                         </div>
-                    </Paper>
+                    </Paper> */}
                 </div>
             </div>
 
 
-            <Footer />
+            {/* <Footer /> */}
         </>
     );
 };

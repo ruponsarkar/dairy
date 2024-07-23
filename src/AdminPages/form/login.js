@@ -7,9 +7,11 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Alert from '@mui/material/Alert';
 import { Card } from '@mui/material';
 import { Paper } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
     const { setToken } = AuthUser();
+    const nagivate = useNavigate();
 
     const [email, setEmail] = useState();
     const [password, setPassword] = useState();
@@ -19,6 +21,10 @@ const Login = () => {
 
     const submit = () => {
         setLoading(true);
+        nagivate('/admin')
+
+
+        return;
 
         api.login(email, password)
             .then((res) => {

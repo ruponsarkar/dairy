@@ -11,9 +11,12 @@ const RegisterPage = () => {
   return (
     <>
       <Nav2 />
+      <div style={{minHeight: '70vh'}}>
+
       {isVerified ? <RegisterForm /> : <Verify setIsVerified={setIsVerified} />}
 
-      {/* <Footer /> */}
+      </div>
+      <Footer />
     </>
   );
 };

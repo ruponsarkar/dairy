@@ -1,14 +1,24 @@
 import React, { useState, useEffect } from "react";
 import { Paper, Button } from "@mui/material";
 import DoneAllIcon from '@mui/icons-material/DoneAll';
-
+import Loader from "../common/loader";
 import { useNavigate } from "react-router-dom";
 
 const RegisterForm = () => {
   const navigation = useNavigate();
 
+  const [openLoader, setOpenLoder] = useState(false);
   const [showFileInput, setShowFileInput] = useState(false);
   const [formData, setFormData] = useState({});
+  const [passbook, setPassbook] = useState();
+  const [panCard, setPanCard] = useState();
+  const [aadhaarCard, setAadhaarCard] = useState();
+
+  const [isUploaded, setIsuploaded] = useState({
+    passbook: false,
+    panCard: false,
+    aadhaarCard: false
+  })
 
   const handleInput = (e) => {
     setFormData({
@@ -26,8 +36,28 @@ const RegisterForm = () => {
   const handleSubmit = () => {
     console.log(formData);
 
-    navigation("/Application");
+    navigation("/Certificate");
   };
+
+
+
+  const handleFileUpload=(type)=>{
+    setOpenLoder(true)
+    if(type === 'passbook'){
+        console.log("type: ", type, " file : ", passbook);
+        setIsuploaded({...isUploaded, passbook: true})
+        
+    }
+    if(type === 'panCard'){
+        console.log("type: ", type, " file : ", panCard);
+        setIsuploaded({...isUploaded, panCard: true})
+    }
+    if(type === 'aadhaarCard'){
+        console.log("type: ", type, " file : ", aadhaarCard);
+        setIsuploaded({...isUploaded, aadhaarCard: true})
+
+    }
+  }
 
   const inputForm = () => {
     return (
@@ -296,27 +326,27 @@ const RegisterForm = () => {
         <div className="row p-4">
           <div className="col-md-6">
             <label htmlFor="">Attach photo of passbook (first page)</label>
-            <input type="file" className="form-control" name="" id="" />
+            <input type="file" className="form-control" name="" onChange={(e)=>setPassbook(e.target.files[0])} id="" />
           </div>
           <div className="col-md-6 d-flex align-items-center gap-4">
-            <Button variant="contained" >Upload</Button>  <DoneAllIcon color="success"/>
+            <Button variant="contained" onClick={()=>handleFileUpload('passbook')}>Upload</Button> {isUploaded.passbook &&  <DoneAllIcon color="success"/> }
           </div>
 
 
           <div className="col-md-6">
             <label htmlFor="">Attach photo of PAN card</label>
-            <input type="file" className="form-control" name="" id="" />
+            <input type="file" className="form-control" name="" onChange={(e)=>setPanCard(e.target.files[0])} id="" />
           </div>
-          <div className="col-md-6 d-flex align-items-center">
-          <Button variant="contained">Upload</Button> 
+          <div className="col-md-6 d-flex align-items-center gap-4">
+          <Button variant="contained" onClick={()=>handleFileUpload('panCard')}>Upload</Button>  {isUploaded.panCard &&  <DoneAllIcon color="success"/> }
           </div>
 
           <div className="col-md-6">
             <label htmlFor="">Attach photo of AADHAAR card</label>
-            <input type="file" className="form-control" name="" id="" />
+            <input type="file" className="form-control" name="" onChange={(e)=>setAadhaarCard(e.target.files[0])}  id="" />
           </div>
-          <div className="col-md-6 d-flex align-items-center">
-          <Button variant="contained">Upload</Button> 
+          <div className="col-md-6 d-flex align-items-center gap-4">
+          <Button variant="contained" onClick={()=>handleFileUpload('aadhaarCard')}>Upload</Button>  {isUploaded.aadhaarCard &&  <DoneAllIcon color="success"/> }
           </div>
 
           <div className="col-md-12">
@@ -331,8 +361,13 @@ const RegisterForm = () => {
     );
   };
 
+  const closeLoader=()=>{
+    setOpenLoder(false)
+  }
+
   return (
     <>
+    <Loader open={openLoader} handleClose={closeLoader}/>
       <div className="container">
         <div className="py-4">
           <h2>
