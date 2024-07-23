@@ -108,7 +108,7 @@ const DashboardPage = () => {
             <div className="container">
                 <div className="row my-5 justify-content-center">
                     <div className="reports my-2">
-                        <h3 className="p-3 text-center">Stats Reports</h3>
+                        <h3 className="p-3 text-center">Status Reports</h3>
                         <div className="d-flex p-3" style={{ 'flexWrap': 'wrap' }}>
                             <div className="col-md-6">
                                 <div className="event text-center m-2">
