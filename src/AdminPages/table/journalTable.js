@@ -23,7 +23,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 
-import AddJournal from '../pages/addJournal';
+import AddJournal from '../pages/newRequest';
 
 import AddTaskIcon from '@mui/icons-material/AddTask';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';

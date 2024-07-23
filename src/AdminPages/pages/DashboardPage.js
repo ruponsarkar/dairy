@@ -113,28 +113,28 @@ const DashboardPage = () => {
                             <div className="col-md-6">
                                 <div className="event text-center m-2">
                                     <StyleIcon /><br />
-                                    <h6 className="py-2"><strong>Total Journal</strong></h6>
+                                    <h6 className="py-2"><strong>Total Applied</strong></h6>
                                     <p className="text-center">{count && count.tot_journal}</p>
                                 </div>
                             </div>
                             <div className="col-md-6">
                                 <div className="blogs text-center m-2">
                                     <PublishIcon /><br />
-                                    <h6 className="py-2"><strong>Total Publisher</strong></h6>
+                                    <h6 className="py-2"><strong>Total Approved</strong></h6>
                                     <p className="text-center">{count && count.tot_pub}</p>
                                 </div>
                             </div>
                             <div className="col-md-6">
                                 <div className="media text-center m-2">
                                     <RateReviewIcon /><br />
-                                    <h6 className="py-2"><strong>Total Category</strong></h6>
+                                    <h6 className="py-2"><strong>Total Rejected</strong></h6>
                                     <p className="text-center">{count && count.tot_cat}</p>
                                 </div>
                             </div>
                             <div className="col-md-6">
                                 <div className="paper text-center m-2">
                                     <ContactsIcon /><br />
-                                    <h6 className="py-2"><strong>Total Contact Request</strong></h6>
+                                    <h6 className="py-2"><strong>Total Pending</strong></h6>
                                     <p className="text-center">{count && count.tot_contact}</p>
                                 </div>
                             </div>
@@ -143,43 +143,6 @@ const DashboardPage = () => {
                 </div>
 
 
-                <div className="row">
-                    <div>
-                        <h3>Customize</h3>
-                        <hr />
-                    </div>
-
-
-                    <div className="col-md-12">
-                        <div className="my-3">
-                            <h3> Bio</h3>
-                            <div>{bio && bio.bio}</div>
-
-                            <EditBio open={open} handleClickOpen={handleClickOpen} handleClose={handleClose} bio={bio} handleBio={handleBio} updateBio={updateBio} />
-                        </div>
-                    </div>
-
-                    <hr />
-
-
-                    <div className="col-md-4">
-                        <strong>Choose color For Head lines</strong>
-                        <br />
-                        <input type="color" id="favcolor" onChange={changeColorHead} name="favcolor" value={headcolor} />
-
-                    </div>
-                    <div className="col-md-4">
-                        <strong>Choose color For Article Titles</strong>
-                        <br />
-                        <input type="color" id="favcolor" onChange={changeColorTitle} name="favcolor" value={titlecolor} />
-
-                    </div>
-                    <div className="col-md-4">
-                        <button className="btn btn-success btn-sm" style={{ height: '30px' }} onClick={saveColor}>Change Color</button>
-                    </div>
-
-
-                </div>
                 <br />
                 <br />
                 <br />
