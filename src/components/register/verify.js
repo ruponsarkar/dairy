@@ -33,7 +33,7 @@ const Verify = ({ setIsVerified }) => {
 
     if (otp === formdata.otp) {
       console.log("verified");
-      navigation("/Certificate");
+      // navigation("/Certificate");
       setIsVerified(true)
 
     }
