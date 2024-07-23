@@ -5,11 +5,13 @@ import Homepage from './PublicPages/homepage';
 import RegisterPage from './PublicPages/registerpage';
 import Application from './components/register/application';
 
+import Certificate from './components/approvel/certificate';
+
 import Login from './AdminPages/form/login';
 import Dashboard from './AdminPages/dashboard/dashboard';
 import DashboardPage from './AdminPages/pages/DashboardPage';
 
-import AddJournal from './AdminPages/pages/addJournal';
+import NewRequest from './AdminPages/pages/newRequest';
 import AdminCategory from './AdminPages/pages/category';
 import AdminPublisher from './AdminPages/pages/publisher';
 import JournalTable from './AdminPages/table/journalTable';
@@ -53,7 +55,8 @@ function App() {
         <Routes>
           <Route path="/" element={<Homepage />} />
           <Route path="/RegisterPage" element={<RegisterPage />} />
-          <Route path="/Application" element={<Application />} />
+          {/* <Route path="/Application" element={<Application />} /> */}
+          <Route path="/Certificate" element={<Certificate />} />
           <Route path="/login" element={<Login />} />
         </Routes>
 
@@ -66,7 +69,7 @@ function App() {
           {/* admin  */}
           <Route path='/admin' element={<Dashboard />}>
             <Route path='/admin' element={<DashboardPage />} />
-            <Route path='addJournal' element={<AddJournal />} />
+            <Route path='newRequest' element={<NewRequest />} />
             <Route path='category' element={<AdminCategory />} />
             <Route path='publisher' element={<AdminPublisher />} />
             <Route path='JournalTable' element={<JournalTable />} />

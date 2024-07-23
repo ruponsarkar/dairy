@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { Paper } from "@mui/material";
+import { Paper, Button } from "@mui/material";
 import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
 
 
 
 
-const Verify = ({setIsVerified}) => {
+const Verify = ({ setIsVerified }) => {
+
+  const navigation = useNavigate();
   const [otp, setOtp] = useState();
 
   const [formdata, setFormData] = useState({
@@ -14,9 +17,9 @@ const Verify = ({setIsVerified}) => {
   });
 
   const handleSendOTP = () => {
-    if(!formdata.number){
-        Swal.fire('Enter mobile number')
-        return;
+    if (!formdata.number) {
+      Swal.fire('Enter mobile number')
+      return;
     }
     console.log("otp");
     setOtp('1234');
@@ -24,17 +27,19 @@ const Verify = ({setIsVerified}) => {
 
   const handleVerifyOtp = () => {
     console.log(formdata);
-    
 
 
 
-    if(otp === formdata.otp){
-        console.log("verified");
-        setIsVerified(true)
+
+    if (otp === formdata.otp) {
+      console.log("verified");
+      navigation("/Certificate");
+      setIsVerified(true)
+
     }
-    else{
-        console.log("not match");
-        Swal.fire('Wrong OTP')
+    else {
+      console.log("not match");
+      Swal.fire('Wrong OTP')
     }
   };
 
@@ -49,7 +54,7 @@ const Verify = ({setIsVerified}) => {
 
           <Paper elevation={4}>
             <div className="row p-4">
-              <div className="col-md-6">
+              <div className="col-md-4">
                 <label htmlFor="">Enter Your Phone Number</label>
                 <input
                   type="number"
@@ -63,16 +68,16 @@ const Verify = ({setIsVerified}) => {
               </div>
               {!otp ? (
                 <div className="col-md-6 d-flex align-items-center">
-                  <button
-                    className="btn btn-primary btn-sm"
+                  <Button
+                    variant="contained"
                     onClick={handleSendOTP}
                   >
                     Send OTP
-                  </button>
+                  </Button>
                 </div>
               ) : (
                 <>
-                  <div className="col-md-6">
+                  <div className="col-md-1">
                     <label htmlFor="">OTP</label>
                     <input
                       type="password"
@@ -85,13 +90,15 @@ const Verify = ({setIsVerified}) => {
                     />
                   </div>
 
-                  <div className="col-md-12 text-center">
-                    <button
-                      className="btn btn-primary btn-sm"
-                      onClick={handleVerifyOtp}
-                    >
-                      Verify Your Number
-                    </button>
+                  <div className="col-md-4 d-flex align-items-center">
+                   
+                      <Button
+                        variant="contained"
+                        color="success"
+                        onClick={handleVerifyOtp}
+                        >
+                        Verify Your Number
+                      </Button>
                   </div>
                 </>
               )}

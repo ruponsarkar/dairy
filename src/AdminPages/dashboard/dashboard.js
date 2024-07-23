@@ -138,25 +138,25 @@ const Dashboard = (props) => {
           <ListItemIcon>
             <LibraryBooksIcon />
           </ListItemIcon>
-          <ListItemText primary="Journal" />
+          <ListItemText primary="Request" />
           {open ? <ExpandLess /> : <ExpandMore />}
         </ListItemButton>
 
         <Collapse in={open} timeout="auto" unmountOnExit>
           <List component="div" disablePadding>
-            <ListItemButton sx={{ pl: 4 }} onClick={() => navigate("/admin/addJournal")}>
+            <ListItemButton sx={{ pl: 4 }} onClick={() => navigate("/admin/newRequest")}>
               <ListItemIcon>
                 <SubdirectoryArrowRightIcon />
               </ListItemIcon>
-              <ListItemText primary="Add Journal" />
+              <ListItemText primary="New Request" />
             </ListItemButton>
 
-            <ListItemButton sx={{ pl: 4 }} onClick={() => navigate("/admin/JournalTable")}>
+            {/* <ListItemButton sx={{ pl: 4 }} onClick={() => navigate("/admin/JournalTable")}>
               <ListItemIcon>
                 <SubdirectoryArrowRightIcon />
               </ListItemIcon>
               <ListItemText primary="View Journal" />
-            </ListItemButton>
+            </ListItemButton> */}
 
           </List>
         </Collapse>
@@ -209,14 +209,14 @@ const Dashboard = (props) => {
           </ListItemButton>
         </ListItem> */}
 
-        <ListItem disablePadding onClick={() => navigate("/admin/contactRequest")}>
+        {/* <ListItem disablePadding onClick={() => navigate("/admin/contactRequest")}>
           <ListItemButton>
             <ListItemIcon>
               <ListAltIcon />
             </ListItemIcon>
             <ListItemText>Contact Request</ListItemText>
           </ListItemButton>
-        </ListItem>
+        </ListItem> */}
 
        
 

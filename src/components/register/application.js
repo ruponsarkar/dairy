@@ -12,7 +12,7 @@ const Application = () => {
 
     return (
         <>
-            <Nav2 />
+            {/* <Nav2 /> */}
             <div className="container">
                 <div className="row py-3">
                     <Paper>
@@ -30,10 +30,10 @@ const Application = () => {
                                     <th>Gender of the applicant</th>
                                 </tr>
                                 <tr>
-                                    <td>Centro comercial Moctezuma</td>
-                                    <td>Francisco Chang</td>
-                                    <td>Mexico</td>
-                                    <td>Mexico</td>
+                                    <td>Arnab Thakuria</td>
+                                    <td>Francisco Thakuria</td>
+                                    <td>13-98-1995</td>
+                                    <td>Male</td>
                                 </tr>
                                 <tr>
                                     <th>12 digit AADHAAR number</th>
@@ -42,10 +42,10 @@ const Application = () => {
                                     <th>Voter ID number</th>
                                 </tr>
                                 <tr>
-                                    <td>Island Trading</td>
-                                    <td>Helen Bennett</td>
-                                    <td>UK</td>
-                                    <td>UK</td>
+                                    <td>13224332432343</td>
+                                    <td>98786383223</td>
+                                    <td>ADS4343JD</td>
+                                    <td>UK3948374343</td>
                                 </tr>
                                 <tr>
                                     <th>Area of residence</th>
@@ -66,9 +66,9 @@ const Application = () => {
                                     <th>Police Station</th>
                                 </tr>
                                 <tr>
-                                    <td>Magazzini Alimentari Riuniti</td>
+                                    <td>Kamrup</td>
                                     <td>Giovanni Rovelli</td>
-                                    <td>Italy</td>
+                                    <td>7812122</td>
                                     <td>Italy</td>
                                 </tr>
                                 <tr>
@@ -80,8 +80,8 @@ const Application = () => {
                                 <tr>
                                     <td>Magazzini Alimentari Riuniti</td>
                                     <td>Giovanni Rovelli</td>
-                                    <td>Italy</td>
-                                    <td>Italy</td>
+                                    <td>748735347</td>
+                                    <td>SBI</td>
                                 </tr>
                                 <tr>
                                     <th>Name of the Account holder </th>
@@ -90,10 +90,10 @@ const Application = () => {
                                     <th>Milk Production Data per month (From April, 2024 to March 2024)</th>
                                 </tr>
                                 <tr>
-                                    <td>Magazzini Alimentari Riuniti</td>
+                                    <td>Arnab Thakuria</td>
                                     <td>Giovanni Rovelli</td>
-                                    <td>Italy</td>
-                                    <td>Italy</td>
+                                    <td>SBIN00232</td>
+                                    <td>150 l</td>
                                 </tr>
 
                                 <tr>
@@ -101,15 +101,16 @@ const Application = () => {
                                     <th colspan="2">Status</th>
                                 </tr>
                                 <tr>
-                                    <td colspan="2">20 July 2024 </td>
-                                    <td colspan="2" className="text-danger"> Under Verification</td>
+                                    <td colspan="2">23 July 2024 </td>
+                                    {/* <td colspan="2" className="text-danger"> Under Verification</td> */}
+                                    <td colspan="2" className="text-success"> Verified</td>
                                 </tr>
                             </table>
                         </div>
 
                     </Paper>
 
-                    <Paper>
+                    {/* <Paper>
                         <div className="p-3">
                             <div className="d-flex justify-content-between">
                                 <div>
@@ -122,12 +123,12 @@ const Application = () => {
                                 </div>
                             </div>
                         </div>
-                    </Paper>
+                    </Paper> */}
                 </div>
             </div>
 
 
-            <Footer />
+            {/* <Footer /> */}
         </>
     );
 };

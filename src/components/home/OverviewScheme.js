@@ -13,6 +13,9 @@ const OverviewScheme = () => {
   return (
     <Container className="my-5">
       <Row>
+      <Col md={12} className='py-4 pb-5'>
+        <h2>Providing Rs. 5 subsidy to farmers pouring milk to Dairy Co-operative Societies</h2>
+      </Col>
         <Col md={7}>
         <Row>
             <Col md={12} className='text-center'>
