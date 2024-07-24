@@ -10,10 +10,12 @@ const moment = require("moment");
 module.exports = {
 
   saveForm(form, callback) {
-    let insertQuery = `INSERT INTO FORMS(id, mobileNumber, name, fathersName, gender, dob, aadhaarNo, aadharMobile, pan_number, voterID, area, district, LAC, village, gaon_panchayat, block, pincode, police_station, name_of_co_operatice_society, addree_of_co_operatice_society, bank_name, bank_account_holder_name, bank_account_no, ifsc_code, status)  VALUES ?`;
+    console.log("==>>", form);
+    let insertQuery = `INSERT INTO forms(applicationId, mobileNumber, name, fathersName, gender, dob, aadhaarNo, aadharMobile, pan_number, voterID, area, district, LAC, village, gaon_panchayat, block, pincode, police_station, name_of_co_operatice_society, addree_of_co_operatice_society, bank_name, bank_account_holder_name, bank_account_no, ifsc_code, status)  VALUES ?`;
     let id = uuid();
     let params = [];
     params.push(id);
+    // params.push(form.applicationId);
     params.push(form.mobileNumber); 
     params.push(form.name); 
     params.push(form.fatherName); 

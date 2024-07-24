@@ -8,7 +8,8 @@ const FormModel = require("../models/FormModel");
 
 module.exports = {
   saveForm(req, res) {
-    let form = req.body.formdata;
+    console.log("req :", req.body);
+    let form = req.body;
     FormModel.saveForm(form, (result) => {
       res.status(200).send(result);
     });
