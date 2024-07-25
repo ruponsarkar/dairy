@@ -15,8 +15,9 @@ module.exports = {
   },
 
   getFormByMobileNumber(req, res) {
-    let data = req.body.data;
-    FormModel.getFormByMobileNumber(data.mobileNumber, (result) => {
+    let data = req.body.mobileNumber;
+    // console.log("======>>>", req.body);
+    FormModel.getFormByMobileNumber(req.body.mobileNumber, (result) => {
       res.status(200).send(result);
     });
   }
