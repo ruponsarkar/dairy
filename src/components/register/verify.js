@@ -2,12 +2,9 @@ import React, { useState, useEffect } from "react";
 import { Paper, Button } from "@mui/material";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
-
-
-
-const Verify = ({ setIsVerified }) => {
-
+const Verify = ({ setIsVerified, setMobileNumber }) => {
   const navigation = useNavigate();
   const [otp, setOtp] = useState();
 
@@ -18,28 +15,50 @@ const Verify = ({ setIsVerified }) => {
 
   const handleSendOTP = () => {
     if (!formdata.number) {
-      Swal.fire('Enter mobile number')
+      Swal.fire("Enter mobile number");
       return;
     }
     console.log("otp");
-    setOtp('1234');
+    setOtp("1234");
   };
 
   const handleVerifyOtp = () => {
     console.log(formdata);
-
-
+    console.log("check number");
 
 
     if (otp === formdata.otp) {
       console.log("verified");
-      // navigation("/Certificate");
-      setIsVerified(true)
+      setMobileNumber(formdata.number);
 
-    }
-    else {
+
+      let data = {
+        mobileNumber: formdata.number,
+      };
+      let api = "http://127.0.0.1:8400/getFormByMobileNumber";
+      axios
+        .post(api, data)
+        .then((res) => {
+          console.log("res=>", res.data.data);
+          if (res.data.data) {
+            console.log("found");
+            navigation("/Certificate", {state: { data: res.data.data }});
+
+          } else {
+            console.log("not found");
+            setIsVerified(true);
+          }
+        })
+        .catch((err) => {
+          console.log("err :", err);
+        });
+
+
+      // navigation("/Certificate");
+      // setIsVerified(true);
+    } else {
       console.log("not match");
-      Swal.fire('Wrong OTP')
+      Swal.fire("Wrong OTP");
     }
   };
 
@@ -68,10 +87,7 @@ const Verify = ({ setIsVerified }) => {
               </div>
               {!otp ? (
                 <div className="col-md-6 d-flex align-items-center">
-                  <Button
-                    variant="contained"
-                    onClick={handleSendOTP}
-                  >
+                  <Button variant="contained" onClick={handleSendOTP}>
                     Send OTP
                   </Button>
                 </div>
@@ -91,14 +107,13 @@ const Verify = ({ setIsVerified }) => {
                   </div>
 
                   <div className="col-md-4 d-flex align-items-center">
-                   
-                      <Button
-                        variant="contained"
-                        color="success"
-                        onClick={handleVerifyOtp}
-                        >
-                        Verify Your Number
-                      </Button>
+                    <Button
+                      variant="contained"
+                      color="success"
+                      onClick={handleVerifyOtp}
+                    >
+                      Verify Your Number
+                    </Button>
                   </div>
                 </>
               )}

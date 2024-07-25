@@ -61,7 +61,7 @@ module.exports = {
     });
   },
   getFormByMobileNumber(mobileNumber, callback){
-    let selectQuery = `SELECT * FROM FORMS WHERE mobileNumber = ? AND status='A';`;
+    let selectQuery = `SELECT * FROM forms WHERE mobileNumber = ? AND status='A';`;
 
     db.query(selectQuery, [mobileNumber], (err, res) => {
       if (!err) {

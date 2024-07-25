@@ -12,11 +12,10 @@ import Dashboard from './AdminPages/dashboard/dashboard';
 import DashboardPage from './AdminPages/pages/DashboardPage';
 
 import NewRequest from './AdminPages/pages/newRequest';
-import AdminCategory from './AdminPages/pages/category';
+import AdminManagement from './AdminPages/pages/adminManegement';
 import AdminPublisher from './AdminPages/pages/publisher';
 import JournalTable from './AdminPages/table/journalTable';
 import ContactRequest from './AdminPages/pages/contactRequest';
-import Youtubelink from './AdminPages/pages/youtubelink';
 import api from './API/api';
 import { createContext } from "react";
 
@@ -70,12 +69,11 @@ function App() {
           <Route path='/admin' element={<Dashboard />}>
             <Route path='/admin' element={<DashboardPage />} />
             <Route path='newRequest' element={<NewRequest />} />
-            <Route path='category' element={<AdminCategory />} />
-            <Route path='publisher' element={<AdminPublisher />} />
+            <Route path='AdminManagement' element={<AdminManagement />} />
+
             <Route path='JournalTable' element={<JournalTable />} />
+            <Route path='publisher' element={<AdminPublisher />} />
             <Route path='contactRequest' element={<ContactRequest />} />
-            <Route path='youtubelink' element={<Youtubelink />} />
-            {/* <Route path='addProduct' element={<AddProduct />} /> */}
           </Route>
 
         </Routes>
