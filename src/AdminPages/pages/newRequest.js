@@ -23,6 +23,7 @@ import {
   DialogTitle,
   Button,
 } from "@mui/material";
+import DownloadIcon from '@mui/icons-material/Download';
 import FilterListIcon from "@mui/icons-material/FilterList";
 import Application from "../../components/register/application";
 
@@ -168,6 +169,11 @@ const NewRequest = () => {
 
   return (
     <Paper>
+
+<div className="p-3 float-end">
+  <a className="btn text-primary" role="button" href="/assets/data.xlsx"> <DownloadIcon/> Download Reports</a>
+</div>
+
       <Toolbar>
         <Typography variant="h6" id="tableTitle" component="div">
           Request Receied
