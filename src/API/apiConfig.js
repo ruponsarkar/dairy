@@ -5,8 +5,8 @@ import axios from 'axios';
 // const {token} = AuthUser();
 
 const API = axios.create({
-    // baseURL : "http://127.0.0.1:8002/api/",
-    baseURL :  process.env.REACT_APP_MAIN_API,
+    baseURL : "http://milksubsidydairyassam.com:8800/",
+    // baseURL :  process.env.REACT_APP_MAIN_API,
    
     headers :{
         "Content-Type": "application/json",

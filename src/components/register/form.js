@@ -3,13 +3,17 @@ import { Paper, Button } from "@mui/material";
 import DoneAllIcon from '@mui/icons-material/DoneAll';
 import Loader from "../common/loader";
 import { useNavigate } from "react-router-dom";
+import axios from 'axios'
+
 
 const RegisterForm = () => {
   const navigation = useNavigate();
 
   const [openLoader, setOpenLoder] = useState(false);
   const [showFileInput, setShowFileInput] = useState(false);
-  const [formData, setFormData] = useState({});
+  const [formData, setFormData] = useState({
+    mobileNumber: '232323424'
+  });
   const [passbook, setPassbook] = useState();
   const [panCard, setPanCard] = useState();
   const [aadhaarCard, setAadhaarCard] = useState();
@@ -30,13 +34,24 @@ const RegisterForm = () => {
   const handleShowFileInput = () => {
     console.log(formData);
 
+    let api = 'http://127.0.0.1:8400/saveForm'
+    axios.post(api, formData).then((res)=>{
+        console.log("res=>", res);
+    })
+    .catch((err)=>{
+        console.log("err :", err);
+    })
+
+    return;
+
     setShowFileInput(true);
   };
 
   const handleSubmit = () => {
     console.log(formData);
+  
 
-    navigation("/Certificate");
+    // navigation("/Certificate");
   };
 
 

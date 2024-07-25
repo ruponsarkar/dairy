@@ -2,6 +2,9 @@ import API from "./apiConfig";
 
 export default {
 
+    apiTesting() {
+        return API.get('/api');
+    },
     getJournal() {
         return API.get('/getJournal');
     },
