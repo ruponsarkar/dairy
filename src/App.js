@@ -5,6 +5,8 @@ import Homepage from './PublicPages/homepage';
 import RegisterPage from './PublicPages/registerpage';
 import Application from './components/register/application';
 
+import Certificate from './components/approvel/certificate';
+
 import Login from './AdminPages/form/login';
 import Dashboard from './AdminPages/dashboard/dashboard';
 import DashboardPage from './AdminPages/pages/DashboardPage';
@@ -53,7 +55,8 @@ function App() {
         <Routes>
           <Route path="/" element={<Homepage />} />
           <Route path="/RegisterPage" element={<RegisterPage />} />
-          <Route path="/Application" element={<Application />} />
+          {/* <Route path="/Application" element={<Application />} /> */}
+          <Route path="/Certificate" element={<Certificate />} />
           <Route path="/login" element={<Login />} />
         </Routes>
 

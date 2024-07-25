@@ -1,21 +1,39 @@
 // ProfessionalTable.js
 
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
-  Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TableSortLabel, TablePagination, Paper, Box, Toolbar, Typography, IconButton, Tooltip, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Button
-} from '@mui/material';
-import FilterListIcon from '@mui/icons-material/FilterList';
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  TableSortLabel,
+  TablePagination,
+  Paper,
+  Box,
+  Toolbar,
+  Typography,
+  IconButton,
+  Tooltip,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Button,
+} from "@mui/material";
+import FilterListIcon from "@mui/icons-material/FilterList";
+import Application from "../../components/register/application";
 
 const createData = (name, calories, fat, carbs, protein) => {
   return { name, calories, fat, carbs, protein };
 };
 
 const rows = [
-  createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-  createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-  createData('Eclair', 262, 16.0, 24, 6.0),
-  createData('Cupcake', 305, 3.7, 67, 4.3),
-  createData('Gingerbread', 356, 16.0, 49, 3.9),
+  createData("Arnab Thakuria", "ASDS159DFDSF", "North Guwahati", "Kamrup", 4.0),
+  createData("Rupon Sarkar", "GFD2FDG4437", "Guwahati", "Kamrup", 4.3),
+  createData("Mithu Zaman", "FSD442645452", "Kamrup", "Kamrup", 6.0),
 ];
 
 const descendingComparator = (a, b, orderBy) => {
@@ -29,7 +47,7 @@ const descendingComparator = (a, b, orderBy) => {
 };
 
 const getComparator = (order, orderBy) => {
-  return order === 'desc'
+  return order === "desc"
     ? (a, b) => descendingComparator(a, b, orderBy)
     : (a, b) => -descendingComparator(a, b, orderBy);
 };
@@ -51,11 +69,27 @@ const EnhancedTableHead = (props) => {
   };
 
   const headCells = [
-    { id: 'name', numeric: false, disablePadding: false, label: 'Dessert (100g serving)' },
-    { id: 'calories', numeric: true, disablePadding: false, label: 'Calories' },
-    { id: 'fat', numeric: true, disablePadding: false, label: 'Fat (g)' },
-    { id: 'carbs', numeric: true, disablePadding: false, label: 'Carbs (g)' },
-    { id: 'protein', numeric: true, disablePadding: false, label: 'Protein (g)' },
+    {
+      id: "name",
+      numeric: false,
+      disablePadding: false,
+      label: "Name of the applicant",
+    },
+    {
+      id: "calories",
+      numeric: true,
+      disablePadding: false,
+      label: "PAN number",
+    },
+    {
+      id: "fat",
+      numeric: true,
+      disablePadding: false,
+      label: "Area of residence",
+    },
+    { id: "carbs", numeric: true, disablePadding: false, label: "District" },
+    { id: "protein", numeric: true, disablePadding: false, label: "Village" },
+    { id: "protein", numeric: true, disablePadding: false, label: "Action" },
   ];
 
   return (
@@ -64,18 +98,31 @@ const EnhancedTableHead = (props) => {
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
-            align={headCell.numeric ? 'right' : 'left'}
+            align={headCell.numeric ? "right" : "left"}
             sortDirection={orderBy === headCell.id ? order : false}
           >
             <TableSortLabel
               active={orderBy === headCell.id}
-              direction={orderBy === headCell.id ? order : 'asc'}
+              direction={orderBy === headCell.id ? order : "asc"}
               onClick={createSortHandler(headCell.id)}
             >
               {headCell.label}
               {orderBy === headCell.id ? (
-                <Box component="span" sx={{ border: 0, clip: 'rect(0 0 0 0)', height: 1, margin: -1, overflow: 'hidden', padding: 0, position: 'absolute', top: 20, width: 1 }}>
-                  {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
+                <Box
+                  component="span"
+                  sx={{
+                    border: 0,
+                    clip: "rect(0 0 0 0)",
+                    height: 1,
+                    margin: -1,
+                    overflow: "hidden",
+                    padding: 0,
+                    position: "absolute",
+                    top: 20,
+                    width: 1,
+                  }}
+                >
+                  {order === "desc" ? "sorted descending" : "sorted ascending"}
                 </Box>
               ) : null}
             </TableSortLabel>
@@ -87,16 +134,16 @@ const EnhancedTableHead = (props) => {
 };
 
 const NewRequest = () => {
-  const [order, setOrder] = useState('asc');
-  const [orderBy, setOrderBy] = useState('calories');
+  const [order, setOrder] = useState("asc");
+  const [orderBy, setOrderBy] = useState("calories");
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [open, setOpen] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
 
   const handleRequestSort = (event, property) => {
-    const isAsc = orderBy === property && order === 'asc';
-    setOrder(isAsc ? 'desc' : 'asc');
+    const isAsc = orderBy === property && order === "asc";
+    setOrder(isAsc ? "desc" : "asc");
     setOrderBy(property);
   };
 
@@ -123,7 +170,7 @@ const NewRequest = () => {
     <Paper>
       <Toolbar>
         <Typography variant="h6" id="tableTitle" component="div">
-          Nutrition
+          Request Receied
         </Typography>
         <Tooltip title="Filter list">
           <IconButton aria-label="filter list">
@@ -132,7 +179,11 @@ const NewRequest = () => {
         </Tooltip>
       </Toolbar>
       <TableContainer>
-        <Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle" size="medium">
+        <Table
+          sx={{ minWidth: 750 }}
+          aria-labelledby="tableTitle"
+          size="medium"
+        >
           <EnhancedTableHead
             order={order}
             orderBy={orderBy}
@@ -150,9 +201,14 @@ const NewRequest = () => {
                     <TableCell align="right">{row.calories}</TableCell>
                     <TableCell align="right">{row.fat}</TableCell>
                     <TableCell align="right">{row.carbs}</TableCell>
+                    <TableCell align="right">{row.carbs}</TableCell>
                     <TableCell align="right">
-                      <Button variant="outlined" color="primary" onClick={() => handleClickOpen(row)}>
-                        {row.protein}
+                      <Button
+                        variant="outlined"
+                        color="primary"
+                        onClick={() => handleClickOpen(row)}
+                      >
+                        View
                       </Button>
                     </TableCell>
                   </TableRow>
@@ -170,11 +226,22 @@ const NewRequest = () => {
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
-      <Dialog open={open} onClose={handleClose} aria-labelledby="protein-modal-title">
-        <DialogTitle id="protein-modal-title">Protein Details</DialogTitle>
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="protein-modal-title"
+        fullWidth={true}
+        maxWidth={'lg'}
+      >
+        <DialogTitle id="protein-modal-title"> Details</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            {selectedRow ? `The protein content of ${selectedRow.name} is ${selectedRow.protein} grams.` : ''}
+            {/* {selectedRow ? `The protein content of ${selectedRow.name} is ${selectedRow.protein} grams.` : ''} */}
+            <Application />
+
+            <div className="text center m-3">
+              <Button variant="contained">Verify</Button>
+            </div>
           </DialogContentText>
         </DialogContent>
         <DialogActions>
