@@ -8,8 +8,8 @@ const FormModel = require("../models/FormModel");
 
 module.exports = {
   saveForm(req, res) {
-    console.log("req :", req.body);
-    let form = req.body;
+    // console.log("req :", req.body.formData);
+    let form = req.body.formData;
     FormModel.saveForm(form, (result) => {
       res.status(200).send(result);
     });
@@ -17,9 +17,27 @@ module.exports = {
 
   getFormByMobileNumber(req, res) {
     let data = req.body.mobileNumber;
-    // console.log("======>>>", req.body);
-    FormModel.getFormByMobileNumber(req.body.mobileNumber, (result) => {
+    // console.log("======>>>", req.body.data.mobileNumber);
+    FormModel.getFormByMobileNumber(req.body.data.mobileNumber, (result) => {
       res.status(200).send(result);
     });
-  }
+  },
+
+  addOrUpdateAdmin(req, res) {
+    let data = req.body.formData;
+    FormModel.addOrUpdateAdmin(data, (result) => {
+      res.status(200).send(result);
+    });
+  },
+
+
+  getAdmins(req, res) {
+    FormModel.getAdmins((result) => {
+      res.status(200).send(result);
+    });
+  },
+
+
+
+
 };
