@@ -35,7 +35,7 @@ const Verify = ({ setIsVerified, setMobileNumber }) => {
       let data = {
         mobileNumber: formdata.number,
       };
-      let api = "http://127.0.0.1:8400/getFormByMobileNumber";
+      let api = "http://127.0.0.1:8800/getFormByMobileNumber";
       axios
         .post(api, data)
         .then((res) => {

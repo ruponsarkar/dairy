@@ -5,10 +5,11 @@ import api from '../../API/api';
 
 const OverviewScheme = () => {
   useEffect(() => {
-    // apiTesting();
+    apiTesting();
   });
 
   const apiTesting = ()=>{
+    console.log(" process.env.baseURL=",  process.env);
     api.apiTesting()
     .then((res) => {
         console.log("Response==>", res);
