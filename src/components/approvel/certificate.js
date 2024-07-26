@@ -4,8 +4,13 @@ import jsPDF from "jspdf";
 import Application from "../register/application";
 import Nav2 from "../common/navbar";
 import Footer from "../common/footer";
+import {useLocation} from 'react-router-dom';
 
 const Certificate = () => {
+  const location = useLocation();
+
+  console.log("data==>>", location.state.data);
+
   const downloadCertificate = () => {
     const input = document.getElementById("certificate");
     html2canvas(input).then((canvas) => {
@@ -54,7 +59,7 @@ const Certificate = () => {
             </div>
           </div>
 
-          <Application />
+          <Application data={location.state.data}/>
         </div>
         <div className="text-center">
         <button onClick={downloadCertificate} className="download-button">

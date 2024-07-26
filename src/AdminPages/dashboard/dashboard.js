@@ -161,24 +161,24 @@ const Dashboard = (props) => {
           </List>
         </Collapse>
 
-        {/* <ListItemButton onClick={blogClick}>
+        <ListItemButton onClick={blogClick}>
           <ListItemIcon>
             <ClassIcon />
           </ListItemIcon>
-          <ListItemText primary="Category" />
+          <ListItemText primary="Admin" />
           {openBlog ? <ExpandLess /> : <ExpandMore />}
         </ListItemButton>
 
         <Collapse in={openBlog} timeout="auto" unmountOnExit>
           <List component="div" disablePadding>
-            <ListItemButton sx={{ pl: 4 }} onClick={() => navigate("/admin/category")}>
+            <ListItemButton sx={{ pl: 4 }} onClick={() => navigate("/admin/adminManagement")}>
               <ListItemIcon>
                 <SubdirectoryArrowRightIcon />
               </ListItemIcon>
-              <ListItemText primary="Create Category" />
+              <ListItemText primary="Add Admin" />
             </ListItemButton>
           </List>
-        </Collapse> */}
+        </Collapse>
 
 
         {/* <ListItemButton onClick={publisherClick}>

@@ -7,13 +7,14 @@ import Verify from "../components/register/verify";
 
 const RegisterPage = () => {
   const [isVerified, setIsVerified] = useState(false);
+  const [mobileNumber, setMobileNumber] = useState();
 
   return (
     <>
       <Nav2 />
       <div style={{minHeight: '70vh'}}>
 
-      {isVerified ? <RegisterForm /> : <Verify setIsVerified={setIsVerified} />}
+      {isVerified ? <RegisterForm mobileNumber={mobileNumber} /> : <Verify setIsVerified={setIsVerified} setMobileNumber={setMobileNumber} />}
 
       </div>
       <Footer />

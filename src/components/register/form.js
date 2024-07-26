@@ -4,15 +4,16 @@ import DoneAllIcon from '@mui/icons-material/DoneAll';
 import Loader from "../common/loader";
 import { useNavigate } from "react-router-dom";
 import axios from 'axios'
+import Swal from "sweetalert2";
+import api from "../../API/api";
 
-
-const RegisterForm = () => {
+const RegisterForm = ({mobileNumber}) => {
   const navigation = useNavigate();
 
   const [openLoader, setOpenLoder] = useState(false);
   const [showFileInput, setShowFileInput] = useState(false);
   const [formData, setFormData] = useState({
-    mobileNumber: '232323424'
+    mobileNumber: mobileNumber
   });
   const [passbook, setPassbook] = useState();
   const [panCard, setPanCard] = useState();
@@ -34,24 +35,24 @@ const RegisterForm = () => {
   const handleShowFileInput = () => {
     console.log(formData);
 
-    let api = 'http://127.0.0.1:8400/saveForm'
-    axios.post(api, formData).then((res)=>{
+    api.saveForm(formData).then((res)=>{
+    // axios.post(api, formData).then((res)=>{
         console.log("res=>", res);
+        Swal.fire('Saved Data')
+        setShowFileInput(true);
     })
     .catch((err)=>{
         console.log("err :", err);
+        Swal.fire('Something went wrong ')
     })
 
-    return;
-
-    setShowFileInput(true);
   };
 
   const handleSubmit = () => {
     console.log(formData);
   
 
-    // navigation("/Certificate");
+    navigation("/Certificate", {state: {data: formData}});
   };
 
 
