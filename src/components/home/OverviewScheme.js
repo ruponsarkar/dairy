@@ -5,7 +5,7 @@ import api from '../../API/api';
 
 const OverviewScheme = () => {
   useEffect(() => {
-    apiTesting();
+    // apiTesting();
   });
 
   const apiTesting = ()=>{
