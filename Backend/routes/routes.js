@@ -1,4 +1,5 @@
 const FormController = require("../controllers").FormController;
+const AdminController = require("../controllers").AdminController;
 
 module.exports = (app) => {
   app.get("/api", (req, res) => {
@@ -7,4 +8,6 @@ module.exports = (app) => {
   app.post("/saveForm", FormController.saveForm);
   app.post("/upload", FormController.upload_config.single("file"), FormController.saveToDb);
   app.post("/getFormByMobileNumber",FormController.getFormByMobileNumber);
+  app.post("/addOrUpdateAdmin", AdminController.addOrUpdateAdmin);
+  app.get("/getAdmins",AdminController.getAdmins);
 };

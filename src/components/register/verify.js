@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Paper, Button } from "@mui/material";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import api from "../../API/api";
 
 const Verify = ({ setIsVerified, setMobileNumber }) => {
   const navigation = useNavigate();
@@ -35,9 +35,7 @@ const Verify = ({ setIsVerified, setMobileNumber }) => {
       let data = {
         mobileNumber: formdata.number,
       };
-      let api = "http://127.0.0.1:8800/getFormByMobileNumber";
-      axios
-        .post(api, data)
+      api.getFormByMobileNumber(data)
         .then((res) => {
           console.log("res=>", res.data.data);
           if (res.data.data) {

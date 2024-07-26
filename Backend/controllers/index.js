@@ -1,5 +1,7 @@
 const FormController = require("./FormController");
+const AdminController = require("./AdminController");
 
 module.exports={
-    FormController
+    FormController,
+    AdminController
 }

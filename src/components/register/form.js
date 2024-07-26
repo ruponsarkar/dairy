@@ -5,8 +5,7 @@ import Loader from "../common/loader";
 import { useNavigate } from "react-router-dom";
 import axios from 'axios'
 import Swal from "sweetalert2";
-
-import api from '../../API/api';
+import api from "../../API/api";
 
 const RegisterForm = ({ mobileNumber }) => {
   const navigation = useNavigate();
@@ -36,11 +35,11 @@ const RegisterForm = ({ mobileNumber }) => {
   const handleShowFileInput = () => {
     console.log(formData);
 
-    let api = 'http://127.0.0.1:8800/saveForm'
-    axios.post(api, formData).then((res) => {
-      console.log("res=>", res);
-      Swal.fire('Saved Data')
-      setShowFileInput(true);
+    api.saveForm(formData).then((res)=>{
+    // axios.post(api, formData).then((res)=>{
+        console.log("res=>", res);
+        Swal.fire('Saved Data')
+        setShowFileInput(true);
     })
       .catch((err) => {
         console.log("err :", err);

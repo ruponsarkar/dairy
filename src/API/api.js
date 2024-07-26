@@ -8,8 +8,17 @@ export default {
     uploadDocument(fileData) {
         return API.post('/upload', { fileData });
     },
-    getJournalWithId(id) {
-        return API.get(`/getJournalWithId/${id}`);
+    saveForm(formData){
+        return API.post('/saveForm', {formData});
+    },
+    getFormByMobileNumber(data){
+        return API.post('/getFormByMobileNumber', {data});
+    },
+    addOrUpdateAdmin(formData){
+        return API.post('/addOrUpdateAdmin', {formData})
+    },
+    getAdmins(){
+        return API.get('/getAdmins')
     },
 
     // login 
