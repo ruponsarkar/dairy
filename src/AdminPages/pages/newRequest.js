@@ -22,10 +22,28 @@ import {
   DialogContentText,
   DialogTitle,
   Button,
+  MenuItem,
+  InputLabel,
+  Select,
+  FormControl,
+  Link,
 } from "@mui/material";
 import DownloadIcon from '@mui/icons-material/Download';
 import FilterListIcon from "@mui/icons-material/FilterList";
 import Application from "../../components/register/application";
+
+
+const districts = [
+  'Baksa', 'Barpeta', 'Biswanath', 'Bongaigaon', 'Cachar', 'Charaideo', 'Chirang',
+  'Darrang', 'Dhemaji', 'Dhubri', 'Dibrugarh', 'Goalpara', 'Golaghat', 'Hailakandi',
+  'Hojai', 'Jorhat', 'Kamrup Metropolitan', 'Kamrup', 'Karbi Anglong', 'Karimganj',
+  'Kokrajhar', 'Lakhimpur', 'Majuli', 'Morigaon', 'Nagaon', 'Nalbari', 'Dima Hasao',
+  'Sivasagar', 'Sonitpur', 'South Salmara-Mankachar', 'Tinsukia', 'Udalguri', 'West Karbi Anglong'
+];
+
+const statuses = [
+  'Active', 'Inactive', 'Pending', 'Completed', 'Cancelled'
+];
 
 const createData = (name, calories, fat, carbs, protein) => {
   return { name, calories, fat, carbs, protein };
@@ -135,6 +153,20 @@ const EnhancedTableHead = (props) => {
 };
 
 const NewRequest = () => {
+
+  const [selectedDistrict, setSelectedDistrict] = useState('');
+  const [selectedStatus, setSelectedStatus] = useState('');
+
+  const handleDistrictChange = (event) => {
+    setSelectedDistrict(event.target.value);
+  };
+
+  const handleStatusChange = (event) => {
+    setSelectedStatus(event.target.value);
+  };
+
+
+
   const [order, setOrder] = useState("asc");
   const [orderBy, setOrderBy] = useState("calories");
   const [page, setPage] = useState(0);
@@ -168,11 +200,10 @@ const NewRequest = () => {
   };
 
   return (
-    <Paper>
+    <Paper className="p-2">
 
-<div className="p-3 float-end">
-  <a className="btn text-primary" role="button" href="/assets/data.xlsx"> <DownloadIcon/> Download Reports</a>
-</div>
+    
+
 
       <Toolbar>
         <Typography variant="h6" id="tableTitle" component="div">
@@ -184,7 +215,79 @@ const NewRequest = () => {
           </IconButton>
         </Tooltip>
       </Toolbar>
-      <TableContainer>
+
+      <Box
+      sx={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        flexWrap: 'wrap',
+        margin: '20px 0',
+        '@media (max-width: 600px)': {
+          flexDirection: 'column',
+          alignItems: 'flex-start',
+        },
+      }}
+    >
+      <Box sx={{ display: 'flex', gap: 2 }}>
+        <FormControl sx={{ minWidth: 180, maxWidth: 200 }} size="small">
+          <InputLabel id="assam-district-label">Select District</InputLabel>
+          <Select
+            labelId="assam-district-label"
+            id="assam-district"
+            value={selectedDistrict}
+            label="Select District"
+            onChange={handleDistrictChange}
+          >
+            {districts.map((district) => (
+              <MenuItem key={district} value={district}>
+                {district}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+        <FormControl sx={{ minWidth: 180, maxWidth: 200 }} size="small">
+          <InputLabel id="status-label">Select Status</InputLabel>
+          <Select
+            labelId="status-label"
+            id="status"
+            value={selectedStatus}
+            label="Select Status"
+            onChange={handleStatusChange}
+          >
+            {statuses.map((status) => (
+              <MenuItem key={status} value={status}>
+                {status}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      </Box>
+      <Link href="https://www.example.com" underline="none">
+        <Button
+          variant="contained"
+          color="primary"
+          sx={{
+            height: 40,
+            minWidth: 120,
+            '@media (max-width: 600px)': {
+              width: '100%',
+              marginTop: 1,
+            },
+          }}
+        >
+          <DownloadIcon/>
+          Download Reports
+        </Button>
+      </Link>
+    </Box>
+
+{/* 
+    <div className="p-3 float-end">
+      <a className="btn text-primary" role="button" href="/assets/data.xlsx"> <DownloadIcon/> Download Reports</a>
+    </div> */}
+
+      <TableContainer component={Paper}>
         <Table
           sx={{ minWidth: 750 }}
           aria-labelledby="tableTitle"
@@ -242,7 +345,6 @@ const NewRequest = () => {
         <DialogTitle id="protein-modal-title"> Details</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            {/* {selectedRow ? `The protein content of ${selectedRow.name} is ${selectedRow.protein} grams.` : ''} */}
             <Application />
 
             <div className="text center m-3">

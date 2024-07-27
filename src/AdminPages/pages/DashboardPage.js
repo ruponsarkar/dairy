@@ -104,9 +104,41 @@ const DashboardPage = () => {
 
 
     return (
+        
         <section className="dash m-0 p-0">
             <div className="container">
-                <div className="row my-5 justify-content-center">
+                <div class="row text-center">
+	                <div class="col-md-3 p-1">
+	                    <div class="counter">
+                            <i class="fa fa-file fa-2x"></i>
+                            <h2 class="timer count-title count-number">100</h2>
+                            <p class="count-text ">Total Applied</p>
+                        </div>
+	                </div>
+                    <div class="col-md-3 p-1">
+                        <div class="counter">
+                            <i class="fa fa-check fa-2x"></i>
+                            <h2 class="timer count-title count-number">460</h2>
+                            <p class="count-text ">Approved</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3 p-1">
+                        <div class="counter">
+                            <i class="fa fa-inr fa-2x"></i>
+                            <h2 class="timer count-title count-number">900</h2>
+                            <p class="count-text ">Ammount Paid</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3 p-1">
+                        <div class="counter">
+                            <i class="fa fa-refresh fa-2x"></i>
+                            <h2 class="timer count-title count-number">760</h2>
+                            <p class="count-text ">Under Verification</p>
+                        </div>
+                    </div>
+                </div>
+
+                {/* <div className="row my-5 justify-content-center">
                     <div className="reports my-2">
                         <h3 className="p-3 text-center">Status Reports</h3>
                         <div className="d-flex p-3" style={{ 'flexWrap': 'wrap' }}>
@@ -140,7 +172,7 @@ const DashboardPage = () => {
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> */}
 
 
                 <br />
