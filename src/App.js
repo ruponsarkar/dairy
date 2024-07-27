@@ -12,14 +12,8 @@ import Dashboard from './AdminPages/dashboard/dashboard';
 import DashboardPage from './AdminPages/pages/DashboardPage';
 
 import NewRequest from './AdminPages/pages/newRequest';
-<<<<<<< HEAD
 import AdminManagement from './AdminPages/pages/adminManegement';
-=======
-import AdminCategory from './AdminPages/pages/category';
->>>>>>> 88c7732 (table)
-import AdminPublisher from './AdminPages/pages/publisher';
-import JournalTable from './AdminPages/table/journalTable';
-import ContactRequest from './AdminPages/pages/contactRequest';
+
 import api from './API/api';
 import { createContext } from "react";
 
@@ -73,16 +67,8 @@ function App() {
           <Route path='/admin' element={<Dashboard />}>
             <Route path='/admin' element={<DashboardPage />} />
             <Route path='newRequest' element={<NewRequest />} />
-<<<<<<< HEAD
             <Route path='AdminManagement' element={<AdminManagement />} />
 
-=======
-            <Route path='category' element={<AdminCategory />} />
-            <Route path='publisher' element={<AdminPublisher />} />
->>>>>>> 88c7732 (table)
-            <Route path='JournalTable' element={<JournalTable />} />
-            <Route path='publisher' element={<AdminPublisher />} />
-            <Route path='contactRequest' element={<ContactRequest />} />
           </Route>
 
         </Routes>

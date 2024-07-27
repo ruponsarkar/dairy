@@ -50,11 +50,7 @@ const createData = (name, calories, fat, carbs, protein) => {
   return { name, calories, fat, carbs, protein };
 };
 
-const rows = [
-  createData("Arnab Thakuria", "ASDS159DFDSF", "North Guwahati", "Kamrup", 4.0),
-  createData("Rupon Sarkar", "GFD2FDG4437", "Guwahati", "Kamrup", 4.3),
-  createData("Mithu Zaman", "FSD442645452", "Kamrup", "Kamrup", 6.0),
-];
+
 
 
 
@@ -319,7 +315,7 @@ const NewRequest = () => {
           </TableBody>
         </Table>
       </TableContainer>
-      <TablePagination
+      {/* <TablePagination
         rowsPerPageOptions={[5, 10, 25]}
         component="div"
         count={rows.length}
@@ -327,7 +323,7 @@ const NewRequest = () => {
         page={page}
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
-      />
+      /> */}
       <Dialog
         open={open}
         onClose={handleClose}
@@ -338,10 +334,13 @@ const NewRequest = () => {
         <DialogTitle id="protein-modal-title"> Details</DialogTitle>
         <DialogContent>
           <DialogContentText>
+            <div>
+
             <Application data={selectedRow}/>
 
-            <div className="text center m-3">
+            <div className="text-center m-3">
               <Button variant="contained">Verify</Button>
+            </div>
             </div>
           </DialogContentText>
         </DialogContent>
