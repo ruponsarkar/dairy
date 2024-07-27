@@ -55,6 +55,7 @@ const SearchBar = styled("div")(({ theme }) => ({
 
 
 
+
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 const pages = [];
 
@@ -125,7 +126,7 @@ const Dashboard = (props) => {
       <Toolbar>
         <a href='/admin'>
           {/* <img src="/logo.png" className='img-fluid' /> */}
-          <h2>Portfolio</h2>
+          <h2>Admin Panel</h2>
         </a>
       </Toolbar>
       <Divider />

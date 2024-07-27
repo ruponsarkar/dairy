@@ -3,6 +3,8 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 
+import { Link } from 'react-router-dom';
+
 import FacebookIcon from '@mui/icons-material/Facebook';
 import TwitterIcon from '@mui/icons-material/Twitter';
 import EmailIcon from '@mui/icons-material/Email';
@@ -30,10 +32,11 @@ function Nav2() {
           <Navbar.Brand href="/"> <i className="fa fa-home"></i></Navbar.Brand>
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
-            <Nav className="me-auto  text-white">
-              <Nav.Link href="/#aboutMe">About</Nav.Link>
-              <Nav.Link href="/RegisterPage">Register</Nav.Link>
-              <Nav.Link href="/Certificate">Certificate</Nav.Link>
+            <Nav className="me-auto">
+              <Link to="/" className='nav-link'>About</Link>
+              <Link to="/RegisterPage" className='nav-link'>Download Certicicate</Link>
+              {/* <Link to="/Certificate" className='nav-link'>Certificate</Link> */}
+              {/* <Nav.Link href="/Certificate">Certificate</Nav.Link> */}
 
               {/* <NavDropdown title="Dropdown" id="collasible-nav-dropdown">
               <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>

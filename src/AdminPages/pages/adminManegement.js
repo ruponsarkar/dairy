@@ -1,14 +1,9 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import { Card } from '@mui/material';
 import AdminTable from '../table/adminTable';
 
 import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
+import Modal from '../../ui-component/modal';
 import Swal from 'sweetalert2';
 
 import api from '../../API/api';
@@ -16,11 +11,81 @@ import api from '../../API/api';
 const AdminCategory = () => {
 
     const [open, setOpen] = React.useState(false);
-    const [cat, setCat] = useState([
-        {name: 'Rupon'}
-    ]);
+    const [data, setData] = useState([]);
 
-    const [formData, setFormData] = useState();
+    const [formData, setFormData] = useState({
+        'status': 'Active'
+    });
+
+    useEffect(()=>{
+        getAdmins();
+    },[])
+
+    const handleSaveAdmin=()=>{
+        console.log(formData);
+
+        api.addOrUpdateAdmin(formData).then((res)=>{
+            console.log("res", res);
+            setOpen(false)
+            Swal.fire('Admin added successfully');
+            getAdmins();
+        })
+        .catch((err)=>{
+            console.log("err", err);
+            Swal.fire('Something went wrong');
+        })
+    }
+
+
+    const getAdmins=()=>{
+        api.getAdmins().then((res)=>{
+            console.log("res", res.data.message);
+            setData(res.data.message)
+        })
+        .catch((err)=>{
+            console.log("err :", err);
+        })
+    }
+
+
+    const addAdminForm = () => {
+        return (
+            <>
+                <div className='p-3'>
+                    <div className="row">
+                        <div className="col-md-6">
+                            <label htmlFor="">Admin Name</label>
+                            <input type="text" className='form-control' name="name" id="" onChange={(e)=>setFormData({...formData, [e.target.name]: e.target.value})} />
+                        </div>
+                        <div className="col-md-6">
+                            <label htmlFor="">Admin Phone number</label>
+                            <input type="text" className='form-control' name="mobileNumber" id="" onChange={(e)=>setFormData({...formData, [e.target.name]: e.target.value})} />
+                        </div>
+                        <div className="col-md-6">
+                            <label htmlFor="">Admin Email Id</label>
+                            <input type="text" className='form-control' name="email" id="" onChange={(e)=>setFormData({...formData, [e.target.name]: e.target.value})} />
+                        </div>
+                        <div className="col-md-6">
+                            <label htmlFor="">Admin Role</label>
+                            <input type="text" className='form-control' name="role" id="" onChange={(e)=>setFormData({...formData, [e.target.name]: e.target.value})} />
+                        </div>
+                        <div className="col-md-6">
+                            <label htmlFor="">Assign District</label>
+                            <input type="text" className='form-control' name="district" id="" onChange={(e)=>setFormData({...formData, [e.target.name]: e.target.value})} />
+                        </div>
+                        <div className="col-md-6">
+                            <label htmlFor="">Password</label>
+                            <input type="password" className='form-control' name="password" id="" onChange={(e)=>setFormData({...formData, [e.target.name]: e.target.value})} />
+                        </div>
+
+                        <div className='text-center'>
+                            <Button variant='contained' onClick={handleSaveAdmin}>Save Admin</Button>
+                        </div>
+                    </div>
+                </div>
+            </>
+        )
+    }
 
 
 
@@ -31,32 +96,22 @@ const AdminCategory = () => {
                     <div className="row">
                         <div className="col-6">
                             <div className='m-2'>
-                                <Button variant="contained" color='warning' >
+                                <Button 
+                                variant="contained"
+                                color="primary"
+                                sx={{
+                                  height: 40,
+                                  minWidth: 120,
+                                  '@media (max-width: 600px)': {
+                                    width: '100%',
+                                    marginTop: 1,
+                                  },
+                                }}
+                                 onClick={() => setOpen(true)}>
                                     + Add New Admin
                                 </Button>
 
-
-                                {/* <Dialog open={open} onClose={handleClose}>
-                                    <DialogContent>
-                                        <DialogContentText>
-                                            Add New Admin
-                                        </DialogContentText>
-                                        <TextField
-                                            autoFocus
-                                            margin="dense"
-                                            id="name"
-                                            label="Enter Category Name"
-                                            type="text"
-                                            fullWidth
-                                            variant="standard"
-                                            onChange={handleInput}
-                                        />
-                                    </DialogContent>
-                                    <DialogActions>
-                                        <Button onClick={handleClose}>Cancel</Button>
-                                        <Button onClick={handleSubmit}>+ Add</Button>
-                                    </DialogActions>
-                                </Dialog> */}
+                                <Modal maxWidth='md' open={open} handleClose={() => setOpen(false)} modaldata={addAdminForm()} />
 
                             </div>
                         </div>
@@ -72,7 +127,7 @@ const AdminCategory = () => {
                                 </div>
 
 
-                                <AdminTable category={cat}/>
+                                <AdminTable data={data} getAdmins={getAdmins}/>
 
 
 

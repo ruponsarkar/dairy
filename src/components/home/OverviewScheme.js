@@ -11,13 +11,53 @@ const OverviewScheme = () => {
 
 
   return (
-    <Container className="my-5">
+    <Container>
 
-<Col md={12} className='py-4 pb-5 text-center'>
+<Col md={12} className='pt-3 text-center'>
         <h2><i>Providing Rs. 5 subsidy to farmers pouring milk to Dairy Co-operative Societies</i></h2>
       </Col>
 
-      		<div class="row text-center">
+      		
+
+
+
+
+
+         <div class="container py-3">
+          <div class="row g-4">
+            <div class="col-md-7">
+              <Col md={12}>
+                <img src="assets/cow.jpg" alt="Overview of the Scheme" className="img-fluid w-100 rounded-corners" />
+              </Col>
+            </div>
+            <div class="col-md-5 d-flex flex-column justify-content-center">
+              <h2 class="section-title text-center">Register</h2>
+              <p class="about-us-text text-center">Farmer should be a pouring member of a functional DCS formed on or before 31st March, 2024 (as per Assam Co-operative Societies Act, 2007).</p>
+              {/* <div class="row">
+                <div class="col-md-6">
+                  <h5>Our Vision</h5>
+                  <ul>
+                    <li>Praesent Sodales Orci</li>
+                    <li>Curabitur Dignissim</li>
+                    <li>Nulla Condimentum</li>
+                  </ul>
+                </div>
+                <div class="col-md-6">
+                  <h5>Our Mission</h5>
+                  <ul>
+                    <li>Nulla Condimentum</li>
+                    <li>Praesent Sodales Orci</li>
+                    <li>Curabitur Dignissim</li>
+                  </ul>
+                </div>
+              </div> */}
+              <a href="/RegisterPage" class="btn btn-primary pt-2">Register Here &rarr;</a>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="row text-center p-3">
 	                <div class="col-md-3 p-1">
 	                    <div class="counter">
                             <i class="fa fa-file fa-2x"></i>
@@ -47,43 +87,6 @@ const OverviewScheme = () => {
                         </div>
                     </div>
                 </div>
-
-
-
-
-
-         <div class="container py-5">
-    <div class="row g-4">
-      <div class="col-md-7">
-        <Col md={12}>
-          <img src="assets/cow.jpg" alt="Overview of the Scheme" className="img-fluid w-100 rounded-corners" />
-        </Col>
-      </div>
-      <div class="col-md-5 d-flex flex-column justify-content-center">
-        <h2 class="section-title text-center">Register</h2>
-        <p class="about-us-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus semper placerat metus. Cras venenatis mi non purus dictum, non tincidunt ligula varius.</p>
-        <div class="row">
-          <div class="col-md-6">
-            <h5>Our Vision</h5>
-            <ul>
-              <li>Praesent Sodales Orci</li>
-              <li>Curabitur Dignissim</li>
-              <li>Nulla Condimentum</li>
-            </ul>
-          </div>
-          <div class="col-md-6">
-            <h5>Our Mission</h5>
-            <ul>
-              <li>Nulla Condimentum</li>
-              <li>Praesent Sodales Orci</li>
-              <li>Curabitur Dignissim</li>
-            </ul>
-          </div>
-        </div>
-        <a href="#" class="btn btn-primary mt-3">Know Us More &rarr;</a>
-      </div>
-    </div>
-  </div>
 
   
       <Row>

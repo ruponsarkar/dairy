@@ -94,6 +94,67 @@
   padding: 10px 0 5px;
 }
 
+
+@media (max-width: 576px) {
+  .logo {
+    background-size: 7% auto;
+    line-height: 80%;
+    min-height: 60px;
+    padding: 0 0 0 60px;
+    text-transform: uppercase;
+    width: 700px;
+  }
+  .logo .main_gov {
+    font-size: 50%;
+  }
+  .logo .main_dept {
+    font-size: 50%;
+  }
+  .logo .sub_dept {
+    font-size: 50%;
+  }
+}
+
+@media (min-width: 576px) {
+  .logo {
+    background-size: 7% auto;
+    line-height: 80%;
+    min-height: 60px;
+    padding: 0 0 0 70px;
+    text-transform: uppercase;
+    width: 900px;
+  }
+  .logo .main_gov {
+    font-size: 60%;
+  }
+  .logo .main_dept {
+    font-size: 60%;
+  }
+  .logo .sub_dept {
+    font-size: 60%;
+  }
+}
+
+@media (min-width: 992px) {
+  .logo {
+    background-size: 7% auto;
+    line-height: 80%;
+    min-height: 60px;
+    padding: 0 0 0 80px;
+    text-transform: uppercase;
+    width: 1050px;
+  }
+  .logo .main_gov {
+    font-size: 70%;
+  }
+  .logo .main_dept {
+    font-size: 70%;
+  }
+  .logo .sub_dept {
+    font-size: 70%;
+  }
+}
+
 table {
   font-family: arial, sans-serif;
   border-collapse: collapse;
@@ -102,7 +163,7 @@ table {
 }
 
 thead tr th{
-  background-color: #1976d2;
+  background-color: #a8bcd0;
   color: white !important;
 }
 
@@ -129,6 +190,7 @@ tr{
   font-size: 2rem;
   font-weight: bold;
 }
+
 
 
 
