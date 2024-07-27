@@ -10,6 +10,7 @@ module.exports = (app) => {
     res.status(200).send({ status: true, message: "Welcome to DDD" });
   });
   app.post("/saveForm", FormController.saveForm);
+  app.get("/getFrom", FormController.getFrom);
   app.post("/getFormByMobileNumber",FormController.getFormByMobileNumber);
   app.post("/addOrUpdateAdmin", AdminController.addOrUpdateAdmin);
   app.get("/getAdmins",AdminController.getAdmins);

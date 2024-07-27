@@ -1,6 +1,6 @@
 // ProfessionalTable.js
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Table,
   TableBody,
@@ -31,6 +31,7 @@ import {
 import DownloadIcon from '@mui/icons-material/Download';
 import FilterListIcon from "@mui/icons-material/FilterList";
 import Application from "../../components/register/application";
+import api from "../../API/api";
 
 
 const districts = [
@@ -55,31 +56,7 @@ const rows = [
   createData("Mithu Zaman", "FSD442645452", "Kamrup", "Kamrup", 6.0),
 ];
 
-const descendingComparator = (a, b, orderBy) => {
-  if (b[orderBy] < a[orderBy]) {
-    return -1;
-  }
-  if (b[orderBy] > a[orderBy]) {
-    return 1;
-  }
-  return 0;
-};
 
-const getComparator = (order, orderBy) => {
-  return order === "desc"
-    ? (a, b) => descendingComparator(a, b, orderBy)
-    : (a, b) => -descendingComparator(a, b, orderBy);
-};
-
-const stableSort = (array, comparator) => {
-  const stabilizedThis = array.map((el, index) => [el, index]);
-  stabilizedThis.sort((a, b) => {
-    const order = comparator(a[0], b[0]);
-    if (order !== 0) return order;
-    return a[1] - b[1];
-  });
-  return stabilizedThis.map((el) => el[0]);
-};
 
 const EnhancedTableHead = (props) => {
   const { order, orderBy, onRequestSort } = props;
@@ -173,6 +150,7 @@ const NewRequest = () => {
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [open, setOpen] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
+  const [data, setData] = useState();
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -196,14 +174,29 @@ const NewRequest = () => {
 
   const handleClose = () => {
     setOpen(false);
-    setSelectedRow(null);
+    // setSelectedRow(null);
   };
+
+  useEffect(()=>{
+    getFrom()
+  },[])
+
+  const getFrom=()=>{
+    const data = {
+      limit: 5,
+      offset: 0
+    }
+    api.getFrom(data).then((res)=>{
+      console.log("res :", res);
+      setData(res.data.data)
+    })
+    .catch((err)=>{
+      console.log("err: ", err);
+    })
+  }
 
   return (
     <Paper className="p-2">
-
-    
-
 
       <Toolbar>
         <Typography variant="h6" id="tableTitle" component="div">
@@ -298,19 +291,19 @@ const NewRequest = () => {
             orderBy={orderBy}
             onRequestSort={handleRequestSort}
           />
+          
           <TableBody>
-            {stableSort(rows, getComparator(order, orderBy))
-              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((row, index) => {
+            {data &&
+              data.map((row, index) => {
                 return (
                   <TableRow hover tabIndex={-1} key={row.name}>
                     <TableCell component="th" scope="row">
                       {row.name}
                     </TableCell>
-                    <TableCell align="right">{row.calories}</TableCell>
-                    <TableCell align="right">{row.fat}</TableCell>
-                    <TableCell align="right">{row.carbs}</TableCell>
-                    <TableCell align="right">{row.carbs}</TableCell>
+                    <TableCell align="right">{row.pan_number}</TableCell>
+                    <TableCell align="right">{row.area}</TableCell>
+                    <TableCell align="right">{row.district}</TableCell>
+                    <TableCell align="right">{row.village}</TableCell>
                     <TableCell align="right">
                       <Button
                         variant="outlined"
@@ -345,7 +338,7 @@ const NewRequest = () => {
         <DialogTitle id="protein-modal-title"> Details</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            <Application />
+            <Application data={selectedRow}/>
 
             <div className="text center m-3">
               <Button variant="contained">Verify</Button>

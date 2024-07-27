@@ -83,6 +83,23 @@ module.exports = {
     });
   },
 
+  getFrom(limit, offset, callback) {
+    console.log("FROM MODAL: ", limit, offset);
+    let query = `SELECT * FROM forms LIMIT ${limit} OFFSET ${offset}`;
+    db.query(query, (err, res) => {
+      if (err) {
+          // Call the callback with an error response
+          return callback && callback({ status: 500, message: "Error executing query: "+ err, data: null });
+      }
 
-  
+      // Check if any rows were returned
+      if (res.length !== 0) {
+          // Call the callback with success and the result data
+          return callback && callback({ status: 200, message: "Success", data: res });
+      } else {
+          // Call the callback with success but no data
+          return callback && callback({ status: 200, message: "Success", data: [] });
+      }
+  });
+  },
 };
