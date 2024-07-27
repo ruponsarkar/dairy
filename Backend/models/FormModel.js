@@ -59,9 +59,30 @@ module.exports = {
       }
     });
   },
+  updateFilePath(mobileNumber, fileType, filePath, callback) {
+    let updateQuery = '';
+    switch (fileType) {
+      case 'passbook':
+        updateQuery = `UPDATE forms SET passbook = ? WHERE mobileNumber = ? AND status='A'`;
+        break;
+      case 'panCard':
+        updateQuery = `UPDATE forms SET panCard = ? WHERE mobileNumber = ? AND status='A'`;
+        break;
+      case 'aadhaarCard':
+        updateQuery = `UPDATE forms SET aadharCard = ? WHERE mobileNumber = ? AND status='A'`;
+        break;
+    }
+    
+    db.query(updateQuery, [filePath, mobileNumber], (err, result) => {
+      if (!err) {
+        callback && callback({ status: 200, message: "success" });
+      } else {
+        callback && callback({ status: 400, message: "success" });
+      }
+    });
+  },
   getFormByMobileNumber(mobileNumber, callback) {
     let selectQuery = `SELECT * FROM forms WHERE mobileNumber = ? AND status='A';`;
-
     db.query(selectQuery, [mobileNumber], (err, res) => {
       if (!err) {
         if (res.length != 0) {
@@ -81,8 +102,5 @@ module.exports = {
         );
       }
     });
-  },
-
-
-  
+  }, 
 };

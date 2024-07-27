@@ -1,15 +1,16 @@
 import API from "./apiConfig";
+import uploadAPI from "./uploadApiConfig";
 
 export default {
 
     apiTesting() {
         return API.get('/api');
     },
-    uploadDocument(fileData) {
-        return API.post('/upload', { fileData });
-    },
     saveForm(formData){
         return API.post('/saveForm', {formData});
+    },
+    uploadDocument(formData) {
+        return uploadAPI.post('/upload', formData);
     },
     getFormByMobileNumber(data){
         return API.post('/getFormByMobileNumber', {data});

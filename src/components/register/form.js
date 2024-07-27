@@ -60,20 +60,26 @@ const RegisterForm = ({ mobileNumber }) => {
   const handleFileUpload = (type) => {
     setOpenLoder(true)
     if (type === 'passbook') {
-      upload(type, passbook);
+      upload(type, passbook, 'passbook');
     }
     if (type === 'panCard') {
-      upload(type, panCard);
+      upload(type, panCard, 'pancard');
     }
     if (type === 'aadhaarCard') {
-      upload(type, aadhaarCard);
+      upload(type, aadhaarCard, 'aadharcard');
     }
   }
 
-  const upload = (type, file) => {
-    console.log("type: ", type, " file : ", file);
-    let fileData = {type:type, file:file};
-    api.uploadDocument(fileData)
+  const upload = (type, file, fileName) => {
+    console.log("Type=",type, "File=",file);
+    const Data = new FormData();
+    Data.append('mobileNumber', formData.mobileNumber);
+    Data.append('fileType', type);
+    Data.append('fileName', fileName+'.'+file.name.split('.')[1]);
+    Data.append('fileSize', file.size);
+    Data.append('file', file);
+    console.log("Data=", Data);
+    api.uploadDocument(Data)
       .then((res) => {
         console.log("Response==>", res);
         switch (type) {
@@ -87,6 +93,7 @@ const RegisterForm = ({ mobileNumber }) => {
             setIsuploaded({ ...isUploaded, aadhaarCard: true })
             break;
         }
+        setOpenLoder(false);
       })
       .catch((err) => {
         setOpenLoder(false);
@@ -361,7 +368,7 @@ const RegisterForm = ({ mobileNumber }) => {
         <div className="row p-4">
           <div className="col-md-6">
             <label htmlFor="">Attach photo of passbook (first page)</label>
-            <input type="file" className="form-control" name="" onChange={(e) => setPassbook(e.target.files[0])} id="" />
+            <input type="file" className="form-control" onChange={(e) => setPassbook(e.target.files[0])} />
           </div>
           <div className="col-md-6 d-flex align-items-center gap-4">
             <Button variant="contained" onClick={() => handleFileUpload('passbook')}>Upload</Button> {isUploaded.passbook && <DoneAllIcon color="success" />}
@@ -370,7 +377,7 @@ const RegisterForm = ({ mobileNumber }) => {
 
           <div className="col-md-6">
             <label htmlFor="">Attach photo of PAN card</label>
-            <input type="file" className="form-control" name="" onChange={(e) => setPanCard(e.target.files[0])} id="" />
+            <input type="file" className="form-control" onChange={(e) => setPanCard(e.target.files[0])} />
           </div>
           <div className="col-md-6 d-flex align-items-center gap-4">
             <Button variant="contained" onClick={() => handleFileUpload('panCard')}>Upload</Button>  {isUploaded.panCard && <DoneAllIcon color="success" />}
@@ -378,7 +385,7 @@ const RegisterForm = ({ mobileNumber }) => {
 
           <div className="col-md-6">
             <label htmlFor="">Attach photo of AADHAAR card</label>
-            <input type="file" className="form-control" name="" onChange={(e) => setAadhaarCard(e.target.files[0])} id="" />
+            <input type="file" className="form-control" onChange={(e) => setAadhaarCard(e.target.files[0])} />
           </div>
           <div className="col-md-6 d-flex align-items-center gap-4">
             <Button variant="contained" onClick={() => handleFileUpload('aadhaarCard')}>Upload</Button>  {isUploaded.aadhaarCard && <DoneAllIcon color="success" />}

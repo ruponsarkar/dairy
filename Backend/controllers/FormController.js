@@ -5,10 +5,10 @@ const fs = require("fs");
 const path = require("path");
 const { application } = require("express");
 const FormModel = require("../models/FormModel");
+const { log } = require("console");
 
 module.exports = {
   saveForm(req, res) {
-    // console.log("req :", req.body.formData);
     let form = req.body.formData;
     FormModel.saveForm(form, (result) => {
       res.status(200).send(result);
@@ -19,20 +19,19 @@ module.exports = {
       destination: function (req, file, callback) {
         let dest = path.join(
           process.env.FILE_UPLOAD_PATH,
-          req.body.userId
+          req.body.mobileNumber
         );
-
+        
         module.exports.checkDirectory(dest, () => {
           callback(null, dest);
         });
       },
       filename: function (req, file, callback) {
-        callback(null, file.originalname);
+        callback(null, req.body.fileName);
       },
     }),
   }),
   checkDirectory(directory, callback) {
-    console.log("DIRECTORY", directory);
     fs.stat(directory, (err, stats) => {
       if (
         err &&
@@ -48,17 +47,14 @@ module.exports = {
     });
   },
   saveToDb(req, res) {
-    let userId = req.body.userId;
-    let flag = req.body.flag;
+    let mobileNumber = req.body.mobileNumber;
     let fileName = req.body.fileName;
+    let fileType = req.body.fileType;
     let fileSize = req.body.fileSize;
-    let filePath = path.join(process.env.FILE_UPLOAD_PATH, userId);
+    let filePath = path.join(process.env.FILE_UPLOAD_PATH, mobileNumber);
     filePath = path.join(filePath, fileName);
-    console.log(filePath);
-    filePath = path.join(userId, fileName);
-    console.log("=======", filePath);
-    DocumentModel.saveFilePath(userId, fileName, fileSize, filePath, flag, (response) => {
-      res.status(200).send(response);
+    FormModel.updateFilePath(mobileNumber, fileType, filePath, (result) => {
+      res.status(200).send(result);
     });
   },
   
