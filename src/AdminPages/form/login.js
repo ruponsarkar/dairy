@@ -7,9 +7,11 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Alert from '@mui/material/Alert';
 import { Card } from '@mui/material';
 import { Paper } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
     const { setToken } = AuthUser();
+    const nagivate = useNavigate();
 
     const [email, setEmail] = useState();
     const [password, setPassword] = useState();
@@ -19,12 +21,23 @@ const Login = () => {
 
     const submit = () => {
         setLoading(true);
-
         api.login(email, password)
             .then((res) => {
-                console.log("Login success==>", res);
-                setToken(res.data.user, res.data.access_token)
-                setLoading(false);
+                console.log("success: ", res);
+                if (res.data.status == 200) {
+                    if (res.data.authenticated) {
+                        console.log("Login success==>", res);
+                        setToken(res.data.data, res.data.token);
+                        nagivate('/admin');
+                        setLoading(false);
+                    } else {
+                        setLoading(false);
+                        setError(true);
+                    }
+                } else {
+                    setLoading(false);
+                    setError(true);
+                }
             })
             .catch((err) => {
                 console.log("login error==>", err);
@@ -60,7 +73,7 @@ const Login = () => {
                                     <Card>
                                         <div className='box-form p-5 my-3'>
                                             <div className="right">
-                                                
+
 
                                                 {/* <form> */}
 

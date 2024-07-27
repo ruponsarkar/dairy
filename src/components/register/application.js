@@ -4,7 +4,7 @@ import Footer from "../common/footer";
 import { Paper, Button } from "@mui/material";
 
 
-const Application = () => {
+const Application = ({data}) => {
 
 
 
@@ -12,7 +12,7 @@ const Application = () => {
 
     return (
         <>
-            <Nav2 />
+            {/* <Nav2 /> */}
             <div className="container">
                 <div className="row py-3">
                     <Paper>
@@ -30,10 +30,10 @@ const Application = () => {
                                     <th>Gender of the applicant</th>
                                 </tr>
                                 <tr>
-                                    <td>Centro comercial Moctezuma</td>
-                                    <td>Francisco Chang</td>
-                                    <td>Mexico</td>
-                                    <td>Mexico</td>
+                                    <td>{data.name}</td>
+                                    <td>{data.fathersName}</td>
+                                    <td>{data.dob}</td>
+                                    <td>{data.gender}</td>
                                 </tr>
                                 <tr>
                                     <th>12 digit AADHAAR number</th>
@@ -42,10 +42,10 @@ const Application = () => {
                                     <th>Voter ID number</th>
                                 </tr>
                                 <tr>
-                                    <td>Island Trading</td>
-                                    <td>Helen Bennett</td>
-                                    <td>UK</td>
-                                    <td>UK</td>
+                                    <td>{data.aadhaarNo}</td>
+                                    <td>{data.aadharMobile}</td>
+                                    <td>{data.pan_number}</td>
+                                    <td>{data.voterID}</td>
                                 </tr>
                                 <tr>
                                     <th>Area of residence</th>
@@ -54,10 +54,10 @@ const Application = () => {
                                     <th>Village</th>
                                 </tr>
                                 <tr>
-                                    <td>Laughing Bacchus Winecellars</td>
-                                    <td>Yoshi Tannamuri</td>
-                                    <td>Canada</td>
-                                    <td>Canada</td>
+                                    <td>{data.area}</td>
+                                    <td>{data.district}</td>
+                                    <td>{data.LAC}</td>
+                                    <td>{data.village}</td>
                                 </tr>
                                 <tr>
                                     <th>Gaon Panchayat</th>
@@ -66,10 +66,10 @@ const Application = () => {
                                     <th>Police Station</th>
                                 </tr>
                                 <tr>
-                                    <td>Magazzini Alimentari Riuniti</td>
-                                    <td>Giovanni Rovelli</td>
-                                    <td>Italy</td>
-                                    <td>Italy</td>
+                                    <td>{data.gaon_panchayat}</td>
+                                    <td>{data.block}</td>
+                                    <td>{data.pincode}</td>
+                                    <td>{data.police_station}</td>
                                 </tr>
                                 <tr>
                                     <th>Name of Dairy Co-operative Society</th>
@@ -78,10 +78,10 @@ const Application = () => {
                                     <th>Name of the bank</th>
                                 </tr>
                                 <tr>
-                                    <td>Magazzini Alimentari Riuniti</td>
-                                    <td>Giovanni Rovelli</td>
-                                    <td>Italy</td>
-                                    <td>Italy</td>
+                                    <td>{data.name_of_co_operatice_society}</td>
+                                    <td>{data.addree_of_co_operatice_society}</td>
+                                    <td>----</td>
+                                    <td>{data.bank_name}</td>
                                 </tr>
                                 <tr>
                                     <th>Name of the Account holder </th>
@@ -90,10 +90,10 @@ const Application = () => {
                                     <th>Milk Production Data per month (From April, 2024 to March 2024)</th>
                                 </tr>
                                 <tr>
-                                    <td>Magazzini Alimentari Riuniti</td>
-                                    <td>Giovanni Rovelli</td>
-                                    <td>Italy</td>
-                                    <td>Italy</td>
+                                    <td>{data.bank_account_holder_name}</td>
+                                    <td>{data.bank_account_no}</td>
+                                    <td>{data.ifsc_code}</td>
+                                    <td>----</td>
                                 </tr>
 
                                 <tr>
@@ -101,15 +101,16 @@ const Application = () => {
                                     <th colspan="2">Status</th>
                                 </tr>
                                 <tr>
-                                    <td colspan="2">20 July 2024 </td>
-                                    <td colspan="2" className="text-danger"> Under Verification</td>
+                                    <td colspan="2">{data.created_at} </td>
+                                    {/* <td colspan="2" className="text-danger"> Under Verification</td> */}
+                                    <td colspan="2" className="text-success"> {data.status}</td>
                                 </tr>
                             </table>
                         </div>
 
                     </Paper>
 
-                    <Paper>
+                    {/* <Paper>
                         <div className="p-3">
                             <div className="d-flex justify-content-between">
                                 <div>
@@ -122,12 +123,12 @@ const Application = () => {
                                 </div>
                             </div>
                         </div>
-                    </Paper>
+                    </Paper> */}
                 </div>
             </div>
 
 
-            <Footer />
+            {/* <Footer /> */}
         </>
     );
 };

@@ -117,6 +117,10 @@ const Dashboard = (props) => {
   }
 
   const drawer = (
+
+
+
+    
     <div>
       <Toolbar>
         <a href='/admin'>
@@ -138,47 +142,47 @@ const Dashboard = (props) => {
           <ListItemIcon>
             <LibraryBooksIcon />
           </ListItemIcon>
-          <ListItemText primary="Journal" />
+          <ListItemText primary="Request" />
           {open ? <ExpandLess /> : <ExpandMore />}
         </ListItemButton>
 
         <Collapse in={open} timeout="auto" unmountOnExit>
           <List component="div" disablePadding>
-            <ListItemButton sx={{ pl: 4 }} onClick={() => navigate("/admin/addJournal")}>
+            <ListItemButton sx={{ pl: 4 }} onClick={() => navigate("/admin/newRequest")}>
               <ListItemIcon>
                 <SubdirectoryArrowRightIcon />
               </ListItemIcon>
-              <ListItemText primary="Add Journal" />
+              <ListItemText primary="New Request" />
             </ListItemButton>
 
-            <ListItemButton sx={{ pl: 4 }} onClick={() => navigate("/admin/JournalTable")}>
+            {/* <ListItemButton sx={{ pl: 4 }} onClick={() => navigate("/admin/JournalTable")}>
               <ListItemIcon>
                 <SubdirectoryArrowRightIcon />
               </ListItemIcon>
               <ListItemText primary="View Journal" />
-            </ListItemButton>
+            </ListItemButton> */}
 
           </List>
         </Collapse>
 
-        {/* <ListItemButton onClick={blogClick}>
+        <ListItemButton onClick={blogClick}>
           <ListItemIcon>
             <ClassIcon />
           </ListItemIcon>
-          <ListItemText primary="Category" />
+          <ListItemText primary="Admin" />
           {openBlog ? <ExpandLess /> : <ExpandMore />}
         </ListItemButton>
 
         <Collapse in={openBlog} timeout="auto" unmountOnExit>
           <List component="div" disablePadding>
-            <ListItemButton sx={{ pl: 4 }} onClick={() => navigate("/admin/category")}>
+            <ListItemButton sx={{ pl: 4 }} onClick={() => navigate("/admin/adminManagement")}>
               <ListItemIcon>
                 <SubdirectoryArrowRightIcon />
               </ListItemIcon>
-              <ListItemText primary="Create Category" />
+              <ListItemText primary="Add Admin" />
             </ListItemButton>
           </List>
-        </Collapse> */}
+        </Collapse>
 
 
         {/* <ListItemButton onClick={publisherClick}>
@@ -209,14 +213,14 @@ const Dashboard = (props) => {
           </ListItemButton>
         </ListItem> */}
 
-        <ListItem disablePadding onClick={() => navigate("/admin/contactRequest")}>
+        {/* <ListItem disablePadding onClick={() => navigate("/admin/contactRequest")}>
           <ListItemButton>
             <ListItemIcon>
               <ListAltIcon />
             </ListItemIcon>
             <ListItemText>Contact Request</ListItemText>
           </ListItemButton>
-        </ListItem>
+        </ListItem> */}
 
        
 
