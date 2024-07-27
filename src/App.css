@@ -65,8 +65,8 @@ certificate-container {
 }
 
 .certificate-content {
-  /* width: 80%;
-  max-width: 800px; */
+  width: 80%;
+  max-width: 800px;
   padding: 40px;
   border: 5px solid #000;
   border-radius: 15px;
