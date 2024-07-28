@@ -86,4 +86,13 @@ module.exports = {
       res.status(200).send(result);
     });
   },
+
+  updateFormStatus(req, res){
+    console.log(req.body.data);
+    let data = req.body.data;
+    FormModel.updateFormStatus(data, (result)=>{
+      res.status(200).send(result);
+    })
+    return;
+  }
 };

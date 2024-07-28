@@ -3,7 +3,6 @@ import { useState, useEffect } from 'react';
 import { Routes, Route } from "react-router-dom";
 import Homepage from './PublicPages/homepage';
 import RegisterPage from './PublicPages/registerpage';
-import Application from './components/register/application';
 
 import Certificate from './components/approvel/certificate';
 
@@ -14,7 +13,6 @@ import DashboardPage from './AdminPages/pages/DashboardPage';
 import NewRequest from './AdminPages/pages/newRequest';
 import AdminManagement from './AdminPages/pages/adminManegement';
 
-import api from './API/api';
 import { createContext } from "react";
 
 export const ColorContext = createContext({})
@@ -23,9 +21,6 @@ export const ColorContext = createContext({})
 function App() {
 
   const [user, setUser] = useState('');
-
-  const [colors, setColors] = useState();
-  const [bio, setBio] = useState();
 
   useEffect(() => {
     if (sessionStorage.getItem('user')) {
@@ -36,19 +31,12 @@ function App() {
 
   }, [user]);
 
-  // useEffect(() => {
-  //   api.getHeadlineColor().then((res) => {
-  //     setColors(res.data.headlineColor);
-  //     setBio(res.data.bio);
-  //     console.log("ffffffffff", res.data.headlineColor);
-  //   })
-  // }, [])
 
   return (
     <>
       {/* {user === 'public' &&  */}
 
-      <ColorContext.Provider value={{ colors: colors, setColors: setColors, bio : bio }}>
+      <ColorContext.Provider value={{ data: ''}}>
         <Routes>
           <Route path="/" element={<Homepage />} />
           <Route path="RegisterPage" element={<RegisterPage />} />
@@ -60,8 +48,14 @@ function App() {
         {/* }  */}
       </ColorContext.Provider>
 
+      {user === 'public' && 
+      <Routes>
+        <Route path="admin/*" element={<Login />} />
+      </Routes>
+      }
 
-      {/* {user === 'admin' && */}
+
+      {user === 'admin' &&
         <Routes>
           {/* admin  */}
           <Route path='/admin' element={<Dashboard />}>
@@ -72,7 +66,7 @@ function App() {
           </Route>
 
         </Routes>
-      {/* } */}
+      }
     </>
   );
 }

@@ -32,6 +32,7 @@ import DownloadIcon from '@mui/icons-material/Download';
 import FilterListIcon from "@mui/icons-material/FilterList";
 import Application from "../../components/register/application";
 import api from "../../API/api";
+import Swal from "sweetalert2";
 
 
 
@@ -46,10 +47,6 @@ const districts = [
 const statuses = [
   'Active', 'Inactive', 'Pending', 'Completed', 'Cancelled'
 ];
-
-const createData = (name, calories, fat, carbs, protein) => {
-  return { name, calories, fat, carbs, protein };
-};
 
 
 
@@ -80,9 +77,9 @@ const EnhancedTableHead = (props) => {
       disablePadding: false,
       label: "Area of residence",
     },
-    { id: "carbs", numeric: true, disablePadding: false, label: "District" },
-    { id: "protein", numeric: true, disablePadding: false, label: "Village" },
-    { id: "protein", numeric: true, disablePadding: false, label: "Action" },
+    { id: "District", numeric: true, disablePadding: false, label: "District" },
+    { id: "Village", numeric: true, disablePadding: false, label: "Village" },
+    { id: "Action", numeric: true, disablePadding: false, label: "Action" },
   ];
 
   return (
@@ -148,6 +145,8 @@ const NewRequest = () => {
   const [open, setOpen] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
   const [data, setData] = useState();
+  const [status, setStatus] = useState();
+  const [remark, setRemark] = useState();
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -155,14 +154,6 @@ const NewRequest = () => {
     setOrderBy(property);
   };
 
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
 
   const handleClickOpen = (row) => {
     setSelectedRow(row);
@@ -174,22 +165,61 @@ const NewRequest = () => {
     // setSelectedRow(null);
   };
 
-  useEffect(()=>{
+  useEffect(() => {
     getFrom()
-  },[])
+  }, [])
 
-  const getFrom=()=>{
+  const handleUpdate=()=>{
+    if(status === 'reject'){
+      if(!remark){
+        Swal.fire("Please enter any remarks for rejection ");
+        setOpen(false)
+        return;
+      }
+    }
+    else{
+      setRemark('');
+    }
+
+    if(status){
+      console.log("mobileNumber: ", selectedRow.mobileNumber);
+      console.log("status: ", status);
+      console.log("remarks: ", remark);
+
+
+      const data = {
+        mobileNumber: selectedRow.mobileNumber,
+        status: status,
+        remark: remark,
+      }
+      api.updateFormStatus(data).then((res) => {
+        console.log("final response :", res);
+        Swal.fire('Successfully Updated !');
+
+      })
+        .catch((err) => {
+          console.log("err : ", err);
+          Swal.fire('Something went wrong !');
+        })
+
+    }
+
+
+
+  }
+
+  const getFrom = () => {
     const data = {
       limit: 5,
       offset: 0
     }
-    api.getFrom(data).then((res)=>{
+    api.getFrom(data).then((res) => {
       console.log("res :", res);
       setData(res.data.data)
     })
-    .catch((err)=>{
-      console.log("err: ", err);
-    })
+      .catch((err) => {
+        console.log("err: ", err);
+      })
   }
 
   return (
@@ -207,72 +237,72 @@ const NewRequest = () => {
       </Toolbar>
 
       <Box
-      sx={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        flexWrap: 'wrap',
-        margin: '20px 0',
-        '@media (max-width: 600px)': {
-          flexDirection: 'column',
-          alignItems: 'flex-start',
-        },
-      }}
-    >
-      <Box sx={{ display: 'flex', gap: 2 }}>
-        <FormControl sx={{ minWidth: 180, maxWidth: 200 }} size="small">
-          <InputLabel id="assam-district-label">Select District</InputLabel>
-          <Select
-            labelId="assam-district-label"
-            id="assam-district"
-            value={selectedDistrict}
-            label="Select District"
-            onChange={handleDistrictChange}
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          flexWrap: 'wrap',
+          margin: '20px 0',
+          '@media (max-width: 600px)': {
+            flexDirection: 'column',
+            alignItems: 'flex-start',
+          },
+        }}
+      >
+        <Box sx={{ display: 'flex', gap: 2 }}>
+          <FormControl sx={{ minWidth: 180, maxWidth: 200 }} size="small">
+            <InputLabel id="assam-district-label">Select District</InputLabel>
+            <Select
+              labelId="assam-district-label"
+              id="assam-district"
+              value={selectedDistrict}
+              label="Select District"
+              onChange={handleDistrictChange}
+            >
+              {districts.map((district) => (
+                <MenuItem key={district} value={district}>
+                  {district}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+          <FormControl sx={{ minWidth: 180, maxWidth: 200 }} size="small">
+            <InputLabel id="status-label">Select Status</InputLabel>
+            <Select
+              labelId="status-label"
+              id="status"
+              value={selectedStatus}
+              label="Select Status"
+              onChange={handleStatusChange}
+            >
+              {statuses.map((status) => (
+                <MenuItem key={status} value={status}>
+                  {status}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </Box>
+        <Link href="https://www.example.com" underline="none">
+          <Button
+            variant="contained"
+            color="primary"
+            sx={{
+              height: 40,
+              minWidth: 120,
+              '@media (max-width: 600px)': {
+                width: '100%',
+                marginTop: 1,
+              },
+            }}
           >
-            {districts.map((district) => (
-              <MenuItem key={district} value={district}>
-                {district}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-        <FormControl sx={{ minWidth: 180, maxWidth: 200 }} size="small">
-          <InputLabel id="status-label">Select Status</InputLabel>
-          <Select
-            labelId="status-label"
-            id="status"
-            value={selectedStatus}
-            label="Select Status"
-            onChange={handleStatusChange}
-          >
-            {statuses.map((status) => (
-              <MenuItem key={status} value={status}>
-                {status}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
+            <DownloadIcon />
+            Download Reports
+          </Button>
+        </Link>
       </Box>
-      <Link href="https://www.example.com" underline="none">
-        <Button
-          variant="contained"
-          color="primary"
-          sx={{
-            height: 40,
-            minWidth: 120,
-            '@media (max-width: 600px)': {
-              width: '100%',
-              marginTop: 1,
-            },
-          }}
-        >
-          <DownloadIcon/>
-          Download Reports
-        </Button>
-      </Link>
-    </Box>
 
-{/* 
+      {/* 
     <div className="p-3 float-end">
       <a className="btn text-primary" role="button" href="/assets/data.xlsx"> <DownloadIcon/> Download Reports</a>
     </div> */}
@@ -288,7 +318,7 @@ const NewRequest = () => {
             orderBy={orderBy}
             onRequestSort={handleRequestSort}
           />
-          
+
           <TableBody>
             {data &&
               data.map((row, index) => {
@@ -316,15 +346,7 @@ const NewRequest = () => {
           </TableBody>
         </Table>
       </TableContainer>
-      {/* <TablePagination
-        rowsPerPageOptions={[5, 10, 25]}
-        component="div"
-        count={rows.length}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-      /> */}
+ 
       <Dialog
         open={open}
         onClose={handleClose}
@@ -337,11 +359,25 @@ const NewRequest = () => {
           <DialogContentText>
             <div>
 
-            <Application data={selectedRow}/>
+              <Application data={selectedRow} />
 
-            <div className="text-center m-3">
-              <Button variant="contained">Verify</Button>
-            </div>
+              <div className="d-flex justify-content-center gap-3 m-3">
+                <div>
+                  <select name="" id="" onChange={(e)=>setStatus(e.target.value)} className="form-control">
+                    <option value="">---select---</option>
+                    <option value="approve">Approve</option>
+                    <option value="reject">Reject</option>
+                  </select>
+                </div>
+                {status === 'reject' &&
+                <div>
+                  <input type="text" onChange={(e)=>setRemark(e.target.value)} className="form-control" placeholder="Remark" name="" id="" />
+                </div>
+                }
+                <div>
+                <Button variant="contained" onClick={handleUpdate} disabled={status? false:true}>Submit</Button>
+                </div>
+              </div>
             </div>
           </DialogContentText>
         </DialogContent>

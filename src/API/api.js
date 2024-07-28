@@ -24,6 +24,9 @@ export default {
     getFrom(data){
         return API.get(`/getFrom?limit=${data.limit}&offset=${data.offset}`)
     },
+    updateFormStatus(data){
+        return API.post('/updateFormStatus', {data})
+    },
 
     // login 
     register(formData) {

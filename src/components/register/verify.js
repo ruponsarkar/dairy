@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Paper, Button } from "@mui/material";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import api from "../../API/api";
 
-const Verify = ({ setIsVerified, setMobileNumber }) => {
+const Verify = ({ setIsVerified, setMobileNumber, setShowFileInput }) => {
   const navigation = useNavigate();
   const [otp, setOtp] = useState();
 
@@ -26,22 +26,28 @@ const Verify = ({ setIsVerified, setMobileNumber }) => {
     console.log(formdata);
     console.log("check number");
 
-
     if (otp === formdata.otp) {
       console.log("verified");
       setMobileNumber(formdata.number);
 
-
       let data = {
         mobileNumber: formdata.number,
       };
-      api.getFormByMobileNumber(data)
+      api
+        .getFormByMobileNumber(data)
         .then((res) => {
           console.log("res=>", res.data.data);
           if (res.data.data) {
-            console.log("found");
-            navigation("/Certificate", {state: { data: res.data.data }});
+            if (res.data.data.status === "Incompleted") {
+              console.log("Incompleted");
+              setIsVerified(true);
+              setShowFileInput(true)
 
+            } else {
+              console.log("Here");
+              navigation("/Certificate", {state: { data: res.data.data }});
+            }
+            console.log("found");
           } else {
             console.log("not found");
             setIsVerified(true);
@@ -50,7 +56,6 @@ const Verify = ({ setIsVerified, setMobileNumber }) => {
         .catch((err) => {
           console.log("err :", err);
         });
-
 
       // navigation("/Certificate");
       // setIsVerified(true);

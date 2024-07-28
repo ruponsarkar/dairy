@@ -97,13 +97,13 @@ const Application = ({data}) => {
                                 </tr>
 
                                 <tr>
-                                    <th colspan="2">Submitted Date</th>
-                                    <th colspan="2">Status</th>
+                                    <th colSpan="2">Submitted Date</th>
+                                    <th colSpan="2">Status</th>
                                 </tr>
                                 <tr>
-                                    <td colspan="2">{data.created_at} </td>
+                                    <td colSpan="2">{data.created_at} </td>
                                     {/* <td colspan="2" className="text-danger"> Under Verification</td> */}
-                                    <td colspan="2" className="text-success"> {data.status}</td>
+                                    <td colSpan="2" className="text-success"> {data.status}</td>
                                 </tr>
                             </table>
                         </div>

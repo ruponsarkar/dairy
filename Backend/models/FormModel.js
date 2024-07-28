@@ -38,7 +38,7 @@ module.exports = {
     params.push(form.bank_account_holder_name);
     params.push(form.bank_account_no);
     params.push(form.ifsc_code);
-    params.push("A");
+    params.push(form.status);
 
     let message = {};
     db.query(insertQuery, [[params]], (err, result) => {
@@ -60,19 +60,19 @@ module.exports = {
     });
   },
   updateFilePath(mobileNumber, fileType, filePath, callback) {
-    let updateQuery = '';
+    let updateQuery = "";
     switch (fileType) {
-      case 'passbook':
-        updateQuery = `UPDATE forms SET passbook = ? WHERE mobileNumber = ? AND status='A'`;
+      case "passbook":
+        updateQuery = `UPDATE forms SET passbook = ? WHERE mobileNumber = ?`;
         break;
-      case 'panCard':
-        updateQuery = `UPDATE forms SET panCard = ? WHERE mobileNumber = ? AND status='A'`;
+      case "panCard":
+        updateQuery = `UPDATE forms SET panCard = ? WHERE mobileNumber = ?`;
         break;
-      case 'aadhaarCard':
-        updateQuery = `UPDATE forms SET aadharCard = ? WHERE mobileNumber = ? AND status='A'`;
+      case "aadhaarCard":
+        updateQuery = `UPDATE forms SET aadharCard = ? WHERE mobileNumber = ?`;
         break;
     }
-    
+
     db.query(updateQuery, [filePath, mobileNumber], (err, result) => {
       if (!err) {
         callback && callback({ status: 200, message: "success" });
@@ -82,7 +82,7 @@ module.exports = {
     });
   },
   getFormByMobileNumber(mobileNumber, callback) {
-    let selectQuery = `SELECT * FROM forms WHERE mobileNumber = ? AND status='A';`;
+    let selectQuery = `SELECT * FROM forms WHERE mobileNumber = ? ;`;
     db.query(selectQuery, [mobileNumber], (err, res) => {
       if (!err) {
         if (res.length != 0) {
@@ -109,18 +109,55 @@ module.exports = {
     let query = `SELECT * FROM forms LIMIT ${limit} OFFSET ${offset}`;
     db.query(query, (err, res) => {
       if (err) {
-          // Call the callback with an error response
-          return callback && callback({ status: 500, message: "Error executing query: "+ err, data: null });
+        // Call the callback with an error response
+        return (
+          callback &&
+          callback({
+            status: 500,
+            message: "Error executing query: " + err,
+            data: null,
+          })
+        );
       }
 
       // Check if any rows were returned
       if (res.length !== 0) {
-          // Call the callback with success and the result data
-          return callback && callback({ status: 200, message: "Success", data: res });
+        // Call the callback with success and the result data
+        return (
+          callback && callback({ status: 200, message: "Success", data: res })
+        );
       } else {
-          // Call the callback with success but no data
-          return callback && callback({ status: 200, message: "Success", data: [] });
+        // Call the callback with success but no data
+        return (
+          callback && callback({ status: 200, message: "Success", data: [] })
+        );
       }
-  });
+    });
   },
+
+  updateFormStatus(data, callback){
+    let status = data.status;
+    let mobileNumber = data.mobileNumber;
+    let remark = data.remark;
+
+    if(remark){
+      updateQuery = `UPDATE forms SET status = ?, remark = ? WHERE mobileNumber = ?`;
+      queryData = [status, remark, mobileNumber]
+      
+    }
+    else{
+      updateQuery = `UPDATE forms SET status = ? WHERE mobileNumber = ?`;
+      queryData = [status, mobileNumber]
+    }
+
+
+    db.query(updateQuery, queryData, (err, result) => {
+      if (!err) {
+        callback && callback({ status: 200, message: "success" });
+      } else {
+        callback && callback({ status: 400, message: "success" });
+      }
+    });
+
+  }
 };
