@@ -8,6 +8,7 @@ module.exports = (app) => {
   });
   app.post("/saveForm", FormController.saveForm);
   app.post("/upload", FormController.upload_config.single("file"), FormController.saveToDb);
+  app.get("/getFrom", FormController.getFrom);
   app.post("/getFormByMobileNumber",FormController.getFormByMobileNumber);
 
 

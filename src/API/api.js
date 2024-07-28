@@ -21,6 +21,9 @@ export default {
     getAdmins(){
         return API.get('/getAdmins')
     },
+    getFrom(data){
+        return API.get(`/getFrom?limit=${data.limit}&offset=${data.offset}`)
+    },
 
     // login 
     register(formData) {
