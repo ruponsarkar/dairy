@@ -1,13 +1,28 @@
 import React from 'react';
+import { useEffect, useState } from "react";
 import { Container, Row, Col, Card } from 'react-bootstrap';
+import api from '../../API/api';
 
 const OverviewScheme = () => {
+  useEffect(() => {
+    apiTesting();
+  });
 
+  const apiTesting = ()=>{
+    console.log(" process.env.baseURL=",  process.env);
+    api.apiTesting()
+    .then((res) => {
+        console.log("Response==>", res);
+    })
+    .catch((err) => {
+        console.log("error==>", err);
+    })
+}
 
     const customStyle = {
         fontFamily: 'Arial, sans-serif', // Change to desired font
         color: '#333', // Custom text color
-      };
+    };
 
 
   return (

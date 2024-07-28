@@ -7,7 +7,7 @@ import axios from 'axios'
 import Swal from "sweetalert2";
 import api from "../../API/api";
 
-const RegisterForm = ({mobileNumber}) => {
+const RegisterForm = ({ mobileNumber }) => {
   const navigation = useNavigate();
 
   const [openLoader, setOpenLoder] = useState(false);
@@ -41,38 +41,64 @@ const RegisterForm = ({mobileNumber}) => {
         Swal.fire('Saved Data')
         setShowFileInput(true);
     })
-    .catch((err)=>{
+      .catch((err) => {
         console.log("err :", err);
         Swal.fire('Something went wrong ')
-    })
+      })
 
   };
 
   const handleSubmit = () => {
     console.log(formData);
-  
 
-    navigation("/Certificate", {state: {data: formData}});
+
+    navigation("/Certificate", { state: { data: formData } });
   };
 
 
 
-  const handleFileUpload=(type)=>{
+  const handleFileUpload = (type) => {
     setOpenLoder(true)
-    if(type === 'passbook'){
-        console.log("type: ", type, " file : ", passbook);
-        setIsuploaded({...isUploaded, passbook: true})
-        
+    if (type === 'passbook') {
+      upload(type, passbook, 'passbook');
     }
-    if(type === 'panCard'){
-        console.log("type: ", type, " file : ", panCard);
-        setIsuploaded({...isUploaded, panCard: true})
+    if (type === 'panCard') {
+      upload(type, panCard, 'pancard');
     }
-    if(type === 'aadhaarCard'){
-        console.log("type: ", type, " file : ", aadhaarCard);
-        setIsuploaded({...isUploaded, aadhaarCard: true})
+    if (type === 'aadhaarCard') {
+      upload(type, aadhaarCard, 'aadharcard');
+    }
+  }
 
-    }
+  const upload = (type, file, fileName) => {
+    console.log("Type=",type, "File=",file);
+    const Data = new FormData();
+    Data.append('mobileNumber', formData.mobileNumber);
+    Data.append('fileType', type);
+    Data.append('fileName', fileName+'.'+file.name.split('.')[1]);
+    Data.append('fileSize', file.size);
+    Data.append('file', file);
+    console.log("Data=", Data);
+    api.uploadDocument(Data)
+      .then((res) => {
+        console.log("Response==>", res);
+        switch (type) {
+          case 'passbook':
+            setIsuploaded({ ...isUploaded, passbook: true })
+            break;
+          case 'panCard':
+            setIsuploaded({ ...isUploaded, panCard: true })
+            break;
+          case 'aadhaarCard':
+            setIsuploaded({ ...isUploaded, aadhaarCard: true })
+            break;
+        }
+        setOpenLoder(false);
+      })
+      .catch((err) => {
+        setOpenLoder(false);
+        console.log("error==>", err);
+      })
   }
 
   const inputForm = () => {
@@ -144,7 +170,7 @@ const RegisterForm = ({mobileNumber}) => {
             <input
               type="text"
               className="form-control"
-              name="pan_nameber"
+              name="pan_number"
               onChange={handleInput}
               id=""
             />
@@ -342,27 +368,27 @@ const RegisterForm = ({mobileNumber}) => {
         <div className="row p-4">
           <div className="col-md-6">
             <label htmlFor="">Attach photo of passbook (first page)</label>
-            <input type="file" className="form-control" name="" onChange={(e)=>setPassbook(e.target.files[0])} id="" />
+            <input type="file" className="form-control" onChange={(e) => setPassbook(e.target.files[0])} />
           </div>
           <div className="col-md-6 d-flex align-items-center gap-4">
-            <Button variant="contained" onClick={()=>handleFileUpload('passbook')}>Upload</Button> {isUploaded.passbook &&  <DoneAllIcon color="success"/> }
+            <Button variant="contained" onClick={() => handleFileUpload('passbook')}>Upload</Button> {isUploaded.passbook && <DoneAllIcon color="success" />}
           </div>
 
 
           <div className="col-md-6">
             <label htmlFor="">Attach photo of PAN card</label>
-            <input type="file" className="form-control" name="" onChange={(e)=>setPanCard(e.target.files[0])} id="" />
+            <input type="file" className="form-control" onChange={(e) => setPanCard(e.target.files[0])} />
           </div>
           <div className="col-md-6 d-flex align-items-center gap-4">
-          <Button variant="contained" onClick={()=>handleFileUpload('panCard')}>Upload</Button>  {isUploaded.panCard &&  <DoneAllIcon color="success"/> }
+            <Button variant="contained" onClick={() => handleFileUpload('panCard')}>Upload</Button>  {isUploaded.panCard && <DoneAllIcon color="success" />}
           </div>
 
           <div className="col-md-6">
             <label htmlFor="">Attach photo of AADHAAR card</label>
-            <input type="file" className="form-control" name="" onChange={(e)=>setAadhaarCard(e.target.files[0])}  id="" />
+            <input type="file" className="form-control" onChange={(e) => setAadhaarCard(e.target.files[0])} />
           </div>
           <div className="col-md-6 d-flex align-items-center gap-4">
-          <Button variant="contained" onClick={()=>handleFileUpload('aadhaarCard')}>Upload</Button>  {isUploaded.aadhaarCard &&  <DoneAllIcon color="success"/> }
+            <Button variant="contained" onClick={() => handleFileUpload('aadhaarCard')}>Upload</Button>  {isUploaded.aadhaarCard && <DoneAllIcon color="success" />}
           </div>
 
           <div className="col-md-12">
@@ -377,13 +403,13 @@ const RegisterForm = ({mobileNumber}) => {
     );
   };
 
-  const closeLoader=()=>{
+  const closeLoader = () => {
     setOpenLoder(false)
   }
 
   return (
     <>
-    <Loader open={openLoader} handleClose={closeLoader}/>
+      <Loader open={openLoader} handleClose={closeLoader} />
       <div className="container">
         <div className="py-4">
           <h2>

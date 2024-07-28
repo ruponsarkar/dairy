@@ -34,6 +34,7 @@ import Application from "../../components/register/application";
 import api from "../../API/api";
 
 
+
 const districts = [
   'Baksa', 'Barpeta', 'Biswanath', 'Bongaigaon', 'Cachar', 'Charaideo', 'Chirang',
   'Darrang', 'Dhemaji', 'Dhubri', 'Dibrugarh', 'Goalpara', 'Golaghat', 'Hailakandi',

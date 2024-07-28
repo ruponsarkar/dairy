@@ -6,7 +6,7 @@ const _ = require("underscore");
 const { resolve } = require("path");
 const { reject } = require("underscore");
 const moment = require("moment");
-
+const jwt = require('jsonwebtoken');
 
 // data base create query (MySql) 
 // CREATE TABLE admins (
@@ -19,9 +19,42 @@ const moment = require("moment");
 //     password VARCHAR(255),
 //     status ENUM('Active', 'Inactive') NOT NULL
 //   );
-  
+
 
 module.exports = {
+  authenticate(email, password, callback) {
+    let selectQuery = `SELECT id, name, mobileNumber, email, role, district FROM admins WHERE email=? AND password=? AND status='Active'`;
+    let response = {};
+    db.query(selectQuery, [email, password], (err, result) => {
+      if (!err) {
+        if(result?.length>=1){
+          response = {
+            status: 200,
+            authenticated: true,
+            token: generateAccessToken(result[0].email),
+            data: result[0],
+            message: 'Found',
+          };
+        }else{
+          response = {
+            status: 200,
+            authenticated: false,
+            data: [],
+            message: 'Not found'
+          };
+        }
+        callback && callback(response);
+      } else {
+        response = {
+          status: 400,
+          authenticated: false,
+          data: [],
+          message: "Failed",
+        };
+        callback && callback(response);
+      }
+    });
+  },
   addOrUpdateAdmin(form, callback) {
     let insertQuery = `
   INSERT INTO admins (name, mobileNumber, email, role, district, password, status) 
@@ -84,3 +117,7 @@ module.exports = {
     });
   },
 };
+
+function generateAccessToken(username) {
+  return jwt.sign({name:username}, process.env.TOKEN_SECRET, { expiresIn: 60 * 60});
+}

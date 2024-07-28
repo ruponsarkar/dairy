@@ -51,10 +51,10 @@ function App() {
       <ColorContext.Provider value={{ colors: colors, setColors: setColors, bio : bio }}>
         <Routes>
           <Route path="/" element={<Homepage />} />
-          <Route path="/RegisterPage" element={<RegisterPage />} />
+          <Route path="RegisterPage" element={<RegisterPage />} />
           {/* <Route path="/Application" element={<Application />} /> */}
-          <Route path="/Certificate" element={<Certificate />} />
-          <Route path="/login" element={<Login />} />
+          <Route path="Certificate" element={<Certificate />} />
+          <Route path="login" element={<Login />} />
         </Routes>
 
         {/* }  */}
