@@ -14,7 +14,8 @@ function Nav2() {
   return (
     <>
 
-      {/* <div>
+      <div>
+      <section className="wrapper d-flex align-items-center" >
         <div class="container header-container">
           <h1 class="logo">
             <a class="main_gov grey-text" target="_blank" href="http://assam.gov.in">Government Of Assam</a>
@@ -22,24 +23,11 @@ function Nav2() {
           </h1>
 
         </div>
-      </div> */}
-
-
-
-      <div>
-        <section className="wrapper header-wrapper">
-          <div className="container header-container">
-            <h1 className="logo">
-              <a className="main_gov grey-text" target="_blank" href="http://assam.gov.in">Government Of Assam</a>
-              <a className="main_dept brown-text" href="https://animalhusbandry.assam.gov.in/" target="_blank">Animal Husbandry &amp; Veterinary</a>			<a className="sub_dept" href="https://dairy.assam.gov.in/">Directorate of Dairy Development</a>
-            </h1>
-          </div>
         </section>
-
-
       </div>
 
-      <Navbar className='m-0 p-0' collapseOnSelect expand="lg" bg="primary" variant="dark">
+
+      <Navbar className='m-0 p-1' collapseOnSelect expand="lg" bg="primary" variant="dark">
         <Container>
           <Navbar.Brand href="/"> <i className="fa fa-home"></i></Navbar.Brand>
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
