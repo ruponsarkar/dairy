@@ -79,6 +79,7 @@ const EnhancedTableHead = (props) => {
     },
     { id: "District", numeric: true, disablePadding: false, label: "District" },
     { id: "Village", numeric: true, disablePadding: false, label: "Village" },
+    { id: "Status", numeric: true, disablePadding: false, label: "Status" },
     { id: "Action", numeric: true, disablePadding: false, label: "Action" },
   ];
 
@@ -168,20 +169,24 @@ const NewRequest = () => {
   useEffect(() => {
     getFrom()
   }, [])
+  useEffect(() => {
+    const user = JSON.parse(sessionStorage.getItem('user'))
+    console.log("user===>>>", user.role);
+  }, [])
 
-  const handleUpdate=()=>{
-    if(status === 'reject'){
-      if(!remark){
+  const handleUpdate = () => {
+    if (status === 'reject') {
+      if (!remark) {
         Swal.fire("Please enter any remarks for rejection ");
         setOpen(false)
         return;
       }
     }
-    else{
+    else {
       setRemark('');
     }
 
-    if(status){
+    if (status) {
       console.log("mobileNumber: ", selectedRow.mobileNumber);
       console.log("status: ", status);
       console.log("remarks: ", remark);
@@ -331,6 +336,7 @@ const NewRequest = () => {
                     <TableCell align="right">{row.area}</TableCell>
                     <TableCell align="right">{row.district}</TableCell>
                     <TableCell align="right">{row.village}</TableCell>
+                    <TableCell align="right">{row.status}</TableCell>
                     <TableCell align="right">
                       <Button
                         variant="outlined"
@@ -346,7 +352,7 @@ const NewRequest = () => {
           </TableBody>
         </Table>
       </TableContainer>
- 
+
       <Dialog
         open={open}
         onClose={handleClose}
@@ -361,21 +367,40 @@ const NewRequest = () => {
 
               <Application data={selectedRow} />
 
+              {selectedRow &&
+                <div className="documents d-flex justify-content-center border p-3">
+                  <div className="text-center">
+                    <h3>Pan Card</h3>
+                    <img src={`http://localhost:8800/${selectedRow.panCard}`} style={{maxWidth: '300px'}} alt="" />
+                  </div>
+                  <div className="text-center">
+                    <h3>Aadhar Card</h3>
+                    <img src={`http://localhost:8800/${selectedRow.aadharCard}`} style={{maxWidth: '300px'}} alt="" />
+                  </div>
+                  <div className="text-center">
+                    <h3>
+                      Passbook
+                    </h3>
+                    <img src={`http://localhost:8800/${selectedRow.passbook}`} style={{maxWidth: '300px'}} alt="" />
+                  </div>
+                </div>
+              }
+
               <div className="d-flex justify-content-center gap-3 m-3">
                 <div>
-                  <select name="" id="" onChange={(e)=>setStatus(e.target.value)} className="form-control">
+                  <select name="" id="" onChange={(e) => setStatus(e.target.value)} className="form-control">
                     <option value="">---select---</option>
                     <option value="approve">Approve</option>
                     <option value="reject">Reject</option>
                   </select>
                 </div>
                 {status === 'reject' &&
-                <div>
-                  <input type="text" onChange={(e)=>setRemark(e.target.value)} className="form-control" placeholder="Remark" name="" id="" />
-                </div>
+                  <div>
+                    <input type="text" onChange={(e) => setRemark(e.target.value)} className="form-control" placeholder="Remark" name="" id="" />
+                  </div>
                 }
                 <div>
-                <Button variant="contained" onClick={handleUpdate} disabled={status? false:true}>Submit</Button>
+                  <Button variant="contained" onClick={handleUpdate} disabled={status ? false : true}>Submit</Button>
                 </div>
               </div>
             </div>
