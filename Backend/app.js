@@ -31,7 +31,7 @@ var options = {
 	agent: keepaliveAgent
 };
 
-const port = parseInt(process.env.PORT, 10) || 8400;
+const port = parseInt(process.env.PORT, 10) || 8800;
 app.set('port', port);
 const server = https.createServer(options, app);
 server.listen(port, () => console.log(`Server listening on ${port}` +' '+ new Date()));

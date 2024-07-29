@@ -8,6 +8,14 @@ import Swal from 'sweetalert2';
 
 import api from '../../API/api';
 
+const districts = [
+    'Baksa', 'Barpeta', 'Biswanath', 'Bongaigaon', 'Cachar', 'Charaideo', 'Chirang',
+    'Darrang', 'Dhemaji', 'Dhubri', 'Dibrugarh', 'Goalpara', 'Golaghat', 'Hailakandi',
+    'Hojai', 'Jorhat', 'Kamrup Metropolitan', 'Kamrup', 'Karbi Anglong', 'Karimganj',
+    'Kokrajhar', 'Lakhimpur', 'Majuli', 'Morigaon', 'Nagaon', 'Nalbari', 'Dima Hasao',
+    'Sivasagar', 'Sonitpur', 'South Salmara-Mankachar', 'Tinsukia', 'Udalguri', 'West Karbi Anglong'
+  ];
+
 const AdminCategory = () => {
 
     const [open, setOpen] = React.useState(false);
@@ -67,11 +75,23 @@ const AdminCategory = () => {
                         </div>
                         <div className="col-md-6">
                             <label htmlFor="">Admin Role</label>
-                            <input type="text" className='form-control' name="role" id="" onChange={(e)=>setFormData({...formData, [e.target.name]: e.target.value})} />
+                            <select className='form-control' name="role" id="" onChange={(e)=>setFormData({...formData, [e.target.name]: e.target.value})} >
+                                <option value="">------</option>
+                                <option value="Admin">Admin</option>
+                                <option value="Super Admin">Super Admin</option>
+                            </select>
+                            {/* <input type="text" className='form-control' name="role" id="" onChange={(e)=>setFormData({...formData, [e.target.name]: e.target.value})} /> */}
                         </div>
                         <div className="col-md-6">
                             <label htmlFor="">Assign District</label>
-                            <input type="text" className='form-control' name="district" id="" onChange={(e)=>setFormData({...formData, [e.target.name]: e.target.value})} />
+                            <select className='form-control' name="district" id="" onChange={(e)=>setFormData({...formData, [e.target.name]: e.target.value})} >
+                                <option value="">------</option>
+                                {districts && districts.map((d)=>(
+                                <option value={d}>{d}</option>
+                                ))}
+                                {/* <option value="Super Admin">Super Admin</option> */}
+                            </select>
+                            {/* <input type="text" className='form-control' name="district" id="" onChange={(e)=>setFormData({...formData, [e.target.name]: e.target.value})} /> */}
                         </div>
                         <div className="col-md-6">
                             <label htmlFor="">Password</label>

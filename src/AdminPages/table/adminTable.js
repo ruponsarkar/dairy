@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { styled } from "@mui/material/styles";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -11,7 +11,6 @@ import BasicMenu from "../../ui-component/menu";
 
 import Swal from "sweetalert2";
 
-import axios from "axios";
 import api from "../../API/api";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -97,14 +96,15 @@ export default function AdminTable({ data, getAdmins }) {
         <Table sx={{ minWidth: 700 }} aria-label="customized table">
           <TableHead>
             <TableRow>
-              <TableCell>SL No</TableCell>
-              <TableCell>Name</TableCell>
-              <TableCell>Email</TableCell>
-              <TableCell>Phone</TableCell>
-              <TableCell>District</TableCell>
-              <TableCell>Password</TableCell>
-              <TableCell>Status</TableCell>
-              <TableCell>Action</TableCell>
+              <StyledTableCell>SL No</StyledTableCell>
+              <StyledTableCell>Name</StyledTableCell>
+              <StyledTableCell>Email</StyledTableCell>
+              <StyledTableCell>Phone</StyledTableCell>
+              <StyledTableCell>District</StyledTableCell>
+              <StyledTableCell>Role</StyledTableCell>
+              <StyledTableCell>Password</StyledTableCell>
+              <StyledTableCell>Status</StyledTableCell>
+              <StyledTableCell>Action</StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -118,6 +118,7 @@ export default function AdminTable({ data, getAdmins }) {
                   <StyledTableCell>{row.email}</StyledTableCell>
                   <StyledTableCell>{row.mobileNumber}</StyledTableCell>
                   <StyledTableCell>{row.district}</StyledTableCell>
+                  <StyledTableCell>{row.role}</StyledTableCell>
 
                   <StyledTableCell>------</StyledTableCell>
                   <StyledTableCell>

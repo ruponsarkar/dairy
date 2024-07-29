@@ -1,10 +1,16 @@
 import API from "./apiConfig";
+import uploadAPI from "./uploadApiConfig";
 
 export default {
 
-
+    apiTesting() {
+        return API.get('/api');
+    },
     saveForm(formData){
         return API.post('/saveForm', {formData});
+    },
+    uploadDocument(formData) {
+        return uploadAPI.post('/upload', formData);
     },
     getFormByMobileNumber(data){
         return API.post('/getFormByMobileNumber', {data});
@@ -15,10 +21,12 @@ export default {
     getAdmins(){
         return API.get('/getAdmins')
     },
-
-
-
-
+    getFrom(data){
+        return API.get(`/getFrom?limit=${data.limit}&offset=${data.offset}`)
+    },
+    updateFormStatus(data){
+        return API.post('/updateFormStatus', {data})
+    },
 
     // login 
     register(formData) {
