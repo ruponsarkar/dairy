@@ -1,4 +1,3 @@
-
 const multer = require("multer");
 const request = require("request");
 const fs = require("fs");
@@ -73,14 +72,27 @@ module.exports = {
     });
   },
 
-
   getAdmins(req, res) {
     FormModel.getAdmins((result) => {
       res.status(200).send(result);
     });
   },
 
+  getFrom(req, res) {
+    let limit = req.query.limit;
+    let offset = req.query.offset;
+    // console.log("==>>", req.query);
+    FormModel.getFrom(limit, offset, (result) => {
+      res.status(200).send(result);
+    });
+  },
 
-
-
+  updateFormStatus(req, res){
+    console.log(req.body.data);
+    let data = req.body.data;
+    FormModel.updateFormStatus(data, (result)=>{
+      res.status(200).send(result);
+    })
+    return;
+  }
 };

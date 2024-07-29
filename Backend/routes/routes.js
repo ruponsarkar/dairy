@@ -7,8 +7,10 @@ module.exports = (app) => {
     res.status(200).send({ status: true, message: "Welcome to Milk Subsidy Dairy Assam" });
   });
   app.post("/saveForm", FormController.saveForm);
+  app.get("/getFrom", FormController.getFrom);
   app.post("/upload", FormController.upload_config.single("file"), FormController.saveToDb);
   app.post("/getFormByMobileNumber",FormController.getFormByMobileNumber);
+  app.post("/updateFormStatus",FormController.updateFormStatus);
 
 
   // Admin Panel API's

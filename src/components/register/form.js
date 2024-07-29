@@ -1,19 +1,26 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Paper, Button } from "@mui/material";
 import DoneAllIcon from '@mui/icons-material/DoneAll';
 import Loader from "../common/loader";
 import { useNavigate } from "react-router-dom";
-import axios from 'axios'
 import Swal from "sweetalert2";
 import api from "../../API/api";
 
-const RegisterForm = ({ mobileNumber }) => {
+const districts = [
+  'Baksa', 'Barpeta', 'Biswanath', 'Bongaigaon', 'Cachar', 'Charaideo', 'Chirang',
+  'Darrang', 'Dhemaji', 'Dhubri', 'Dibrugarh', 'Goalpara', 'Golaghat', 'Hailakandi',
+  'Hojai', 'Jorhat', 'Kamrup Metropolitan', 'Kamrup', 'Karbi Anglong', 'Karimganj',
+  'Kokrajhar', 'Lakhimpur', 'Majuli', 'Morigaon', 'Nagaon', 'Nalbari', 'Dima Hasao',
+  'Sivasagar', 'Sonitpur', 'South Salmara-Mankachar', 'Tinsukia', 'Udalguri', 'West Karbi Anglong'
+];
+
+const RegisterForm = ({ mobileNumber, showFileInput, setShowFileInput }) => {
   const navigation = useNavigate();
 
   const [openLoader, setOpenLoder] = useState(false);
-  const [showFileInput, setShowFileInput] = useState(false);
+  // const [showFileInput, setShowFileInput] = useState(false);
   const [formData, setFormData] = useState({
-    mobileNumber: mobileNumber
+    mobileNumber: mobileNumber,
   });
   const [passbook, setPassbook] = useState();
   const [panCard, setPanCard] = useState();
@@ -34,12 +41,12 @@ const RegisterForm = ({ mobileNumber }) => {
 
   const handleShowFileInput = () => {
     console.log(formData);
-
-    api.saveForm(formData).then((res)=>{
-    // axios.post(api, formData).then((res)=>{
-        console.log("res=>", res);
-        Swal.fire('Saved Data')
-        setShowFileInput(true);
+    formData.status = 'Incompleted'
+    api.saveForm(formData).then((res) => {
+      // axios.post(api, formData).then((res)=>{
+      console.log("res=>", res);
+      Swal.fire('Saved Data')
+      setShowFileInput(true);
     })
       .catch((err) => {
         console.log("err :", err);
@@ -49,10 +56,27 @@ const RegisterForm = ({ mobileNumber }) => {
   };
 
   const handleSubmit = () => {
+    if (isUploaded.passbook === false || isUploaded.aadhaarCard === false || isUploaded.panCard === false) {
+      console.log("All file required");
+      Swal.fire('All files required !');
+      return;
+    }
+
     console.log(formData);
+    const data = {
+      mobileNumber: mobileNumber,
+      status: 'Draft'
+    }
+    api.updateFormStatus(data).then((res) => {
+      console.log("final response :", res);
+      navigation("/Certificate", { state: { data: formData } });
+    })
+      .catch((err) => {
+        console.log("err : ", err);
+        Swal.fire('Something went wrong !');
+      })
 
 
-    navigation("/Certificate", { state: { data: formData } });
   };
 
 
@@ -71,11 +95,12 @@ const RegisterForm = ({ mobileNumber }) => {
   }
 
   const upload = (type, file, fileName) => {
-    console.log("Type=",type, "File=",file);
+    console.log("Type=", type, "File=", file);
+    console.log("formData.mobileNumber ==>>", formData.mobileNumber);
     const Data = new FormData();
     Data.append('mobileNumber', formData.mobileNumber);
     Data.append('fileType', type);
-    Data.append('fileName', fileName+'.'+file.name.split('.')[1]);
+    Data.append('fileName', fileName + '.' + file.name.split('.')[1]);
     Data.append('fileSize', file.size);
     Data.append('file', file);
     console.log("Data=", Data);
@@ -137,13 +162,21 @@ const RegisterForm = ({ mobileNumber }) => {
           </div>
           <div className="col-md-6">
             <label htmlFor="">Gender of the applicant</label>
-            <input
+            <select className="form-control"
+              name="gender"
+              onChange={handleInput}
+              id="">
+              <option value="male">Male</option>
+              <option value="Female">Female</option>
+              <option value="Other">Other</option>
+            </select>
+            {/* <input
               type="text"
               className="form-control"
               name="gender"
               onChange={handleInput}
               id=""
-            />
+            /> */}
           </div>
           <div className="col-md-6">
             <label htmlFor="">12 digit AADHAAR number</label>
@@ -198,13 +231,22 @@ const RegisterForm = ({ mobileNumber }) => {
           </div>
           <div className="col-md-6">
             <label htmlFor="">District</label>
-            <input
+
+            <select className="form-control"
+              name="district"
+              onChange={handleInput} id="">
+              {districts && districts.map((d) => (
+                <option value={d}>{d}</option>
+              ))}
+            </select>
+
+            {/* <input
               type="text"
               className="form-control"
               name="district"
               onChange={handleInput}
               id=""
-            />
+            /> */}
           </div>
 
           <div className="col-md-6">
