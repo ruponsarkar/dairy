@@ -33,10 +33,12 @@ import FilterListIcon from "@mui/icons-material/FilterList";
 import Application from "../../components/register/application";
 import api from "../../API/api";
 import Swal from "sweetalert2";
+import CancelIcon from '@mui/icons-material/Cancel';
+// import IconButton from '@mui/material/IconButton';
 
 
 
-const districts = [
+const defaultdistricts = [
   'Baksa', 'Barpeta', 'Biswanath', 'Bongaigaon', 'Cachar', 'Charaideo', 'Chirang',
   'Darrang', 'Dhemaji', 'Dhubri', 'Dibrugarh', 'Goalpara', 'Golaghat', 'Hailakandi',
   'Hojai', 'Jorhat', 'Kamrup Metropolitan', 'Kamrup', 'Karbi Anglong', 'Karimganj',
@@ -45,7 +47,7 @@ const districts = [
 ];
 
 const statuses = [
-  'Active', 'Inactive', 'Pending', 'Completed', 'Cancelled'
+  'Approve', 'Reject', 'Draft', 'Incompleted'
 ];
 
 
@@ -131,11 +133,15 @@ const NewRequest = () => {
 
   const handleDistrictChange = (event) => {
     setSelectedDistrict(event.target.value);
+    setRequestData({
+      ...requestData,
+      filterBy: 'district',
+      filterData: event.target.value
+    })
+    setSelectedStatus('');
   };
 
-  const handleStatusChange = (event) => {
-    setSelectedStatus(event.target.value);
-  };
+
 
 
 
@@ -148,6 +154,48 @@ const NewRequest = () => {
   const [data, setData] = useState();
   const [status, setStatus] = useState();
   const [remark, setRemark] = useState();
+  const [districts, setDistricts] = useState(defaultdistricts)
+
+  const [requestData, setRequestData] = useState(
+    {
+      limit: 100,
+      offset: 0,
+      user: JSON.parse(sessionStorage.getItem('user')),
+      filterBy: '',
+      filterData: ''
+    }
+  )
+
+  useEffect(() => {
+    if (JSON.parse(sessionStorage.getItem('user')).role === 'Admin') {
+      setSelectedDistrict(JSON.parse(sessionStorage.getItem('user')).district)
+      setDistricts([JSON.parse(sessionStorage.getItem('user')).district])
+
+    }
+
+  }, [])
+
+  const handleStatusChange = (event) => {
+    setSelectedStatus(event.target.value);
+    setRequestData({
+      ...requestData,
+      filterBy: 'status',
+      filterData: event.target.value
+    });
+    setSelectedDistrict('');
+    
+    
+  };
+  
+  const handleClearFilter=()=>{
+    setRequestData({
+      ...requestData,
+      filterBy: '',
+      filterData: '',
+    });
+    setSelectedDistrict('');
+    setSelectedStatus('');
+  }
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -168,17 +216,15 @@ const NewRequest = () => {
 
   useEffect(() => {
     getFrom()
-  }, [])
-  useEffect(() => {
-    const user = JSON.parse(sessionStorage.getItem('user'))
-    console.log("user===>>>", user.role);
-  }, [])
+  }, [requestData, selectedDistrict])
+
+
 
   const handleUpdate = () => {
+    setOpen(false)
     if (status === 'reject') {
       if (!remark) {
         Swal.fire("Please enter any remarks for rejection ");
-        setOpen(false)
         return;
       }
     }
@@ -200,6 +246,7 @@ const NewRequest = () => {
       api.updateFormStatus(data).then((res) => {
         console.log("final response :", res);
         Swal.fire('Successfully Updated !');
+        getFrom();
 
       })
         .catch((err) => {
@@ -214,11 +261,15 @@ const NewRequest = () => {
   }
 
   const getFrom = () => {
-    const data = {
-      limit: 5,
-      offset: 0
-    }
-    api.getFrom(data).then((res) => {
+    // const data = {
+    //   limit: 10,
+    //   offset: 0,
+    //   user: JSON.parse(sessionStorage.getItem('user')),
+    //   filterBy: '',
+    //   filterData: ''
+    // }
+
+    api.getFrom(requestData).then((res) => {
       console.log("res :", res);
       setData(res.data.data)
     })
@@ -264,7 +315,7 @@ const NewRequest = () => {
               label="Select District"
               onChange={handleDistrictChange}
             >
-              {districts.map((district) => (
+              {districts && districts.map((district) => (
                 <MenuItem key={district} value={district}>
                   {district}
                 </MenuItem>
@@ -287,6 +338,12 @@ const NewRequest = () => {
               ))}
             </Select>
           </FormControl>
+          {requestData.filterBy && 
+          <IconButton onClick={handleClearFilter}>
+            <CancelIcon />
+          </IconButton>
+          }
+
         </Box>
         <Link href="https://www.example.com" underline="none">
           <Button
@@ -371,17 +428,17 @@ const NewRequest = () => {
                 <div className="documents d-flex justify-content-center border p-3">
                   <div className="text-center">
                     <h3>Pan Card</h3>
-                    <img src={`http://localhost:8800/${selectedRow.panCard}`} style={{maxWidth: '300px'}} alt="" />
+                    <img src={`http://localhost:8800/${selectedRow.panCard}`} style={{ maxWidth: '300px' }} alt="" />
                   </div>
                   <div className="text-center">
                     <h3>Aadhar Card</h3>
-                    <img src={`http://localhost:8800/${selectedRow.aadharCard}`} style={{maxWidth: '300px'}} alt="" />
+                    <img src={`http://localhost:8800/${selectedRow.aadharCard}`} style={{ maxWidth: '300px' }} alt="" />
                   </div>
                   <div className="text-center">
                     <h3>
                       Passbook
                     </h3>
-                    <img src={`http://localhost:8800/${selectedRow.passbook}`} style={{maxWidth: '300px'}} alt="" />
+                    <img src={`http://localhost:8800/${selectedRow.passbook}`} style={{ maxWidth: '300px' }} alt="" />
                   </div>
                 </div>
               }
