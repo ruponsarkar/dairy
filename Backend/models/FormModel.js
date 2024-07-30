@@ -10,7 +10,7 @@ const moment = require("moment");
 module.exports = {
   saveForm(form, callback) {
     console.log("==>>", form);
-    let insertQuery = `INSERT INTO forms(applicationId, mobileNumber, name, fathersName, gender, dob, aadhaarNo, aadharMobile, pan_number, voterID, area, district, LAC, village, gaon_panchayat, block, pincode, police_station, name_of_co_operatice_society, addree_of_co_operatice_society, bank_name, bank_account_holder_name, bank_account_no, ifsc_code, status)  VALUES ?`;
+    let insertQuery = `INSERT INTO forms(applicationId, mobileNumber, name, fathersName, gender, dob, aadhaarNo, aadharMobile, pan_number, voterID, area, district, LAC, village, gaon_panchayat, block, pincode, police_station, name_of_co_operatice_society, addree_of_co_operatice_society, registration_no_of_co_operatice_society, bank_name, bank_account_holder_name, bank_account_no, ifsc_code, milk_production_per_month, status)  VALUES ?`;
     let id = uuid();
     let params = [];
     params.push(id);
@@ -34,10 +34,12 @@ module.exports = {
     params.push(form.police_station);
     params.push(form.name_of_co_operatice_society);
     params.push(form.addree_of_co_operatice_society);
+    params.push(form.registration_no_of_co_operatice_society);
     params.push(form.bank_name);
     params.push(form.bank_account_holder_name);
     params.push(form.bank_account_no);
     params.push(form.ifsc_code);
+    params.push(form.milk_production_per_month);
     params.push(form.status);
 
     let message = {};
