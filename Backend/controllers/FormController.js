@@ -79,10 +79,10 @@ module.exports = {
   },
 
   getFrom(req, res) {
-    let limit = req.query.limit;
-    let offset = req.query.offset;
-    // console.log("==>>", req.query);
-    FormModel.getFrom(limit, offset, (result) => {
+    // console.log("here==>> ", req.body.data);
+    let data = req.body.data;
+    // return;
+    FormModel.getFrom(data, (result) => {
       res.status(200).send(result);
     });
   },
@@ -94,5 +94,12 @@ module.exports = {
       res.status(200).send(result);
     })
     return;
+  },
+  
+  countStatus(req, res){
+    FormModel.countStatus((result)=>{
+      res.status(200).send(result);
+      // res.status()
+    })
   }
 };

@@ -8,26 +8,37 @@ const Certificate = () => {
   console.log("==>>", params.state.data);
 
   const downloadCertificate = () => {
-    const input = document.getElementById("certificate");
-    html2canvas(input).then((canvas) => {
-      const imgData = canvas.toDataURL("image/png");
-      const pdf = new jsPDF("p", "mm", "a4");
+    const input = document.getElementById('certificate');
+    const scale = 2; // Increase scale for higher resolution
+    html2canvas(input, { scale, useCORS: true }).then((canvas) => {
+      const imgData = canvas.toDataURL('image/jpeg', 0.85); // JPEG quality
+      const pdf = new jsPDF('p', 'mm', 'a4');
 
       const pdfWidth = pdf.internal.pageSize.getWidth();
       const pdfHeight = pdf.internal.pageSize.getHeight();
-      const padding = 10; // 10mm padding
+      const imgWidth = canvas.width / scale;
+      const imgHeight = canvas.height / scale;
 
-      const imgProps = pdf.getImageProperties(imgData);
-      const imgWidth = pdfWidth - 2 * padding;
-      const imgHeight = (imgProps.height * imgWidth) / imgProps.width;
+      let pdfImgWidth = pdfWidth - 20; // 10mm padding
+      let pdfImgHeight = pdfImgWidth * (imgHeight / imgWidth);
 
-      pdf.addImage(imgData, "PNG", padding, padding, imgWidth, imgHeight);
-      pdf.save("certificate.pdf");
+      if (pdfImgHeight > pdfHeight - 20) {
+        pdfImgHeight = pdfHeight - 20;
+        pdfImgWidth = pdfImgHeight * (imgWidth / imgHeight);
+      }
+
+      const posX = (pdfWidth - pdfImgWidth) / 2;
+      const posY = (pdfHeight - pdfImgHeight) / 2;
+
+      pdf.addImage(imgData, 'JPEG', posX, posY, pdfImgWidth, pdfImgHeight);
+      pdf.save('certificate.pdf');
     });
   };
 
   return (
-    <div className="certificate-container p-4">
+    <div className="container-fluid">
+      <div className="row">
+    <div className="certificate-container p-4 d-flex justify-content-center align-items-center">
       <div className="certificate-content p-4" id="certificate">
         <div className="certificate-header">
           <img
@@ -37,11 +48,14 @@ const Certificate = () => {
           />
           <h1>Government of India</h1>
         </div>
-        <div className="certificate-body">
-          <h2>Certificate of Approval</h2>
-          <p>This is to certify that...</p>
+        <div className="certificate-body pt-2">
+          <h2><u>Certificate of Approval</u></h2>
+          <p>This is to certify that [Name of Recipient] is eligible for the Milk Subsidy Scheme provided by the Government of Assam.</p>
+          <p>This certification is issued based on the fulfillment of all necessary criteria and requirements as stipulated under the scheme guidelines.</p>
         </div>
-        <div className="certificate-footer">
+        <Application data={params.state.data} />
+        
+        <div className="certificate-footer p-4">
           <div className="signatures">
             <div className="signature">
               <p>Authority 1</p>
@@ -51,12 +65,15 @@ const Certificate = () => {
             </div>
           </div>
         </div>
-        <Application data={params.state.data} />
       </div>
-      <button onClick={downloadCertificate} className="download-button">
-        Download Certificate
-      </button>
     </div>
+    </div>
+    <div className="p-4 d-flex justify-content-center align-items-center">
+    <button onClick={downloadCertificate} className="download-button">
+    Download Certificate
+  </button>
+  </div>
+  </div>
   );
 };
 

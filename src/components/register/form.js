@@ -153,7 +153,7 @@ const RegisterForm = ({ mobileNumber, showFileInput, setShowFileInput }) => {
           <div className="col-md-6">
             <label htmlFor="">Date of Birth</label>
             <input
-              type="text"
+              type="date"
               className="form-control"
               name="dob"
               onChange={handleInput}
@@ -166,6 +166,7 @@ const RegisterForm = ({ mobileNumber, showFileInput, setShowFileInput }) => {
               name="gender"
               onChange={handleInput}
               id="">
+              <option value="">-select-</option>
               <option value="male">Male</option>
               <option value="Female">Female</option>
               <option value="Other">Other</option>
@@ -235,6 +236,7 @@ const RegisterForm = ({ mobileNumber, showFileInput, setShowFileInput }) => {
             <select className="form-control"
               name="district"
               onChange={handleInput} id="">
+                <option value="">-select-</option>
               {districts && districts.map((d) => (
                 <option value={d}>{d}</option>
               ))}

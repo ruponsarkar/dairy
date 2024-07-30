@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, {useEffect, useState} from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -55,6 +55,7 @@ const SearchBar = styled("div")(({ theme }) => ({
 
 
 
+
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 const pages = [];
 
@@ -103,6 +104,7 @@ const Dashboard = (props) => {
 
   const [openBlog, setBlogOpen] = React.useState(false);
   const [openPublisher, setOpenPublisher] = React.useState(false);
+  const [role, setRole] = useState();
 
   const handleClick = () => {
     setOpen(!open);
@@ -116,6 +118,16 @@ const Dashboard = (props) => {
     setOpenPublisher(!openPublisher);
   }
 
+  useEffect(() => {
+    // if (JSON.parse(sessionStorage.getItem('user')).role === 'Admin') {
+      setRole(JSON.parse(sessionStorage.getItem('user')).role )
+    // }
+
+  }, [])
+
+
+
+
   const drawer = (
 
 
@@ -125,7 +137,7 @@ const Dashboard = (props) => {
       <Toolbar>
         <a href='/admin'>
           {/* <img src="/logo.png" className='img-fluid' /> */}
-          <h2>Portfolio</h2>
+          <h2>Admin Panel</h2>
         </a>
       </Toolbar>
       <Divider />
@@ -164,6 +176,8 @@ const Dashboard = (props) => {
 
           </List>
         </Collapse>
+        {role === 'Super Admin' &&
+        <>
 
         <ListItemButton onClick={blogClick}>
           <ListItemIcon>
@@ -184,6 +198,7 @@ const Dashboard = (props) => {
           </List>
         </Collapse>
 
+        </>}
 
         {/* <ListItemButton onClick={publisherClick}>
           <ListItemIcon>
