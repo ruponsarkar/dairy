@@ -74,8 +74,8 @@ const OverviewScheme = () => {
                 </ul>
               </div>
             </div>
-            <a href="#" class="btn btn-primary mt-3">
-              Know Us More &rarr;
+            <a href="RegisterPage" class="btn btn-primary mt-3">
+              Register Now
             </a>
           </div>
         </div>
