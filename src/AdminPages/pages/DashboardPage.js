@@ -1,5 +1,5 @@
 import React from "react";
-
+import CountStatus from "../../components/home/countStatus";
 const DashboardPage = () => {
 
 
@@ -7,7 +7,8 @@ const DashboardPage = () => {
         
         <section className="dash m-0 p-0">
             <div className="container">
-                <div class="row text-center">
+
+                {/* <div class="row text-center">
 	                <div class="col-md-3 p-1">
 	                    <div class="counter">
                             <i class="fa fa-file fa-2x"></i>
@@ -36,7 +37,9 @@ const DashboardPage = () => {
                             <p class="count-text ">Under Verification</p>
                         </div>
                     </div>
-                </div>
+                </div> */}
+                <CountStatus />
+
 
                 {/* <div className="row my-5 justify-content-center">
                     <div className="reports my-2">

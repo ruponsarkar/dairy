@@ -22,7 +22,7 @@ module.exports = {
     params.push(form.dob);
     params.push(form.aadhaarNo);
     params.push(form.aadharMobile);
-    params.push(form.pan_nameber);
+    params.push(form.pan_number);
     params.push(form.voterID);
     params.push(form.area);
     params.push(form.district);
@@ -104,9 +104,45 @@ module.exports = {
     });
   },
 
-  getFrom(limit, offset, callback) {
-    console.log("FROM MODAL: ", limit, offset);
-    let query = `SELECT * FROM forms LIMIT ${limit} OFFSET ${offset}`;
+  getFrom(data, callback) {
+    console.log("FROM MODAL: ", data);
+    let role = data.user.role;
+    let district = data.user.district;
+    let offset = data.offset;
+    let limit = data.limit;
+    let filterBy = data.filterBy;
+    let filterData = data.filterData;
+    console.log("user=>: ", role, offset, limit, filterBy, filterData, district);
+
+    let query = "";
+    switch (role) {
+      case "Super Admin":
+        if(filterBy){
+          query = `SELECT * FROM forms WHERE ${filterBy} = '${filterData}' LIMIT ${limit} OFFSET ${offset}`;
+          console.log("1=>", query);
+        }
+        else{
+          query = `SELECT * FROM forms LIMIT ${limit} OFFSET ${offset}`;
+          console.log("2=>", query);
+        }
+
+        break;
+
+        case "Admin":
+          if(filterBy){
+            query = `SELECT * FROM forms WHERE ${filterBy} = '${filterData}' AND district= '${district}' LIMIT ${limit} OFFSET ${offset}`;
+            console.log("3=>", query);
+          }
+          else{
+            query = `SELECT * FROM forms WHERE district = '${district}' LIMIT ${limit} OFFSET ${offset}`;
+            console.log("4=>", query);
+          }
+    }
+
+
+
+    // return;
+    // let query = `SELECT * FROM forms LIMIT ${limit} OFFSET ${offset}`;
     db.query(query, (err, res) => {
       if (err) {
         // Call the callback with an error response
@@ -135,21 +171,18 @@ module.exports = {
     });
   },
 
-  updateFormStatus(data, callback){
+  updateFormStatus(data, callback) {
     let status = data.status;
     let mobileNumber = data.mobileNumber;
     let remark = data.remark;
 
-    if(remark){
+    if (remark) {
       updateQuery = `UPDATE forms SET status = ?, remark = ? WHERE mobileNumber = ?`;
-      queryData = [status, remark, mobileNumber]
-      
-    }
-    else{
+      queryData = [status, remark, mobileNumber];
+    } else {
       updateQuery = `UPDATE forms SET status = ? WHERE mobileNumber = ?`;
-      queryData = [status, mobileNumber]
+      queryData = [status, mobileNumber];
     }
-
 
     db.query(updateQuery, queryData, (err, result) => {
       if (!err) {
@@ -158,6 +191,48 @@ module.exports = {
         callback && callback({ status: 400, message: "success" });
       }
     });
+  },
 
-  }
+
+   countStatus(callback) {
+    // Define your queries
+    let queries = {
+        approve: `SELECT COUNT(*) AS count FROM forms WHERE status = 'approve';`,
+        draft: `SELECT COUNT(*) AS count FROM forms WHERE status = 'Draft';`,
+        rejected: `SELECT COUNT(*) AS count FROM forms WHERE status = 'rejected';`,
+        incompleted: `SELECT COUNT(*) AS count FROM forms WHERE status = 'Incompleted';`,
+        total: `SELECT COUNT(*) AS count FROM forms;`
+    };
+
+    // Execute all queries using promises
+    let promises = Object.keys(queries).map(key => {
+        return new Promise((resolve, reject) => {
+            db.query(queries[key], (err, result) => {
+                if (err) {
+                    reject({ key: key, error: err });
+                } else {
+                    resolve({ key: key, count: result[0].count });
+                }
+            });
+        });
+    });
+
+    // Handle all promises
+    Promise.all(promises)
+        .then(results => {
+            // Transform the results into an object
+            let statusCounts = {};
+            results.forEach(result => {
+                statusCounts[result.key] = result.count;
+            });
+
+            // Return the results via callback
+            callback && callback({ status: 200, message: statusCounts });
+        })
+        .catch(err => {
+            // Handle errors
+            callback && callback({ status: 400, message: err });
+        });
+}
+
 };

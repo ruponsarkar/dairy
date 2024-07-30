@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, {useEffect, useState} from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -103,6 +103,7 @@ const Dashboard = (props) => {
 
   const [openBlog, setBlogOpen] = React.useState(false);
   const [openPublisher, setOpenPublisher] = React.useState(false);
+  const [role, setRole] = useState();
 
   const handleClick = () => {
     setOpen(!open);
@@ -115,6 +116,16 @@ const Dashboard = (props) => {
   const publisherClick = () => {
     setOpenPublisher(!openPublisher);
   }
+
+  useEffect(() => {
+    // if (JSON.parse(sessionStorage.getItem('user')).role === 'Admin') {
+      setRole(JSON.parse(sessionStorage.getItem('user')).role )
+    // }
+
+  }, [])
+
+
+
 
   const drawer = (
 
@@ -164,6 +175,8 @@ const Dashboard = (props) => {
 
           </List>
         </Collapse>
+        {role === 'Super Admin' &&
+        <>
 
         <ListItemButton onClick={blogClick}>
           <ListItemIcon>
@@ -184,6 +197,7 @@ const Dashboard = (props) => {
           </List>
         </Collapse>
 
+        </>}
 
         {/* <ListItemButton onClick={publisherClick}>
           <ListItemIcon>
