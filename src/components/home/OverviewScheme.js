@@ -42,7 +42,7 @@ const OverviewScheme = () => {
           <div class="row g-4">
             <div class="col-md-7">
               <Col md={12}>
-                <img src="assets/cow.jpg" alt="Overview of the Scheme" className="img-fluid w-100 rounded-corners" />
+                <img src="assets/cow.jpg" alt="Overview of the Scheme" className="img-fluid w-100 rounded-corners shadow-lg mb-5 bg-white rounded" />
               </Col>
             </div>
             <div class="col-md-5 d-flex flex-column justify-content-center">
@@ -74,28 +74,28 @@ const OverviewScheme = () => {
 
         <div class="row text-center p-3">
 	                <div class="col-md-3 p-1">
-	                    <div class="counter">
+	                    <div class="counter shadow-lg mb-5 bg-white rounded">
                             <i class="fa fa-file fa-2x"></i>
                             <h2 class="timer count-title count-number">100</h2>
                             <p class="count-text ">Total Applied</p>
                         </div>
 	                </div>
                     <div class="col-md-3 p-1">
-                        <div class="counter">
+                        <div class="counter shadow-lg mb-5 bg-white rounded">
                             <i class="fa fa-check fa-2x"></i>
                             <h2 class="timer count-title count-number">460</h2>
                             <p class="count-text ">Approved</p>
                         </div>
                     </div>
                     <div class="col-md-3 p-1">
-                        <div class="counter">
+                        <div class="counter shadow-lg mb-5 bg-white rounded">
                             <i class="fa fa-inr fa-2x"></i>
                             <h2 class="timer count-title count-number">900</h2>
                             <p class="count-text ">Ammount Paid</p>
                         </div>
                     </div>
                     <div class="col-md-3 p-1">
-                        <div class="counter">
+                        <div class="counter shadow-lg mb-5 bg-white rounded">
                             <i class="fa fa-refresh fa-2x"></i>
                             <h2 class="timer count-title count-number">760</h2>
                             <p class="count-text ">Under Verification</p>
@@ -114,13 +114,13 @@ const OverviewScheme = () => {
  */}
 
             <Col md={12}>
-            <Card>
+            <Card className='shadow-lg mb-5 bg-white rounded'>
             <Card.Body>
               {/* <Card.Title style={customStyle} className="text-center"><u>PROPOSED IMPLEMENTATION STRATEGY FOR THE SCHEME</u></Card.Title> */}
               
               <Row style={customStyle} className="mb-1">
                 <Col>
-                <h4><u>PROPOSED IMPLEMENTATION STRATEGY FOR THE SCHEME</u></h4>
+                <h4 className='text-center p-3'><u>PROPOSED IMPLEMENTATION STRATEGY FOR THE SCHEME</u></h4>
                   <h5 style={customStyle}>Proposed Strategy of Implementation:</h5>
                   <p style={customStyle}>
                   <ol>
@@ -152,13 +152,13 @@ const OverviewScheme = () => {
           
         </Col>
         <Col md={12}>
-          <Card>
+          <Card className='shadow-lg mb-5 bg-white rounded'>
             <Card.Body>
               {/* <Card.Title className="text-center"><u>OVERVIEW OF THE SCHEME</u></Card.Title> */}
               
               <Row className="mb-4">
                 <Col>
-                <h4><u>OVERVIEW OF THE SCHEME</u></h4>
+                <h4 className='text-center p-3'><u>OVERVIEW OF THE SCHEME</u></h4>
                   <h5 style={customStyle}>Genesis of the scheme:</h5>
                   <p style={customStyle}>
                     As announced by Hon’ble Chief Minister at the inauguration of National Farming Conclave in Guwahati, Rs 5 per liter of milk per day is to be provided to farmers selling milk through dairy co-operative society.

@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import api from '../../API/api';
 import AuthUser from '../../API/token';
+import Nav2 from '../../components/common/navbar'
 
 import Stack from '@mui/material/Stack';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -56,21 +57,27 @@ const Login = () => {
     return (
         <>
             <Paper>
-                <section className='bg-light'>
+            <Nav2 />
+            <div className='col-12 pt-3 text-center'>
+                <h2><i>Providing Rs. 5 subsidy to farmers pouring milk to Dairy Co-operative Societies</i></h2>
+                <br />
+                <h2 className='text-white bg-warning'>ADMIN LOGIN</h2>
+            </div>
+                <section>
                     <div class="container">
                         <div>
                             <div class="row ">
                                 <div class="col-lg-7">
                                     <div class="card1 pb-5">
-                                        <div class="row px-3 justify-content-center mt-5 mb-5">
-                                            <img src="https://media.istockphoto.com/id/1390481905/photo/multi-factor-authentication-user-login-cybersecurity-privacy-protect-data-internet-network.jpg?s=612x612&w=0&k=20&c=Hqaa0_JZ9j4isOgS3-SKUlDDBnFCgXMeAOykWATzF9I=" class="img-fluid" />
+                                        <div class="row p-3 justify-content-center mt-5 mb-5">
+                                            <img src="https://media.istockphoto.com/id/1390481905/photo/multi-factor-authentication-user-login-cybersecurity-privacy-protect-data-internet-network.jpg?s=612x612&w=0&k=20&c=Hqaa0_JZ9j4isOgS3-SKUlDDBnFCgXMeAOykWATzF9I=" class="img-fluid p-0 shadow-lg mb-5 bg-white rounded" />
                                         </div>
                                     </div>
                                 </div>
 
-                                <div class="col-lg-5">
+                                <div class="col-lg-5 pt-4">
                                     <Card>
-                                        <div className='box-form p-5 my-3'>
+                                        <div className='box-form p-5'>
                                             <div className="right">
 
 
@@ -79,12 +86,11 @@ const Login = () => {
                                                 <div className="inputs">
                                                     <label>Email Address</label>
                                                     <input type="email" className='form-control' value={email} onChange={e => setEmail(e.target.value)} placeholder="enter a valid email address" />
-                                                    <br />
+                                                    
                                                     <label>Password</label>
                                                     <input type="password" className='form-control' value={password} onChange={e => setPassword(e.target.value)} placeholder="enter password" />
                                                 </div>
 
-                                                <br />
 
                                                 <div className="remember-me--forget-password d-flex">
                                                     <label>
@@ -101,7 +107,7 @@ const Login = () => {
 
                                                 {loading ? <Loading /> :
                                                     <div className='text-center'>
-                                                        <button className='px-5 py-2 submitBtn' onClick={submit}>Login</button>
+                                                        <button className='px-5 btn btn-primary py-2 submitBtn' onClick={submit}>Login</button>
                                                     </div>
                                                 }
 
