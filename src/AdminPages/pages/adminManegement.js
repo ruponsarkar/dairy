@@ -116,7 +116,18 @@ const AdminCategory = () => {
                     <div className="row">
                         <div className="col-6">
                             <div className='m-2'>
-                                <Button variant="contained" color='warning' onClick={() => setOpen(true)}>
+                                <Button 
+                                variant="contained"
+                                color="primary"
+                                sx={{
+                                  height: 40,
+                                  minWidth: 120,
+                                  '@media (max-width: 600px)': {
+                                    width: '100%',
+                                    marginTop: 1,
+                                  },
+                                }}
+                                 onClick={() => setOpen(true)}>
                                     + Add New Admin
                                 </Button>
 

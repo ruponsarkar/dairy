@@ -91,7 +91,7 @@ export default function AdminTable({ data, getAdmins }) {
   ];
 
   return (
-    <>
+    <Paper className="p-2">
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 700 }} aria-label="customized table">
           <TableHead>
@@ -122,8 +122,8 @@ export default function AdminTable({ data, getAdmins }) {
 
                   <StyledTableCell>------</StyledTableCell>
                   <StyledTableCell>
-                    {row.status === 'Active' && <div className="bg-success text-center text-white">Active</div> }
-                    {row.status === 'Inactive' && <div className="bg-danger text-center text-white">Inactive</div> }
+                    {row.status === 'Active' && <div className="bg-success text-center text-white rounded">Active</div> }
+                    {row.status === 'Inactive' && <div className="bg-danger text-center text-white rounded">Inactive</div> }
                     </StyledTableCell>
                   <StyledTableCell>
                     <BasicMenu menuItems={menuItems(row)} />
@@ -133,6 +133,6 @@ export default function AdminTable({ data, getAdmins }) {
           </TableBody>
         </Table>
       </TableContainer>
-    </>
+    </Paper>
   );
 }
