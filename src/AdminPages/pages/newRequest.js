@@ -35,6 +35,7 @@ import api from "../../API/api";
 import Swal from "sweetalert2";
 import CancelIcon from '@mui/icons-material/Cancel';
 // import IconButton from '@mui/material/IconButton';
+import { CSVLink, CSVDownload } from "react-csv";
 
 
 
@@ -151,7 +152,7 @@ const NewRequest = () => {
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [open, setOpen] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
-  const [data, setData] = useState();
+  const [data, setData] = useState([]);
   const [status, setStatus] = useState();
   const [remark, setRemark] = useState();
   const [districts, setDistricts] = useState(defaultdistricts)
@@ -345,7 +346,7 @@ const NewRequest = () => {
           }
 
         </Box>
-        <Link href="https://www.example.com" underline="none">
+        {/* <Link href="https://www.example.com" underline="none">
           <Button
             variant="contained"
             color="primary"
@@ -361,7 +362,11 @@ const NewRequest = () => {
             <DownloadIcon />
             Download Reports
           </Button>
-        </Link>
+        </Link> */}
+
+        <CSVLink data={data} filename={"AHVD_DATA.csv"} >Download Data</CSVLink>
+
+
       </Box>
 
       {/* 
