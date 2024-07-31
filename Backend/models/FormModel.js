@@ -17,7 +17,7 @@ module.exports = {
     // params.push(form.applicationId);
     params.push(form.mobileNumber);
     params.push(form.name);
-    params.push(form.fatherName);
+    params.push(form.fathersName);
     params.push(form.gender);
     params.push(form.dob);
     params.push(form.aadhaarNo);

@@ -3,6 +3,9 @@ import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import Application from "../register/application";
 import { useLocation } from "react-router-dom";
+import Nav2 from "../common/navbar";
+import Footer from "../common/footer";
+
 const Certificate = () => {
   const params = useLocation();
   console.log("==>>", params.state.data);
@@ -36,6 +39,9 @@ const Certificate = () => {
   };
 
   return (
+    <>
+    <Nav2/>
+    
     <div className="container-fluid">
       <div className="row">
     <div className="certificate-container p-4 d-flex justify-content-center align-items-center">
@@ -74,6 +80,10 @@ const Certificate = () => {
   </button>
   </div>
   </div>
+
+  <Footer />
+
+  </>
   );
 };
 
