@@ -27,7 +27,7 @@ module.exports = {
     let response = {};
     db.query(selectQuery, [email, password], (err, result) => {
       if (!err) {
-        if(result?.length>=1){
+        if(result.length>=1){
           response = {
             status: 200,
             authenticated: true,
