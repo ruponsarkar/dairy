@@ -145,7 +145,7 @@ const RegisterForm = ({ mobileNumber, showFileInput, setShowFileInput }) => {
             <input
               type="text"
               className="form-control"
-              name="fatherName"
+              name="fathersName"
               onChange={handleInput}
               id=""
             />
