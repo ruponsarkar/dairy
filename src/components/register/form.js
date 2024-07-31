@@ -333,6 +333,16 @@ const RegisterForm = ({ mobileNumber, showFileInput, setShowFileInput }) => {
               id=""
             />
           </div>
+          <div className="col-md-6">
+            <label htmlFor="">Registration Number of Co-operative Society</label>
+            <input
+              type="text"
+              className="form-control"
+              name="registration_no_of_co_operatice_society"
+              onChange={handleInput}
+              id=""
+            />
+          </div>
 
           <div className="col-md-6">
             <label htmlFor="">Name of the bank</label>
