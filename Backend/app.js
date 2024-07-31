@@ -14,7 +14,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cors());
 app.use(logger('dev'));
-app.use("/docs", express.static(process.env.FILE_UPLOAD_PATH));
+app.use("/upload", express.static(process.env.FILE_UPLOAD_PATH));
 
 require("./models/index");
 

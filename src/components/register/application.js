@@ -80,7 +80,7 @@ const Application = ({data}) => {
                                 <tr>
                                     <td>{data.name_of_co_operatice_society}</td>
                                     <td>{data.addree_of_co_operatice_society}</td>
-                                    <td>----</td>
+                                    <td>{data.registration_no_of_co_operatice_society}</td>
                                     <td>{data.bank_name}</td>
                                 </tr>
                                 <tr>
@@ -93,7 +93,7 @@ const Application = ({data}) => {
                                     <td>{data.bank_account_holder_name}</td>
                                     <td>{data.bank_account_no}</td>
                                     <td>{data.ifsc_code}</td>
-                                    <td>----</td>
+                                    <td>{data.milk_production_per_month}</td>
                                 </tr>
 
                                 <tr>

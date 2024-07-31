@@ -22,10 +22,13 @@ export default {
         return API.get('/getAdmins')
     },
     getFrom(data){
-        return API.get(`/getFrom?limit=${data.limit}&offset=${data.offset}`)
+        return API.post(`/getFrom`, {data})
     },
     updateFormStatus(data){
         return API.post('/updateFormStatus', {data})
+    },
+    countStatus(){
+        return API.get('countStatus');
     },
 
     // login 
