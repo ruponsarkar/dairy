@@ -184,11 +184,11 @@ const NewRequest = () => {
       filterData: event.target.value
     });
     setSelectedDistrict('');
-    
-    
+
+
   };
-  
-  const handleClearFilter=()=>{
+
+  const handleClearFilter = () => {
     setRequestData({
       ...requestData,
       filterBy: '',
@@ -223,9 +223,9 @@ const NewRequest = () => {
 
   const handleUpdate = () => {
     setOpen(false)
-    if (status === 'reject') {
+    if (status === 'Reject') {
       if (!remark) {
-        Swal.fire("Please enter any remarks for rejection ");
+        Swal.fire("Please enter any remarks for Rejection ");
         return;
       }
     }
@@ -339,10 +339,10 @@ const NewRequest = () => {
               ))}
             </Select>
           </FormControl>
-          {requestData.filterBy && 
-          <IconButton onClick={handleClearFilter}>
-            <CancelIcon />
-          </IconButton>
+          {requestData.filterBy &&
+            <IconButton onClick={handleClearFilter}>
+              <CancelIcon />
+            </IconButton>
           }
 
         </Box>
@@ -398,7 +398,12 @@ const NewRequest = () => {
                     <TableCell align="right">{row.area}</TableCell>
                     <TableCell align="right">{row.district}</TableCell>
                     <TableCell align="right">{row.village}</TableCell>
-                    <TableCell align="right">{row.status}</TableCell>
+                    <TableCell align="center">
+                      {row.status === 'Draft' && <span className="bg-secondary px-3 rounded">Draft</span>}
+                      {row.status === 'Incompleted' && <span className="bg-warning px-3 rounded">Incompleted</span>}
+                      {row.status === 'Approve' && <span className="bg-success px-3 rounded">Approve</span>}
+                      {row.status === 'Reject' && <span className="bg-danger px-3 rounded">Reject</span>}
+                    </TableCell>
                     <TableCell align="right">
                       <Button
                         variant="outlined"
@@ -430,20 +435,22 @@ const NewRequest = () => {
               <Application data={selectedRow} />
 
               {selectedRow &&
-                <div className="documents d-flex justify-content-center border p-3">
-                  <div className="text-center">
+                <div className="documents d-flex justify-content-center border p-3 gap-4">
+                  <div className="text-center card">
                     <h3>Pan Card</h3>
-                    <img src={`http://localhost:8800/${selectedRow.panCard}`} style={{ maxWidth: '300px' }} alt="" />
+                    {/* <a href={`http://localhost:8800/${selectedRow.panCard}`}> */}
+                      <img src={`http://localhost:8800/${selectedRow.panCard}`} className="img" alt="" />
+                    {/* </a> */}
                   </div>
-                  <div className="text-center">
+                  <div className="text-center card">
                     <h3>Aadhar Card</h3>
-                    <img src={`http://localhost:8800/${selectedRow.aadharCard}`} style={{ maxWidth: '300px' }} alt="" />
+                    <img src={`http://localhost:8800/${selectedRow.aadharCard}`} className="img" alt="" />
                   </div>
-                  <div className="text-center">
+                  <div className="text-center card">
                     <h3>
                       Passbook
                     </h3>
-                    <img src={`http://localhost:8800/${selectedRow.passbook}`} style={{ maxWidth: '300px' }} alt="" />
+                    <img src={`http://localhost:8800/${selectedRow.passbook}`} className="img" alt="" />
                   </div>
                 </div>
               }
@@ -452,11 +459,11 @@ const NewRequest = () => {
                 <div>
                   <select name="" id="" onChange={(e) => setStatus(e.target.value)} className="form-control">
                     <option value="">---select---</option>
-                    <option value="approve">Approve</option>
-                    <option value="reject">Reject</option>
+                    <option value="Approve">Approve</option>
+                    <option value="Reject">Reject</option>
                   </select>
                 </div>
-                {status === 'reject' &&
+                {status === 'Reject' &&
                   <div>
                     <input type="text" onChange={(e) => setRemark(e.target.value)} className="form-control" placeholder="Remark" name="" id="" />
                   </div>
