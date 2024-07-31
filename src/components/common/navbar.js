@@ -35,6 +35,8 @@ function Nav2() {
             <Nav className="me-auto">
               <Link to="/" className='nav-link'>About</Link>
               <Link to="/RegisterPage" className='nav-link'>Download Certicicate</Link>
+              <a class="nav-link" target="_blank" href="assets/userManual/AHVD.pdf">User Manual</a>
+              <a class="nav-link" target="_blank" href="https://youtu.be/k5wOrv534z0">YouTube Video Link</a>
               {/* <Link to="/Certificate" className='nav-link'>Certificate</Link> */}
               {/* <Nav.Link href="/Certificate">Certificate</Nav.Link> */}
 

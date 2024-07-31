@@ -97,12 +97,12 @@
 
 @media (max-width: 576px) {
   .logo {
-    background-size: 7% auto;
+    background-size: 15% auto;
     line-height: 80%;
     min-height: 60px;
     padding: 0 0 0 60px;
     text-transform: uppercase;
-    width: 700px;
+    width: auto;
   }
   .logo .main_gov {
     font-size: 50%;
@@ -117,12 +117,12 @@
 
 @media (min-width: 576px) {
   .logo {
-    background-size: 7% auto;
+    background-size: 15% auto;
     line-height: 80%;
     min-height: 60px;
     padding: 0 0 0 70px;
     text-transform: uppercase;
-    width: 900px;
+    width: auto;
   }
   .logo .main_gov {
     font-size: 60%;
@@ -137,12 +137,12 @@
 
 @media (min-width: 992px) {
   .logo {
-    background-size: 7% auto;
+    background-size: 13% auto;
     line-height: 80%;
     min-height: 60px;
-    padding: 0 0 0 80px;
+    padding: 0 0 0 100px;
     text-transform: uppercase;
-    width: 1050px;
+    width: auto;
   }
   .logo .main_gov {
     font-size: 70%;
