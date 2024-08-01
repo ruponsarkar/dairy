@@ -12,7 +12,7 @@ const Footer = () => {
                         <div className="col-lg-6 offset-lg-3">
                             <div className="contact-content text-center">
                                 {/* <a href="#"><img src="https://i.ibb.co/QDy827D/ak-logo.png" alt="logo" /></a> */}
-                                <h5 className="text-dark">Providing Rs. 5 subsidy to farmers pouring milk to Dairy Co-operative Societies</h5>
+                                {/* <h5 className="text-dark">Providing Rs. 5 subsidy to farmers pouring milk to Dairy Co-operative Societies</h5> */}
                                 {/* <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum </p>
                                 <div className="hr"></div>
                                 <h6>1120 Lorem ipsum dolor sit amet, KC 179050, Chandigarh.</h6>
@@ -27,7 +27,8 @@ const Footer = () => {
                                     </ul>
                                 </div>
                                 <footer>
-                <p>Copyright &copy; 2023, All Rights Reserved.</p>
+                                    <p>All rights reserved. MILK SUBSIDY DAIRY ASSAM, Copyright &copy; 2024 </p>
+                                    <p>Design and developed by <b>Skaplink technologies.</b></p>
             </footer>
                             </div>
                         </div>
