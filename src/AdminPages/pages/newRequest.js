@@ -36,6 +36,7 @@ import Swal from "sweetalert2";
 import CancelIcon from '@mui/icons-material/Cancel';
 // import IconButton from '@mui/material/IconButton';
 import { CSVLink, CSVDownload } from "react-csv";
+import PaymentsIcon from '@mui/icons-material/Payments';
 
 
 
@@ -84,6 +85,7 @@ const EnhancedTableHead = (props) => {
     { id: "Village", numeric: true, disablePadding: false, label: "Village" },
     { id: "Status", numeric: true, disablePadding: false, label: "Status" },
     { id: "Action", numeric: true, disablePadding: false, label: "Action" },
+    { id: "Pay", numeric: true, disablePadding: false, label: "Payout" },
   ];
 
   return (
@@ -408,9 +410,20 @@ const NewRequest = () => {
                       <Button
                         variant="outlined"
                         color="primary"
+                        size="small"
                         onClick={() => handleClickOpen(row)}
                       >
                         View
+                      </Button>
+                    </TableCell>
+                    <TableCell align="right">
+                      <Button
+                        variant="outlined"
+                        color="success"
+                        size="small"
+                        // onClick={() => handleClickOpen(row)}
+                      >
+                       Payout <PaymentsIcon/> 
                       </Button>
                     </TableCell>
                   </TableRow>
