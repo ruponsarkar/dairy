@@ -56,7 +56,7 @@ const Certificate = () => {
         </div>
         <div className="certificate-body pt-2">
           <h2><u>Certificate of Approval</u></h2>
-          <p>This is to certify that [Name of Recipient] is eligible for the Milk Subsidy Scheme provided by the Government of Assam.</p>
+          <p>This is to certify that <strong> {params.state.data.name} </strong>is eligible for the Milk Subsidy Scheme provided by the Government of Assam.</p>
           <p>This certification is issued based on the fulfillment of all necessary criteria and requirements as stipulated under the scheme guidelines.</p>
         </div>
         <Application data={params.state.data} />
