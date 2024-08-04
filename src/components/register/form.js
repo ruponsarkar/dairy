@@ -407,7 +407,7 @@ const RegisterForm = ({ mobileNumber, showFileInput, setShowFileInput }) => {
                 className="btn btn-primary btn-sm"
                 onClick={handleShowFileInput}
               >
-                Confirm and Next
+                Proceed
               </button>
             </div>
           </div>
