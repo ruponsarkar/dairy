@@ -452,18 +452,18 @@ const NewRequest = () => {
                   <div className="text-center card">
                     <h3>Pan Card</h3>
                     {/* <a href={`http://localhost:8800/${selectedRow.panCard}`}> */}
-                      <img src={`http://localhost:8800/${selectedRow.panCard}`} className="img" alt="" />
+                      <img src={`http://milksubsidydairyassam.com:8800/${selectedRow.panCard}`} className="img" alt="" />
                     {/* </a> */}
                   </div>
                   <div className="text-center card">
                     <h3>Aadhar Card</h3>
-                    <img src={`http://localhost:8800/${selectedRow.aadharCard}`} className="img" alt="" />
+                    <img src={`http://milksubsidydairyassam.com:8800/${selectedRow.aadharCard}`} className="img" alt="" />
                   </div>
                   <div className="text-center card">
                     <h3>
                       Passbook
                     </h3>
-                    <img src={`http://localhost:8800/${selectedRow.passbook}`} className="img" alt="" />
+                    <img src={`http://milksubsidydairyassam.com:8800/${selectedRow.passbook}`} className="img" alt="" />
                   </div>
                 </div>
               }

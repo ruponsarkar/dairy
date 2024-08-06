@@ -142,7 +142,7 @@ const Dashboard = (props) => {
       </Toolbar>
       <Divider />
       <List>
-        <ListItem disablePadding onClick={() => navigate("/admin")}>
+        <ListItem disablePadding onClick={() => navigate("/admin/dashboard")}>
           <ListItemButton>
             <ListItemIcon style={{color:'aliceblue'}}>
               <LeaderboardSharpIcon />

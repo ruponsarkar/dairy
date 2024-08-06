@@ -28,7 +28,7 @@ export default function AuthUser() {
 
         setToken(token);
         setUser(user);
-        window.location.href = "/#/admin";
+        window.location.href = "/#/admin/dashboard";
 
     }
 
