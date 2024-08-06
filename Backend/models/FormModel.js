@@ -199,9 +199,9 @@ module.exports = {
    countStatus(callback) {
     // Define your queries
     let queries = {
-        approve: `SELECT COUNT(*) AS count FROM forms WHERE status = 'approve';`,
+        approve: `SELECT COUNT(*) AS count FROM forms WHERE status = 'Approve';`,
         draft: `SELECT COUNT(*) AS count FROM forms WHERE status = 'Draft';`,
-        rejected: `SELECT COUNT(*) AS count FROM forms WHERE status = 'rejected';`,
+        rejected: `SELECT COUNT(*) AS count FROM forms WHERE status = 'Reject';`,
         incompleted: `SELECT COUNT(*) AS count FROM forms WHERE status = 'Incompleted';`,
         total: `SELECT COUNT(*) AS count FROM forms;`
     };
