@@ -28,13 +28,14 @@ export default function AuthUser() {
 
         setToken(token);
         setUser(user);
-        window.location.href = "/admin";
+        window.location.href = "/#/admin";
 
     }
 
     const logout = () => {
         sessionStorage.clear();
-        window.location.href = "/login";
+        window.location.href = "/#/login";
+
     }
 
     return {

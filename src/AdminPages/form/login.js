@@ -28,7 +28,8 @@ const Login = () => {
                     if (res.data.authenticated) {
                         console.log("Login success==>", res);
                         setToken(res.data.data, res.data.token);
-                        nagivate('/admin');
+                        window.location.reload();
+                        // nagivate('/admin');
                         setLoading(false);
                     } else {
                         setLoading(false);
@@ -116,7 +117,7 @@ const Login = () => {
 
                                                 <div class="row mb-4 px-3">
                                                     <label class="font-weight-bold">Don't have an account ?
-                                                        &nbsp;<a class="text-danger" href='/register'>Register</a></label>
+                                                        &nbsp;<a class="text-danger" href='javascript:;'>Register</a></label>
                                                 </div>
                                                 {/* </form> */}
                                             </div>

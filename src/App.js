@@ -50,7 +50,7 @@ function App() {
 
       {user === 'public' && 
       <Routes>
-        <Route path="admin/*" element={<Login />} />
+        <Route path="/admin/*" element={<Login />} />
       </Routes>
       }
 

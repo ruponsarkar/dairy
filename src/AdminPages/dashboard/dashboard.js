@@ -135,23 +135,23 @@ const Dashboard = (props) => {
     
     <div>
       <Toolbar>
-        <a href='/admin'>
+        <a href='/#/admin'>
           {/* <img src="/logo.png" className='img-fluid' /> */}
-          <h2>Admin Panel</h2>
+          <h2 style={{color:'aliceblue'}}>Admin Panel</h2>
         </a>
       </Toolbar>
       <Divider />
       <List>
         <ListItem disablePadding onClick={() => navigate("/admin")}>
           <ListItemButton>
-            <ListItemIcon>
+            <ListItemIcon style={{color:'aliceblue'}}>
               <LeaderboardSharpIcon />
             </ListItemIcon>
             <ListItemText>Dashboard</ListItemText>
           </ListItemButton>
         </ListItem>
         <ListItemButton onClick={handleClick}>
-          <ListItemIcon>
+          <ListItemIcon style={{color:'aliceblue'}}>
             <LibraryBooksIcon />
           </ListItemIcon>
           <ListItemText primary="Request" />
@@ -161,7 +161,7 @@ const Dashboard = (props) => {
         <Collapse in={open} timeout="auto" unmountOnExit>
           <List component="div" disablePadding>
             <ListItemButton sx={{ pl: 4 }} onClick={() => navigate("/admin/newRequest")}>
-              <ListItemIcon>
+              <ListItemIcon style={{color:'aliceblue'}}>
                 <SubdirectoryArrowRightIcon />
               </ListItemIcon>
               <ListItemText primary="New Request" />
@@ -180,7 +180,7 @@ const Dashboard = (props) => {
         <>
 
         <ListItemButton onClick={blogClick}>
-          <ListItemIcon>
+          <ListItemIcon style={{color:'aliceblue'}}>
             <ClassIcon />
           </ListItemIcon>
           <ListItemText primary="Admin" />
@@ -190,7 +190,7 @@ const Dashboard = (props) => {
         <Collapse in={openBlog} timeout="auto" unmountOnExit>
           <List component="div" disablePadding>
             <ListItemButton sx={{ pl: 4 }} onClick={() => navigate("/admin/adminManagement")}>
-              <ListItemIcon>
+              <ListItemIcon style={{color:'aliceblue'}}>
                 <SubdirectoryArrowRightIcon />
               </ListItemIcon>
               <ListItemText primary="Add Admin" />
@@ -241,7 +241,7 @@ const Dashboard = (props) => {
 
         <ListItem disablePadding onClick={logout}>
           <ListItemButton>
-            <ListItemIcon>
+            <ListItemIcon style={{color:'aliceblue'}}>
               <AccountCircleIcon />
             </ListItemIcon>
             <ListItemText>Logout</ListItemText>
@@ -441,7 +441,7 @@ const Dashboard = (props) => {
           }}
           sx={{
             display: { xs: 'block', sm: 'none' },
-            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth, backgroundColor:'rgb(25 118 210)' },
           }}
         >
           {drawer}
@@ -450,7 +450,7 @@ const Dashboard = (props) => {
           variant="permanent"
           sx={{
             display: { xs: 'none', sm: 'block' },
-            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth, backgroundColor:'rgb(25 118 210)', color:'aliceblue' },
           }}
           open
         >
