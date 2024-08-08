@@ -103,7 +103,7 @@ const Dashboard = (props) => {
   const [open, setOpen] = React.useState(false);
 
   const [openBlog, setBlogOpen] = React.useState(false);
-  const [openPublisher, setOpenPublisher] = React.useState(false);
+  const [openPay, setOpenPay] = React.useState(false);
   const [role, setRole] = useState();
 
   const handleClick = () => {
@@ -114,9 +114,7 @@ const Dashboard = (props) => {
     setBlogOpen(!openBlog);
   }
 
-  const publisherClick = () => {
-    setOpenPublisher(!openPublisher);
-  }
+  
 
   useEffect(() => {
     // if (JSON.parse(sessionStorage.getItem('user')).role === 'Admin') {
@@ -150,6 +148,8 @@ const Dashboard = (props) => {
             <ListItemText>Dashboard</ListItemText>
           </ListItemButton>
         </ListItem>
+
+
         <ListItemButton onClick={handleClick}>
           <ListItemIcon>
             <LibraryBooksIcon />
@@ -166,16 +166,51 @@ const Dashboard = (props) => {
               </ListItemIcon>
               <ListItemText primary="New Request" />
             </ListItemButton>
-
-            {/* <ListItemButton sx={{ pl: 4 }} onClick={() => navigate("/admin/JournalTable")}>
+            <ListItemButton sx={{ pl: 4 }} onClick={() => navigate("/admin/MasterTable")}>
               <ListItemIcon>
                 <SubdirectoryArrowRightIcon />
               </ListItemIcon>
-              <ListItemText primary="View Journal" />
-            </ListItemButton> */}
-
+              <ListItemText primary="MasterTable" />
+            </ListItemButton>
+            
           </List>
         </Collapse>
+
+
+        <ListItemButton onClick={()=>setOpenPay(!openPay)}>
+          <ListItemIcon>
+            <LibraryBooksIcon />
+          </ListItemIcon>
+          <ListItemText primary="Payout" />
+          {openPay ? <ExpandLess /> : <ExpandMore />}
+        </ListItemButton>
+
+        <Collapse in={openPay} timeout="auto" unmountOnExit>
+          <List component="div" disablePadding>
+            <ListItemButton sx={{ pl: 4 }} onClick={() => navigate("/admin/newRequest")}>
+              <ListItemIcon>
+                <SubdirectoryArrowRightIcon />
+              </ListItemIcon>
+              <ListItemText primary="New Request" />
+            </ListItemButton>
+            <ListItemButton sx={{ pl: 4 }} onClick={() => navigate("/admin/MasterTable")}>
+              <ListItemIcon>
+                <SubdirectoryArrowRightIcon />
+              </ListItemIcon>
+              <ListItemText primary="MasterTable" />
+            </ListItemButton>
+            <ListItemButton sx={{ pl: 4 }} onClick={() => navigate("/admin/PaymentPage")}>
+              <ListItemIcon>
+                <SubdirectoryArrowRightIcon />
+              </ListItemIcon>
+              <ListItemText primary="Payments" />
+            </ListItemButton>
+          </List>
+        </Collapse>
+
+
+
+        
         {role === 'Super Admin' &&
         <>
 

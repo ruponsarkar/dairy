@@ -85,7 +85,7 @@ const EnhancedTableHead = (props) => {
     { id: "Village", numeric: true, disablePadding: false, label: "Village" },
     { id: "Status", numeric: true, disablePadding: false, label: "Status" },
     { id: "Action", numeric: true, disablePadding: false, label: "Action" },
-    { id: "Pay", numeric: true, disablePadding: false, label: "Payout" },
+    // { id: "Pay", numeric: true, disablePadding: false, label: "Payout" },
   ];
 
   return (
@@ -158,6 +158,8 @@ const NewRequest = () => {
   const [status, setStatus] = useState();
   const [remark, setRemark] = useState();
   const [districts, setDistricts] = useState(defaultdistricts)
+  const [openImgView, setOpenImgView] = useState(false);
+  const [selectedImg, setSelectedImg] = useState();
 
   const [requestData, setRequestData] = useState(
     {
@@ -416,16 +418,15 @@ const NewRequest = () => {
                         View
                       </Button>
                     </TableCell>
-                    <TableCell align="right">
+                    {/* <TableCell align="right">
                       <Button
                         variant="outlined"
                         color="success"
                         size="small"
-                        // onClick={() => handleClickOpen(row)}
                       >
-                       Payout <PaymentsIcon/> 
+                        Payout <PaymentsIcon />
                       </Button>
-                    </TableCell>
+                    </TableCell> */}
                   </TableRow>
                 );
               })}
@@ -452,18 +453,30 @@ const NewRequest = () => {
                   <div className="text-center card">
                     <h3>Pan Card</h3>
                     {/* <a href={`http://localhost:8800/${selectedRow.panCard}`}> */}
-                      <img src={`http://localhost:8800/${selectedRow.panCard}`} className="img" alt="" />
+                    <img src={`http://localhost:8800/${selectedRow.panCard}`} className="img" alt=""
+                      onClick={() => {
+                        setOpenImgView(true);
+                        setSelectedImg(`http://localhost:8800/${selectedRow.panCard}`)
+                      }} />
                     {/* </a> */}
                   </div>
                   <div className="text-center card">
                     <h3>Aadhar Card</h3>
-                    <img src={`http://localhost:8800/${selectedRow.aadharCard}`} className="img" alt="" />
+                    <img src={`http://localhost:8800/${selectedRow.aadharCard}`} className="img" alt=""
+                      onClick={() => {
+                        setOpenImgView(true);
+                        setSelectedImg(`http://localhost:8800/${selectedRow.aadharCard}`)
+                      }} />
                   </div>
                   <div className="text-center card">
                     <h3>
                       Passbook
                     </h3>
-                    <img src={`http://localhost:8800/${selectedRow.passbook}`} className="img" alt="" />
+                    <img src={`http://localhost:8800/${selectedRow.passbook}`} className="img" alt=""
+                      onClick={() => {
+                        setOpenImgView(true);
+                        setSelectedImg(`http://localhost:8800/${selectedRow.passbook}`)
+                      }} />
                   </div>
                 </div>
               }
@@ -494,6 +507,35 @@ const NewRequest = () => {
           </Button>
         </DialogActions>
       </Dialog>
+
+
+
+      {/* for image view  */}
+
+      <Dialog
+        open={openImgView}
+        onClose={() => setOpenImgView(false)}
+        aria-labelledby="protein-modal-title"
+        fullWidth={true}
+        maxWidth={'lg'}
+      >
+
+        <DialogContent>
+          <DialogContentText>
+            <div className="text-center">
+              <img src={`${selectedImg}`} className="img-fluid" alt="" />
+            </div>
+          </DialogContentText>
+        </DialogContent>
+
+
+      </Dialog>
+
+
+
+
+
+
     </Paper>
   );
 };

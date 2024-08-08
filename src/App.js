@@ -12,6 +12,8 @@ import DashboardPage from './AdminPages/pages/DashboardPage';
 
 import NewRequest from './AdminPages/pages/newRequest';
 import AdminManagement from './AdminPages/pages/adminManegement';
+import PaymentPage from './AdminPages/payment/paymentPage';
+import MasterTable from './AdminPages/pages/masterTable';
 
 import { createContext } from "react";
 
@@ -62,6 +64,8 @@ function App() {
             <Route path='/admin' element={<DashboardPage />} />
             <Route path='newRequest' element={<NewRequest />} />
             <Route path='AdminManagement' element={<AdminManagement />} />
+            <Route path='PaymentPage' element={<PaymentPage />} />
+            <Route path='MasterTable' element={<MasterTable />} />
 
           </Route>
 
