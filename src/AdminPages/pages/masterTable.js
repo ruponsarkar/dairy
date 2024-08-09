@@ -49,15 +49,7 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
     },
 }));
 
-const StyledTableRow = styled(TableRow)(({ theme }) => ({
-    "&:nth-of-type(odd)": {
-        backgroundColor: theme.palette.action.hover,
-    },
-    // hide last border
-    "&:last-child td, &:last-child th": {
-        border: 0,
-    },
-}));
+
 
 const defaultdistricts = [
     "Baksa",
@@ -112,18 +104,22 @@ const MasterTable = () => {
         setSelectedStatus("");
     };
 
-    const [order, setOrder] = useState("asc");
-    const [orderBy, setOrderBy] = useState("calories");
+
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
     const [open, setOpen] = useState(false);
     const [selectedRow, setSelectedRow] = useState(null);
-    const [data, setData] = useState([]);
+    const [data, setData] = useState();
     const [status, setStatus] = useState();
     const [remark, setRemark] = useState();
     const [districts, setDistricts] = useState(defaultdistricts);
     const [openImgView, setOpenImgView] = useState(false);
     const [selectedImg, setSelectedImg] = useState();
+    const [month, setMonth] = useState();
+    const [amountPerLitter, setAmountPerLitter] = useState(5);
+
+
+    
 
     const [requestData, setRequestData] = useState({
         limit: 100,
@@ -160,11 +156,7 @@ const MasterTable = () => {
         setSelectedStatus("");
     };
 
-    const handleRequestSort = (event, property) => {
-        const isAsc = orderBy === property && order === "asc";
-        setOrder(isAsc ? "desc" : "asc");
-        setOrderBy(property);
-    };
+
 
     const handleClickOpen = (row) => {
         setSelectedRow(row);
@@ -218,7 +210,7 @@ const MasterTable = () => {
     const getFrom = () => {
 
         api
-            .getFrom(requestData)
+            .getMaster(requestData)
             .then((res) => {
                 console.log("res :", res);
                 setData(res.data.data);
@@ -227,6 +219,64 @@ const MasterTable = () => {
                 console.log("err: ", err);
             });
     };
+
+
+    const handleAddLitter = (id, litter) => {
+        const updatedItems = data.map(item =>
+            item.id === id ? { ...item, litter: litter } : item
+        );
+        setData(updatedItems);
+    }
+
+    const handleApproveAll = () => {
+
+        if(!month){
+            Swal.fire({
+                title: "Month Not selected !",
+                text: "You must selct a month!",
+                icon: "warning"
+              });
+            return;
+        }
+
+
+        console.log(month);
+        console.log(data);
+        let selectedData = data.filter((e) => e.litter && e.isApprove !== 'Approve');
+        console.log("selectedData", selectedData);
+
+
+        api.postMonthlyReport(selectedData, month, amountPerLitter).then((res) => {
+            console.log("postMonthlyReport: ", res);
+            Swal.fire({
+                title: "Approved for Payment!",
+                text: "Data sent for payment!",
+                icon: "success"
+              });
+
+              getMasterWithReport(month)
+            return;
+        })
+            .catch((err) => {
+                console.log("err postMonthlyReport", err);
+            })
+    }
+
+    const handleChangeMonth = (e) => {
+        setMonth(e.target.value)
+        getMasterWithReport(e.target.value);
+    }
+
+    const getMasterWithReport = (month) => {
+
+        api.getMasterWithReport(month).then((res) => {
+            console.log("getMasterWithReport", res.data.data);
+            setData(res.data.data)
+        })
+            .catch((err) => {
+                console.log("getMasterWithReport err", err);
+            })
+    }
 
     return (
         <Paper className="p-2">
@@ -298,19 +348,21 @@ const MasterTable = () => {
                 </Box>
 
                 <div>
-                    <div>
-                        <CSVLink data={data} filename={"AHVD_DATA.csv"}>
-                            Download Data
-                        </CSVLink>
-                    </div>
+                    {data &&
+                        <div>
+                            <CSVLink data={data} filename={"AHVD_DATA.csv"}>
+                                Download Data
+                            </CSVLink>
+                        </div>
+                    }
 
                 </div>
             </Box>
 
             <div className="my-3 d-flex gap-3">
-                <input type="month" name="" className="form-control col-2" id="" />
+                <input type="month" name="" className="form-control col-2" id="" onChange={(e) => handleChangeMonth(e)} />
                 <div>
-                    <Button variant="contained" disabled>Approve for Payment</Button>
+                    <Button variant="contained" onClick={handleApproveAll}>Approve for Payment</Button>
                 </div>
             </div>
 
@@ -326,15 +378,13 @@ const MasterTable = () => {
 
                     <TableHead>
                         <TableRow>
-                            <StyledTableCell><Checkbox /></StyledTableCell>
-                            <StyledTableCell>Name of the applicant</StyledTableCell>
-                            <StyledTableCell>PAN number</StyledTableCell>
-                            <StyledTableCell>Area of residence</StyledTableCell>
+                            <StyledTableCell>#</StyledTableCell>
+                            <StyledTableCell>Applicant Name</StyledTableCell>
+                            <StyledTableCell>Co-operatice Name</StyledTableCell>
+                            <StyledTableCell>Registration no</StyledTableCell>
                             <StyledTableCell>District</StyledTableCell>
                             <StyledTableCell>Litter</StyledTableCell>
-                            <StyledTableCell>Status</StyledTableCell>
-                            <StyledTableCell>Action</StyledTableCell>
-                            {/* <StyledTableCell>Payout</StyledTableCell> */}
+                            <StyledTableCell align="center">Action</StyledTableCell>
                         </TableRow>
                     </TableHead>
 
@@ -343,33 +393,17 @@ const MasterTable = () => {
                             data.map((row, index) => {
                                 return (
                                     <TableRow hover tabIndex={-1} key={row.name}>
-                                        <TableCell align="right"><Checkbox /></TableCell>
+                                        <TableCell>{index+1}</TableCell>
                                         <TableCell component="th" scope="row">
                                             {row.name}
                                         </TableCell>
-                                        <TableCell align="right">{row.pan_number}</TableCell>
-                                        <TableCell align="right">{row.area}</TableCell>
-                                        <TableCell align="right">{row.district}</TableCell>
-                                        <TableCell align="right">
-                                            <input type="number" name="" id="" />
+                                        <TableCell>{row.name_of_co_operatice_society}</TableCell>
+                                        <TableCell>{row.registration_no_of_co_operatice_society}</TableCell>
+                                        <TableCell>{row.district}</TableCell>
+                                        <TableCell>
+                                            <input type="number" name="" disabled={row.isApprove === 'Approve'? true: false} value={row.litter ? row.litter : '' } id="" onChange={(e) => handleAddLitter(row.id, e.target.value)} />
                                         </TableCell>
                                         <TableCell align="center">
-                                            {row.status === "Draft" && (
-                                                <span className="bg-secondary px-3 rounded">Draft</span>
-                                            )}
-                                            {row.status === "Incompleted" && (
-                                                <span className="bg-warning px-3 rounded">
-                                                    Incompleted
-                                                </span>
-                                            )}
-                                            {row.status === "Approve" && (
-                                                <span className="bg-success px-3 rounded">Approve</span>
-                                            )}
-                                            {row.status === "Reject" && (
-                                                <span className="bg-danger px-3 rounded">Reject</span>
-                                            )}
-                                        </TableCell>
-                                        <TableCell align="right">
                                             <Button
                                                 variant="outlined"
                                                 color="primary"

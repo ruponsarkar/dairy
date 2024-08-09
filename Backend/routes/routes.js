@@ -1,5 +1,6 @@
 const FormController = require("../controllers").FormController;
 const AdminController = require("../controllers").AdminController;
+const MasterController = require("../controllers").MasterController;
 const jwt = require('jsonwebtoken');
 
 module.exports = (app) => {
@@ -18,6 +19,11 @@ module.exports = (app) => {
   app.post("/login", AdminController.login);
   app.post("/addOrUpdateAdmin", authenticateToken, AdminController.addOrUpdateAdmin);
   app.get("/getAdmins",authenticateToken, AdminController.getAdmins);
+  app.post("/saveToMaster", MasterController.saveToMaster);
+  app.post("/getMaster", MasterController.getMaster);
+  app.post("/postMonthlyReport", MasterController.postMonthlyReport);
+  app.post("/getMasterWithReport", MasterController.getMasterWithReport);
+  app.post("/getMonthlyReport", MasterController.getMonthlyReport);
 };
 
 function authenticateToken(req, res, next) {

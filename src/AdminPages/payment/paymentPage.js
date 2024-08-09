@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { styled } from "@mui/material/styles";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -8,14 +8,16 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import BasicMenu from "../../ui-component/menu";
-
+import { Button } from "@mui/material";
+import Checkbox from '@mui/material/Checkbox';
 import Swal from "sweetalert2";
+import PaymentsIcon from '@mui/icons-material/Payments';
 
 import api from "../../API/api";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
-    backgroundColor: theme.palette.common.black,
+    backgroundColor: theme.palette.common.blue,
     color: theme.palette.common.white,
   },
   [`&.${tableCellClasses.body}`]: {
@@ -33,73 +35,99 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-export default function PaymentPage({ data, getAdmins }) {
+export default function PaymentPage() {
+  const [data, setData] = useState();
+  const [month, setMonth] = useState(getCurrentMonth());
+
+  function getCurrentMonth() {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, '0'); // Months are zero-indexed, so add 1
+  
+    return `${year}-${month}`;
+  }
+
+  useEffect(() => {
+    getMonthlyReport();
+  }, [month]);
+
+  const getMonthlyReport = () => {
+    api
+      .getMonthlyReport(month)
+      .then((res) => {
+        console.log("res", res);
+        let selectAllData = res.data.data.map((e)=> ({ ...e, selected: true }) )
+        setData(selectAllData);
+      })
+      .catch((err) => {
+        console.log("err ", err);
+      });
+  };
+
+  const handleChangeMonth = (e) => {
+    setMonth(e.target.value)
+  };
 
 
-    const handleStatus=(data)=>{
-        console.log("data==>>", data);
-        // handleClose();
-        Swal.fire({
-            title: "Are you sure want to change active status?",
-            // text: "You won't be able to revert this!",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
-            confirmButtonText: "Yes, Change it!"
-          }).then((result) => {
-            if (result.isConfirmed) {
-                if(data.status === 'Active'){
-                    data.status = 'Inactive';
-                }
-                else{
-                    data.status = 'Active';
-                }
-                api.addOrUpdateAdmin(data).then((res)=>{
-                    console.log("res", res);
-                    // setOpen(false)
-                    getAdmins();
-                    
-                    Swal.fire('Updated added successfully');
-                    // getAdmins();
-                })
-                .catch((err)=>{
-                    console.log("err", err);
-                    Swal.fire('Something went wrong');
-                })
-            }
-          });
+
+  const [selectAll, setSelectAll] = useState(false);
+    const handeSelectAll = () => {
+        const newSelectAll = !selectAll;
+        setSelectAll(newSelectAll);
+        setData(data.map(item => ({ ...item, selected: newSelectAll })));
+
+    }
+
+    const handleSelect = (id) => {
+        const updatedItems = data.map(item =>
+            item.id === id ? { ...item, selected: !item.selected } : item
+        );
+        setData(updatedItems);
+        // Update the selectAll state based on the individual selections
+        const allSelected = updatedItems.every(item => item.selected);
+        setSelectAll(allSelected);
     }
 
 
-  const menuItems = (data) => [
-    {
-      name: "Change Active Status",
-      data: data,
-      onclick: ()=>handleStatus(data)
-    },
-    {
-      name: "Delete",
-      data: data,
-    //   onclick: ''
-    },
-  ];
+
+
+
+
+  const handleApproveAll = () => {
+    let selectedData = data.filter((e) => e.selected);
+    console.log(selectedData);
+  };
 
   return (
     <Paper className="p-2">
+      <div className="my-3 d-flex gap-3">
+        <input
+          type="month"
+          name=""
+          value={month}
+          className="form-control col-2"
+          id=""
+          onChange={(e) => handleChangeMonth(e)}
+        />
+        <div>
+          <Button variant="contained" onClick={handleApproveAll}>
+             Payout for all &nbsp; <PaymentsIcon />
+          </Button>
+        </div>
+      </div>
+
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 700 }} aria-label="customized table">
           <TableHead>
             <TableRow>
-              <StyledTableCell>SL No</StyledTableCell>
+              <StyledTableCell><Checkbox checked={selectAll ? true : false} onClick={handeSelectAll} /></StyledTableCell>
               <StyledTableCell>Name</StyledTableCell>
-              <StyledTableCell>Email</StyledTableCell>
-              <StyledTableCell>Phone</StyledTableCell>
-              <StyledTableCell>District</StyledTableCell>
-              <StyledTableCell>Role</StyledTableCell>
-              <StyledTableCell>Password</StyledTableCell>
+              <StyledTableCell>Co-operative name</StyledTableCell>
+              <StyledTableCell>Month</StyledTableCell>
+              <StyledTableCell>Litter</StyledTableCell>
+              <StyledTableCell>Ammount</StyledTableCell>
               <StyledTableCell>Status</StyledTableCell>
-              <StyledTableCell>Action</StyledTableCell>
+              {/* <StyledTableCell>Action</StyledTableCell> */}
             </TableRow>
           </TableHead>
           <TableBody>
@@ -107,22 +135,17 @@ export default function PaymentPage({ data, getAdmins }) {
               data.map((row, index) => (
                 <StyledTableRow key={row.id}>
                   <StyledTableCell component="th" scope="row">
-                    {index + 1}
+                  <Checkbox checked={row.selected ? true : false} onClick={() => handleSelect(row.id)} />
                   </StyledTableCell>
                   <StyledTableCell>{row.name}</StyledTableCell>
-                  <StyledTableCell>{row.email}</StyledTableCell>
-                  <StyledTableCell>{row.mobileNumber}</StyledTableCell>
-                  <StyledTableCell>{row.district}</StyledTableCell>
-                  <StyledTableCell>{row.role}</StyledTableCell>
-
-                  <StyledTableCell>------</StyledTableCell>
                   <StyledTableCell>
-                    {row.status === 'Active' && <div className="bg-success text-center text-white rounded">Active</div> }
-                    {row.status === 'Inactive' && <div className="bg-danger text-center text-white rounded">Inactive</div> }
-                    </StyledTableCell>
-                  <StyledTableCell>
-                    <BasicMenu menuItems={menuItems(row)} />
+                    {row.name_of_co_operatice_society}
                   </StyledTableCell>
+                  <StyledTableCell>{row.month}</StyledTableCell>
+                  <StyledTableCell>{row.litter}</StyledTableCell>
+
+                  <StyledTableCell>{row.amount}</StyledTableCell>
+                  <StyledTableCell>{row.paymentStatus}</StyledTableCell>
                 </StyledTableRow>
               ))}
           </TableBody>

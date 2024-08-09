@@ -12,15 +12,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
-import StadiumIcon from '@mui/icons-material/Stadium';
-import AttachmentIcon from '@mui/icons-material/Attachment';
-import UploadFileIcon from '@mui/icons-material/UploadFile';
-import CreateIcon from '@mui/icons-material/Create';
-import TableChartIcon from '@mui/icons-material/TableChart';
-import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
-import AutoStoriesIcon from '@mui/icons-material/AutoStories';
-import CollectionsIcon from '@mui/icons-material/Collections';
-import AddTaskIcon from '@mui/icons-material/AddTask';
+import RedeemIcon from '@mui/icons-material/Redeem';
 import Collapse from '@mui/material/Collapse';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
@@ -179,26 +171,16 @@ const Dashboard = (props) => {
 
         <ListItemButton onClick={()=>setOpenPay(!openPay)}>
           <ListItemIcon>
-            <LibraryBooksIcon />
+            <RedeemIcon />
           </ListItemIcon>
-          <ListItemText primary="Payout" />
+          <ListItemText primary="Subsidy" />
           {openPay ? <ExpandLess /> : <ExpandMore />}
         </ListItemButton>
 
         <Collapse in={openPay} timeout="auto" unmountOnExit>
           <List component="div" disablePadding>
-            <ListItemButton sx={{ pl: 4 }} onClick={() => navigate("/admin/newRequest")}>
-              <ListItemIcon>
-                <SubdirectoryArrowRightIcon />
-              </ListItemIcon>
-              <ListItemText primary="New Request" />
-            </ListItemButton>
-            <ListItemButton sx={{ pl: 4 }} onClick={() => navigate("/admin/MasterTable")}>
-              <ListItemIcon>
-                <SubdirectoryArrowRightIcon />
-              </ListItemIcon>
-              <ListItemText primary="MasterTable" />
-            </ListItemButton>
+            
+            
             <ListItemButton sx={{ pl: 4 }} onClick={() => navigate("/admin/PaymentPage")}>
               <ListItemIcon>
                 <SubdirectoryArrowRightIcon />

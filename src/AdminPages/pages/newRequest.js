@@ -251,6 +251,9 @@ const NewRequest = () => {
       api.updateFormStatus(data).then((res) => {
         console.log("final response :", res);
         Swal.fire('Successfully Updated !');
+        if(status === 'Approve'){
+          handleSaveToMaster(selectedRow)
+        }
         getFrom();
 
       })
@@ -260,6 +263,17 @@ const NewRequest = () => {
         })
 
     }
+
+    const handleSaveToMaster=(data)=>{
+      console.log("master", data);
+      api.saveToMaster(data).then((res)=>{
+        console.log("master res", res);
+      })
+      .catch((err)=>{
+        console.log("master err", err);
+      })
+    }
+  
 
 
 
@@ -282,6 +296,12 @@ const NewRequest = () => {
         console.log("err: ", err);
       })
   }
+
+
+
+ 
+
+
 
   return (
     <Paper className="p-2">
@@ -350,23 +370,7 @@ const NewRequest = () => {
           }
 
         </Box>
-        {/* <Link href="https://www.example.com" underline="none">
-          <Button
-            variant="contained"
-            color="primary"
-            sx={{
-              height: 40,
-              minWidth: 120,
-              '@media (max-width: 600px)': {
-                width: '100%',
-                marginTop: 1,
-              },
-            }}
-          >
-            <DownloadIcon />
-            Download Reports
-          </Button>
-        </Link> */}
+ 
 
         <CSVLink data={data} filename={"AHVD_DATA.csv"} >Download Data</CSVLink>
 
