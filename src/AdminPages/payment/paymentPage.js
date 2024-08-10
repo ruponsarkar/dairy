@@ -9,9 +9,9 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import BasicMenu from "../../ui-component/menu";
 import { Button } from "@mui/material";
-import Checkbox from '@mui/material/Checkbox';
+import Checkbox from "@mui/material/Checkbox";
 import Swal from "sweetalert2";
-import PaymentsIcon from '@mui/icons-material/Payments';
+import PaymentsIcon from "@mui/icons-material/Payments";
 
 import api from "../../API/api";
 
@@ -39,13 +39,21 @@ export default function PaymentPage() {
   const [data, setData] = useState();
   const [month, setMonth] = useState(getCurrentMonth());
 
+  const [role, setRole] = useState();
+
   function getCurrentMonth() {
     const now = new Date();
     const year = now.getFullYear();
-    const month = String(now.getMonth() + 1).padStart(2, '0'); // Months are zero-indexed, so add 1
-  
+    const month = String(now.getMonth() + 1).padStart(2, "0"); // Months are zero-indexed, so add 1
+
     return `${year}-${month}`;
   }
+
+  useEffect(() => {
+    // if (JSON.parse(sessionStorage.getItem('user')).role === 'Admin') {
+    setRole(JSON.parse(sessionStorage.getItem("user")).role);
+    // }
+  }, []);
 
   useEffect(() => {
     getMonthlyReport();
@@ -56,7 +64,10 @@ export default function PaymentPage() {
       .getMonthlyReport(month)
       .then((res) => {
         console.log("res", res);
-        let selectAllData = res.data.data.map((e)=> ({ ...e, selected: true }) )
+        let selectAllData = res.data.data.map((e) => ({
+          ...e,
+          selected: true,
+        }));
         setData(selectAllData);
       })
       .catch((err) => {
@@ -65,37 +76,36 @@ export default function PaymentPage() {
   };
 
   const handleChangeMonth = (e) => {
-    setMonth(e.target.value)
+    setMonth(e.target.value);
   };
 
-
-
   const [selectAll, setSelectAll] = useState(false);
-    const handeSelectAll = () => {
-        const newSelectAll = !selectAll;
-        setSelectAll(newSelectAll);
-        setData(data.map(item => ({ ...item, selected: newSelectAll })));
+  const handeSelectAll = () => {
+    const newSelectAll = !selectAll;
+    setSelectAll(newSelectAll);
+    setData(data.map((item) => ({ ...item, selected: newSelectAll })));
+  };
 
-    }
-
-    const handleSelect = (id) => {
-        const updatedItems = data.map(item =>
-            item.id === id ? { ...item, selected: !item.selected } : item
-        );
-        setData(updatedItems);
-        // Update the selectAll state based on the individual selections
-        const allSelected = updatedItems.every(item => item.selected);
-        setSelectAll(allSelected);
-    }
-
-
-
-
-
+  const handleSelect = (id) => {
+    const updatedItems = data.map((item) =>
+      item.id === id ? { ...item, selected: !item.selected } : item
+    );
+    setData(updatedItems);
+    // Update the selectAll state based on the individual selections
+    const allSelected = updatedItems.every((item) => item.selected);
+    setSelectAll(allSelected);
+  };
 
   const handleApproveAll = () => {
     let selectedData = data.filter((e) => e.selected);
     console.log(selectedData);
+
+
+    Swal.fire({
+      title: `Make Payment for ${selectedData.length} account!`,
+      text: "You will redirect to payment gatway",
+      icon: "warning"
+    });
   };
 
   return (
@@ -110,9 +120,11 @@ export default function PaymentPage() {
           onChange={(e) => handleChangeMonth(e)}
         />
         <div>
-          <Button variant="contained" onClick={handleApproveAll}>
-             Payout for all &nbsp; <PaymentsIcon />
-          </Button>
+          {role === "Super Admin" && (
+            <Button variant="contained" onClick={handleApproveAll}>
+              Payout for all &nbsp; <PaymentsIcon />
+            </Button>
+          )}
         </div>
       </div>
 
@@ -120,7 +132,12 @@ export default function PaymentPage() {
         <Table sx={{ minWidth: 700 }} aria-label="customized table">
           <TableHead>
             <TableRow>
-              <StyledTableCell><Checkbox checked={selectAll ? true : false} onClick={handeSelectAll} /></StyledTableCell>
+              <StyledTableCell>
+                <Checkbox
+                  checked={selectAll ? true : false}
+                  onClick={handeSelectAll}
+                />
+              </StyledTableCell>
               <StyledTableCell>Name</StyledTableCell>
               <StyledTableCell>Co-operative name</StyledTableCell>
               <StyledTableCell>Month</StyledTableCell>
@@ -135,7 +152,10 @@ export default function PaymentPage() {
               data.map((row, index) => (
                 <StyledTableRow key={row.id}>
                   <StyledTableCell component="th" scope="row">
-                  <Checkbox checked={row.selected ? true : false} onClick={() => handleSelect(row.id)} />
+                    <Checkbox
+                      checked={row.selected ? true : false}
+                      onClick={() => handleSelect(row.id)}
+                    />
                   </StyledTableCell>
                   <StyledTableCell>{row.name}</StyledTableCell>
                   <StyledTableCell>
