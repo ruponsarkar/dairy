@@ -263,6 +263,25 @@ const NewRequest = () => {
 
   }
 
+  const handleCreateBeneficiary = () => {
+    const data = {
+      beneficiaryId:'6earf87wb482bt2424', 
+      name : 'Jiadur Islam', 
+      email : 'jiadur@gmail.com', 
+      phone : '96016226005', 
+      bankAccountNumber : '6800023454545', 
+      ifscCode : 'SBIN0069', 
+      bankName : 'State Bank of India'
+    }
+    api.createBeneficiary(data).then((res) => {
+      Swal.fire('Beneficiary created successfully !');
+    })
+      .catch((err) => {
+        console.log("err : ", err);
+        Swal.fire('Something went wrong !');
+      })
+  }
+
   const getFrom = () => {
     // const data = {
     //   limit: 10,
@@ -340,6 +359,11 @@ const NewRequest = () => {
                 </MenuItem>
               ))}
             </Select>
+          </FormControl>
+          <FormControl>
+            <IconButton onClick={handleCreateBeneficiary}>
+              <CancelIcon />
+            </IconButton>
           </FormControl>
           {requestData.filterBy &&
             <IconButton onClick={handleClearFilter}>
@@ -421,9 +445,9 @@ const NewRequest = () => {
                         variant="outlined"
                         color="success"
                         size="small"
-                        // onClick={() => handleClickOpen(row)}
+                      // onClick={() => handleClickOpen(row)}
                       >
-                       Payout <PaymentsIcon/> 
+                        Payout <PaymentsIcon />
                       </Button>
                     </TableCell>
                   </TableRow>
@@ -452,18 +476,18 @@ const NewRequest = () => {
                   <div className="text-center card">
                     <h3>Pan Card</h3>
                     {/* <a href={`http://localhost:8800/${selectedRow.panCard}`}> */}
-                      <img src={`http://milksubsidydairyassam.com:8800/${selectedRow.panCard}`} className="img" alt="" />
+                    <img src={`https://milksubsidydairyassam.com:8800/${selectedRow.panCard}`} className="img" alt="" />
                     {/* </a> */}
                   </div>
                   <div className="text-center card">
                     <h3>Aadhar Card</h3>
-                    <img src={`http://milksubsidydairyassam.com:8800/${selectedRow.aadharCard}`} className="img" alt="" />
+                    <img src={`https://milksubsidydairyassam.com:8800/${selectedRow.aadharCard}`} className="img" alt="" />
                   </div>
                   <div className="text-center card">
                     <h3>
                       Passbook
                     </h3>
-                    <img src={`http://milksubsidydairyassam.com:8800/${selectedRow.passbook}`} className="img" alt="" />
+                    <img src={`https://milksubsidydairyassam.com:8800/${selectedRow.passbook}`} className="img" alt="" />
                   </div>
                 </div>
               }

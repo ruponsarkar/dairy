@@ -1,5 +1,6 @@
 const FormController = require("../controllers").FormController;
 const AdminController = require("../controllers").AdminController;
+const PaymentController = require("../controllers").PaymentController;
 const jwt = require('jsonwebtoken');
 
 module.exports = (app) => {
@@ -18,6 +19,10 @@ module.exports = (app) => {
   app.post("/login", AdminController.login);
   app.post("/addOrUpdateAdmin", authenticateToken, AdminController.addOrUpdateAdmin);
   app.get("/getAdmins",authenticateToken, AdminController.getAdmins);
+
+  // Payment API's
+
+  app.post("/createBeneficiary", PaymentController.createBeneficiary);
 };
 
 function authenticateToken(req, res, next) {

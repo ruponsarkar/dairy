@@ -38,9 +38,14 @@ export default {
 
     login(email, password) {
         return API.post('/login', { email, password })
+    },
+
+
+    // Payment 
+
+    createBeneficiary(data) {
+        return API.post('/createBeneficiary', { data });
     }
-
-
 
 
 }

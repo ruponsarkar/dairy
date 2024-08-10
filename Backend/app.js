@@ -20,6 +20,10 @@ require("./models/index");
 
 require("./routes/routes")(app);
 
+var privateKey = fs.readFileSync(`${process.env.privateKey}`, "utf8");
+var certificate = fs.readFileSync(`${process.env.certificate}`, "utf8");
+var bundle = fs.readFileSync(`${process.env.bundle}`, "utf8");
+
 const keepaliveAgent = new agent({
 	maxSockets: 100,
 	maxFreeSockets: 10,
@@ -28,6 +32,9 @@ const keepaliveAgent = new agent({
 });
 
 var options = {
+	key: privateKey,
+    cert: certificate,
+    ca: [bundle],
 	agent: keepaliveAgent
 };
 
