@@ -5,8 +5,8 @@ import axios from 'axios';
 // const {token} = AuthUser();
 
 const uploadAPI = axios.create({
-    // baseURL : "http://milksubsidydairyassam.com:8800/",
-    baseURL : "http://127.0.0.1:8800/",
+    baseURL : "https://milksubsidydairyassam.com:8800/",
+    // baseURL : "http://127.0.0.1:8800/",
     headers :{
         "Content-Type": "multipart/form-data",
         // "Authorization" : `Bearer ${token}`

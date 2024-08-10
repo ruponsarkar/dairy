@@ -12,15 +12,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
-import StadiumIcon from '@mui/icons-material/Stadium';
-import AttachmentIcon from '@mui/icons-material/Attachment';
-import UploadFileIcon from '@mui/icons-material/UploadFile';
-import CreateIcon from '@mui/icons-material/Create';
-import TableChartIcon from '@mui/icons-material/TableChart';
-import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
-import AutoStoriesIcon from '@mui/icons-material/AutoStories';
-import CollectionsIcon from '@mui/icons-material/Collections';
-import AddTaskIcon from '@mui/icons-material/AddTask';
+import RedeemIcon from '@mui/icons-material/Redeem';
 import Collapse from '@mui/material/Collapse';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
@@ -103,7 +95,7 @@ const Dashboard = (props) => {
   const [open, setOpen] = React.useState(false);
 
   const [openBlog, setBlogOpen] = React.useState(false);
-  const [openPublisher, setOpenPublisher] = React.useState(false);
+  const [openPay, setOpenPay] = React.useState(false);
   const [role, setRole] = useState();
 
   const handleClick = () => {
@@ -114,9 +106,7 @@ const Dashboard = (props) => {
     setBlogOpen(!openBlog);
   }
 
-  const publisherClick = () => {
-    setOpenPublisher(!openPublisher);
-  }
+  
 
   useEffect(() => {
     // if (JSON.parse(sessionStorage.getItem('user')).role === 'Admin') {
@@ -150,6 +140,8 @@ const Dashboard = (props) => {
             <ListItemText>Dashboard</ListItemText>
           </ListItemButton>
         </ListItem>
+
+
         <ListItemButton onClick={handleClick}>
           <ListItemIcon style={{color:'aliceblue'}}>
             <LibraryBooksIcon />
@@ -166,16 +158,41 @@ const Dashboard = (props) => {
               </ListItemIcon>
               <ListItemText primary="New Request" />
             </ListItemButton>
-
-            {/* <ListItemButton sx={{ pl: 4 }} onClick={() => navigate("/admin/JournalTable")}>
+            <ListItemButton sx={{ pl: 4 }} onClick={() => navigate("/admin/MasterTable")}>
               <ListItemIcon>
                 <SubdirectoryArrowRightIcon />
               </ListItemIcon>
-              <ListItemText primary="View Journal" />
-            </ListItemButton> */}
-
+              <ListItemText primary="MasterTable" />
+            </ListItemButton>
+            
           </List>
         </Collapse>
+
+
+        <ListItemButton onClick={()=>setOpenPay(!openPay)}>
+          <ListItemIcon>
+            <RedeemIcon />
+          </ListItemIcon>
+          <ListItemText primary="Subsidy" />
+          {openPay ? <ExpandLess /> : <ExpandMore />}
+        </ListItemButton>
+
+        <Collapse in={openPay} timeout="auto" unmountOnExit>
+          <List component="div" disablePadding>
+            
+            
+            <ListItemButton sx={{ pl: 4 }} onClick={() => navigate("/admin/PaymentPage")}>
+              <ListItemIcon>
+                <SubdirectoryArrowRightIcon />
+              </ListItemIcon>
+              <ListItemText primary="Payments" />
+            </ListItemButton>
+          </List>
+        </Collapse>
+
+
+
+        
         {role === 'Super Admin' &&
         <>
 

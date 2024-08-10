@@ -30,6 +30,24 @@ export default {
     countStatus(){
         return API.get('countStatus');
     },
+    saveToMaster(data){
+        return API.post('saveToMaster', {data});
+    },
+    getMaster(data){
+        return API.post('getMaster', {data});
+    },
+    postMonthlyReport(data, month, amountPerLitter){
+        return API.post('postMonthlyReport', {data, month, amountPerLitter});
+    },
+    getMasterWithReport(month){
+        return API.post('getMasterWithReport', {month});
+    },
+    getMonthlyReport(month){
+        return API.post('getMonthlyReport', {month});
+    },
+
+
+
 
     // login 
     register(formData) {

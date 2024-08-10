@@ -388,7 +388,7 @@ const RegisterForm = ({ mobileNumber, showFileInput, setShowFileInput }) => {
             />
           </div>
 
-          <div className="col-md-6">
+          {/* <div className="col-md-6">
             <label htmlFor="">
               Milk Production Data per month (From April, 2024 to March 2024)
             </label>
@@ -399,7 +399,7 @@ const RegisterForm = ({ mobileNumber, showFileInput, setShowFileInput }) => {
               onChange={handleInput}
               id=""
             />
-          </div>
+          </div> */}
 
           <div className="col-md-12">
             <div className="text-center">

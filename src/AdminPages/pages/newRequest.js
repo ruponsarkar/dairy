@@ -85,7 +85,7 @@ const EnhancedTableHead = (props) => {
     { id: "Village", numeric: true, disablePadding: false, label: "Village" },
     { id: "Status", numeric: true, disablePadding: false, label: "Status" },
     { id: "Action", numeric: true, disablePadding: false, label: "Action" },
-    { id: "Pay", numeric: true, disablePadding: false, label: "Payout" },
+    // { id: "Pay", numeric: true, disablePadding: false, label: "Payout" },
   ];
 
   return (
@@ -158,6 +158,8 @@ const NewRequest = () => {
   const [status, setStatus] = useState();
   const [remark, setRemark] = useState();
   const [districts, setDistricts] = useState(defaultdistricts)
+  const [openImgView, setOpenImgView] = useState(false);
+  const [selectedImg, setSelectedImg] = useState();
 
   const [requestData, setRequestData] = useState(
     {
@@ -249,6 +251,9 @@ const NewRequest = () => {
       api.updateFormStatus(data).then((res) => {
         console.log("final response :", res);
         Swal.fire('Successfully Updated !');
+        if(status === 'Approve'){
+          handleSaveToMaster(selectedRow)
+        }
         getFrom();
 
       })
@@ -258,6 +263,17 @@ const NewRequest = () => {
         })
 
     }
+
+    const handleSaveToMaster=(data)=>{
+      console.log("master", data);
+      api.saveToMaster(data).then((res)=>{
+        console.log("master res", res);
+      })
+      .catch((err)=>{
+        console.log("master err", err);
+      })
+    }
+  
 
 
 
@@ -299,6 +315,12 @@ const NewRequest = () => {
         console.log("err: ", err);
       })
   }
+
+
+
+ 
+
+
 
   return (
     <Paper className="p-2">
@@ -372,23 +394,7 @@ const NewRequest = () => {
           }
 
         </Box>
-        {/* <Link href="https://www.example.com" underline="none">
-          <Button
-            variant="contained"
-            color="primary"
-            sx={{
-              height: 40,
-              minWidth: 120,
-              '@media (max-width: 600px)': {
-                width: '100%',
-                marginTop: 1,
-              },
-            }}
-          >
-            <DownloadIcon />
-            Download Reports
-          </Button>
-        </Link> */}
+ 
 
         <CSVLink data={data} filename={"AHVD_DATA.csv"} >Download Data</CSVLink>
 
@@ -440,16 +446,15 @@ const NewRequest = () => {
                         View
                       </Button>
                     </TableCell>
-                    <TableCell align="right">
+                    {/* <TableCell align="right">
                       <Button
                         variant="outlined"
                         color="success"
                         size="small"
-                      // onClick={() => handleClickOpen(row)}
                       >
                         Payout <PaymentsIcon />
                       </Button>
-                    </TableCell>
+                    </TableCell> */}
                   </TableRow>
                 );
               })}
@@ -476,18 +481,30 @@ const NewRequest = () => {
                   <div className="text-center card">
                     <h3>Pan Card</h3>
                     {/* <a href={`http://localhost:8800/${selectedRow.panCard}`}> */}
-                    <img src={`https://milksubsidydairyassam.com:8800/${selectedRow.panCard}`} className="img" alt="" />
+                    <img src={`https://milksubsidydairyassam.com:8800/${selectedRow.panCard}`} className="img" alt=""
+                      onClick={() => {
+                        setOpenImgView(true);
+                        setSelectedImg(`https://milksubsidydairyassam.com:8800/${selectedRow.panCard}`)
+                      }} />
                     {/* </a> */}
                   </div>
                   <div className="text-center card">
                     <h3>Aadhar Card</h3>
-                    <img src={`https://milksubsidydairyassam.com:8800/${selectedRow.aadharCard}`} className="img" alt="" />
+                    <img src={`https://milksubsidydairyassam.com:8800/${selectedRow.aadharCard}`} className="img" alt=""
+                      onClick={() => {
+                        setOpenImgView(true);
+                        setSelectedImg(`https://milksubsidydairyassam.com:8800/${selectedRow.aadharCard}`)
+                      }} />
                   </div>
                   <div className="text-center card">
                     <h3>
                       Passbook
                     </h3>
-                    <img src={`https://milksubsidydairyassam.com:8800/${selectedRow.passbook}`} className="img" alt="" />
+                    <img src={`https://milksubsidydairyassam.com:8800/${selectedRow.passbook}`} className="img" alt=""
+                      onClick={() => {
+                        setOpenImgView(true);
+                        setSelectedImg(`https://milksubsidydairyassam.com:8800/${selectedRow.passbook}`)
+                      }} />
                   </div>
                 </div>
               }
@@ -518,6 +535,35 @@ const NewRequest = () => {
           </Button>
         </DialogActions>
       </Dialog>
+
+
+
+      {/* for image view  */}
+
+      <Dialog
+        open={openImgView}
+        onClose={() => setOpenImgView(false)}
+        aria-labelledby="protein-modal-title"
+        fullWidth={true}
+        maxWidth={'lg'}
+      >
+
+        <DialogContent>
+          <DialogContentText>
+            <div className="text-center">
+              <img src={`${selectedImg}`} className="img-fluid" alt="" />
+            </div>
+          </DialogContentText>
+        </DialogContent>
+
+
+      </Dialog>
+
+
+
+
+
+
     </Paper>
   );
 };
