@@ -36,6 +36,7 @@ import Swal from "sweetalert2";
 import CancelIcon from '@mui/icons-material/Cancel';
 // import IconButton from '@mui/material/IconButton';
 import { CSVLink, CSVDownload } from "react-csv";
+import PaymentsIcon from '@mui/icons-material/Payments';
 
 
 
@@ -84,6 +85,7 @@ const EnhancedTableHead = (props) => {
     { id: "Village", numeric: true, disablePadding: false, label: "Village" },
     { id: "Status", numeric: true, disablePadding: false, label: "Status" },
     { id: "Action", numeric: true, disablePadding: false, label: "Action" },
+    // { id: "Pay", numeric: true, disablePadding: false, label: "Payout" },
   ];
 
   return (
@@ -156,6 +158,8 @@ const NewRequest = () => {
   const [status, setStatus] = useState();
   const [remark, setRemark] = useState();
   const [districts, setDistricts] = useState(defaultdistricts)
+  const [openImgView, setOpenImgView] = useState(false);
+  const [selectedImg, setSelectedImg] = useState();
 
   const [requestData, setRequestData] = useState(
     {
@@ -184,11 +188,11 @@ const NewRequest = () => {
       filterData: event.target.value
     });
     setSelectedDistrict('');
-    
-    
+
+
   };
-  
-  const handleClearFilter=()=>{
+
+  const handleClearFilter = () => {
     setRequestData({
       ...requestData,
       filterBy: '',
@@ -223,9 +227,9 @@ const NewRequest = () => {
 
   const handleUpdate = () => {
     setOpen(false)
-    if (status === 'reject') {
+    if (status === 'Reject') {
       if (!remark) {
-        Swal.fire("Please enter any remarks for rejection ");
+        Swal.fire("Please enter any remarks for Rejection ");
         return;
       }
     }
@@ -247,6 +251,9 @@ const NewRequest = () => {
       api.updateFormStatus(data).then((res) => {
         console.log("final response :", res);
         Swal.fire('Successfully Updated !');
+        if(status === 'Approve'){
+          handleSaveToMaster(selectedRow)
+        }
         getFrom();
 
       })
@@ -256,6 +263,17 @@ const NewRequest = () => {
         })
 
     }
+
+    const handleSaveToMaster=(data)=>{
+      console.log("master", data);
+      api.saveToMaster(data).then((res)=>{
+        console.log("master res", res);
+      })
+      .catch((err)=>{
+        console.log("master err", err);
+      })
+    }
+  
 
 
 
@@ -278,6 +296,12 @@ const NewRequest = () => {
         console.log("err: ", err);
       })
   }
+
+
+
+ 
+
+
 
   return (
     <Paper className="p-2">
@@ -339,30 +363,14 @@ const NewRequest = () => {
               ))}
             </Select>
           </FormControl>
-          {requestData.filterBy && 
-          <IconButton onClick={handleClearFilter}>
-            <CancelIcon />
-          </IconButton>
+          {requestData.filterBy &&
+            <IconButton onClick={handleClearFilter}>
+              <CancelIcon />
+            </IconButton>
           }
 
         </Box>
-        {/* <Link href="https://www.example.com" underline="none">
-          <Button
-            variant="contained"
-            color="primary"
-            sx={{
-              height: 40,
-              minWidth: 120,
-              '@media (max-width: 600px)': {
-                width: '100%',
-                marginTop: 1,
-              },
-            }}
-          >
-            <DownloadIcon />
-            Download Reports
-          </Button>
-        </Link> */}
+ 
 
         <CSVLink data={data} filename={"AHVD_DATA.csv"} >Download Data</CSVLink>
 
@@ -398,16 +406,31 @@ const NewRequest = () => {
                     <TableCell align="right">{row.area}</TableCell>
                     <TableCell align="right">{row.district}</TableCell>
                     <TableCell align="right">{row.village}</TableCell>
-                    <TableCell align="right">{row.status}</TableCell>
+                    <TableCell align="center">
+                      {row.status === 'Draft' && <span className="bg-secondary px-3 rounded">Draft</span>}
+                      {row.status === 'Incompleted' && <span className="bg-warning px-3 rounded">Incompleted</span>}
+                      {row.status === 'Approve' && <span className="bg-success px-3 rounded">Approve</span>}
+                      {row.status === 'Reject' && <span className="bg-danger px-3 rounded">Reject</span>}
+                    </TableCell>
                     <TableCell align="right">
                       <Button
                         variant="outlined"
                         color="primary"
+                        size="small"
                         onClick={() => handleClickOpen(row)}
                       >
                         View
                       </Button>
                     </TableCell>
+                    {/* <TableCell align="right">
+                      <Button
+                        variant="outlined"
+                        color="success"
+                        size="small"
+                      >
+                        Payout <PaymentsIcon />
+                      </Button>
+                    </TableCell> */}
                   </TableRow>
                 );
               })}
@@ -430,20 +453,34 @@ const NewRequest = () => {
               <Application data={selectedRow} />
 
               {selectedRow &&
-                <div className="documents d-flex justify-content-center border p-3">
-                  <div className="text-center">
+                <div className="documents d-flex justify-content-center border p-3 gap-4">
+                  <div className="text-center card">
                     <h3>Pan Card</h3>
-                    <img src={`http://localhost:8800/${selectedRow.panCard}`} style={{ maxWidth: '300px' }} alt="" />
+                    {/* <a href={`http://localhost:8800/${selectedRow.panCard}`}> */}
+                    <img src={`http://localhost:8800/${selectedRow.panCard}`} className="img" alt=""
+                      onClick={() => {
+                        setOpenImgView(true);
+                        setSelectedImg(`http://localhost:8800/${selectedRow.panCard}`)
+                      }} />
+                    {/* </a> */}
                   </div>
-                  <div className="text-center">
+                  <div className="text-center card">
                     <h3>Aadhar Card</h3>
-                    <img src={`http://localhost:8800/${selectedRow.aadharCard}`} style={{ maxWidth: '300px' }} alt="" />
+                    <img src={`http://localhost:8800/${selectedRow.aadharCard}`} className="img" alt=""
+                      onClick={() => {
+                        setOpenImgView(true);
+                        setSelectedImg(`http://localhost:8800/${selectedRow.aadharCard}`)
+                      }} />
                   </div>
-                  <div className="text-center">
+                  <div className="text-center card">
                     <h3>
                       Passbook
                     </h3>
-                    <img src={`http://localhost:8800/${selectedRow.passbook}`} style={{ maxWidth: '300px' }} alt="" />
+                    <img src={`http://localhost:8800/${selectedRow.passbook}`} className="img" alt=""
+                      onClick={() => {
+                        setOpenImgView(true);
+                        setSelectedImg(`http://localhost:8800/${selectedRow.passbook}`)
+                      }} />
                   </div>
                 </div>
               }
@@ -452,11 +489,11 @@ const NewRequest = () => {
                 <div>
                   <select name="" id="" onChange={(e) => setStatus(e.target.value)} className="form-control">
                     <option value="">---select---</option>
-                    <option value="approve">Approve</option>
-                    <option value="reject">Reject</option>
+                    <option value="Approve">Approve</option>
+                    <option value="Reject">Reject</option>
                   </select>
                 </div>
-                {status === 'reject' &&
+                {status === 'Reject' &&
                   <div>
                     <input type="text" onChange={(e) => setRemark(e.target.value)} className="form-control" placeholder="Remark" name="" id="" />
                   </div>
@@ -474,6 +511,35 @@ const NewRequest = () => {
           </Button>
         </DialogActions>
       </Dialog>
+
+
+
+      {/* for image view  */}
+
+      <Dialog
+        open={openImgView}
+        onClose={() => setOpenImgView(false)}
+        aria-labelledby="protein-modal-title"
+        fullWidth={true}
+        maxWidth={'lg'}
+      >
+
+        <DialogContent>
+          <DialogContentText>
+            <div className="text-center">
+              <img src={`${selectedImg}`} className="img-fluid" alt="" />
+            </div>
+          </DialogContentText>
+        </DialogContent>
+
+
+      </Dialog>
+
+
+
+
+
+
     </Paper>
   );
 };

@@ -53285,3 +53285,12 @@ a.text-muted:hover {
 .dark-mode .border-dark {
   border-color: #4b545c !important;
 }
+
+
+.img {
+  border: 1px solid black;
+  padding: 10px;
+  width: 300px; /* You can set the dimensions to whatever you want */
+  height: 200px;
+  object-fit: cover;
+}

@@ -12,6 +12,8 @@ import DashboardPage from './AdminPages/pages/DashboardPage';
 
 import NewRequest from './AdminPages/pages/newRequest';
 import AdminManagement from './AdminPages/pages/adminManegement';
+import PaymentPage from './AdminPages/payment/paymentPage';
+import MasterTable from './AdminPages/pages/masterTable';
 
 import UserDashboard from './userPage/userDashboard';
 
@@ -82,7 +84,12 @@ function App() {
             <Route path='/admin' element={<DashboardPage />} />
             <Route path='newRequest' element={<NewRequest />} />
             <Route path='AdminManagement' element={<AdminManagement />} />
+<<<<<<< HEAD
             
+=======
+            <Route path='PaymentPage' element={<PaymentPage />} />
+            <Route path='MasterTable' element={<MasterTable />} />
+>>>>>>> 1aae811607e3640ae4d56bb175c076034740e8ff
 
           </Route>
 

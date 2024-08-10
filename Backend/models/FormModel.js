@@ -120,11 +120,11 @@ module.exports = {
     switch (role) {
       case "Super Admin":
         if(filterBy){
-          query = `SELECT * FROM forms WHERE ${filterBy} = '${filterData}' LIMIT ${limit} OFFSET ${offset}`;
+          query = `SELECT * FROM forms WHERE ${filterBy} = '${filterData}'  ORDER BY id DESC LIMIT ${limit} OFFSET ${offset}  `;
           console.log("1=>", query);
         }
         else{
-          query = `SELECT * FROM forms LIMIT ${limit} OFFSET ${offset}`;
+          query = `SELECT * FROM forms ORDER BY id DESC LIMIT ${limit} OFFSET ${offset}  `;
           console.log("2=>", query);
         }
 
@@ -132,11 +132,11 @@ module.exports = {
 
         case "Admin":
           if(filterBy){
-            query = `SELECT * FROM forms WHERE ${filterBy} = '${filterData}' AND district= '${district}' LIMIT ${limit} OFFSET ${offset}`;
+            query = `SELECT * FROM forms WHERE ${filterBy} = '${filterData}' AND district= '${district}' ORDER BY id DESC LIMIT ${limit} OFFSET ${offset}  `;
             console.log("3=>", query);
           }
           else{
-            query = `SELECT * FROM forms WHERE district = '${district}' LIMIT ${limit} OFFSET ${offset}`;
+            query = `SELECT * FROM forms WHERE district = '${district}' ORDER BY id DESC LIMIT ${limit} OFFSET ${offset}  `;
             console.log("4=>", query);
           }
     }
@@ -199,9 +199,9 @@ module.exports = {
    countStatus(callback) {
     // Define your queries
     let queries = {
-        approve: `SELECT COUNT(*) AS count FROM forms WHERE status = 'approve';`,
+        approve: `SELECT COUNT(*) AS count FROM forms WHERE status = 'Approve';`,
         draft: `SELECT COUNT(*) AS count FROM forms WHERE status = 'Draft';`,
-        rejected: `SELECT COUNT(*) AS count FROM forms WHERE status = 'rejected';`,
+        rejected: `SELECT COUNT(*) AS count FROM forms WHERE status = 'Reject';`,
         incompleted: `SELECT COUNT(*) AS count FROM forms WHERE status = 'Incompleted';`,
         total: `SELECT COUNT(*) AS count FROM forms;`
     };
