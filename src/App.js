@@ -84,12 +84,8 @@ function App() {
             <Route path='/admin' element={<DashboardPage />} />
             <Route path='newRequest' element={<NewRequest />} />
             <Route path='AdminManagement' element={<AdminManagement />} />
-<<<<<<< HEAD
-            
-=======
             <Route path='PaymentPage' element={<PaymentPage />} />
             <Route path='MasterTable' element={<MasterTable />} />
->>>>>>> 1aae811607e3640ae4d56bb175c076034740e8ff
 
           </Route>
 
