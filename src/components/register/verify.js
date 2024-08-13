@@ -45,7 +45,9 @@ const Verify = ({ setIsVerified, setMobileNumber, setShowFileInput }) => {
 
             } else {
               console.log("Here");
-              navigation("/Certificate", {state: { data: res.data.data }});
+              // navigation("/Certificate", {state: { data: res.data.data }});
+              sessionStorage.setItem('farmer', JSON.stringify(res.data.data ));
+              navigation("/user-panel");
             }
             console.log("found");
           } else {

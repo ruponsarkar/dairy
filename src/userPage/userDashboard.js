@@ -44,7 +44,7 @@ import ClassIcon from '@mui/icons-material/Class';
 import NewspaperIcon from '@mui/icons-material/Newspaper';
 
 import { useNavigate, Outlet } from 'react-router-dom';
-import { useLocation } from "react-router-dom";
+// import { useLocation } from "react-router-dom";
 // import AuthUser from '../../API/token';
 
 const drawerWidth = 240;
@@ -65,10 +65,10 @@ const pages = [];
 
 const UserDashboard = (props) => {
 //   const { token, logout, user } = AuthUser();
-const params = useLocation();
-const [farmer, setFarmer] = useState(params?.state?.data)
+// const params = useLocation();
+const [farmer, setFarmer] = useState(JSON.parse(sessionStorage.getItem('farmer')))
 
-console.log("==>>", farmer);
+// console.log("==>>", farmer);
 
 
   const { window } = props;
@@ -91,6 +91,11 @@ console.log("==>>", farmer);
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+
+  const logout=()=>{
+    sessionStorage.setItem('farmer', null);
+    navigate('/RegisterPage')
+  }
 
 
 
@@ -126,8 +131,21 @@ console.log("==>>", farmer);
     // if (JSON.parse(sessionStorage.getItem('user')).role === 'Admin') {
     //   setRole(JSON.parse(sessionStorage.getItem('user')).role )
     // }
+    console.log("farmer===>>>", JSON.parse(sessionStorage.getItem('farmer')));
+    setFarmer(JSON.parse(sessionStorage.getItem('farmer')));
 
   }, [])
+
+  useEffect(()=>{
+    if(!JSON.parse(sessionStorage.getItem('farmer'))){
+      // window.location.href = '/'
+      navigate('/RegisterPage')
+      console.log("not found");
+    }
+    else{
+      console.log("found");
+    }
+  })
 
 
 
@@ -178,14 +196,14 @@ console.log("==>>", farmer);
             <ListItemText>Grievances</ListItemText>
           </ListItemButton>
         </ListItem>
-        <ListItem disablePadding onClick={() => navigate("/user-panel/profile")}>
+        {/* <ListItem disablePadding onClick={() => navigate("/user-panel/profile")}>
           <ListItemButton>
             <ListItemIcon>
               <AccountCircleIcon />
             </ListItemIcon>
             <ListItemText>Profie</ListItemText>
           </ListItemButton>
-        </ListItem>
+        </ListItem> */}
         
         {role === 'Super Admin' &&
         <>
@@ -213,14 +231,14 @@ console.log("==>>", farmer);
 
        
 
-        {/* <ListItem disablePadding onClick={logout}>
+        <ListItem disablePadding onClick={logout}>
           <ListItemButton>
             <ListItemIcon>
               <AccountCircleIcon />
             </ListItemIcon>
             <ListItemText>Logout</ListItemText>
           </ListItemButton>
-        </ListItem> */}
+        </ListItem>
 
        
 
