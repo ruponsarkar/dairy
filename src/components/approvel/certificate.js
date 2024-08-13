@@ -52,7 +52,7 @@ const Certificate = () => {
             alt="Government Logo"
             className="govt-logo"
           />
-          <h1>Government of India</h1>
+          <h1>Government of Assam</h1>
         </div>
         <div className="certificate-body pt-2">
           <h2><u>Certificate of Approval</u></h2>
@@ -61,15 +61,29 @@ const Certificate = () => {
         </div>
         <Application data={params.state.data} />
         
-        <div className="certificate-footer p-4">
-          <div className="signatures">
+        <div className="certificate-footer p-4 text-left">
+          <div >
+          <u><b>Terms and conditions</b></u>
+          </div>
+          <div>
+            <p className="p-0 m-0">
+            1. As the payment will be made on quarterly basis of milk production by dairy farmers after proper DCS registration.
+            </p>
+            <p className="p-0 m-0">
+            2. Payment is made on basis of proper account no and kYC documents by the beneficiaries.
+            </p>
+            <p className="p-0 m-0">
+            3. ⁠payment is subject to availability of funds
+            </p>
+          </div>
+          {/* <div className="signatures">
             <div className="signature">
               <p>Authority 1</p>
             </div>
             <div className="signature">
               <p>Authority 2</p>
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

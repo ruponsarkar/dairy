@@ -162,7 +162,7 @@ const Dashboard = (props) => {
               <ListItemIcon>
                 <SubdirectoryArrowRightIcon />
               </ListItemIcon>
-              <ListItemText primary="MasterTable" />
+              <ListItemText primary="Master Table" />
             </ListItemButton>
             
           </List>

@@ -73,15 +73,17 @@ const AdminCategory = () => {
                             <label htmlFor="">Admin Email Id</label>
                             <input type="text" className='form-control' name="email" id="" onChange={(e)=>setFormData({...formData, [e.target.name]: e.target.value})} />
                         </div>
+
                         <div className="col-md-6">
                             <label htmlFor="">Admin Role</label>
                             <select className='form-control' name="role" id="" onChange={(e)=>setFormData({...formData, [e.target.name]: e.target.value})} >
                                 <option value="">------</option>
-                                <option value="Admin">Admin</option>
+                                <option value="Admin">Admin (DCS)</option>
                                 <option value="Super Admin">Super Admin</option>
                             </select>
-                            {/* <input type="text" className='form-control' name="role" id="" onChange={(e)=>setFormData({...formData, [e.target.name]: e.target.value})} /> */}
                         </div>
+
+
                         <div className="col-md-6">
                             <label htmlFor="">Assign District</label>
                             <select className='form-control' name="district" id="" onChange={(e)=>setFormData({...formData, [e.target.name]: e.target.value})} >
@@ -89,14 +91,13 @@ const AdminCategory = () => {
                                 {districts && districts.map((d)=>(
                                 <option value={d}>{d}</option>
                                 ))}
-                                {/* <option value="Super Admin">Super Admin</option> */}
                             </select>
                             {/* <input type="text" className='form-control' name="district" id="" onChange={(e)=>setFormData({...formData, [e.target.name]: e.target.value})} /> */}
                         </div>
-                        <div className="col-md-6">
+                        {/* <div className="col-md-6">
                             <label htmlFor="">Password</label>
                             <input type="password" className='form-control' name="password" id="" onChange={(e)=>setFormData({...formData, [e.target.name]: e.target.value})} />
-                        </div>
+                        </div> */}
 
                         <div className='text-center'>
                             <Button variant='contained' onClick={handleSaveAdmin}>Save Admin</Button>
