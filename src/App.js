@@ -95,11 +95,9 @@ function App() {
         </Routes>
       }
 
-
         <Routes>
           {/* admin  */}
           <Route path='/user-panel' element={<UserDashboard />}>
-            
             <Route path='/user-panel' element={<UserDashboard />} />
             <Route path='download-Certificate' element={<UserCertificate />} />
             <Route path='subsidy' element={<ApplyForm />} />
