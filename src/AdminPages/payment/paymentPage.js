@@ -12,7 +12,7 @@ import { Button } from "@mui/material";
 import Checkbox from "@mui/material/Checkbox";
 import Swal from "sweetalert2";
 import PaymentsIcon from "@mui/icons-material/Payments";
-
+import { CSVLink, CSVDownload } from "react-csv";
 import api from "../../API/api";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -40,6 +40,8 @@ export default function PaymentPage() {
   const [month, setMonth] = useState(getCurrentMonth());
 
   const [role, setRole] = useState();
+  const [from, setFrom] = useState();
+  const [to, setTo] = useState();
 
   function getCurrentMonth() {
     const now = new Date();
@@ -108,17 +110,28 @@ export default function PaymentPage() {
     });
   };
 
+  const handleRangeSubsidy = () => {
+    api.getRangeSubsidy(from, to).then((res) => {
+      console.log("ress ", res);
+      setData(res.data.data)
+    })
+      .catch((err) => {
+        console.log("err e", err);
+      })
+  }
+
   return (
     <Paper className="p-2">
       <div className="my-3 d-flex gap-3">
-        <input
+        {/* <input
           type="month"
           name=""
           value={month}
           className="form-control col-2"
           id=""
           onChange={(e) => handleChangeMonth(e)}
-        />
+        /> */}
+
         <div>
           {role === "Super Admin" && (
             <Button variant="contained" onClick={handleApproveAll}>
@@ -126,7 +139,33 @@ export default function PaymentPage() {
             </Button>
           )}
         </div>
+
+        <div>
+          {data &&
+            <div>
+              <CSVLink data={data} filename={"AHVD_SUBSIDYcsv"}>
+                Download Report
+              </CSVLink>
+            </div>
+          }
+        </div>
+
       </div>
+
+      <div className="d-flex gap-2">
+        <input type="month" className="form-control col-2" value={from} onChange={(e) => setFrom(e.target.value)} name="" id="" />
+        <input type="month" className="form-control col-2" name="" value={to} onChange={(e) => setTo(e.target.value)} id="" />
+        <div>
+          <Button variant="contained" onClick={handleRangeSubsidy}> Subsidy Details </Button>
+        </div>
+
+        
+      </div>
+
+
+
+
+
 
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 700 }} aria-label="customized table">
@@ -140,10 +179,10 @@ export default function PaymentPage() {
               </StyledTableCell>
               <StyledTableCell>Name</StyledTableCell>
               <StyledTableCell>Co-operative name</StyledTableCell>
-              <StyledTableCell>Month</StyledTableCell>
-              <StyledTableCell>Litter</StyledTableCell>
+              <StyledTableCell>Subsidy Details</StyledTableCell>
               <StyledTableCell>Ammount</StyledTableCell>
-              <StyledTableCell>Status</StyledTableCell>
+              <StyledTableCell>Bank Account No</StyledTableCell>
+              <StyledTableCell>Payment Status</StyledTableCell>
               {/* <StyledTableCell>Action</StyledTableCell> */}
             </TableRow>
           </TableHead>
@@ -161,15 +200,34 @@ export default function PaymentPage() {
                   <StyledTableCell>
                     {row.name_of_co_operatice_society}
                   </StyledTableCell>
-                  <StyledTableCell>{row.month}</StyledTableCell>
-                  <StyledTableCell>{row.litter}</StyledTableCell>
+                  <StyledTableCell width={200}>{row.subsidy_details}</StyledTableCell>
 
-                  <StyledTableCell>{row.amount}</StyledTableCell>
-                  <StyledTableCell>{row.paymentStatus}</StyledTableCell>
+                  <StyledTableCell> <strong> {row.total_amount} </strong> </StyledTableCell>
+                  <StyledTableCell>{row.bank_account_no}</StyledTableCell>
+                  <StyledTableCell>
+                    <span className={`${row.paymentStatus === 'Pending' ? 'bg-warning' : 'bg-success'} rounded px-2`}>
+                      {row.paymentStatus}
+                    </span>
+                  </StyledTableCell>
                 </StyledTableRow>
-              ))}
+              ))
+
+            }
+
+
           </TableBody>
+
         </Table>
+        <div>
+          {!data &&
+            <div className="text-center">
+              <h3>Data not found</h3>
+            </div>
+          }
+        </div>
+
+
+
       </TableContainer>
     </Paper>
   );

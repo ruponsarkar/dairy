@@ -167,11 +167,6 @@ module.exports = {
       callback({ message: `Inserted ${insertedLength} items successfully` });
   },
 
-
-
-
-
-
   async getMasterWithReport(month, callback) {
     console.log("month", month);
 
@@ -218,40 +213,40 @@ module.exports = {
     let query = "";
     if (month) {
       query = `SELECT 
-      masters.name, 
-      masters.name_of_co_operatice_society, 
-      masters.registration_no_of_co_operatice_society, 
-      masters.bank_name, 
-      masters.bank_account_holder_name, 
-      masters.bank_account_no, 
-      masters.ifsc_code, 
-      masters.district,
-      monthly_reports.month, 
-      monthly_reports.litter, 
-      monthly_reports.amount, 
-      monthly_reports.isApprove, 
-      monthly_reports.paymentStatus,
-      monthly_reports.id
+                masters.name, 
+                masters.name_of_co_operatice_society, 
+                masters.registration_no_of_co_operatice_society, 
+                masters.bank_name, 
+                masters.bank_account_holder_name, 
+                masters.bank_account_no, 
+                masters.ifsc_code, 
+                masters.district,
+                monthly_reports.month, 
+                monthly_reports.litter, 
+                monthly_reports.amount, 
+                monthly_reports.isApprove, 
+                monthly_reports.paymentStatus,
+                monthly_reports.id
 
-  FROM 
-      masters
-  JOIN 
-      monthly_reports 
-  ON 
-      masters.applicationId = monthly_reports.applicationId
-  WHERE 
-      monthly_reports.month = ?;
-  `;
+            FROM 
+                masters
+            JOIN 
+                monthly_reports 
+            ON 
+                masters.applicationId = monthly_reports.applicationId
+            WHERE 
+                monthly_reports.month = ?;
+            `;
     } else {
       query = `SELECT 
-    masters.name, masters.name_of_co_operatice_society, masters.registration_no_of_co_operatice_society, masters.bank_name, masters.bank_account_holder_name, masters.bank_account_no, masters.ifsc_code, masters.district,
-    monthly_reports.month, monthly_reports.litter, monthly_reports.amount, monthly_reports.isApprove, monthly_reports.paymentStatus, monthly_reports.id
-  FROM 
-    masters
-    JOIN 
-    monthly_reports 
-  ON 
-    masters.applicationId = monthly_reports.applicationId; `;
+                masters.name, masters.name_of_co_operatice_society, masters.registration_no_of_co_operatice_society, masters.bank_name, masters.bank_account_holder_name, masters.bank_account_no, masters.ifsc_code, masters.district,
+                monthly_reports.month, monthly_reports.litter, monthly_reports.amount, monthly_reports.isApprove, monthly_reports.paymentStatus, monthly_reports.id
+              FROM 
+                masters
+                JOIN 
+                monthly_reports 
+              ON 
+                masters.applicationId = monthly_reports.applicationId; `;
     }
 
     db.query(query, [month], (err, result) => {
@@ -264,4 +259,58 @@ module.exports = {
       }
     });
   },
+
+
+
+
+  getRangeSubsidy(from, to, callback){
+            // let query =  `SELECT 
+            //         applicationId,
+            //             GROUP_CONCAT(CONCAT(month, ': ', amount) ORDER BY month ASC SEPARATOR ', ') AS subsidy_details
+            //         FROM 
+            //         monthly_reports
+            //         WHERE 
+            //           month BETWEEN ? AND ?
+            //         GROUP BY 
+            //         applicationId;
+            //   `;
+
+            let query = `SELECT 
+            mr.applicationId,
+            mr.paymentStatus,
+            u.name,
+            u.district,
+            u.name_of_co_operatice_society,
+            u.bank_name,
+            u.bank_account_holder_name,
+            u.bank_account_no,
+            u.ifsc_code,
+            GROUP_CONCAT(CONCAT(mr.month, ': ', mr.amount, ' (L: ', mr.litter, ')') ORDER BY mr.month ASC SEPARATOR ', ') AS subsidy_details,
+            SUM(mr.amount) AS total_amount
+          FROM 
+            monthly_reports mr
+          JOIN 
+            masters u ON mr.applicationId = u.applicationId
+          WHERE 
+            mr.month BETWEEN ? AND ? 
+            AND mr.paymentStatus = 'Pending'
+            AND mr.isApprove = 'Approve'
+          GROUP BY 
+            mr.applicationId, u.name;`
+
+
+              db.query(query, [from, to], (err, result) => {
+                if (err) {
+                  console.log("Error: ", err);
+                  callback && callback({ message: "Error occurred", error: err });
+                } else {
+                  console.log("result ==>>", result);
+                  callback && callback({ message: "success", data: result });
+                }
+              });
+
+
+
+
+  }
 };

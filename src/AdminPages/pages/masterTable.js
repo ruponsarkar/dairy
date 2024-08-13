@@ -119,7 +119,7 @@ const MasterTable = () => {
     const [amountPerLitter, setAmountPerLitter] = useState(5);
 
 
-    
+
 
     const [requestData, setRequestData] = useState({
         limit: 100,
@@ -230,12 +230,12 @@ const MasterTable = () => {
 
     const handleApproveAll = () => {
 
-        if(!month){
+        if (!month) {
             Swal.fire({
                 title: "Month Not selected !",
                 text: "You must selct a month!",
                 icon: "warning"
-              });
+            });
             return;
         }
 
@@ -252,9 +252,9 @@ const MasterTable = () => {
                 title: "Approved for Payment!",
                 text: "Data sent for payment!",
                 icon: "success"
-              });
+            });
 
-              getMasterWithReport(month)
+            getMasterWithReport(month)
             return;
         })
             .catch((err) => {
@@ -362,7 +362,7 @@ const MasterTable = () => {
             <div className="my-3 d-flex gap-3">
                 <input type="month" name="" className="form-control col-2" id="" onChange={(e) => handleChangeMonth(e)} />
                 <div>
-                    <Button variant="contained" onClick={handleApproveAll}>Approve for Payment</Button>
+                    <Button variant="contained" onClick={handleApproveAll}>Approve for Payment for SLC</Button>
                 </div>
             </div>
 
@@ -384,6 +384,7 @@ const MasterTable = () => {
                             <StyledTableCell>Registration no</StyledTableCell>
                             <StyledTableCell>District</StyledTableCell>
                             <StyledTableCell>Litter</StyledTableCell>
+                            <StyledTableCell align="center">Status</StyledTableCell>
                             <StyledTableCell align="center">Action</StyledTableCell>
                         </TableRow>
                     </TableHead>
@@ -393,7 +394,7 @@ const MasterTable = () => {
                             data.map((row, index) => {
                                 return (
                                     <TableRow hover tabIndex={-1} key={row.name}>
-                                        <TableCell>{index+1}</TableCell>
+                                        <TableCell>{index + 1}</TableCell>
                                         <TableCell component="th" scope="row">
                                             {row.name}
                                         </TableCell>
@@ -401,7 +402,15 @@ const MasterTable = () => {
                                         <TableCell>{row.registration_no_of_co_operatice_society}</TableCell>
                                         <TableCell>{row.district}</TableCell>
                                         <TableCell>
-                                            <input type="number" name="" disabled={row.isApprove === 'Approve'? true: false} value={row.litter ? row.litter : '' } id="" onChange={(e) => handleAddLitter(row.id, e.target.value)} />
+                                            <input type="number" name="" disabled={row.isApprove === 'Approve' ? true : false} value={row.litter ? row.litter : ''} id="" onChange={(e) => handleAddLitter(row.id, e.target.value)} />
+                                        </TableCell>
+                                        <TableCell>
+
+
+                                            <span className={`${row.isApprove === 'Pending' || !row.isApprove ? 'bg-warning' : 'bg-success'} rounded px-2`}>
+                                                {row.isApprove ? row.isApprove : 'Pending'}
+                                            </span>
+
                                         </TableCell>
                                         <TableCell align="center">
                                             <Button
@@ -413,20 +422,21 @@ const MasterTable = () => {
                                                 View
                                             </Button>
                                         </TableCell>
-                                        {/* <TableCell align="right">
-                                            <Button
-                                                variant="outlined"
-                                                color="success"
-                                                size="small"
-                                            >
-                                                Payout <PaymentsIcon />
-                                            </Button>
-                                        </TableCell> */}
                                     </TableRow>
                                 );
                             })}
                     </TableBody>
                 </Table>
+
+                <div>
+                    {!data &&
+                        <div className="text-center">
+                            <h3>Data not found</h3>
+                        </div>
+                    }
+                </div>
+
+
             </TableContainer>
 
             <Dialog
