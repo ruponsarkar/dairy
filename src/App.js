@@ -16,6 +16,7 @@ import PaymentPage from './AdminPages/payment/paymentPage';
 import MasterTable from './AdminPages/pages/masterTable';
 
 import UserDashboard from './userPage/userDashboard';
+import UserCertificate from './userPage/userCertificate';
 
 
 
@@ -94,13 +95,11 @@ function App() {
         </Routes>
       }
 
-
         <Routes>
           {/* admin  */}
           <Route path='/user-panel' element={<UserDashboard />}>
-            
             <Route path='/user-panel' element={<UserDashboard />} />
-            <Route path='subsidy-Certificate' element={<Certificate />} />
+            <Route path='download-Certificate' element={<UserCertificate />} />
             <Route path='subsidy' element={<ApplyForm />} />
             <Route path='UserDashboardTable' element={<UserDashboardTable />} />
             <Route path='grievance' element={<Grievance />} />
