@@ -38,6 +38,7 @@ import SubdirectoryArrowRightIcon from '@mui/icons-material/SubdirectoryArrowRig
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import SmsIcon from '@mui/icons-material/Sms';
 import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
 import ClassIcon from '@mui/icons-material/Class';
 import NewspaperIcon from '@mui/icons-material/Newspaper';
@@ -152,15 +153,7 @@ const UserDashboard = (props) => {
             <ListItemText>Dashboard</ListItemText>
           </ListItemButton>
         </ListItem>
-        <ListItem disablePadding onClick={() => navigate("/download-Certificate")}>
-          <ListItemButton>
-            <ListItemIcon>
-              <WorkspacePremiumIcon />
-            </ListItemIcon>
-            <ListItemText>Download Certificate</ListItemText>
-          </ListItemButton>
-        </ListItem>
-        <ListItem disablePadding onClick={() => navigate("/apply-certificate")}>
+        <ListItem disablePadding onClick={() => navigate("/user-panel/subsidy")}>
           <ListItemButton>
             <ListItemIcon>
               <SendIcon />
@@ -168,7 +161,23 @@ const UserDashboard = (props) => {
             <ListItemText>Apply Subsidy</ListItemText>
           </ListItemButton>
         </ListItem>
-        <ListItem disablePadding onClick={() => navigate("/profile")}>
+        <ListItem disablePadding onClick={() => navigate("/user-panel/download-Certificate")}>
+          <ListItemButton>
+            <ListItemIcon>
+              <WorkspacePremiumIcon />
+            </ListItemIcon>
+            <ListItemText>Download Certificate</ListItemText>
+          </ListItemButton>
+        </ListItem>
+        <ListItem disablePadding onClick={() => navigate("/user-panel/grievance")}>
+          <ListItemButton>
+            <ListItemIcon>
+              <SmsIcon />
+            </ListItemIcon>
+            <ListItemText>Grievances</ListItemText>
+          </ListItemButton>
+        </ListItem>
+        <ListItem disablePadding onClick={() => navigate("/user-panel/profile")}>
           <ListItemButton>
             <ListItemIcon>
               <AccountCircleIcon />
