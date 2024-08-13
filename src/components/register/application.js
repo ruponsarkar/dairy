@@ -81,16 +81,16 @@ const Application = ({ data }) => {
                   <th>Name of the Account holder </th>
                   <th>Bank Account Number</th>
                   <th>IFSC code</th>
-                  <th>
+                  {/* <th>
                     Milk Production Data per month (From April, 2024 to March
                     2024)
-                  </th>
+                  </th> */}
                 </tr>
                 <tr>
                   <td>{data.bank_account_holder_name}</td>
                   <td>{data.bank_account_no}</td>
                   <td>{data.ifsc_code}</td>
-                  <td>{data.milk_production_per_month}</td>
+                  {/* <td>{data.milk_production_per_month}</td> */}
                 </tr>
 
                 <tr>
