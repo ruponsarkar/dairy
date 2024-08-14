@@ -29,6 +29,8 @@ module.exports = (app) => {
   app.post("/postMonthlyReport", MasterController.postMonthlyReport);
   app.post("/getMasterWithReport", MasterController.getMasterWithReport);
   app.post("/getMonthlyReport", MasterController.getMonthlyReport);
+  
+  app.post("/getRangeSubsidy", MasterController.getRangeSubsidy);
 };
 
 function authenticateToken(req, res, next) {

@@ -45,6 +45,9 @@ export default {
     getMonthlyReport(month){
         return API.post('getMonthlyReport', {month});
     },
+    getRangeSubsidy(from, to){
+        return API.post('getRangeSubsidy', {from, to});
+    },
 
 
 

@@ -57,8 +57,8 @@ module.exports = {
   },
   addOrUpdateAdmin(form, callback) {
     let insertQuery = `
-  INSERT INTO admins (name, mobileNumber, email, role, district, password, status) 
-  VALUES (?, ?, ?, ?, ?, ?, ?)
+  INSERT INTO admins (uid, name, mobileNumber, email, role, district, password, status) 
+  VALUES (?, ?, ?, ?, ?, ?, ?, ?)
   ON DUPLICATE KEY UPDATE 
     name = VALUES(name),
     mobileNumber = VALUES(mobileNumber),
@@ -67,8 +67,10 @@ module.exports = {
     password = VALUES(password),
     status = VALUES(status)
 `;
+let uid = Date.now();
 
     let params = [
+      uid,
       form.name,
       form.mobileNumber,
       form.email,

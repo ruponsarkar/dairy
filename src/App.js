@@ -16,13 +16,15 @@ import PaymentPage from './AdminPages/payment/paymentPage';
 import MasterTable from './AdminPages/pages/masterTable';
 
 import UserDashboard from './userPage/userDashboard';
+import UserCertificate from './userPage/userCertificate';
 
 
 
 
 
 import ApplyForm from './userPage/applyForm';
-import UserDashboardTable from './userPage/dashboardTable'
+import UserDashboardTable from './userPage/dashboardTable';
+import Grievance from './userPage/grievance';
 
 
 
@@ -60,10 +62,10 @@ function App() {
 
 
 
-          <Route path='user-panel' element={<UserDashboard />} />
+          {/* <Route path='user-panel' element={<UserDashboard />} />
           <Route path='download-Certificate' element={<Certificate />} />
           <Route path='apply-certificate' element={<ApplyForm />} />
-          <Route path='UserDashboardTable' element={<UserDashboardTable />} />
+          <Route path='UserDashboardTable' element={<UserDashboardTable />} /> */}
         </Routes>
 
         {/* }  */}
@@ -91,6 +93,19 @@ function App() {
 
         </Routes>
       }
+
+        <Routes>
+          {/* admin  */}
+          <Route path='/user-panel' element={<UserDashboard />}>
+            <Route path='/user-panel' element={<UserDashboard />} />
+            <Route path='download-Certificate' element={<UserCertificate />} />
+            <Route path='subsidy' element={<ApplyForm />} />
+            <Route path='UserDashboardTable' element={<UserDashboardTable />} />
+            <Route path='grievance' element={<Grievance />} />
+
+          </Route>
+
+        </Routes>
     </>
   );
 }
