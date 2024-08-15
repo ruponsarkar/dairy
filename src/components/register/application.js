@@ -20,14 +20,16 @@ const Application = ({ data }) => {
                 <tr>
                   <th>Name of the applicant</th>
                   <th>Father/Spouse's Name</th>
+                  <th>Mobile Number</th>
                   <th>Date of Birth</th>
-                  <th>Gender of the applicant</th>
+                  
                 </tr>
                 <tr>
                   <td>{data.name}</td>
                   <td>{data.fathersName}</td>
+                  <td>{data.mobileNumber}</td>
                   <td>{data.dob}</td>
-                  <td>{data.gender}</td>
+                  
                 </tr>
                 <tr>
                   <th>12 digit AADHAAR number</th>
@@ -81,16 +83,14 @@ const Application = ({ data }) => {
                   <th>Name of the Account holder </th>
                   <th>Bank Account Number</th>
                   <th>IFSC code</th>
-                  {/* <th>
-                    Milk Production Data per month (From April, 2024 to March
-                    2024)
-                  </th> */}
+                  <th>Gender</th>
+                  
                 </tr>
                 <tr>
                   <td>{data.bank_account_holder_name}</td>
                   <td>{data.bank_account_no}</td>
                   <td>{data.ifsc_code}</td>
-                  {/* <td>{data.milk_production_per_month}</td> */}
+                  <td>{data.gender}</td>
                 </tr>
 
                 <tr>
@@ -113,10 +113,10 @@ const Application = ({ data }) => {
                       <span className="bg-warning px-1 rounded">Incompleted</span>
                     )}
                     {data.status === "Approve" && (
-                      <span className="bg-success px-1 rounded">Approve</span>
+                      <span className="bg-success px-1 rounded">Approved</span>
                     )}
                     {data.status === "Reject" && (
-                      <span className="bg-danger px-1 rounded">Reject</span>
+                      <span className="bg-danger px-1 rounded">Rejected</span>
                     )}
                   </td>
                   {data.status === "Reject" &&
