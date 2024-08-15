@@ -8,33 +8,33 @@ const DashboardPage = () => {
         <section className="dash m-0 p-0">
             <div className="container">
 
-                {/* <div class="row text-center">
-	                <div class="col-md-3 p-1">
-	                    <div class="counter">
-                            <i class="fa fa-file fa-2x"></i>
-                            <h2 class="timer count-title count-number">100</h2>
-                            <p class="count-text ">Total Applied</p>
+                {/* <div className="row text-center">
+	                <div className="col-md-3 p-1">
+	                    <div className="counter">
+                            <i className="fa fa-file fa-2x"></i>
+                            <h2 className="timer count-title count-number">100</h2>
+                            <p className="count-text ">Total Applied</p>
                         </div>
 	                </div>
-                    <div class="col-md-3 p-1">
-                        <div class="counter">
-                            <i class="fa fa-check fa-2x"></i>
-                            <h2 class="timer count-title count-number">460</h2>
-                            <p class="count-text ">Approved</p>
+                    <div className="col-md-3 p-1">
+                        <div className="counter">
+                            <i className="fa fa-check fa-2x"></i>
+                            <h2 className="timer count-title count-number">460</h2>
+                            <p className="count-text ">Approved</p>
                         </div>
                     </div>
-                    <div class="col-md-3 p-1">
-                        <div class="counter">
-                            <i class="fa fa-inr fa-2x"></i>
-                            <h2 class="timer count-title count-number">900</h2>
-                            <p class="count-text ">Ammount Paid</p>
+                    <div className="col-md-3 p-1">
+                        <div className="counter">
+                            <i className="fa fa-inr fa-2x"></i>
+                            <h2 className="timer count-title count-number">900</h2>
+                            <p className="count-text ">Ammount Paid</p>
                         </div>
                     </div>
-                    <div class="col-md-3 p-1">
-                        <div class="counter">
-                            <i class="fa fa-refresh fa-2x"></i>
-                            <h2 class="timer count-title count-number">760</h2>
-                            <p class="count-text ">Under Verification</p>
+                    <div className="col-md-3 p-1">
+                        <div className="counter">
+                            <i className="fa fa-refresh fa-2x"></i>
+                            <h2 className="timer count-title count-number">760</h2>
+                            <p className="count-text ">Under Verification</p>
                         </div>
                     </div>
                 </div> */}

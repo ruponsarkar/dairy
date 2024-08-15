@@ -251,7 +251,7 @@ const NewRequest = () => {
       api.updateFormStatus(data).then((res) => {
         console.log("final response :", res);
         Swal.fire('Successfully Updated !');
-        if(status === 'Approve'){
+        if (status === 'Approve') {
           handleSaveToMaster(selectedRow)
         }
         getFrom();
@@ -264,16 +264,16 @@ const NewRequest = () => {
 
     }
 
-    const handleSaveToMaster=(data)=>{
+    const handleSaveToMaster = (data) => {
       console.log("master", data);
-      api.saveToMaster(data).then((res)=>{
+      api.saveToMaster(data).then((res) => {
         console.log("master res", res);
       })
-      .catch((err)=>{
-        console.log("master err", err);
-      })
+        .catch((err) => {
+          console.log("master err", err);
+        })
     }
-  
+
 
 
 
@@ -281,13 +281,21 @@ const NewRequest = () => {
 
   const handleCreateBeneficiary = () => {
     const data = {
-      beneficiaryId:'6earf87wb482bt2424', 
-      name : 'Jiadur Islam', 
-      email : 'jiadur@gmail.com', 
-      phone : '96016226005', 
-      bankAccountNumber : '6800023454545', 
-      ifscCode : 'SBIN0069', 
-      bankName : 'State Bank of India'
+      beneficiary_id: 'DairyAssam18011361',
+      beneficiary_name: 'Ariyan Zaman',
+      beneficiary_contact_details: {
+        beneficiary_email: 'Ariyanzaman@cashfree.com',
+        beneficiary_phone: '9876543239',
+        beneficiary_country_code: '+91',
+        beneficiary_address: 'Jhagrarpar Magurmari',
+        beneficiary_city: 'Dhubri',
+        beneficiary_postal_code: '560001'
+      },
+      beneficiary_instrument_details: {
+        bank_account_number: '00111122251',
+        bank_ifsc: 'HDFC0000071',
+        vpa: 'test@upi'
+      } 
     }
     api.createBeneficiary(data).then((res) => {
       Swal.fire('Beneficiary created successfully !');
@@ -318,7 +326,7 @@ const NewRequest = () => {
 
 
 
- 
+
 
 
 
@@ -394,7 +402,7 @@ const NewRequest = () => {
           }
 
         </Box>
- 
+
 
         <CSVLink data={data} filename={"AHVD_DATA.csv"} >Download Data</CSVLink>
 
