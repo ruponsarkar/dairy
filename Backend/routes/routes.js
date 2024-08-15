@@ -22,8 +22,13 @@ module.exports = (app) => {
   app.post("/saveToMaster", MasterController.saveToMaster);
   app.post("/getMaster", MasterController.getMaster);
   app.post("/postMonthlyReport", MasterController.postMonthlyReport);
+  app.post("/updateMonthlyReport", MasterController.updateMonthlyReport);
   app.post("/getMasterWithReport", MasterController.getMasterWithReport);
   app.post("/getMonthlyReport", MasterController.getMonthlyReport);
+  app.post("/individualMonthlyReport", MasterController.individualMonthlyReport);
+  app.post("/getIndividualMonthlyReport", MasterController.getIndividualMonthlyReport);
+  app.post("/saveGrievance", MasterController.saveGrievance);
+  app.post("/getGrievance", MasterController.getGrievance);
   
   app.post("/getRangeSubsidy", MasterController.getRangeSubsidy);
 };

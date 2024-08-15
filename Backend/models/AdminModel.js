@@ -23,7 +23,7 @@ const jwt = require('jsonwebtoken');
 
 module.exports = {
   authenticate(email, password, callback) {
-    let selectQuery = `SELECT id, name, mobileNumber, email, role, district FROM admins WHERE email=? AND password=? AND status='Active'`;
+    let selectQuery = `SELECT id, uid, name, mobileNumber, email, role, district FROM admins WHERE email=? AND password=? AND status='Active'`;
     let response = {};
     db.query(selectQuery, [email, password], (err, result) => {
       if (!err) {
