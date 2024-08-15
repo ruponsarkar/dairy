@@ -261,7 +261,7 @@ const NewRequest = () => {
 
       <Toolbar>
         <Typography variant="h6" id="tableTitle" component="div">
-          Request Receied
+          Request Received
         </Typography>
         <Tooltip title="Filter list">
           <IconButton aria-label="filter list">
