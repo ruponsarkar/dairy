@@ -4,14 +4,15 @@ const fs = require("fs");
 const path = require("path");
 const { application } = require("express");
 const FormModel = require("../models/FormModel");
-const MasterModel = require("../models/MasterModel")
+const MasterModel = require("../models/MasterModel");
 const { log } = require("console");
 
 module.exports = {
-    saveToMaster(req, res) {
+  saveToMaster(req, res) {
     let form = req.body.data;
-    console.log("here ", form );
-    MasterModel.saveToMaster(form, (result) => {
+    let user = req.body.user;
+
+    MasterModel.saveToMaster(form, user, (result) => {
       res.status(200).send(result);
     });
   },
@@ -34,10 +35,20 @@ module.exports = {
     });
   },
 
+  updateMonthlyReport(req, res) {
+    console.log("here==>> ", req.body.data);
+    let data = req.body.data;
+    let month = req.body.month;
+    let amountPerLitter = req.body.amountPerLitter;
+    MasterModel.updateMonthlyReport(data, month, amountPerLitter, (result) => {
+      res.status(200).send(result);
+    });
+  },
 
   getMasterWithReport(req, res) {
     let month = req.body.month;
-    MasterModel.getMasterWithReport(month, (result) => {
+    let district = req.body.district;
+    MasterModel.getMasterWithReport(month, district, (result) => {
       res.status(200).send(result);
     });
   },
@@ -56,6 +67,28 @@ module.exports = {
     });
   },
 
+  individualMonthlyReport(req, res) {
+    let formData = req.body.formData;
+    MasterModel.individualMonthlyReport(formData, (result) => {
+      res.status(200).send(result);
+    });
+  },
 
-  
+  getIndividualMonthlyReport(req, res) {
+    let id = req.body.id;
+    MasterModel.getIndividualMonthlyReport(id, (result) => {
+      res.status(200).send(result);
+    });
+  },
+  saveGrievance(req, res) {
+    let data = req.body.data;
+    MasterModel.saveGrievance(data, (result) => {
+      res.status(200).send(result);
+    });
+  },
+  getGrievance(req, res) {
+    MasterModel.getGrievance((result) => {
+      res.status(200).send(result);
+    });
+  },
 };
