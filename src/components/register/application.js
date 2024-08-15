@@ -22,14 +22,12 @@ const Application = ({ data }) => {
                   <th>Father/Spouse's Name</th>
                   <th>Mobile Number</th>
                   <th>Date of Birth</th>
-                  
                 </tr>
                 <tr>
                   <td>{data.name}</td>
                   <td>{data.fathersName}</td>
                   <td>{data.mobileNumber}</td>
                   <td>{data.dob}</td>
-                  
                 </tr>
                 <tr>
                   <th>12 digit AADHAAR number</th>
@@ -84,7 +82,6 @@ const Application = ({ data }) => {
                   <th>Bank Account Number</th>
                   <th>IFSC code</th>
                   <th>Gender</th>
-                  
                 </tr>
                 <tr>
                   <td>{data.bank_account_holder_name}</td>
@@ -96,10 +93,7 @@ const Application = ({ data }) => {
                 <tr>
                   <th colSpan="2">Submitted Date</th>
                   <th colSpan="1">Status</th>
-                  {data.status === "Reject" &&
-                  <th colSpan="1">Remark</th>
-                  }
-
+                  {data.status === "Reject" && <th colSpan="1">Remark</th>}
                 </tr>
                 <tr>
                   <td colSpan="2">{data.created_at} </td>
@@ -110,7 +104,9 @@ const Application = ({ data }) => {
                       <span className="bg-secondary px-1 rounded">Draft</span>
                     )}
                     {data.status === "Incompleted" && (
-                      <span className="bg-warning px-1 rounded">Incompleted</span>
+                      <span className="bg-warning px-1 rounded">
+                        Incompleted
+                      </span>
                     )}
                     {data.status === "Approve" && (
                       <span className="bg-success px-1 rounded">Approved</span>
@@ -119,10 +115,9 @@ const Application = ({ data }) => {
                       <span className="bg-danger px-1 rounded">Rejected</span>
                     )}
                   </td>
-                  {data.status === "Reject" &&
-                  <td colSpan="1">{data.remark} </td>
-                  }
-
+                  {data.status === "Reject" && (
+                    <td colSpan="1">{data.remark} </td>
+                  )}
                 </tr>
               </table>
             </div>
