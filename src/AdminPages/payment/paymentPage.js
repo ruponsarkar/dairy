@@ -88,7 +88,7 @@ export default function PaymentPage() {
 
   useEffect(()=>{
     handleViewBeneficiary();
-  },[]);
+  },[data]);
   
   const [selectAll, setSelectAll] = useState(false);
   const handeSelectAll = () => {
@@ -154,6 +154,8 @@ export default function PaymentPage() {
   }
 
   const handleCreateBeneficiary = (farmer) => {
+    console.log(farmer);
+    
     let beneficiary_id = 'Beneficiary_' + farmer?.bank_account_no + '_' + farmer?.id;
     const data = {
       beneficiaryData: {
