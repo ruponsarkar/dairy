@@ -41,7 +41,7 @@ const OverviewScheme = () => {
           <div class="col-md-7">
             <Col md={12}>
               <img
-                src="assets/cow.jpg"
+                src="assets/dairy.jpg"
                 alt="Overview of the Scheme"
                 className="img-fluid w-100 rounded-corners shadow-lg mb-5 bg-white rounded"
               />
