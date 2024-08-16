@@ -1,39 +1,39 @@
-import React, {useEffect, useState} from 'react';
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import CssBaseline from '@mui/material/CssBaseline';
-import Divider from '@mui/material/Divider';
-import Drawer from '@mui/material/Drawer';
-import IconButton from '@mui/material/IconButton';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import MenuIcon from '@mui/icons-material/Menu';
-import Toolbar from '@mui/material/Toolbar';
-import RedeemIcon from '@mui/icons-material/Redeem';
-import Collapse from '@mui/material/Collapse';
-import ExpandLess from '@mui/icons-material/ExpandLess';
-import ExpandMore from '@mui/icons-material/ExpandMore';
-import ListAltIcon from '@mui/icons-material/ListAlt';
-import { InputBase, styled, Menu, MenuItem } from '@mui/material';
-import Container from '@mui/material/Container';
-import Button from '@mui/material/Button';
-import Tooltip from '@mui/material/Tooltip';
-import LeaderboardSharpIcon from '@mui/icons-material/LeaderboardSharp';
-import SubscriptionsIcon from '@mui/icons-material/Subscriptions';
-import SubdirectoryArrowRightIcon from '@mui/icons-material/SubdirectoryArrowRight';
-
-import Avatar from '@mui/material/Avatar';
-import Typography from '@mui/material/Typography';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
-import ClassIcon from '@mui/icons-material/Class';
-import NewspaperIcon from '@mui/icons-material/Newspaper';
-
-import { useNavigate, Outlet } from 'react-router-dom';
-import AuthUser from '../../API/token';
+import React, { useEffect, useState } from "react";
+import AppBar from "@mui/material/AppBar";
+import Box from "@mui/material/Box";
+import CssBaseline from "@mui/material/CssBaseline";
+import Divider from "@mui/material/Divider";
+import Drawer from "@mui/material/Drawer";
+import IconButton from "@mui/material/IconButton";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
+import MenuIcon from "@mui/icons-material/Menu";
+import Toolbar from "@mui/material/Toolbar";
+import RedeemIcon from "@mui/icons-material/Redeem";
+import Collapse from "@mui/material/Collapse";
+import ExpandLess from "@mui/icons-material/ExpandLess";
+import ExpandMore from "@mui/icons-material/ExpandMore";
+import ListAltIcon from "@mui/icons-material/ListAlt";
+import { InputBase, styled, Menu, MenuItem } from "@mui/material";
+import Container from "@mui/material/Container";
+import Button from "@mui/material/Button";
+import Tooltip from "@mui/material/Tooltip";
+import LeaderboardSharpIcon from "@mui/icons-material/LeaderboardSharp";
+import SubscriptionsIcon from "@mui/icons-material/Subscriptions";
+import SubdirectoryArrowRightIcon from "@mui/icons-material/SubdirectoryArrowRight";
+import BackupTableIcon from "@mui/icons-material/BackupTable";
+import Avatar from "@mui/material/Avatar";
+import Typography from "@mui/material/Typography";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import LibraryBooksIcon from "@mui/icons-material/LibraryBooks";
+import ClassIcon from "@mui/icons-material/Class";
+import NewspaperIcon from "@mui/icons-material/Newspaper";
+import NewReleasesIcon from "@mui/icons-material/NewReleases";
+import { useNavigate, Outlet } from "react-router-dom";
+import AuthUser from "../../API/token";
 
 const drawerWidth = 240;
 
@@ -42,13 +42,9 @@ const SearchBar = styled("div")(({ theme }) => ({
   padding: "0 10px",
   borderRadius: theme.shape.borderRadius,
   width: "40%",
+}));
 
-}))
-
-
-
-
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+const settings = ["Profile", "Account", "Dashboard", "Logout"];
 const pages = [];
 
 const Dashboard = (props) => {
@@ -58,7 +54,7 @@ const Dashboard = (props) => {
     // if (token != undefined) {
     //   logout();
     // }
-  }
+  };
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
@@ -80,11 +76,7 @@ const Dashboard = (props) => {
     setAnchorElUser(null);
   };
 
-
-
   // ***************
-
-
 
   const navigate = useNavigate();
 
@@ -104,28 +96,18 @@ const Dashboard = (props) => {
 
   const blogClick = () => {
     setBlogOpen(!openBlog);
-  }
-
-  
+  };
 
   useEffect(() => {
     // if (JSON.parse(sessionStorage.getItem('user')).role === 'Admin') {
-      setRole(JSON.parse(sessionStorage.getItem('user')).role )
+    setRole(JSON.parse(sessionStorage.getItem("user")).role);
     // }
-
-  }, [])
-
-
-
+  }, []);
 
   const drawer = (
-
-
-
-    
     <div>
       <Toolbar>
-        <a href='/admin'>
+        <a href="/admin">
           {/* <img src="/logo.png" className='img-fluid' /> */}
           <h2>Admin Panel</h2>
         </a>
@@ -141,6 +123,14 @@ const Dashboard = (props) => {
           </ListItemButton>
         </ListItem>
 
+        <ListItem disablePadding onClick={() => navigate("/admin/MasterTable")}>
+          <ListItemButton>
+            <ListItemIcon>
+              <BackupTableIcon />
+            </ListItemIcon>
+            <ListItemText>Master Table</ListItemText>
+          </ListItemButton>
+        </ListItem>
 
         <ListItemButton onClick={handleClick}>
           <ListItemIcon>
@@ -152,70 +142,89 @@ const Dashboard = (props) => {
 
         <Collapse in={open} timeout="auto" unmountOnExit>
           <List component="div" disablePadding>
-            <ListItemButton sx={{ pl: 4 }} onClick={() => navigate("/admin/newRequest")}>
+            <ListItemButton
+              sx={{ pl: 4 }}
+              onClick={() => navigate("/admin/newRequest")}
+            >
               <ListItemIcon>
                 <SubdirectoryArrowRightIcon />
               </ListItemIcon>
               <ListItemText primary="New Request" />
             </ListItemButton>
-            <ListItemButton sx={{ pl: 4 }} onClick={() => navigate("/admin/MasterTable")}>
+            {/* <ListItemButton sx={{ pl: 4 }} onClick={() => navigate("/admin/MasterTable")}>
               <ListItemIcon>
                 <SubdirectoryArrowRightIcon />
               </ListItemIcon>
               <ListItemText primary="Master Table" />
-            </ListItemButton>
-            
-          </List>
-        </Collapse>
-
-
-        <ListItemButton onClick={()=>setOpenPay(!openPay)}>
-          <ListItemIcon>
-            <RedeemIcon />
-          </ListItemIcon>
-          <ListItemText primary="Subsidy" />
-          {openPay ? <ExpandLess /> : <ExpandMore />}
-        </ListItemButton>
-
-        <Collapse in={openPay} timeout="auto" unmountOnExit>
-          <List component="div" disablePadding>
-            
-            
-            <ListItemButton sx={{ pl: 4 }} onClick={() => navigate("/admin/PaymentPage")}>
+            </ListItemButton> */}
+            <ListItemButton
+              sx={{ pl: 4 }}
+              onClick={() => navigate("/admin/ApprovalTable")}
+            >
               <ListItemIcon>
                 <SubdirectoryArrowRightIcon />
               </ListItemIcon>
-              <ListItemText primary="Payments" />
+              <ListItemText primary="Approval Table" />
             </ListItemButton>
           </List>
         </Collapse>
 
-
-
-        
-        {role === 'Super Admin' &&
-        <>
-
-        <ListItemButton onClick={blogClick}>
-          <ListItemIcon>
-            <ClassIcon />
-          </ListItemIcon>
-          <ListItemText primary="Admin" />
-          {openBlog ? <ExpandLess /> : <ExpandMore />}
-        </ListItemButton>
-
-        <Collapse in={openBlog} timeout="auto" unmountOnExit>
-          <List component="div" disablePadding>
-            <ListItemButton sx={{ pl: 4 }} onClick={() => navigate("/admin/adminManagement")}>
+        {role === "Super Admin" && (
+          <>
+            <ListItemButton onClick={() => setOpenPay(!openPay)}>
               <ListItemIcon>
-                <SubdirectoryArrowRightIcon />
+                <RedeemIcon />
               </ListItemIcon>
-              <ListItemText primary="Add Admin" />
+              <ListItemText primary="Subsidy" />
+              {openPay ? <ExpandLess /> : <ExpandMore />}
             </ListItemButton>
-          </List>
-        </Collapse>
 
-        </>}
+            <Collapse in={openPay} timeout="auto" unmountOnExit>
+              <List component="div" disablePadding>
+                <ListItemButton
+                  sx={{ pl: 4 }}
+                  onClick={() => navigate("/admin/PaymentPage")}
+                >
+                  <ListItemIcon>
+                    <SubdirectoryArrowRightIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Finance report" />
+                </ListItemButton>
+              </List>
+            </Collapse>
+
+            <ListItemButton onClick={blogClick}>
+              <ListItemIcon>
+                <ClassIcon />
+              </ListItemIcon>
+              <ListItemText primary="Admin" />
+              {openBlog ? <ExpandLess /> : <ExpandMore />}
+            </ListItemButton>
+
+            <Collapse in={openBlog} timeout="auto" unmountOnExit>
+              <List component="div" disablePadding>
+                <ListItemButton
+                  sx={{ pl: 4 }}
+                  onClick={() => navigate("/admin/adminManagement")}
+                >
+                  <ListItemIcon>
+                    <SubdirectoryArrowRightIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Add Admin" />
+                </ListItemButton>
+              </List>
+            </Collapse>
+          </>
+        )}
+
+        <ListItem disablePadding onClick={() => navigate("/admin/Grievance")}>
+          <ListItemButton>
+            <ListItemIcon>
+              <NewReleasesIcon />
+            </ListItemIcon>
+            <ListItemText>Grievance</ListItemText>
+          </ListItemButton>
+        </ListItem>
 
         {/* <ListItemButton onClick={publisherClick}>
           <ListItemIcon>
@@ -254,8 +263,6 @@ const Dashboard = (props) => {
           </ListItemButton>
         </ListItem> */}
 
-       
-
         <ListItem disablePadding onClick={logout}>
           <ListItemButton>
             <ListItemIcon>
@@ -273,13 +280,13 @@ const Dashboard = (props) => {
             <ListItemText>Research Papers</ListItemText>
           </ListItemButton>
         </ListItem> */}
-
       </List>
       <Divider />
     </div>
   );
 
-  const container = window !== undefined ? () => window().document.body : undefined;
+  const container =
+    window !== undefined ? () => window().document.body : undefined;
 
   const [auth, setAuth] = React.useState(true);
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -297,7 +304,7 @@ const Dashboard = (props) => {
   };
 
   return (
-    <Box sx={{ display: 'flex' }}>
+    <Box sx={{ display: "flex" }}>
       <CssBaseline />
       <AppBar
         position="fixed"
@@ -307,10 +314,6 @@ const Dashboard = (props) => {
         }}
       >
         <Container maxWidth="xl">
-
-
-
-
           <Toolbar disableGutters>
             {/* <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} /> */}
 
@@ -319,11 +322,10 @@ const Dashboard = (props) => {
               aria-label="open drawer"
               edge="end"
               onClick={handleDrawerToggle}
-              sx={{ mr: 2, display: { sm: 'none' } }}
+              sx={{ mr: 2, display: { sm: "none" } }}
             >
               <MenuIcon />
             </IconButton>
-
 
             {/* <Typography
               variant="h6"
@@ -343,7 +345,7 @@ const Dashboard = (props) => {
               LOGO
             </Typography> */}
 
-            <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
+            <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
               {/* <IconButton
                 size="large"
                 aria-label="account of current user"
@@ -358,18 +360,18 @@ const Dashboard = (props) => {
                 id="menu-appbar"
                 anchorEl={anchorElNav}
                 anchorOrigin={{
-                  vertical: 'bottom',
-                  horizontal: 'left',
+                  vertical: "bottom",
+                  horizontal: "left",
                 }}
                 keepMounted
                 transformOrigin={{
-                  vertical: 'top',
-                  horizontal: 'left',
+                  vertical: "top",
+                  horizontal: "left",
                 }}
                 open={Boolean(anchorElNav)}
                 onClose={handleCloseNavMenu}
                 sx={{
-                  display: { xs: 'block', md: 'none' },
+                  display: { xs: "block", md: "none" },
                 }}
               >
                 {pages.map((page) => (
@@ -398,12 +400,12 @@ const Dashboard = (props) => {
             >
               LOGO
             </Typography> */}
-            <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+            <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
               {pages.map((page) => (
                 <Button
                   key={page}
                   onClick={handleCloseNavMenu}
-                  sx={{ my: 2, color: 'white', display: 'block' }}
+                  sx={{ my: 2, color: "white", display: "block" }}
                 >
                   {page}
                 </Button>
@@ -418,17 +420,17 @@ const Dashboard = (props) => {
                 </IconButton>
               </Tooltip>
               <Menu
-                sx={{ mt: '45px' }}
+                sx={{ mt: "45px" }}
                 id="menu-appbar"
                 anchorEl={anchorElUser}
                 anchorOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right',
+                  vertical: "top",
+                  horizontal: "right",
                 }}
                 keepMounted
                 transformOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right',
+                  vertical: "top",
+                  horizontal: "right",
                 }}
                 open={Boolean(anchorElUser)}
                 onClose={handleCloseUserMenu}
@@ -458,8 +460,11 @@ const Dashboard = (props) => {
             keepMounted: true, // Better open performance on mobile.
           }}
           sx={{
-            display: { xs: 'block', sm: 'none' },
-            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+            display: { xs: "block", sm: "none" },
+            "& .MuiDrawer-paper": {
+              boxSizing: "border-box",
+              width: drawerWidth,
+            },
           }}
         >
           {drawer}
@@ -467,8 +472,11 @@ const Dashboard = (props) => {
         <Drawer
           variant="permanent"
           sx={{
-            display: { xs: 'none', sm: 'block' },
-            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+            display: { xs: "none", sm: "block" },
+            "& .MuiDrawer-paper": {
+              boxSizing: "border-box",
+              width: drawerWidth,
+            },
           }}
           open
         >
@@ -477,15 +485,17 @@ const Dashboard = (props) => {
       </Box>
       <Box
         component="main"
-        sx={{ flexGrow: 1, p: 3, width: { sm: `calc(100% - ${drawerWidth}px)` } }}
+        sx={{
+          flexGrow: 1,
+          p: 3,
+          width: { sm: `calc(100% - ${drawerWidth}px)` },
+        }}
       >
-
         <Toolbar />
         <Outlet />
-
       </Box>
     </Box>
   );
-}
+};
 
 export default Dashboard;

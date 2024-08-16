@@ -60,8 +60,33 @@ const RegisterForm = ({ mobileNumber, showFileInput, setShowFileInput }) => {
     });
   };
 
-  const handleShowFileInput = () => {
+
+
+
+  const handleShowFileInput=()=>{
+    Swal.fire({
+      title: "Are you sure want to submit?",
+      text: "You won't be able to revert or edit this once to confirm!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, Confirm!"
+    }).then((result) => {
+      if (result.isConfirmed) {
+
+        saveFormData();
+      }
+    });
+  }
+
+
+
+
+  const saveFormData = () => {
     console.log(formData);
+// return;
+
     formData.status = 'Incompleted'
     api.saveForm(formData).then((res) => {
       // axios.post(api, formData).then((res)=>{

@@ -28,6 +28,8 @@ import {
   FormControl,
   Link,
 } from "@mui/material";
+import { tableCellClasses } from "@mui/material/TableCell";
+import { styled } from "@mui/material/styles";
 import DownloadIcon from '@mui/icons-material/Download';
 import FilterListIcon from "@mui/icons-material/FilterList";
 import Application from "../../components/register/application";
@@ -39,6 +41,26 @@ import { CSVLink, CSVDownload } from "react-csv";
 import PaymentsIcon from '@mui/icons-material/Payments';
 
 
+
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+  [`&.${tableCellClasses.head}`]: {
+    backgroundColor: theme.palette.common.blue,
+    color: theme.palette.common.white,
+  },
+  [`&.${tableCellClasses.body}`]: {
+    fontSize: 14,
+  },
+}));
+
+const StyledTableRow = styled(TableRow)(({ theme }) => ({
+  "&:nth-of-type(odd)": {
+    backgroundColor: theme.palette.action.hover,
+  },
+  // hide last border
+  "&:last-child td, &:last-child th": {
+    border: 0,
+  },
+}));
 
 const defaultdistricts = [
   'Baksa', 'Barpeta', 'Biswanath', 'Bongaigaon', 'Cachar', 'Charaideo', 'Chirang',
@@ -55,79 +77,6 @@ const statuses = [
 
 
 
-
-const EnhancedTableHead = (props) => {
-  const { order, orderBy, onRequestSort } = props;
-  const createSortHandler = (property) => (event) => {
-    onRequestSort(event, property);
-  };
-
-  const headCells = [
-    {
-      id: "name",
-      numeric: false,
-      disablePadding: false,
-      label: "Name of the applicant",
-    },
-    {
-      id: "calories",
-      numeric: true,
-      disablePadding: false,
-      label: "PAN number",
-    },
-    {
-      id: "fat",
-      numeric: true,
-      disablePadding: false,
-      label: "Area of residence",
-    },
-    { id: "District", numeric: true, disablePadding: false, label: "District" },
-    { id: "Village", numeric: true, disablePadding: false, label: "Village" },
-    { id: "Status", numeric: true, disablePadding: false, label: "Status" },
-    { id: "Action", numeric: true, disablePadding: false, label: "Action" },
-    // { id: "Pay", numeric: true, disablePadding: false, label: "Payout" },
-  ];
-
-  return (
-    <TableHead>
-      <TableRow>
-        {headCells.map((headCell) => (
-          <TableCell
-            key={headCell.id}
-            align={headCell.numeric ? "right" : "left"}
-            sortDirection={orderBy === headCell.id ? order : false}
-          >
-            <TableSortLabel
-              active={orderBy === headCell.id}
-              direction={orderBy === headCell.id ? order : "asc"}
-              onClick={createSortHandler(headCell.id)}
-            >
-              {headCell.label}
-              {orderBy === headCell.id ? (
-                <Box
-                  component="span"
-                  sx={{
-                    border: 0,
-                    clip: "rect(0 0 0 0)",
-                    height: 1,
-                    margin: -1,
-                    overflow: "hidden",
-                    padding: 0,
-                    position: "absolute",
-                    top: 20,
-                    width: 1,
-                  }}
-                >
-                  {order === "desc" ? "sorted descending" : "sorted ascending"}
-                </Box>
-              ) : null}
-            </TableSortLabel>
-          </TableCell>
-        ))}
-      </TableRow>
-    </TableHead>
-  );
-};
 
 const NewRequest = () => {
 
@@ -160,6 +109,7 @@ const NewRequest = () => {
   const [districts, setDistricts] = useState(defaultdistricts)
   const [openImgView, setOpenImgView] = useState(false);
   const [selectedImg, setSelectedImg] = useState();
+  const [user, setUser] = useState();
 
   const [requestData, setRequestData] = useState(
     {
@@ -177,6 +127,8 @@ const NewRequest = () => {
       setDistricts([JSON.parse(sessionStorage.getItem('user')).district])
 
     }
+
+    setUser(JSON.parse(sessionStorage.getItem('user')));
 
   }, [])
 
@@ -226,6 +178,7 @@ const NewRequest = () => {
 
 
   const handleUpdate = () => {
+
     setOpen(false)
     if (status === 'Reject') {
       if (!remark) {
@@ -251,7 +204,7 @@ const NewRequest = () => {
       api.updateFormStatus(data).then((res) => {
         console.log("final response :", res);
         Swal.fire('Successfully Updated !');
-        if(status === 'Approve'){
+        if (status === 'Approve') {
           handleSaveToMaster(selectedRow)
         }
         getFrom();
@@ -264,16 +217,16 @@ const NewRequest = () => {
 
     }
 
-    const handleSaveToMaster=(data)=>{
+    const handleSaveToMaster = (data) => {
       console.log("master", data);
-      api.saveToMaster(data).then((res)=>{
+      api.saveToMaster(data, user).then((res) => {
         console.log("master res", res);
       })
-      .catch((err)=>{
-        console.log("master err", err);
-      })
+        .catch((err) => {
+          console.log("master err", err);
+        })
     }
-  
+
 
 
 
@@ -299,7 +252,7 @@ const NewRequest = () => {
 
 
 
- 
+
 
 
 
@@ -370,9 +323,9 @@ const NewRequest = () => {
           }
 
         </Box>
- 
 
-        <CSVLink data={data} filename={"AHVD_DATA.csv"} >Download Data</CSVLink>
+
+        {/* <CSVLink data={data} filename={"AHVD_DATA.csv"} >Download Data</CSVLink> */}
 
 
       </Box>
@@ -388,11 +341,22 @@ const NewRequest = () => {
           aria-labelledby="tableTitle"
           size="medium"
         >
-          <EnhancedTableHead
-            order={order}
-            orderBy={orderBy}
-            onRequestSort={handleRequestSort}
-          />
+
+
+
+          <TableHead>
+            <TableRow>
+              <StyledTableCell>
+                Name of the applicant
+              </StyledTableCell>
+              <StyledTableCell>Registration No CO</StyledTableCell>
+              {/* <StyledTableCell>Area of residence</StyledTableCell> */}
+              <StyledTableCell>District</StyledTableCell>
+              <StyledTableCell>Village</StyledTableCell>
+              <StyledTableCell align="center">Status</StyledTableCell>
+              <StyledTableCell align="center">Action</StyledTableCell>
+            </TableRow>
+          </TableHead>
 
           <TableBody>
             {data &&
@@ -402,15 +366,15 @@ const NewRequest = () => {
                     <TableCell component="th" scope="row">
                       {row.name}
                     </TableCell>
-                    <TableCell align="right">{row.pan_number}</TableCell>
-                    <TableCell align="right">{row.area}</TableCell>
-                    <TableCell align="right">{row.district}</TableCell>
-                    <TableCell align="right">{row.village}</TableCell>
+                    <TableCell>{row.registration_no_of_co_operatice_society}</TableCell>
+                    {/* <TableCell>{row.area}</TableCell> */}
+                    <TableCell>{row.district}</TableCell>
+                    <TableCell>{row.village}</TableCell>
                     <TableCell align="center">
                       {row.status === 'Draft' && <span className="bg-secondary px-3 rounded">Draft</span>}
                       {row.status === 'Incompleted' && <span className="bg-warning px-3 rounded">Incompleted</span>}
-                      {row.status === 'Approve' && <span className="bg-success px-3 rounded">Approve</span>}
-                      {row.status === 'Reject' && <span className="bg-danger px-3 rounded">Reject</span>}
+                      {row.status === 'Approve' && <span className="bg-success px-3 rounded">Approved</span>}
+                      {row.status === 'Reject' && <span className="bg-danger px-3 rounded">Rejected</span>}
                     </TableCell>
                     <TableCell align="right">
                       <Button

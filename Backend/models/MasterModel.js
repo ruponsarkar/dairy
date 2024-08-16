@@ -8,11 +8,11 @@ const { reject } = require("underscore");
 const moment = require("moment");
 
 module.exports = {
-  saveToMaster(form, callback) {
+  saveToMaster(form, user, callback) {
     console.log("==>>", form);
 
     // return "ha";
-    let insertQuery = `INSERT INTO masters(applicationId, mobileNumber, name, fathersName, gender, dob, aadhaarNo, aadharMobile, pan_number, voterID, area, district, LAC, village, gaon_panchayat, block, pincode, police_station, name_of_co_operatice_society, addree_of_co_operatice_society, registration_no_of_co_operatice_society, bank_name, bank_account_holder_name, bank_account_no, ifsc_code, milk_production_per_month, status)  VALUES ?`;
+    let insertQuery = `INSERT INTO masters(applicationId, mobileNumber, name, fathersName, gender, dob, aadhaarNo, aadharMobile, pan_number, voterID, area, district, LAC, village, gaon_panchayat, block, pincode, police_station, name_of_co_operatice_society, addree_of_co_operatice_society, registration_no_of_co_operatice_society, bank_name, bank_account_holder_name, bank_account_no, ifsc_code, milk_production_per_month, status, approverName, approverId)  VALUES ?`;
     let id = uuid();
     let params = [];
     params.push(form.applicationId);
@@ -43,6 +43,8 @@ module.exports = {
     params.push(form.ifsc_code);
     params.push(form.milk_production_per_month);
     params.push("Approve");
+    params.push(user.name);
+    params.push(user.uid);
 
     let message = {};
     db.query(insertQuery, [[params]], (err, result) => {
@@ -72,15 +74,6 @@ module.exports = {
     let limit = data.limit;
     let filterBy = data.filterBy;
     let filterData = data.filterData;
-    console.log(
-      "user=>: ",
-      role,
-      offset,
-      limit,
-      filterBy,
-      filterData,
-      district
-    );
 
     let query = "";
     switch (role) {
@@ -167,46 +160,100 @@ module.exports = {
       callback({ message: `Inserted ${insertedLength} items successfully` });
   },
 
-  async getMasterWithReport(month, callback) {
+  async updateMonthlyReport(data, month, amountPerLitter, callback) {
+    const query = `UPDATE monthly_reports SET litter = ?, amount = ?, isApprove = ?, paymentStatus = ? WHERE applicationId = ? AND month = ?`;
+    const batchSize = 100;
+    let insertedLength = 0;
+
+    for (let i = 0; i < data.length; i += batchSize) {
+      const batch = data.slice(i, i + batchSize);
+
+      try {
+        for (const e of batch) {
+          const params = [
+            e.litter,
+            e.litter * amountPerLitter,
+            "Approve",
+            "Pending",
+            e.applicationId,
+            e.month,
+          ];
+
+          await db.query(query, params);
+          insertedLength++;
+        }
+
+        console.log(
+          `Batch ${Math.ceil(
+            (i + 1) / batchSize
+          )} Updated. Values=> ${JSON.stringify(batch)}`
+        );
+      } catch (err) {
+        console.log("Error: ", err);
+        if (callback) {
+          callback({ message: "Error occurred", error: err });
+        }
+        return;
+      }
+    }
+
+    if (callback) {
+      callback({ message: `Updated ${insertedLength} items successfully` });
+    }
+  },
+
+  async getMasterWithReport(month, district, callback) {
     console.log("month", month);
-
-    const query = `
-    SELECT 
-     masters.name, 
-      masters.name_of_co_operatice_society, 
-      masters.registration_no_of_co_operatice_society, 
-      masters.bank_name, 
-      masters.bank_account_holder_name, 
-      masters.bank_account_no, 
-      masters.ifsc_code, 
-      masters.district,
-      masters.id,
-      masters.applicationId,
-    monthly_reports.litter,
-    monthly_reports.isApprove,
-    monthly_reports.paymentStatus,
-    monthly_reports.amount,
-    monthly_reports.month
-  FROM 
-    masters
-  LEFT JOIN 
-    monthly_reports 
-  ON 
-    masters.applicationId = monthly_reports.applicationId
-    AND monthly_reports.month = ?
+    console.log("district==>>", district);
   
+    let query = `
+      SELECT 
+        masters.name, 
+        masters.name_of_co_operatice_society, 
+        masters.registration_no_of_co_operatice_society, 
+        masters.bank_name, 
+        masters.bank_account_holder_name, 
+        masters.bank_account_no, 
+        masters.ifsc_code, 
+        masters.district,
+        masters.id,
+        masters.applicationId,
+        monthly_reports.litter,
+        monthly_reports.isApprove,
+        monthly_reports.paymentStatus,
+        monthly_reports.amount,
+        monthly_reports.month
+      FROM 
+        masters
+      LEFT JOIN 
+        monthly_reports 
+      ON 
+        masters.applicationId = monthly_reports.applicationId
+      AND 
+        monthly_reports.month = ?
     `;
-
-    db.query(query, [month], (err, result) => {
+  
+    // Add the district filter if provided
+    const params = [month];
+    if (district) {
+      query += " WHERE masters.district = ?";
+      params.push(district);
+    }
+  
+    db.query(query, params, (err, result) => {
       if (err) {
         console.log("Error: ", err);
-        callback && callback({ message: "Error occurred", error: err });
+        if (callback) {
+          callback({ message: "Error occurred", error: err });
+        }
       } else {
-        console.log("result ==>>", result);
-        callback && callback({ message: "success", data: result });
+        if (callback) {
+          callback({ message: "success", data: result });
+        }
       }
     });
   },
+  
 
   getMonthlyReport(month, callback) {
     console.log("month", month);
@@ -260,22 +307,19 @@ module.exports = {
     });
   },
 
+  getRangeSubsidy(from, to, callback) {
+    // let query =  `SELECT
+    //         applicationId,
+    //             GROUP_CONCAT(CONCAT(month, ': ', amount) ORDER BY month ASC SEPARATOR ', ') AS subsidy_details
+    //         FROM
+    //         monthly_reports
+    //         WHERE
+    //           month BETWEEN ? AND ?
+    //         GROUP BY
+    //         applicationId;
+    //   `;
 
-
-
-  getRangeSubsidy(from, to, callback){
-            // let query =  `SELECT 
-            //         applicationId,
-            //             GROUP_CONCAT(CONCAT(month, ': ', amount) ORDER BY month ASC SEPARATOR ', ') AS subsidy_details
-            //         FROM 
-            //         monthly_reports
-            //         WHERE 
-            //           month BETWEEN ? AND ?
-            //         GROUP BY 
-            //         applicationId;
-            //   `;
-
-            let query = `SELECT 
+    let query = `SELECT 
             mr.applicationId,
             mr.paymentStatus,
             u.name,
@@ -285,8 +329,11 @@ module.exports = {
             u.bank_account_holder_name,
             u.bank_account_no,
             u.ifsc_code,
+            u.approverName,
+            u.approverId,
             GROUP_CONCAT(CONCAT(mr.month, ': ', mr.amount, ' (L: ', mr.litter, ')') ORDER BY mr.month ASC SEPARATOR ', ') AS subsidy_details,
-            SUM(mr.amount) AS total_amount
+            SUM(mr.amount) AS total_amount,
+            SUM(mr.litter) AS quantity
           FROM 
             monthly_reports mr
           JOIN 
@@ -296,21 +343,140 @@ module.exports = {
             AND mr.paymentStatus = 'Pending'
             AND mr.isApprove = 'Approve'
           GROUP BY 
-            mr.applicationId, u.name;`
+            mr.applicationId, u.name;`;
 
+    db.query(query, [from, to], (err, result) => {
+      if (err) {
+        console.log("Error: ", err);
+        callback && callback({ message: "Error occurred", error: err });
+      } else {
+        console.log("result ==>>", result);
+        callback && callback({ message: "success", data: result });
+      }
+    });
+  },
 
-              db.query(query, [from, to], (err, result) => {
-                if (err) {
-                  console.log("Error: ", err);
-                  callback && callback({ message: "Error occurred", error: err });
-                } else {
-                  console.log("result ==>>", result);
-                  callback && callback({ message: "success", data: result });
-                }
+  individualMonthlyReport(formData, callback) {
+    // Parameterized query to prevent SQL injection
+    const checkQuery = `SELECT * FROM monthly_reports WHERE applicationId = ? AND month = ?`;
+
+    // Check if data already exists
+    db.query(
+      checkQuery,
+      [formData.applicationId, formData.month],
+      (err, results) => {
+        if (err) {
+          console.error("Error: ", err);
+          callback &&
+            callback({
+              status: 500,
+              message: "Failed to check existing data",
+              error: err,
+            });
+          return;
+        }
+
+        // Check if any records were found
+        if (results.length > 0) {
+          callback &&
+            callback({ status: 400, message: "Already updated data" });
+          return;
+        }
+
+        // Define the insert query with placeholders
+        const insertQuery = `INSERT INTO monthly_reports (applicationId, month, litter, amount, isApprove, paymentStatus) VALUES (?, ?, ?, ?, ?, ?)`;
+
+        const params = [
+          formData.applicationId,
+          formData.month,
+          formData.litter,
+          formData.litter * 5, // Calculate the amount based on litter
+          formData.isApprove,
+          formData.paymentStatus,
+        ];
+
+        // Insert the new record
+        db.query(insertQuery, params, (err, result) => {
+          if (err) {
+            console.error("Error: ", err);
+            callback &&
+              callback({
+                status: 500,
+                message: "Failed to insert data",
+                error: err,
               });
+            return;
+          }
 
+          // Provide success message
+          callback && callback({ status: 200, message: "Success" });
+        });
+      }
+    );
+  },
 
+  getIndividualMonthlyReport(id, callback) {
+    console.log("id ", id);
+    const query = `SELECT 
+              masters.name, masters.name_of_co_operatice_society, masters.registration_no_of_co_operatice_society, masters.bank_name, masters.bank_account_holder_name, masters.bank_account_no, masters.ifsc_code, masters.district,
+              monthly_reports.month, monthly_reports.litter, monthly_reports.amount, monthly_reports.isApprove, monthly_reports.paymentStatus, monthly_reports.id
+            FROM 
+              masters
+              JOIN 
+              monthly_reports 
+            ON 
+              masters.applicationId = monthly_reports.applicationId
+            WHERE monthly_reports.applicationId = ? 
+            ORDER BY month`;
 
+    db.query(query, [id], (error, results) => {
+      if (error) {
+        console.error("Database query error:", error);
+        callback(error, null);
+      } else {
+        console.log("Query results:", results);
+        callback(results);
+      }
+    });
+  },
 
-  }
+  saveGrievance(data, callback) {
+    console.log(data);
+
+    // The VALUES clause should not have extra brackets when inserting a single row
+    let query = `INSERT INTO grievance(userId, userName, type, details) VALUES (?, ?, ?, ?)`;
+
+    db.query(
+      query,
+      [
+        data.user.applicationId,
+        data.user.name,
+        data.grievanceType,
+        data.details,
+      ],
+      (error, results) => {
+        if (error) {
+          console.error("Database query error:", error);
+          callback(error, null);
+        } else {
+          console.log("Query results:", results);
+          callback({ message: "Success" });
+        }
+      }
+    );
+  },
+
+  getGrievance(callback) {
+    let query = `SELECT * FROM grievance`;
+
+    db.query(query, (error, results) => {
+      if (error) {
+        console.error("Database query error:", error);
+        callback(error, null);
+      } else {
+        console.log("Query results:", results);
+        callback({ data: results });
+      }
+    });
+  },
 };

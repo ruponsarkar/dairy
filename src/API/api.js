@@ -30,8 +30,8 @@ export default {
     countStatus(){
         return API.get('countStatus');
     },
-    saveToMaster(data){
-        return API.post('saveToMaster', {data});
+    saveToMaster(data, user){
+        return API.post('saveToMaster', {data, user});
     },
     getMaster(data){
         return API.post('getMaster', {data});
@@ -39,8 +39,11 @@ export default {
     postMonthlyReport(data, month, amountPerLitter){
         return API.post('postMonthlyReport', {data, month, amountPerLitter});
     },
-    getMasterWithReport(month){
-        return API.post('getMasterWithReport', {month});
+    updateMonthlyReport(data, month, amountPerLitter){
+        return API.post('updateMonthlyReport', {data, month, amountPerLitter});
+    },
+    getMasterWithReport(month, district){
+        return API.post('getMasterWithReport', {month, district});
     },
     getMonthlyReport(month){
         return API.post('getMonthlyReport', {month});
@@ -48,6 +51,20 @@ export default {
     getRangeSubsidy(from, to){
         return API.post('getRangeSubsidy', {from, to});
     },
+    individualMonthlyReport(formData){
+        return API.post('individualMonthlyReport', {formData})
+    },
+    getIndividualMonthlyReport(id){
+        return API.post('getIndividualMonthlyReport', {id})
+    },
+    saveGrievance(data){
+        return API.post('saveGrievance', {data})
+    },
+    getGrievance(data){
+        return API.post('getGrievance', {data})
+    },
+
+    
 
 
 
