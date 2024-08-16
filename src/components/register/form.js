@@ -268,13 +268,16 @@ const RegisterForm = ({ mobileNumber, showFileInput, setShowFileInput }) => {
 
           <div className="col-md-6">
             <label htmlFor="">Area of residence</label>
-            <input
+            <select
               type="text"
               className="form-control"
               name="area"
               onChange={handleInput}
-              id=""
-            />
+              id="">
+                <option value="">-select-</option>
+              <option value="Urban">Urban</option>
+              <option value="Rural">Rural</option>
+              </select>
           </div>
           <div className="col-md-6">
             <label htmlFor="">District</label>
