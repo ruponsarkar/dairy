@@ -17,6 +17,8 @@ import MasterTable from './AdminPages/pages/masterTable';
 
 import UserDashboard from './userPage/userDashboard';
 import UserCertificate from './userPage/userCertificate';
+import ApprovalTable from './AdminPages/pages/ApprovalTable';
+import AdminGrievance from './AdminPages/pages/grievance';
 
 
 
@@ -88,6 +90,8 @@ function App() {
             <Route path='AdminManagement' element={<AdminManagement />} />
             <Route path='PaymentPage' element={<PaymentPage />} />
             <Route path='MasterTable' element={<MasterTable />} />
+            <Route path='ApprovalTable' element={<ApprovalTable />} />
+            <Route path='Grievance' element={<AdminGrievance />} />
 
           </Route>
 

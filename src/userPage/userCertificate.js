@@ -16,7 +16,7 @@ export default function UserCertificate() {
     //   JSON.parse(sessionStorage.getItem("farmer"))
     // );
     setData(JSON.parse(sessionStorage.getItem("farmer")));
-  }, [JSON.parse(sessionStorage.getItem("farmer"))]);
+  }, []);
 
 
   const downloadCertificate = () => {

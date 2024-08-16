@@ -14,6 +14,7 @@ import Swal from "sweetalert2";
 import PaymentsIcon from "@mui/icons-material/Payments";
 import { CSVLink, CSVDownload } from "react-csv";
 import api from "../../API/api";
+import SearchIcon from '@mui/icons-material/Search';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -42,6 +43,7 @@ export default function PaymentPage() {
   const [role, setRole] = useState();
   const [from, setFrom] = useState();
   const [to, setTo] = useState();
+  const [all, setAll] = useState();
 
   function getCurrentMonth() {
     const now = new Date();
@@ -58,33 +60,36 @@ export default function PaymentPage() {
   }, []);
 
   useEffect(() => {
-    getMonthlyReport();
-  }, [month]);
+    api.getRangeSubsidy('2020-01', '2029-01').then((res) => {
+      console.log("ress ", res);
+      setAll(res.data.data)
+    })
+      .catch((err) => {
+        console.log("err e", err);
+      })
+  }, []);
+
+  // const getMonthlyReport = () => {
+  //   api
+  //     .getMonthlyReport(month)
+  //     .then((res) => {
+  //       console.log("res", res);
+  //       let selectAllData = res.data.data.map((e) => ({
+  //         ...e,
+  //         selected: true,
+  //       }));
+  //       setData(selectAllData);
+  //     })
+  //     .catch((err) => {
+  //       console.log("err ", err);
+  //     });
+  // };
+
 
   useEffect(()=>{
     handleViewBeneficiary();
   },[]);
-
-  const getMonthlyReport = () => {
-    api
-      .getMonthlyReport(month)
-      .then((res) => {
-        console.log("res", res);
-        let selectAllData = res.data.data.map((e) => ({
-          ...e,
-          selected: true,
-        }));
-        setData(selectAllData);
-      })
-      .catch((err) => {
-        console.log("err ", err);
-      });
-  };
-
-  const handleChangeMonth = (e) => {
-    setMonth(e.target.value);
-  };
-
+  
   const [selectAll, setSelectAll] = useState(false);
   const handeSelectAll = () => {
     const newSelectAll = !selectAll;
@@ -108,7 +113,7 @@ export default function PaymentPage() {
 
 
     Swal.fire({
-      title: `Make Payment for ${selectedData.length} account!`,
+      title: `Approve Payment for ${selectedData.length} account!`,
       text: "You will redirect to payment gatway",
       icon: "warning"
     });
@@ -118,6 +123,7 @@ export default function PaymentPage() {
     api.getRangeSubsidy(from, to).then((res) => {
       console.log("ress ", res);
       setData(res.data.data)
+      setAll(res.data.data)
     })
       .catch((err) => {
         console.log("err e", err);
@@ -186,42 +192,41 @@ export default function PaymentPage() {
   return (
     <Paper className="p-2">
       <div className="my-3 d-flex gap-3">
-        {/* <input
-          type="month"
-          name=""
-          value={month}
-          className="form-control col-2"
-          id=""
-          onChange={(e) => handleChangeMonth(e)}
-        /> */}
 
-        <div>
-          {role === "Super Admin" && (
-            <Button variant="contained" onClick={handleApproveAll}>
-              Payout for all &nbsp; <PaymentsIcon />
-            </Button>
-          )}
+
+
+
+
+
+      </div>
+
+      <div className="d-flex justify-content-between">
+
+        <div className="d-flex gap-2">
+          <input type="month" className="form-control col-5" value={from} onChange={(e) => setFrom(e.target.value)} name="" id="" />
+          <input type="month" className="form-control col-5" name="" value={to} onChange={(e) => setTo(e.target.value)} id="" />
+          <div>
+            <Button variant="contained" onClick={handleRangeSubsidy}> <SearchIcon /> </Button>
+          </div>
         </div>
 
-        <div>
-          {data &&
-            <div>
-              <CSVLink data={data} filename={"AHVD_SUBSIDYcsv"}>
-                Download Report
+        <div className="d-flex align-items-center gap-4">
+          <div>
+            {role === "Super Admin" && (
+              <Button variant="contained" onClick={handleApproveAll}>
+                Approve Payout&nbsp; <PaymentsIcon />
+              </Button>
+            )}
+          </div>
+          {all &&
+            <div className="">
+              <CSVLink data={all} filename={"AHVD_SUBSIDYcsv"}>
+                {data ? 'Download Report' : 'Download Report(All)'}
+
               </CSVLink>
             </div>
           }
         </div>
-
-      </div>
-
-      <div className="d-flex gap-2">
-        <input type="month" className="form-control col-2" value={from} onChange={(e) => setFrom(e.target.value)} name="" id="" />
-        <input type="month" className="form-control col-2" name="" value={to} onChange={(e) => setTo(e.target.value)} id="" />
-        <div>
-          <Button variant="contained" onClick={handleRangeSubsidy}> Subsidy Details </Button>
-        </div>
-
 
       </div>
 
@@ -242,7 +247,10 @@ export default function PaymentPage() {
               </StyledTableCell>
               <StyledTableCell>Name</StyledTableCell>
               <StyledTableCell>Co-operative name</StyledTableCell>
+              <StyledTableCell>DCS</StyledTableCell>
+              <StyledTableCell>DCS ID</StyledTableCell>
               <StyledTableCell>Subsidy Details</StyledTableCell>
+              <StyledTableCell>Quantity of milk</StyledTableCell>
               <StyledTableCell>Ammount</StyledTableCell>
               <StyledTableCell>Bank Account No</StyledTableCell>
               <StyledTableCell>Payment Status</StyledTableCell>
@@ -263,8 +271,15 @@ export default function PaymentPage() {
                   <StyledTableCell>
                     {row.name_of_co_operatice_society}
                   </StyledTableCell>
+                  <StyledTableCell>
+                    {row.approverName}
+                  </StyledTableCell>
+                  <StyledTableCell>
+                    {row.approverId}
+                  </StyledTableCell>
                   <StyledTableCell width={200}>{row.subsidy_details}</StyledTableCell>
 
+                  <StyledTableCell> <strong> {row.quantity} </strong> </StyledTableCell>
                   <StyledTableCell> <strong> {row.total_amount} </strong> </StyledTableCell>
                   <StyledTableCell>{row.bank_account_no}</StyledTableCell>
                   <StyledTableCell>

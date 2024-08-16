@@ -25,6 +25,7 @@ const RegisterForm = ({ mobileNumber, showFileInput, setShowFileInput }) => {
   const [passbook, setPassbook] = useState();
   const [panCard, setPanCard] = useState();
   const [aadhaarCard, setAadhaarCard] = useState();
+  const [arcs_drcs, setArcsDrcs] = useState();
 
   const [isUploaded, setIsuploaded] = useState({
     passbook: false,
@@ -40,8 +41,33 @@ const RegisterForm = ({ mobileNumber, showFileInput, setShowFileInput }) => {
     });
   };
 
-  const handleShowFileInput = () => {
+
+
+
+  const handleShowFileInput=()=>{
+    Swal.fire({
+      title: "Are you sure want to submit?",
+      text: "You won't be able to revert or edit this once to confirm!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, Confirm!"
+    }).then((result) => {
+      if (result.isConfirmed) {
+
+        saveFormData();
+      }
+    });
+  }
+
+
+
+
+  const saveFormData = () => {
     console.log(formData);
+// return;
+
     formData.status = 'Incompleted'
     api.saveForm(formData).then((res) => {
       // axios.post(api, formData).then((res)=>{
@@ -454,7 +480,7 @@ const RegisterForm = ({ mobileNumber, showFileInput, setShowFileInput }) => {
 
           <div className="col-md-6">
             <label htmlFor="">Attach photo of ARCS/DRCS</label>
-            <input type="file" className="form-control" onChange={(e) => setAadhaarCard(e.target.files[0])} />
+            <input type="file" className="form-control" onChange={(e) => setArcsDrcs(e.target.files[0])} />
           </div>
           <div className="col-md-6 d-flex align-items-center gap-4">
             <Button variant="contained" onClick={() => handleFileUpload('arcs_drcs')}>Upload</Button>  {isUploaded.arcs_drcs && <DoneAllIcon color="success" />}

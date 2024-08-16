@@ -15,8 +15,8 @@ module.exports = {
     });
   },
   async createBeneficiary(req, res) {
-    let beneficiaryData = req?.body?.data?.beneficiaryData;
-    let additionalData = req?.body?.data?.additionalData;
+    let beneficiaryData = req.body.data.beneficiaryData;
+    let additionalData = req.body.data.additionalData;
     try {
       async.waterfall([
         (fn) => {
@@ -26,7 +26,7 @@ module.exports = {
             headers: {
               accept: 'application/json',
               'x-api-version': '2024-01-01',
-              'x-request-id': additionalData?.api_request_id,
+              'x-request-id': additionalData.api_request_id,
               'content-type': 'application/json',
               'x-client-id': process.env.CASHFREE_APP_ID,
               'x-client-secret': process.env.CASHFREE_SECRET_KEY
@@ -45,9 +45,9 @@ module.exports = {
         },
         (responseData, fn) => {
           let requestData = {
-            farmer_id: additionalData?.farmer_id,
-            beneficiary_id: beneficiaryData?.beneficiary_id,
-            api_request_id: additionalData?.api_request_id,
+            farmer_id: additionalData.farmer_id,
+            beneficiary_id: beneficiaryData.beneficiary_id,
+            api_request_id: additionalData.api_request_id,
             status: 'Active'
           };
           BeneficiaryModel.create(requestData, (result) => {

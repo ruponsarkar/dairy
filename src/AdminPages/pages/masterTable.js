@@ -221,62 +221,7 @@ const MasterTable = () => {
     };
 
 
-    const handleAddLitter = (id, litter) => {
-        const updatedItems = data.map(item =>
-            item.id === id ? { ...item, litter: litter } : item
-        );
-        setData(updatedItems);
-    }
 
-    const handleApproveAll = () => {
-
-        if (!month) {
-            Swal.fire({
-                title: "Month Not selected !",
-                text: "You must selct a month!",
-                icon: "warning"
-            });
-            return;
-        }
-
-
-        console.log(month);
-        console.log(data);
-        let selectedData = data.filter((e) => e.litter && e.isApprove !== 'Approve');
-        console.log("selectedData", selectedData);
-
-
-        api.postMonthlyReport(selectedData, month, amountPerLitter).then((res) => {
-            console.log("postMonthlyReport: ", res);
-            Swal.fire({
-                title: "Approved for Payment!",
-                text: "Data sent for payment!",
-                icon: "success"
-            });
-
-            getMasterWithReport(month)
-            return;
-        })
-            .catch((err) => {
-                console.log("err postMonthlyReport", err);
-            })
-    }
-
-    const handleChangeMonth = (e) => {
-        setMonth(e.target.value)
-        getMasterWithReport(e.target.value);
-    }
-
-    const getMasterWithReport = (month) => {
-
-        api.getMasterWithReport(month).then((res) => {
-            console.log("getMasterWithReport", res.data.data);
-            setData(res.data.data)
-        })
-            .catch((err) => {
-                console.log("getMasterWithReport err", err);
-            })
-    }
 
     return (
         <Paper className="p-2">
@@ -324,22 +269,7 @@ const MasterTable = () => {
                                 ))}
                         </Select>
                     </FormControl>
-                    <FormControl sx={{ minWidth: 180, maxWidth: 200 }} size="small">
-                        <InputLabel id="status-label">Select Status</InputLabel>
-                        <Select
-                            labelId="status-label"
-                            id="status"
-                            value={selectedStatus}
-                            label="Select Status"
-                            onChange={handleStatusChange}
-                        >
-                            {statuses.map((status) => (
-                                <MenuItem key={status} value={status}>
-                                    {status}
-                                </MenuItem>
-                            ))}
-                        </Select>
-                    </FormControl>
+                   
                     {requestData.filterBy && (
                         <IconButton onClick={handleClearFilter}>
                             <CancelIcon />
@@ -359,12 +289,12 @@ const MasterTable = () => {
                 </div>
             </Box>
 
-            <div className="my-3 d-flex gap-3">
+            {/* <div className="my-3 d-flex gap-3">
                 <input type="month" name="" className="form-control col-2" id="" onChange={(e) => handleChangeMonth(e)} />
                 <div>
                     <Button variant="contained" onClick={handleApproveAll}>Approve for Payment for SLC</Button>
                 </div>
-            </div>
+            </div> */}
 
 
 
@@ -380,11 +310,12 @@ const MasterTable = () => {
                         <TableRow>
                             <StyledTableCell>#</StyledTableCell>
                             <StyledTableCell>Applicant Name</StyledTableCell>
+                            <StyledTableCell>DCS</StyledTableCell>
+                            <StyledTableCell>DCS ID</StyledTableCell>
                             <StyledTableCell>Co-operatice Name</StyledTableCell>
                             <StyledTableCell>Registration no</StyledTableCell>
                             <StyledTableCell>District</StyledTableCell>
-                            <StyledTableCell>Litter</StyledTableCell>
-                            <StyledTableCell align="center">Status</StyledTableCell>
+                            {/* <StyledTableCell align="center">Status</StyledTableCell> */}
                             <StyledTableCell align="center">Action</StyledTableCell>
                         </TableRow>
                     </TableHead>
@@ -398,20 +329,17 @@ const MasterTable = () => {
                                         <TableCell component="th" scope="row">
                                             {row.name}
                                         </TableCell>
+                                        <TableCell>{row.approverName}</TableCell>
+                                        <TableCell>{row.approverId}</TableCell>
                                         <TableCell>{row.name_of_co_operatice_society}</TableCell>
                                         <TableCell>{row.registration_no_of_co_operatice_society}</TableCell>
                                         <TableCell>{row.district}</TableCell>
-                                        <TableCell>
-                                            <input type="number" name="" disabled={row.isApprove === 'Approve' ? true : false} value={row.litter ? row.litter : ''} id="" onChange={(e) => handleAddLitter(row.id, e.target.value)} />
-                                        </TableCell>
-                                        <TableCell>
-
-
+                                        
+                                        {/* <TableCell>
                                             <span className={`${row.isApprove === 'Pending' || !row.isApprove ? 'bg-warning' : 'bg-success'} rounded px-2`}>
                                                 {row.isApprove ? row.isApprove : 'Pending'}
                                             </span>
-
-                                        </TableCell>
+                                        </TableCell> */}
                                         <TableCell align="center">
                                             <Button
                                                 variant="outlined"
@@ -501,7 +429,7 @@ const MasterTable = () => {
                                 </div>
                             )}
 
-                            <div className="d-flex justify-content-center gap-3 m-3">
+                            {/* <div className="d-flex justify-content-center gap-3 m-3">
                                 <div>
                                     <select
                                         name=""
@@ -535,7 +463,8 @@ const MasterTable = () => {
                                         Submit
                                     </Button>
                                 </div>
-                            </div>
+                            </div> */}
+
                         </div>
                     </DialogContentText>
                 </DialogContent>
