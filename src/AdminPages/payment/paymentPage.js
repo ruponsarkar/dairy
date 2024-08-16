@@ -154,7 +154,7 @@ export default function PaymentPage() {
           <div>
             {role === "Super Admin" && (
               <Button variant="contained" onClick={handleApproveAll}>
-                Approve Payout&nbsp; <PaymentsIcon />
+                Approve for Payment to Finance&nbsp; <PaymentsIcon />
               </Button>
             )}
           </div>
