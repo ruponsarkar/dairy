@@ -5,7 +5,7 @@ import AdminTable from '../table/adminTable';
 import Button from '@mui/material/Button';
 import Modal from '../../ui-component/modal';
 import Swal from 'sweetalert2';
-
+import Loader from '../../components/pannel/loader';
 import api from '../../API/api';
 
 const districts = [
@@ -20,6 +20,7 @@ const AdminCategory = () => {
 
     const [open, setOpen] = React.useState(false);
     const [data, setData] = useState([]);
+    const [loading, setLoading] = useState(false)
 
     const [formData, setFormData] = useState({
         'status': 'Active'
@@ -46,12 +47,15 @@ const AdminCategory = () => {
 
 
     const getAdmins=()=>{
+        setLoading(true)
         api.getAdmins().then((res)=>{
             console.log("res", res.data.message);
             setData(res.data.message)
+            setLoading(false)
         })
         .catch((err)=>{
             console.log("err :", err);
+            setLoading(false)
         })
     }
 
@@ -59,6 +63,7 @@ const AdminCategory = () => {
     const addAdminForm = () => {
         return (
             <>
+            
                 <div className='p-3'>
                     <div className="row">
                         <div className="col-md-6">
@@ -112,6 +117,7 @@ const AdminCategory = () => {
 
     return (
         <>
+        <Loader open={loading}/>
             <div className="container">
                 <Card>
                     <div className="row">

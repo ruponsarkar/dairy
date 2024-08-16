@@ -34,7 +34,7 @@ function Nav2() {
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="me-auto">
               <Link to="/" className='nav-link'>About</Link>
-              <Link to="/RegisterPage" className='nav-link'>Download Certicicate</Link>
+              <Link to="/RegisterPage" className='nav-link'>Download Certificate</Link>
               <a class="nav-link" target="_blank" href="assets/userManual/AHVD.pdf">User Manual</a>
               <a class="nav-link" target="_blank" href="https://youtu.be/k5wOrv534z0">YouTube Video Link</a>
               {/* <Link to="/Certificate" className='nav-link'>Certificate</Link> */}

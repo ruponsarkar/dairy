@@ -34,10 +34,7 @@ import FilterListIcon from "@mui/icons-material/FilterList";
 import Application from "../../components/register/application";
 import api from "../../API/api";
 import Swal from "sweetalert2";
-import CancelIcon from "@mui/icons-material/Cancel";
-import Checkbox from '@mui/material/Checkbox';
-import { CSVLink, CSVDownload } from "react-csv";
-import PaymentsIcon from "@mui/icons-material/Payments";
+import Loader from "../../components/pannel/loader";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
@@ -55,17 +52,21 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
 const Grievance = () => {
 
     const [data, setData] = useState();
+    const [loading, setLoading] = useState(false)
 
     useEffect(()=>{
         getGrievance();
     },[])
 
     const getGrievance=()=>{
+        setLoading(true)
         api.getGrievance().then((res)=>{
             console.log("res", res.data.data);
             setData(res.data.data)
+            setLoading(false)
         })
         .catch((err)=>{
+            setLoading(false)
             console.log("err", err);
         })
     }
@@ -74,6 +75,7 @@ const Grievance = () => {
 
     return (
         <Paper className="p-2">
+            <Loader open={loading}/>
             <Toolbar>
                 <Typography variant="h6" id="tableTitle" component="div">
                     Grievance

@@ -34,6 +34,11 @@ import NewspaperIcon from "@mui/icons-material/Newspaper";
 import NewReleasesIcon from "@mui/icons-material/NewReleases";
 import { useNavigate, Outlet } from "react-router-dom";
 import AuthUser from "../../API/token";
+import SummarizeIcon from '@mui/icons-material/Summarize';
+
+
+
+
 
 const drawerWidth = 240;
 
@@ -216,6 +221,15 @@ const Dashboard = (props) => {
             </Collapse>
           </>
         )}
+
+        <ListItem disablePadding onClick={() => navigate("/admin/report")}>
+          <ListItemButton>
+            <ListItemIcon>
+              <SummarizeIcon />
+            </ListItemIcon>
+            <ListItemText>Report</ListItemText>
+          </ListItemButton>
+        </ListItem>
 
         <ListItem disablePadding onClick={() => navigate("/admin/Grievance")}>
           <ListItemButton>
@@ -415,7 +429,11 @@ const Dashboard = (props) => {
             <Box sx={{ flexGrow: 0 }}>
               <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                  {/* <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" /> */}
+                  <AccountCircleIcon
+                    fontSize="large"
+                    style={{ color: "white" }}
+                  />
                 </IconButton>
               </Tooltip>
               <Menu
