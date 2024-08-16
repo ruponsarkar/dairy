@@ -3,35 +3,65 @@ const request = require("request");
 const { application } = require("express");
 const axios = require('axios');
 const crypto = require('crypto');
+const async = require('async');
+const BeneficiaryModel = require("../models/BeneficiaryModel");
 
 module.exports = {
+  async view(req, res){
+    let requestData = {
+    };
+    BeneficiaryModel.view(requestData, (result) => {
+      res.status(200).send(result);
+    });
+  },
   async createBeneficiary(req, res) {
-    let beneficiaryData = req.body.data;
+    let beneficiaryData = req?.body?.data?.beneficiaryData;
+    let additionalData = req?.body?.data?.additionalData;
     try {
-      const options = {
-        method: 'POST',
-        url: 'https://sandbox.cashfree.com/payout/beneficiary',
-        headers: {
-          accept: 'application/json',
-          'x-api-version': '2024-01-01',
-          'x-request-id': '4dfb6680-46fe-11ee-be56-0242ac120002',
-          'content-type': 'application/json',
-          'x-client-id': process.env.CASHFREE_APP_ID,
-          'x-client-secret': process.env.CASHFREE_SECRET_KEY
+      async.waterfall([
+        (fn) => {
+          const options = {
+            method: 'POST',
+            url: process.env.CASHFREE_ADD_BENEFICIARY_URL,
+            headers: {
+              accept: 'application/json',
+              'x-api-version': '2024-01-01',
+              'x-request-id': additionalData?.api_request_id,
+              'content-type': 'application/json',
+              'x-client-id': process.env.CASHFREE_APP_ID,
+              'x-client-secret': process.env.CASHFREE_SECRET_KEY
+            },
+            data: beneficiaryData
+          };
+          axios
+            .request(options)
+            .then(function (response) {
+              return fn(null, response.data);
+            })
+            .catch(function (error) {
+              console.error(error);
+              return fn(null, error);
+            });
         },
-        data: beneficiaryData
-      };
-
-      axios
-        .request(options)
-        .then(function (response) {
-          console.log(response.data);
-          res.status(200).send(response.data);
-        })
-        .catch(function (error) {
-          console.error(error);
-        });
-      
+        (responseData, fn) => {
+          let requestData = {
+            farmer_id: additionalData?.farmer_id,
+            beneficiary_id: beneficiaryData?.beneficiary_id,
+            api_request_id: additionalData?.api_request_id,
+            status: 'Active'
+          };
+          BeneficiaryModel.create(requestData, (result) => {
+            // res.status(200).send(result);
+            return fn(null, responseData);
+          });
+        }
+      ], (error, result) => {
+        if (error) {
+          console.error('Error creating beneficiary:', error);
+          res.status(500).send('Error creating beneficiary');
+        }
+        res.status(200).send(result);
+      });
     } catch (error) {
       console.error('Error creating beneficiary:', error);
       res.status(500).send('Error creating beneficiary');

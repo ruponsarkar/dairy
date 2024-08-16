@@ -24,6 +24,12 @@ module.exports = (app) => {
   // Payment API's
 
   app.post("/createBeneficiary", PaymentController.createBeneficiary);
+  app.post("/viewBeneficiary", PaymentController.view);
+
+   // Payment API's End
+
+
+
   app.post("/saveToMaster", MasterController.saveToMaster);
   app.post("/getMaster", MasterController.getMaster);
   app.post("/postMonthlyReport", MasterController.postMonthlyReport);

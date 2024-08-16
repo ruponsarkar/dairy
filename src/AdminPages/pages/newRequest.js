@@ -279,32 +279,7 @@ const NewRequest = () => {
 
   }
 
-  const handleCreateBeneficiary = () => {
-    const data = {
-      beneficiary_id: 'DairyAssam18011361',
-      beneficiary_name: 'Ariyan Zaman',
-      beneficiary_contact_details: {
-        beneficiary_email: 'Ariyanzaman@cashfree.com',
-        beneficiary_phone: '9876543239',
-        beneficiary_country_code: '+91',
-        beneficiary_address: 'Jhagrarpar Magurmari',
-        beneficiary_city: 'Dhubri',
-        beneficiary_postal_code: '560001'
-      },
-      beneficiary_instrument_details: {
-        bank_account_number: '00111122251',
-        bank_ifsc: 'HDFC0000071',
-        vpa: 'test@upi'
-      } 
-    }
-    api.createBeneficiary(data).then((res) => {
-      Swal.fire('Beneficiary created successfully !');
-    })
-      .catch((err) => {
-        console.log("err : ", err);
-        Swal.fire('Something went wrong !');
-      })
-  }
+ 
 
   const getFrom = () => {
     // const data = {
@@ -391,7 +366,7 @@ const NewRequest = () => {
             </Select>
           </FormControl>
           <FormControl>
-            <IconButton onClick={handleCreateBeneficiary}>
+            <IconButton>
               <CancelIcon />
             </IconButton>
           </FormControl>

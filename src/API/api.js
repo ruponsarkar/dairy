@@ -66,6 +66,10 @@ export default {
 
     createBeneficiary(data) {
         return API.post('/createBeneficiary', { data });
+    },
+
+    viewBeneficiary(data) {
+        return API.post('/viewBeneficiary', { data });
     }
 
 

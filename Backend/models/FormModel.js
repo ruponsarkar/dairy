@@ -73,6 +73,9 @@ module.exports = {
       case "aadhaarCard":
         updateQuery = `UPDATE forms SET aadharCard = ? WHERE mobileNumber = ?`;
         break;
+      case "arcs_drcs":
+        updateQuery = `UPDATE forms SET arcs_drcs = ? WHERE mobileNumber = ?`;
+        break;
     }
 
     db.query(updateQuery, [filePath, mobileNumber], (err, result) => {
@@ -119,26 +122,26 @@ module.exports = {
     let query = "";
     switch (role) {
       case "Super Admin":
-        if(filterBy){
+        if (filterBy) {
           query = `SELECT * FROM forms WHERE ${filterBy} = '${filterData}'  ORDER BY id DESC LIMIT ${limit} OFFSET ${offset}  `;
           console.log("1=>", query);
         }
-        else{
+        else {
           query = `SELECT * FROM forms ORDER BY id DESC LIMIT ${limit} OFFSET ${offset}  `;
           console.log("2=>", query);
         }
 
         break;
 
-        case "Admin":
-          if(filterBy){
-            query = `SELECT * FROM forms WHERE ${filterBy} = '${filterData}' AND district= '${district}' ORDER BY id DESC LIMIT ${limit} OFFSET ${offset}  `;
-            console.log("3=>", query);
-          }
-          else{
-            query = `SELECT * FROM forms WHERE district = '${district}' ORDER BY id DESC LIMIT ${limit} OFFSET ${offset}  `;
-            console.log("4=>", query);
-          }
+      case "Admin":
+        if (filterBy) {
+          query = `SELECT * FROM forms WHERE ${filterBy} = '${filterData}' AND district= '${district}' ORDER BY id DESC LIMIT ${limit} OFFSET ${offset}  `;
+          console.log("3=>", query);
+        }
+        else {
+          query = `SELECT * FROM forms WHERE district = '${district}' ORDER BY id DESC LIMIT ${limit} OFFSET ${offset}  `;
+          console.log("4=>", query);
+        }
     }
 
 
@@ -196,45 +199,45 @@ module.exports = {
   },
 
 
-   countStatus(callback) {
+  countStatus(callback) {
     // Define your queries
     let queries = {
-        approve: `SELECT COUNT(*) AS count FROM forms WHERE status = 'Approve';`,
-        draft: `SELECT COUNT(*) AS count FROM forms WHERE status = 'Draft';`,
-        rejected: `SELECT COUNT(*) AS count FROM forms WHERE status = 'Reject';`,
-        incompleted: `SELECT COUNT(*) AS count FROM forms WHERE status = 'Incompleted';`,
-        total: `SELECT COUNT(*) AS count FROM forms;`
+      approve: `SELECT COUNT(*) AS count FROM forms WHERE status = 'Approve';`,
+      draft: `SELECT COUNT(*) AS count FROM forms WHERE status = 'Draft';`,
+      rejected: `SELECT COUNT(*) AS count FROM forms WHERE status = 'Reject';`,
+      incompleted: `SELECT COUNT(*) AS count FROM forms WHERE status = 'Incompleted';`,
+      total: `SELECT COUNT(*) AS count FROM forms;`
     };
 
     // Execute all queries using promises
     let promises = Object.keys(queries).map(key => {
-        return new Promise((resolve, reject) => {
-            db.query(queries[key], (err, result) => {
-                if (err) {
-                    reject({ key: key, error: err });
-                } else {
-                    resolve({ key: key, count: result[0].count });
-                }
-            });
+      return new Promise((resolve, reject) => {
+        db.query(queries[key], (err, result) => {
+          if (err) {
+            reject({ key: key, error: err });
+          } else {
+            resolve({ key: key, count: result[0].count });
+          }
         });
+      });
     });
 
     // Handle all promises
     Promise.all(promises)
-        .then(results => {
-            // Transform the results into an object
-            let statusCounts = {};
-            results.forEach(result => {
-                statusCounts[result.key] = result.count;
-            });
-
-            // Return the results via callback
-            callback && callback({ status: 200, message: statusCounts });
-        })
-        .catch(err => {
-            // Handle errors
-            callback && callback({ status: 400, message: err });
+      .then(results => {
+        // Transform the results into an object
+        let statusCounts = {};
+        results.forEach(result => {
+          statusCounts[result.key] = result.count;
         });
-}
+
+        // Return the results via callback
+        callback && callback({ status: 200, message: statusCounts });
+      })
+      .catch(err => {
+        // Handle errors
+        callback && callback({ status: 400, message: err });
+      });
+  }
 
 };

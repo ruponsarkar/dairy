@@ -29,7 +29,8 @@ const RegisterForm = ({ mobileNumber, showFileInput, setShowFileInput }) => {
   const [isUploaded, setIsuploaded] = useState({
     passbook: false,
     panCard: false,
-    aadhaarCard: false
+    aadhaarCard: false,
+    arcs_drcs:false
   })
 
   const handleInput = (e) => {
@@ -92,6 +93,9 @@ const RegisterForm = ({ mobileNumber, showFileInput, setShowFileInput }) => {
     if (type === 'aadhaarCard') {
       upload(type, aadhaarCard, 'aadharcard');
     }
+    if (type === 'arcs_drcs') {
+      upload(type, arcs_drcs, 'arcs_drcs');
+    }
   }
 
   const upload = (type, file, fileName) => {
@@ -116,6 +120,9 @@ const RegisterForm = ({ mobileNumber, showFileInput, setShowFileInput }) => {
             break;
           case 'aadhaarCard':
             setIsuploaded({ ...isUploaded, aadhaarCard: true })
+            break;
+            case 'arcs_drcs':
+            setIsuploaded({ ...isUploaded, arcs_drcs: true })
             break;
         }
         setOpenLoder(false);
@@ -445,6 +452,14 @@ const RegisterForm = ({ mobileNumber, showFileInput, setShowFileInput }) => {
             <Button variant="contained" onClick={() => handleFileUpload('aadhaarCard')}>Upload</Button>  {isUploaded.aadhaarCard && <DoneAllIcon color="success" />}
           </div>
 
+          <div className="col-md-6">
+            <label htmlFor="">Attach photo of ARCS/DRCS</label>
+            <input type="file" className="form-control" onChange={(e) => setAadhaarCard(e.target.files[0])} />
+          </div>
+          <div className="col-md-6 d-flex align-items-center gap-4">
+            <Button variant="contained" onClick={() => handleFileUpload('arcs_drcs')}>Upload</Button>  {isUploaded.arcs_drcs && <DoneAllIcon color="success" />}
+          </div>
+          
           <div className="col-md-12">
             <div className="text-center">
               <Button variant="contained" color="success" onClick={handleSubmit}>
