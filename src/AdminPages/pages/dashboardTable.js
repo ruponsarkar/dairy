@@ -29,7 +29,7 @@ import {
   Link,
 } from "@mui/material";
 import { tableCellClasses } from "@mui/material/TableCell";
-import { styled, emphasize } from "@mui/material/styles";
+import { styled } from "@mui/material/styles";
 import DownloadIcon from '@mui/icons-material/Download';
 import FilterListIcon from "@mui/icons-material/FilterList";
 import Application from "../../components/register/application";
@@ -39,33 +39,7 @@ import CancelIcon from '@mui/icons-material/Cancel';
 // import IconButton from '@mui/material/IconButton';
 import { CSVLink, CSVDownload } from "react-csv";
 import PaymentsIcon from '@mui/icons-material/Payments';
-import Loader from "../../components/pannel/loader";
 
-import Breadcrumbs from '@mui/material/Breadcrumbs';
-import Chip from '@mui/material/Chip';
-import HomeIcon from '@mui/icons-material/Home';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-
-
-const StyledBreadcrumb = styled(Chip)(({ theme }) => {
-  const backgroundColor =
-    theme.palette.mode === 'light'
-      ? theme.palette.grey[100]
-      : theme.palette.grey[800];
-  return {
-    backgroundColor,
-    height: theme.spacing(3),
-    color: theme.palette.text.primary,
-    fontWeight: theme.typography.fontWeightRegular,
-    '&:hover, &:focus': {
-      backgroundColor: emphasize(backgroundColor, 0.06),
-    },
-    '&:active': {
-      boxShadow: theme.shadows[1],
-      backgroundColor: emphasize(backgroundColor, 0.12),
-    },
-  };
-});
 
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -104,7 +78,7 @@ const statuses = [
 
 
 
-const NewRequest = () => {
+const DashboardTable = () => {
 
   const [selectedDistrict, setSelectedDistrict] = useState('');
   const [selectedStatus, setSelectedStatus] = useState('');
@@ -136,7 +110,6 @@ const NewRequest = () => {
   const [openImgView, setOpenImgView] = useState(false);
   const [selectedImg, setSelectedImg] = useState();
   const [user, setUser] = useState();
-  const [loading, setLoading] = useState(false);
 
   const [requestData, setRequestData] = useState(
     {
@@ -268,16 +241,12 @@ const NewRequest = () => {
     //   filterData: ''
     // }
 
-    setLoading(true)
-
     api.getFrom(requestData).then((res) => {
       console.log("res :", res);
       setData(res.data.data)
-      setLoading(false)
     })
-    .catch((err) => {
-      console.log("err: ", err);
-      setLoading(false)
+      .catch((err) => {
+        console.log("err: ", err);
       })
   }
 
@@ -288,100 +257,16 @@ const NewRequest = () => {
 
 
   return (
-    <>
-    <Paper className="p-1 mb-3">
-
-      <Toolbar sx={{
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "space-between",
-      flexWrap: "wrap",
-      "@media (max-width: 600px)": {
-        flexDirection: "column",
-        alignItems: "flex-start",
-      },
-    }}>
-        <Typography sx={{ display: "flex", gap: 2 }} variant="h6" id="tableTitle" component="div">
-         Farmer List
+    <Paper className="p-2">
+        <Typography className="pt-1 pb-2" variant="h6" id="tableTitle" component="div">
+          Farmer Data
         </Typography>
-        <div role="presentation" >
-      <Breadcrumbs aria-label="breadcrumb">
-        <StyledBreadcrumb
-          component="a"
-          href="/admin"
-          label="Home"
-          icon={<HomeIcon fontSize="small" />}
-        />
-        {/* <StyledBreadcrumb component="a" href="#" label="Catalog" /> */}
-        <StyledBreadcrumb label="New Request"/>
-      </Breadcrumbs>
-    </div>
-      </Toolbar>
-
-      </Paper>
-      <Paper className="p-2">
         <Typography className="py-2">
-          Here is the complete registered farmer list
+          Here is the recent registered farmer list <a href="admin/newRequest">View full list</a>
         </Typography>
-      <Box
-        sx={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          flexWrap: 'wrap',
-          margin: '20px 0',
-          '@media (max-width: 600px)': {
-            flexDirection: 'column',
-            alignItems: 'flex-start',
-          },
-        }}
-      >
-        <Box sx={{ display: 'flex', gap: 2 }}>
-          <FormControl sx={{ minWidth: 180, maxWidth: 200 }} size="small">
-            <InputLabel id="assam-district-label">Select District</InputLabel>
-            <Select
-              labelId="assam-district-label"
-              id="assam-district"
-              value={selectedDistrict}
-              label="Select District"
-              onChange={handleDistrictChange}
-            >
-              {districts && districts.map((district) => (
-                <MenuItem key={district} value={district}>
-                  {district}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-          <FormControl sx={{ minWidth: 180, maxWidth: 200 }} size="small">
-            <InputLabel id="status-label">Select Status</InputLabel>
-            <Select
-              labelId="status-label"
-              id="status"
-              value={selectedStatus}
-              label="Select Status"
-              onChange={handleStatusChange}
-            >
-              {statuses.map((status) => (
-                <MenuItem key={status} value={status}>
-                  {status}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-          {requestData.filterBy &&
-            <IconButton onClick={handleClearFilter}>
-              <CancelIcon />
-            </IconButton>
-          }
+      
 
-        </Box>
-
-
-        {/* <CSVLink data={data} filename={"AHVD_DATA.csv"} >Download Data</CSVLink> */}
-
-
-      </Box>
+    
 
       {/* 
     <div className="p-3 float-end">
@@ -389,25 +274,23 @@ const NewRequest = () => {
     </div> */}
 
       <TableContainer component={Paper}>
-        <Table className="table-bordered p-0 m-0"
-          sx={{ minWidth: 750 }}
-          aria-labelledby="tableTitle"
-          size="medium"
+        <Table className="table-bordered table-striped"
+         
         >
 
 
 
           <TableHead className="p-2">
             <TableRow className="p-2">
-              <StyledTableCell className="p-2">
+              <StyledTableCell className="p-2 text-center">
                 Name of the applicant
               </StyledTableCell>
-              <StyledTableCell className="p-2">Registration No CO</StyledTableCell>
+              <StyledTableCell className="p-2 text-center">Registration No CO</StyledTableCell>
               {/* <StyledTableCell>Area of residence</StyledTableCell> */}
-              <StyledTableCell className="p-2">District</StyledTableCell>
-              <StyledTableCell className="p-2">Village</StyledTableCell>
-              <StyledTableCell className="p-2" align="center">Status</StyledTableCell>
-              <StyledTableCell className="p-2" align="center">Action</StyledTableCell>
+              <StyledTableCell className="p-2 text-center">District</StyledTableCell>
+              <StyledTableCell className="p-2 text-center">Village</StyledTableCell>
+              <StyledTableCell className="p-2 text-center">Status</StyledTableCell>
+              {/* <StyledTableCell className="p-2 text-center">Action</StyledTableCell> */}
             </TableRow>
           </TableHead>
 
@@ -416,20 +299,20 @@ const NewRequest = () => {
               data.map((row, index) => {
                 return (
                   <TableRow hover tabIndex={-1} key={row.name}>
-                    <TableCell component="th" scope="row">
+                    <TableCell className="p-2" component="th" scope="row">
                       {row.name}
                     </TableCell>
-                    <TableCell>{row.name_of_co_operatice_society}</TableCell>
-                    <TableCell>{row.registration_no_of_co_operatice_society}</TableCell>
+                    <TableCell className="p-2">{row.registration_no_of_co_operatice_society}</TableCell>
                     {/* <TableCell>{row.area}</TableCell> */}
-                    <TableCell>{row.district}</TableCell>
-                    <TableCell align="center">
+                    <TableCell className="p-1">{row.district}</TableCell>
+                    <TableCell className="p-2">{row.village}</TableCell>
+                    <TableCell className="p-2" align="center">
                       {row.status === 'Draft' && <span className="bg-secondary px-3 rounded">Draft</span>}
                       {row.status === 'Incompleted' && <span className="bg-warning px-3 rounded">Incompleted</span>}
                       {row.status === 'Approve' && <span className="bg-success px-3 rounded">Approved</span>}
                       {row.status === 'Reject' && <span className="bg-danger px-3 rounded">Rejected</span>}
                     </TableCell>
-                    <TableCell align="right">
+                    {/* <TableCell className="p-1" align="right">
                       <Button
                         variant="outlined"
                         color="primary"
@@ -438,7 +321,7 @@ const NewRequest = () => {
                       >
                         View
                       </Button>
-                    </TableCell>
+                    </TableCell> */}
                     {/* <TableCell align="right">
                       <Button
                         variant="outlined"
@@ -558,8 +441,7 @@ const NewRequest = () => {
 
 
     </Paper>
-    </>
   );
 };
 
-export default NewRequest;
+export default DashboardTable;
