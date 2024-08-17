@@ -106,10 +106,9 @@ const Dashboard = (props) => {
 
   const drawer = (
     <div>
-      <Toolbar>
-        <a href="/admin">
-          {/* <img src="/logo.png" className='img-fluid' /> */}
-          <h2>Admin Panel</h2>
+      <Toolbar className="shadow p-1">
+        <a className="text-dark header-name text-center" href="/admin">
+          <h4>DCS Admin Panel</h4>
         </a>
       </Toolbar>
       <Divider />
@@ -151,12 +150,6 @@ const Dashboard = (props) => {
               </ListItemIcon>
               <ListItemText primary="New Request" />
             </ListItemButton>
-            {/* <ListItemButton sx={{ pl: 4 }} onClick={() => navigate("/admin/MasterTable")}>
-              <ListItemIcon>
-                <SubdirectoryArrowRightIcon />
-              </ListItemIcon>
-              <ListItemText primary="Master Table" />
-            </ListItemButton> */}
             <ListItemButton
               sx={{ pl: 4 }}
               onClick={() => navigate("/admin/ApprovalTable")}
@@ -226,43 +219,6 @@ const Dashboard = (props) => {
           </ListItemButton>
         </ListItem>
 
-        {/* <ListItemButton onClick={publisherClick}>
-          <ListItemIcon>
-            <NewspaperIcon />
-          </ListItemIcon>
-          <ListItemText primary="Publisher" />
-          {openPublisher ? <ExpandLess /> : <ExpandMore />}
-        </ListItemButton>
-
-        <Collapse in={openPublisher} timeout="auto" unmountOnExit>
-          <List component="div" disablePadding>
-            <ListItemButton sx={{ pl: 4 }} onClick={() => navigate("/admin/publisher")}>
-              <ListItemIcon>
-                <SubdirectoryArrowRightIcon />
-              </ListItemIcon>
-              <ListItemText primary="Create Publisher" />
-            </ListItemButton>
-          </List>
-        </Collapse> */}
-
-        {/* <ListItem disablePadding onClick={() => navigate("/admin/youtubelink")}>
-          <ListItemButton>
-            <ListItemIcon>
-              <SubscriptionsIcon />
-            </ListItemIcon>
-            <ListItemText> Youtube Embaded </ListItemText>
-          </ListItemButton>
-        </ListItem> */}
-
-        {/* <ListItem disablePadding onClick={() => navigate("/admin/contactRequest")}>
-          <ListItemButton>
-            <ListItemIcon>
-              <ListAltIcon />
-            </ListItemIcon>
-            <ListItemText>Contact Request</ListItemText>
-          </ListItemButton>
-        </ListItem> */}
-
         <ListItem disablePadding onClick={logout}>
           <ListItemButton>
             <ListItemIcon>
@@ -271,15 +227,6 @@ const Dashboard = (props) => {
             <ListItemText>Logout</ListItemText>
           </ListItemButton>
         </ListItem>
-
-        {/* <ListItem disablePadding onClick={() => navigate("/admin/research")}>
-          <ListItemButton>
-            <ListItemIcon>
-              <AttachmentIcon />
-            </ListItemIcon>
-            <ListItemText>Research Papers</ListItemText>
-          </ListItemButton>
-        </ListItem> */}
       </List>
       <Divider />
     </div>
@@ -315,8 +262,6 @@ const Dashboard = (props) => {
       >
         <Container maxWidth="xl">
           <Toolbar disableGutters>
-            {/* <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} /> */}
-
             <IconButton
               color="inherit"
               aria-label="open drawer"
@@ -327,35 +272,13 @@ const Dashboard = (props) => {
               <MenuIcon />
             </IconButton>
 
-            {/* <Typography
-              variant="h6"
-              noWrap
-              component="a"
-              href="/"
-              sx={{
-                mr: 2,
-                display: { xs: 'none', md: 'flex' },
-                fontFamily: 'monospace',
-                fontWeight: 700,
-                letterSpacing: '.3rem',
-                color: 'inherit',
-                textDecoration: 'none',
-              }}
-            >
-              LOGO
-            </Typography> */}
+
+            <Typography>
+              DCS Name
+            </Typography>
+
 
             <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
-              {/* <IconButton
-                size="large"
-                aria-label="account of current user"
-                aria-controls="menu-appbar"
-                aria-haspopup="true"
-                onClick={handleOpenNavMenu}
-                color="inherit"
-              >
-                <MenuIcon />
-              </IconButton> */}
               <Menu
                 id="menu-appbar"
                 anchorEl={anchorElNav}
@@ -381,25 +304,6 @@ const Dashboard = (props) => {
                 ))}
               </Menu>
             </Box>
-            {/* <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
-            <Typography
-              variant="h5"
-              noWrap
-              component="a"
-              href=""
-              sx={{
-                mr: 2,
-                display: { xs: 'flex', md: 'none' },
-                flexGrow: 1,
-                fontFamily: 'monospace',
-                fontWeight: 700,
-                letterSpacing: '.3rem',
-                color: 'inherit',
-                textDecoration: 'none',
-              }}
-            >
-              LOGO
-            </Typography> */}
             <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
               {pages.map((page) => (
                 <Button
@@ -417,6 +321,7 @@ const Dashboard = (props) => {
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                   {/* <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" /> */}
                   <AccountCircleIcon fontSize="large" style={{ color: 'white' }} />
+                  <Typography color={"white"}> Arnab</Typography>
                 </IconButton>
               </Tooltip>
               <Menu

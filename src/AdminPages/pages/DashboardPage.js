@@ -1,5 +1,7 @@
 import React from "react";
 import CountStatus from "../../components/home/countStatus";
+
+import DashboardTable from "./dashboardTable";
 const DashboardPage = () => {
 
 
@@ -39,6 +41,8 @@ const DashboardPage = () => {
                     </div>
                 </div> */}
                 <CountStatus />
+
+                <DashboardTable />
 
 
                 {/* <div className="row my-5 justify-content-center">
