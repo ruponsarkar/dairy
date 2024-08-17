@@ -38,6 +38,7 @@ import CancelIcon from "@mui/icons-material/Cancel";
 import Checkbox from "@mui/material/Checkbox";
 import { CSVLink, CSVDownload } from "react-csv";
 import PaymentsIcon from "@mui/icons-material/Payments";
+import Loader from "../../components/pannel/loader";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -90,6 +91,7 @@ const statuses = ["Approve", "Reject", "Draft", "Incompleted"];
 const ApprovalTable = () => {
   const [selectedDistrict, setSelectedDistrict] = useState("");
   const [selectedStatus, setSelectedStatus] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleDistrictChange = (event) => {
     setSelectedDistrict(event.target.value);
@@ -212,14 +214,17 @@ const ApprovalTable = () => {
   };
 
   const getFrom = () => {
+    setLoading(true);
     api
       .getMaster(requestData)
       .then((res) => {
         console.log("res :", res);
         setData(res.data.data);
+        setLoading(false);
       })
       .catch((err) => {
         console.log("err: ", err);
+        setLoading(false);
       });
   };
 
@@ -248,11 +253,11 @@ const ApprovalTable = () => {
     );
     console.log("selectedData", selectedData);
     updateMonthlyReport(needUpdatesData);
-    postMonthlyReport(selectedData)
-
+    postMonthlyReport(selectedData);
   };
 
   const postMonthlyReport = (selectedData) => {
+    setLoading(true);
     api
       .postMonthlyReport(selectedData, month, amountPerLitter)
       .then((res) => {
@@ -263,15 +268,18 @@ const ApprovalTable = () => {
           icon: "success",
         });
 
+        setLoading(false);
         getMasterWithReport();
         return;
-      })
-      .catch((err) => {
+    })
+    .catch((err) => {
         console.log("err postMonthlyReport", err);
+        setLoading(false);
       });
   };
 
   const updateMonthlyReport = (data) => {
+    setLoading(true);
     api
       .updateMonthlyReport(data, month, amountPerLitter)
       .then((res) => {
@@ -282,10 +290,12 @@ const ApprovalTable = () => {
           icon: "success",
         });
 
+        setLoading(false);
         getMasterWithReport();
         return;
-      })
-      .catch((err) => {
+    })
+    .catch((err) => {
+          setLoading(false);
         console.log("err updateMonthlyReport", err);
       });
   };
@@ -296,20 +306,24 @@ const ApprovalTable = () => {
   };
 
   const getMasterWithReport = () => {
+    setLoading(true)
     console.log("selectedDistrict ", selectedDistrict);
     api
-      .getMasterWithReport(month, selectedDistrict)
-      .then((res) => {
+    .getMasterWithReport(month, selectedDistrict)
+    .then((res) => {
         console.log("getMasterWithReport", res.data.data);
         setData(res.data.data);
-      })
-      .catch((err) => {
+        setLoading(false)
+    })
+    .catch((err) => {
+          setLoading(false)
         console.log("getMasterWithReport err", err);
       });
   };
 
   return (
     <Paper className="p-2">
+      <Loader open={loading} />
       <Toolbar>
         <Typography variant="h6" id="tableTitle" component="div">
           Master Data
@@ -412,11 +426,11 @@ const ApprovalTable = () => {
             <TableRow>
               <StyledTableCell>#</StyledTableCell>
               <StyledTableCell>Applicant Name</StyledTableCell>
-              <StyledTableCell>DCS</StyledTableCell>
+              <StyledTableCell>Name of DCS</StyledTableCell>
               <StyledTableCell>Registration no</StyledTableCell>
               <StyledTableCell>District</StyledTableCell>
-              <StyledTableCell>Quantity of Milk</StyledTableCell>
-              <StyledTableCell>Amount</StyledTableCell>
+              <StyledTableCell>Quantity of Milk(in Litres)</StyledTableCell>
+              <StyledTableCell>Amount (in Rs)</StyledTableCell>
               <StyledTableCell align="center">Status</StyledTableCell>
               <StyledTableCell align="center">Action</StyledTableCell>
             </TableRow>
@@ -448,7 +462,9 @@ const ApprovalTable = () => {
                         }
                       />
                     </TableCell>
-                    <TableCell>{row.litter ? row.litter*5 : 0}</TableCell>
+                    <TableCell align="center">
+                      {row.litter ? row.litter * 5 : 0}
+                    </TableCell>
                     <TableCell>
                       <span
                         className={`${
@@ -457,7 +473,11 @@ const ApprovalTable = () => {
                             : "bg-success"
                         } rounded px-2`}
                       >
-                        {row.isApprove ? row.isApprove === 'Approve' ? 'Approved' : row.isApprove : "Pending" }
+                        {row.isApprove
+                          ? row.isApprove === "Approve"
+                            ? "Approved"
+                            : row.isApprove
+                          : "Pending"}
                       </span>
                     </TableCell>
                     <TableCell align="center">

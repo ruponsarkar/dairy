@@ -62,7 +62,8 @@ module.exports = {
   getRangeSubsidy(req, res) {
     let from = req.body.from;
     let to = req.body.to;
-    MasterModel.getRangeSubsidy(from, to, (result) => {
+    let district = req.body.district;
+    MasterModel.getRangeSubsidy(from, to, district, (result) => {
       res.status(200).send(result);
     });
   },

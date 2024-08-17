@@ -39,6 +39,7 @@ import CancelIcon from '@mui/icons-material/Cancel';
 // import IconButton from '@mui/material/IconButton';
 import { CSVLink, CSVDownload } from "react-csv";
 import PaymentsIcon from '@mui/icons-material/Payments';
+import Loader from "../../components/pannel/loader";
 
 
 
@@ -110,6 +111,7 @@ const NewRequest = () => {
   const [openImgView, setOpenImgView] = useState(false);
   const [selectedImg, setSelectedImg] = useState();
   const [user, setUser] = useState();
+  const [loading, setLoading] = useState(false);
 
   const [requestData, setRequestData] = useState(
     {
@@ -243,12 +245,16 @@ const NewRequest = () => {
     //   filterData: ''
     // }
 
+    setLoading(true)
+
     api.getFrom(requestData).then((res) => {
       console.log("res :", res);
       setData(res.data.data)
+      setLoading(false)
     })
-      .catch((err) => {
-        console.log("err: ", err);
+    .catch((err) => {
+      console.log("err: ", err);
+      setLoading(false)
       })
   }
 
@@ -260,6 +266,7 @@ const NewRequest = () => {
 
   return (
     <Paper className="p-2">
+      <Loader open={loading}/>
 
       <Toolbar>
         <Typography variant="h6" id="tableTitle" component="div">
@@ -354,12 +361,12 @@ const NewRequest = () => {
           <TableHead>
             <TableRow>
               <StyledTableCell>
-                Name of the applicant
+              Applicant Name 
               </StyledTableCell>
-              <StyledTableCell>Registration No CO</StyledTableCell>
+              <StyledTableCell>Name of DCS</StyledTableCell>
+              <StyledTableCell>Registration No</StyledTableCell>
               {/* <StyledTableCell>Area of residence</StyledTableCell> */}
               <StyledTableCell>District</StyledTableCell>
-              <StyledTableCell>Village</StyledTableCell>
               <StyledTableCell align="center">Status</StyledTableCell>
               <StyledTableCell align="center">Action</StyledTableCell>
             </TableRow>
@@ -373,10 +380,10 @@ const NewRequest = () => {
                     <TableCell component="th" scope="row">
                       {row.name}
                     </TableCell>
+                    <TableCell>{row.name_of_co_operatice_society}</TableCell>
                     <TableCell>{row.registration_no_of_co_operatice_society}</TableCell>
                     {/* <TableCell>{row.area}</TableCell> */}
                     <TableCell>{row.district}</TableCell>
-                    <TableCell>{row.village}</TableCell>
                     <TableCell align="center">
                       {row.status === 'Draft' && <span className="bg-secondary px-3 rounded">Draft</span>}
                       {row.status === 'Incompleted' && <span className="bg-warning px-3 rounded">Incompleted</span>}

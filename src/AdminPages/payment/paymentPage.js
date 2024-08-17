@@ -15,6 +15,7 @@ import PaymentsIcon from "@mui/icons-material/Payments";
 import { CSVLink, CSVDownload } from "react-csv";
 import api from "../../API/api";
 import SearchIcon from '@mui/icons-material/Search';
+import Loader from "../../components/pannel/loader";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -44,6 +45,7 @@ export default function PaymentPage() {
   const [from, setFrom] = useState();
   const [to, setTo] = useState();
   const [all, setAll] = useState();
+  const [loading, setLoading] = useState(false);
 
   function getCurrentMonth() {
     const now = new Date();
@@ -120,13 +122,16 @@ export default function PaymentPage() {
   };
 
   const handleRangeSubsidy = () => {
+    setLoading(true)
     api.getRangeSubsidy(from, to).then((res) => {
       console.log("ress ", res);
       setData(res.data.data)
       setAll(res.data.data)
+      setLoading(false)
     })
-      .catch((err) => {
-        console.log("err e", err);
+    .catch((err) => {
+      console.log("err e", err);
+      setLoading(false)
       })
   }
 
@@ -193,11 +198,8 @@ export default function PaymentPage() {
 
   return (
     <Paper className="p-2">
+      <Loader open={loading}/>
       <div className="my-3 d-flex gap-3">
-
-
-
-
 
 
       </div>
@@ -216,7 +218,7 @@ export default function PaymentPage() {
           <div>
             {role === "Super Admin" && (
               <Button variant="contained" onClick={handleApproveAll}>
-                Approve Payout&nbsp; <PaymentsIcon />
+                Approve for Payment to Finance&nbsp; <PaymentsIcon />
               </Button>
             )}
           </div>
@@ -248,12 +250,11 @@ export default function PaymentPage() {
                 />
               </StyledTableCell>
               <StyledTableCell>Name</StyledTableCell>
-              <StyledTableCell>Co-operative name</StyledTableCell>
-              <StyledTableCell>DCS</StyledTableCell>
-              <StyledTableCell>DCS ID</StyledTableCell>
+              <StyledTableCell>Name of DCS</StyledTableCell>
+              <StyledTableCell>Registration No </StyledTableCell>
               <StyledTableCell>Subsidy Details</StyledTableCell>
-              <StyledTableCell>Quantity of milk</StyledTableCell>
-              <StyledTableCell>Ammount</StyledTableCell>
+              <StyledTableCell>Quantity of milk(in Litres)</StyledTableCell>
+              <StyledTableCell>Ammount(in Rs)</StyledTableCell>
               <StyledTableCell>Bank Account No</StyledTableCell>
               <StyledTableCell>Payment Status</StyledTableCell>
               <StyledTableCell>Action</StyledTableCell>
@@ -274,15 +275,13 @@ export default function PaymentPage() {
                     {row.name_of_co_operatice_society}
                   </StyledTableCell>
                   <StyledTableCell>
-                    {row.approverName}
+                    {row.registration_no_of_co_operatice_society}
                   </StyledTableCell>
-                  <StyledTableCell>
-                    {row.approverId}
-                  </StyledTableCell>
+                 
                   <StyledTableCell width={200}>{row.subsidy_details}</StyledTableCell>
 
-                  <StyledTableCell> <strong> {row.quantity} </strong> </StyledTableCell>
-                  <StyledTableCell> <strong> {row.total_amount} </strong> </StyledTableCell>
+                  <StyledTableCell align="center"> <strong> {row.quantity} </strong> </StyledTableCell>
+                  <StyledTableCell align="center"> <strong> {row.total_amount} </strong> </StyledTableCell>
                   <StyledTableCell>{row.bank_account_no}</StyledTableCell>
                   <StyledTableCell>
                     <span className={`${row.paymentStatus === 'Pending' ? 'bg-warning' : 'bg-success'} rounded px-2`}>
