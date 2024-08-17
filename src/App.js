@@ -20,6 +20,9 @@ import UserCertificate from './userPage/userCertificate';
 import ApprovalTable from './AdminPages/pages/ApprovalTable';
 import AdminGrievance from './AdminPages/pages/grievance';
 import Report from './AdminPages/pages/report';
+import AddDCS from './AdminPages/pages/addDCS';
+import AddFarmer from './AdminPages/pages/addFarmer';
+import SLSCApproval from './AdminPages/pages/slscApproval';
 
 
 
@@ -94,6 +97,9 @@ function App() {
             <Route path='ApprovalTable' element={<ApprovalTable />} />
             <Route path='Grievance' element={<AdminGrievance />} />
             <Route path='Report' element={<Report />} />
+            <Route path='AddDCS' element={<AddDCS />} />
+            <Route path='AddFarmer' element={<AddFarmer />} />
+            <Route path='SLSCApproval' element={<SLSCApproval />} />
 
           </Route>
 

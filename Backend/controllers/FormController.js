@@ -101,5 +101,41 @@ module.exports = {
       res.status(200).send(result);
       // res.status()
     })
-  }
+  },
+
+
+  
+
+
+
+
+
+  createFarmer(req, res) {
+    let form = req.body.formData;
+    console.log("form ", form);
+    FormModel.createFarmer(form, (result) => {
+      res.status(200).send(result);
+    });
+  },
+  
+  getAllFarmers(req, res) {
+    let dsc = req.body.dsc;
+    FormModel.getAllFarmers(dsc, (result) => {
+      res.status(200).send(result);
+    });
+  },
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 };

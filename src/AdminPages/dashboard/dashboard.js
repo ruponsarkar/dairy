@@ -34,11 +34,7 @@ import NewspaperIcon from "@mui/icons-material/Newspaper";
 import NewReleasesIcon from "@mui/icons-material/NewReleases";
 import { useNavigate, Outlet } from "react-router-dom";
 import AuthUser from "../../API/token";
-import SummarizeIcon from '@mui/icons-material/Summarize';
-
-
-
-
+import SummarizeIcon from "@mui/icons-material/Summarize";
 
 const drawerWidth = 240;
 
@@ -90,6 +86,7 @@ const Dashboard = (props) => {
   };
 
   const [open, setOpen] = React.useState(false);
+  const [open1, setOpen1] = React.useState(false);
 
   const [openBlog, setBlogOpen] = React.useState(false);
   const [openPay, setOpenPay] = React.useState(false);
@@ -97,6 +94,9 @@ const Dashboard = (props) => {
 
   const handleClick = () => {
     setOpen(!open);
+  };
+  const handleClick1 = () => {
+    setOpen1(!open1);
   };
 
   const blogClick = () => {
@@ -128,23 +128,23 @@ const Dashboard = (props) => {
           </ListItemButton>
         </ListItem>
 
-        <ListItem disablePadding onClick={() => navigate("/admin/MasterTable")}>
+        {/* <ListItem disablePadding onClick={() => navigate("/admin/MasterTable")}>
           <ListItemButton>
             <ListItemIcon>
               <BackupTableIcon />
             </ListItemIcon>
             <ListItemText>Master Table</ListItemText>
           </ListItemButton>
-        </ListItem>
+        </ListItem> */}
 
-        <ListItemButton onClick={handleClick}>
+        {/* <ListItemButton onClick={handleClick}>
           <ListItemIcon>
             <LibraryBooksIcon />
           </ListItemIcon>
           <ListItemText primary="Request" />
           {open ? <ExpandLess /> : <ExpandMore />}
-        </ListItemButton>
-
+        </ListItemButton> */}
+        {/* 
         <Collapse in={open} timeout="auto" unmountOnExit>
           <List component="div" disablePadding>
             <ListItemButton
@@ -156,12 +156,6 @@ const Dashboard = (props) => {
               </ListItemIcon>
               <ListItemText primary="New Request" />
             </ListItemButton>
-            {/* <ListItemButton sx={{ pl: 4 }} onClick={() => navigate("/admin/MasterTable")}>
-              <ListItemIcon>
-                <SubdirectoryArrowRightIcon />
-              </ListItemIcon>
-              <ListItemText primary="Master Table" />
-            </ListItemButton> */}
             <ListItemButton
               sx={{ pl: 4 }}
               onClick={() => navigate("/admin/ApprovalTable")}
@@ -171,6 +165,56 @@ const Dashboard = (props) => {
               </ListItemIcon>
               <ListItemText primary="Approval Table" />
             </ListItemButton>
+          </List>
+        </Collapse> */}
+
+        <ListItemButton onClick={handleClick1}>
+          <ListItemIcon>
+            <LibraryBooksIcon />
+          </ListItemIcon>
+          <ListItemText primary="Farmer" />
+          {open1 ? <ExpandLess /> : <ExpandMore />}
+        </ListItemButton>
+
+        <Collapse in={open1} timeout="auto" unmountOnExit>
+          <List component="div" disablePadding>
+            {role === "DCS"  && (
+              <>
+                <ListItemButton
+                  sx={{ pl: 4 }}
+                  onClick={() => navigate("/admin/AddFarmer")}
+                >
+                  <ListItemIcon>
+                    <SubdirectoryArrowRightIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Add Farmer" />
+                </ListItemButton>
+
+                <ListItemButton
+                  sx={{ pl: 4 }}
+                  onClick={() => navigate("/admin/ApprovalTable")}
+                >
+                  <ListItemIcon>
+                    <SubdirectoryArrowRightIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Add milk amount" />
+                </ListItemButton>
+              </>
+             )}
+
+            {role === "SLSC" && (
+              <>
+                <ListItemButton
+                  sx={{ pl: 4 }}
+                  onClick={() => navigate("/admin/SLSCApproval")}
+                >
+                  <ListItemIcon>
+                    <SubdirectoryArrowRightIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="View Farmers" />
+                </ListItemButton>
+              </>
+            )}
           </List>
         </Collapse>
 
@@ -216,6 +260,18 @@ const Dashboard = (props) => {
                     <SubdirectoryArrowRightIcon />
                   </ListItemIcon>
                   <ListItemText primary="Add Admin" />
+                </ListItemButton>
+              </List>
+
+              <List component="div" disablePadding>
+                <ListItemButton
+                  sx={{ pl: 4 }}
+                  onClick={() => navigate("/admin/AddDCS")}
+                >
+                  <ListItemIcon>
+                    <SubdirectoryArrowRightIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Add DCS" />
                 </ListItemButton>
               </List>
             </Collapse>

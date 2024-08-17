@@ -20,8 +20,21 @@ module.exports = {
       res.status(200).send(result);
     });
   },
+
   getAdmins(req, res) {
     AdminModel.getAdmins((result) => {
+      res.status(200).send(result);
+    });
+  },
+
+  createDCS(req, res) {
+    let data = req.body.formData;
+    AdminModel.createDCS(data, (result) => {
+      res.status(200).send(result);
+    });
+  },
+  getAllDCS(req, res) {
+    AdminModel.getAllDCS((result) => {
       res.status(200).send(result);
     });
   },

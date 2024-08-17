@@ -88,7 +88,7 @@ const defaultdistricts = [
 
 const statuses = ["Approve", "Reject", "Draft", "Incompleted"];
 
-const ApprovalTable = () => {
+const SLSCApproval = () => {
   const [selectedDistrict, setSelectedDistrict] = useState("");
   const [selectedStatus, setSelectedStatus] = useState("");
   const [loading, setLoading] = useState(false);
@@ -181,7 +181,7 @@ const ApprovalTable = () => {
   useEffect(() => {
     // getFrom();
     getMasterWithReport();
-  }, [requestData, selectedDistrict, month, user?.uid]);
+  }, [requestData, selectedDistrict, month]);
 
 
 
@@ -209,7 +209,9 @@ const ApprovalTable = () => {
       (e) => e.litter && e.isApprove == "Pending"
     );
 
-    console.log("user", user);
+    console.log("selectedData", selectedData);
+    return;
+
     let approveBy = '';
     switch (user.role) {
       case "DCS":
@@ -232,10 +234,6 @@ const ApprovalTable = () => {
     }
 
     return;
-
-    
-    updateMonthlyReport(needUpdatesData);
-    postMonthlyReport(selectedData);
 };
 
 const postMonthlyReport = (selectedData, approveBy) => {
@@ -293,10 +291,10 @@ const postMonthlyReport = (selectedData, approveBy) => {
 
   const getMasterWithReport = () => {
     if(!user){
-        console.log("");
+        console.log("user not found");
         return;
     }
-    console.log("user==>>>", user);
+    console.log(user);
     setLoading(true);
     console.log("selectedDistrict ", selectedDistrict);
     api
@@ -402,7 +400,7 @@ const postMonthlyReport = (selectedData, approveBy) => {
         />
         <div>
           <Button variant="contained" onClick={handleApproveAll}>
-            Approve and sent to DLC
+            Approve and sent to Finance
           </Button>
         </div>
       </div>
@@ -441,17 +439,8 @@ const postMonthlyReport = (selectedData, approveBy) => {
                       {row.dcs_registration_no}
                     </TableCell>
                     <TableCell>{row.district}</TableCell>
-                    <TableCell>
-                      <input
-                        type="number"
-                        name=""
-                        disabled={row.isApprove === "Approve" ? true : false}
-                        value={row.litter ? row.litter : ""}
-                        id=""
-                        onChange={(e) =>
-                          handleAddLitter(row.id, e.target.value)
-                        }
-                      />
+                    <TableCell align="center">
+                    {row.litter ? row.litter : ""}
                     </TableCell>
                     <TableCell align="center">
                       {row.litter ? row.litter * 5 : 0}
@@ -459,16 +448,14 @@ const postMonthlyReport = (selectedData, approveBy) => {
                     <TableCell>
                       <span
                         className={`${
-                          row.isApprove === "Pending" || !row.isApprove
+                          row.approveBy !== 2
                             ? "bg-warning"
                             : "bg-success"
                         } rounded px-2`}
                       >
-                        {row.isApprove
-                          ? row.isApprove === "Approve"
-                            ? "Approved"
-                            : row.isApprove
-                          : "Pending"}
+                        {
+                            row.approveBy === 2 ? 'Approved': 'Pending'
+                        }
                       </span>
                     </TableCell>
                     <TableCell align="center">
@@ -624,4 +611,4 @@ const postMonthlyReport = (selectedData, approveBy) => {
   );
 };
 
-export default ApprovalTable;
+export default SLSCApproval;

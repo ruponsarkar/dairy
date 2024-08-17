@@ -294,12 +294,6 @@ const MasterTable = () => {
                                         <TableCell>{row.name_of_co_operatice_society}</TableCell>
                                         <TableCell>{row.registration_no_of_co_operatice_society}</TableCell>
                                         <TableCell>{row.district}</TableCell>
-                                        
-                                        {/* <TableCell>
-                                            <span className={`${row.isApprove === 'Pending' || !row.isApprove ? 'bg-warning' : 'bg-success'} rounded px-2`}>
-                                                {row.isApprove ? row.isApprove : 'Pending'}
-                                            </span>
-                                        </TableCell> */}
                                         <TableCell align="center">
                                             <Button
                                                 variant="outlined"
@@ -326,6 +320,8 @@ const MasterTable = () => {
 
 
             </TableContainer>
+
+
 
             <Dialog
                 open={open}
