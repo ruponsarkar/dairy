@@ -128,8 +128,8 @@ module.exports = {
     });
   },
 
-  async postMonthlyReport(data, month, amountPerLitter, callback) {
-    const query = `INSERT INTO monthly_reports (applicationId, month, litter, amount, isApprove, paymentStatus) VALUES ?`;
+  async postMonthlyReport(data, month, amountPerLitter, approveBy, callback) {
+    const query = `INSERT INTO monthly_reports (applicationId, month, litter, amount, isApprove, approveBy, paymentStatus) VALUES ?`;
     const batchSize = 100;
     let insertedLength = 0;
 
@@ -142,6 +142,7 @@ module.exports = {
           e.litter,
           e.litter * amountPerLitter,
           "Approve",
+          approveBy,
           "Pending",
         ]);
 
@@ -160,8 +161,8 @@ module.exports = {
       callback({ message: `Inserted ${insertedLength} items successfully` });
   },
 
-  async updateMonthlyReport(data, month, amountPerLitter, callback) {
-    const query = `UPDATE monthly_reports SET litter = ?, amount = ?, isApprove = ?, paymentStatus = ? WHERE applicationId = ? AND month = ?`;
+  async updateMonthlyReport(data, month, amountPerLitter, approveBy, callback) {
+    const query = `UPDATE monthly_reports SET litter = ?, amount = ?, isApprove = ?, paymentStatus = ? , approveBy= ? WHERE applicationId = ? AND month = ?`;
     const batchSize = 100;
     let insertedLength = 0;
 
@@ -175,6 +176,7 @@ module.exports = {
             e.litter * amountPerLitter,
             "Approve",
             "Pending",
+            approveBy,
             e.applicationId,
             e.month,
           ];
@@ -202,44 +204,67 @@ module.exports = {
     }
   },
 
-  async getMasterWithReport(month, district, callback) {
+
+
+
+
+  async getMasterWithReport(month, district, user, callback) {
     console.log("month", month);
-    console.log("district==>>", district);
-  
+    // console.log("district==>>", district);
+    console.log("user==>>", user);
+
     let query = `
       SELECT 
-        masters.name, 
-        masters.name_of_co_operatice_society, 
-        masters.registration_no_of_co_operatice_society, 
-        masters.bank_name, 
-        masters.bank_account_holder_name, 
-        masters.bank_account_no, 
-        masters.ifsc_code, 
-        masters.district,
-        masters.id,
-        masters.applicationId,
+        farmers.name, 
+        farmers.bank_name, 
+        farmers.bank_account_holder_name, 
+        farmers.bank_account_no, 
+        farmers.ifsc_code, 
+        farmers.district,
+        farmers.id,
+        farmers.applicationId,
         monthly_reports.litter,
         monthly_reports.isApprove,
         monthly_reports.paymentStatus,
         monthly_reports.amount,
-        monthly_reports.month
+        monthly_reports.month,
+        monthly_reports.approveBy,
+        dcs.name AS dcs_name,
+        dcs.registration_no AS dcs_registration_no,
+        dcs.address AS dcs_address,
+        dcs.status AS dcs_status
       FROM 
-        masters
+        farmers
       LEFT JOIN 
         monthly_reports 
       ON 
-        masters.applicationId = monthly_reports.applicationId
+        farmers.applicationId = monthly_reports.applicationId
       AND 
         monthly_reports.month = ?
+      LEFT JOIN 
+        dcs 
+      ON 
+        farmers.dcsID = dcs.uid
     `;
-  
+
     // Add the district filter if provided
     const params = [month];
-    if (district) {
-      query += " WHERE masters.district = ?";
-      params.push(district);
+    if (user.role === 'DCS') {
+      query += " WHERE dcs.uid = ?";
+      params.push(user.uid);
     }
-  
+
+    if (user.role === 'SLSC') {
+      query += " WHERE monthly_reports.approveBy = 1 OR monthly_reports.approveBy = 2 ";
+    }
+
+    // else{
+    //   query += " WHERE monthly_reports.approveBy = 1";
+    // }
+
+    console.log("query", query);
+    console.log("user.role ", user.role );
+
     db.query(query, params, (err, result) => {
       if (err) {
         console.log("Error: ", err);
@@ -252,8 +277,7 @@ module.exports = {
         }
       }
     });
-  },
-  
+},
 
   getMonthlyReport(month, callback) {
     console.log("month", month);
@@ -307,45 +331,76 @@ module.exports = {
     });
   },
 
-  getRangeSubsidy(from, to, callback) {
-    // let query =  `SELECT
-    //         applicationId,
-    //             GROUP_CONCAT(CONCAT(month, ': ', amount) ORDER BY month ASC SEPARATOR ', ') AS subsidy_details
-    //         FROM
-    //         monthly_reports
-    //         WHERE
-    //           month BETWEEN ? AND ?
-    //         GROUP BY
-    //         applicationId;
-    //   `;
+  getRangeSubsidy(from, to, district, callback) {
 
-    let query = `SELECT 
-            mr.applicationId,
-            mr.paymentStatus,
-            u.name,
-            u.district,
-            u.name_of_co_operatice_society,
-            u.bank_name,
-            u.bank_account_holder_name,
-            u.bank_account_no,
-            u.ifsc_code,
-            u.approverName,
-            u.approverId,
-            GROUP_CONCAT(CONCAT(mr.month, ': ', mr.amount, ' (L: ', mr.litter, ')') ORDER BY mr.month ASC SEPARATOR ', ') AS subsidy_details,
-            SUM(mr.amount) AS total_amount,
-            SUM(mr.litter) AS quantity
-          FROM 
-            monthly_reports mr
-          JOIN 
-            masters u ON mr.applicationId = u.applicationId
-          WHERE 
-            mr.month BETWEEN ? AND ? 
-            AND mr.paymentStatus = 'Pending'
-            AND mr.isApprove = 'Approve'
-          GROUP BY 
-            mr.applicationId, u.name;`;
+    let query = ''
+    const params = [from, to];
 
-    db.query(query, [from, to], (err, result) => {
+    if (district) {
+      console.log("district filter used ");
+      query = `SELECT 
+      mr.applicationId,
+      mr.paymentStatus,
+      u.name,
+      u.district,
+      u.name_of_co_operatice_society,
+      u.registration_no_of_co_operatice_society,
+      u.bank_name,
+      u.bank_account_holder_name,
+      u.bank_account_no,
+      u.ifsc_code,
+      u.approverName,
+      u.approverId,
+      GROUP_CONCAT(CONCAT(mr.month, ': ', mr.amount, ' (L: ', mr.litter, ')') ORDER BY mr.month ASC SEPARATOR ', ') AS subsidy_details,
+      SUM(mr.amount) AS total_amount,
+      SUM(mr.litter) AS quantity
+    FROM 
+      monthly_reports mr
+    JOIN 
+      masters u ON mr.applicationId = u.applicationId
+    WHERE 
+      mr.month BETWEEN ? AND ? 
+      AND mr.paymentStatus = 'Pending'
+      AND mr.isApprove = 'Approve'
+      AND u.district = ?
+    GROUP BY 
+      mr.applicationId, u.name`;
+      
+
+      params.push(district);
+    }
+    else{
+
+      console.log("no filter used ");
+      query = `SELECT 
+      mr.applicationId,
+      mr.paymentStatus,
+      u.name,
+      u.district,
+      u.name_of_co_operatice_society,
+      u.registration_no_of_co_operatice_society,
+      u.bank_name,
+      u.bank_account_holder_name,
+      u.bank_account_no,
+      u.ifsc_code,
+      u.approverName,
+      u.approverId,
+      GROUP_CONCAT(CONCAT(mr.month, ': ', mr.amount, ' (L: ', mr.litter, ')') ORDER BY mr.month ASC SEPARATOR ', ') AS subsidy_details,
+      SUM(mr.amount) AS total_amount,
+      SUM(mr.litter) AS quantity
+    FROM 
+      monthly_reports mr
+    JOIN 
+      masters u ON mr.applicationId = u.applicationId
+    WHERE 
+      mr.month BETWEEN ? AND ? 
+      AND mr.paymentStatus = 'Pending'
+      AND mr.isApprove = 'Approve'
+    GROUP BY 
+      mr.applicationId, u.name`;
+    }
+
+    db.query(query, params, (err, result) => {
       if (err) {
         console.log("Error: ", err);
         callback && callback({ message: "Error occurred", error: err });

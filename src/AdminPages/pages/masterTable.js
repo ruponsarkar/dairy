@@ -37,7 +37,7 @@ import Swal from "sweetalert2";
 import CancelIcon from "@mui/icons-material/Cancel";
 import Checkbox from '@mui/material/Checkbox';
 import { CSVLink, CSVDownload } from "react-csv";
-import PaymentsIcon from "@mui/icons-material/Payments";
+import Loader from "../../components/pannel/loader";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
@@ -117,6 +117,7 @@ const MasterTable = () => {
     const [selectedImg, setSelectedImg] = useState();
     const [month, setMonth] = useState();
     const [amountPerLitter, setAmountPerLitter] = useState(5);
+    const [loading, setLoading] = useState(false)
 
 
 
@@ -136,15 +137,7 @@ const MasterTable = () => {
         }
     }, []);
 
-    const handleStatusChange = (event) => {
-        setSelectedStatus(event.target.value);
-        setRequestData({
-            ...requestData,
-            filterBy: "status",
-            filterData: event.target.value,
-        });
-        setSelectedDistrict("");
-    };
+ 
 
     const handleClearFilter = () => {
         setRequestData({
@@ -172,50 +165,20 @@ const MasterTable = () => {
         getFrom();
     }, [requestData, selectedDistrict]);
 
-    const handleUpdate = () => {
-        setOpen(false);
-        if (status === "Reject") {
-            if (!remark) {
-                Swal.fire("Please enter any remarks for Rejection ");
-                return;
-            }
-        } else {
-            setRemark("");
-        }
-
-        if (status) {
-            console.log("mobileNumber: ", selectedRow.mobileNumber);
-            console.log("status: ", status);
-            console.log("remarks: ", remark);
-
-            const data = {
-                mobileNumber: selectedRow.mobileNumber,
-                status: status,
-                remark: remark,
-            };
-            api
-                .updateFormStatus(data)
-                .then((res) => {
-                    console.log("final response :", res);
-                    Swal.fire("Successfully Updated !");
-                    getFrom();
-                })
-                .catch((err) => {
-                    console.log("err : ", err);
-                    Swal.fire("Something went wrong !");
-                });
-        }
-    };
+ 
 
     const getFrom = () => {
+        setLoading(true)
 
         api
             .getMaster(requestData)
             .then((res) => {
                 console.log("res :", res);
                 setData(res.data.data);
+                setLoading(false)
             })
             .catch((err) => {
+                setLoading(false)
                 console.log("err: ", err);
             });
     };
@@ -225,6 +188,7 @@ const MasterTable = () => {
 
     return (
         <Paper className="p-2">
+            <Loader open={loading}/>
             <Toolbar>
                 <Typography variant="h6" id="tableTitle" component="div">
                     Master Data
@@ -310,10 +274,8 @@ const MasterTable = () => {
                         <TableRow>
                             <StyledTableCell>#</StyledTableCell>
                             <StyledTableCell>Applicant Name</StyledTableCell>
-                            <StyledTableCell>DCS</StyledTableCell>
-                            <StyledTableCell>DCS ID</StyledTableCell>
-                            <StyledTableCell>Co-operatice Name</StyledTableCell>
-                            <StyledTableCell>Registration no</StyledTableCell>
+                            <StyledTableCell>Name of DCS</StyledTableCell>
+                            <StyledTableCell>Registration No</StyledTableCell>
                             <StyledTableCell>District</StyledTableCell>
                             {/* <StyledTableCell align="center">Status</StyledTableCell> */}
                             <StyledTableCell align="center">Action</StyledTableCell>
@@ -329,17 +291,9 @@ const MasterTable = () => {
                                         <TableCell component="th" scope="row">
                                             {row.name}
                                         </TableCell>
-                                        <TableCell>{row.approverName}</TableCell>
-                                        <TableCell>{row.approverId}</TableCell>
                                         <TableCell>{row.name_of_co_operatice_society}</TableCell>
                                         <TableCell>{row.registration_no_of_co_operatice_society}</TableCell>
                                         <TableCell>{row.district}</TableCell>
-                                        
-                                        {/* <TableCell>
-                                            <span className={`${row.isApprove === 'Pending' || !row.isApprove ? 'bg-warning' : 'bg-success'} rounded px-2`}>
-                                                {row.isApprove ? row.isApprove : 'Pending'}
-                                            </span>
-                                        </TableCell> */}
                                         <TableCell align="center">
                                             <Button
                                                 variant="outlined"
@@ -366,6 +320,8 @@ const MasterTable = () => {
 
 
             </TableContainer>
+
+
 
             <Dialog
                 open={open}

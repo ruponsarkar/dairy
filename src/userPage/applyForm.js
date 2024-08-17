@@ -162,7 +162,7 @@ function ApplyForm() {
 
           <TextField
             size="small"
-            label="Amount of Milk"
+            label="Amount of Milk(in Litres)"
             id="litter"
             name="litter"
             type="number"
@@ -183,47 +183,55 @@ function ApplyForm() {
         </Box>
 
         <hr></hr>
+        {data &&
+        <>
+        
         <Toolbar>
           <Typography variant="h6" id="tableTitle" component="div">
             Subsidy Apply history
           </Typography>
         </Toolbar>
 
-        <TableContainer component={Paper} sx={{ boxShadow: 3 }}>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell>Sl.No.</TableCell>
-                <TableCell>Month</TableCell>
-                <TableCell>Liter</TableCell>
-                <TableCell>Amount</TableCell>
-                <TableCell>Approval Status</TableCell>
-                <TableCell>Payment Status</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {data &&
-                data.map((row, index) => (
-                  <TableRow key={index}>
-                    <TableCell>{index + 1}</TableCell>
-                    <TableCell>{row.month}</TableCell>
-                    <TableCell>{row.litter}</TableCell>
-                    <TableCell>{row.amount}</TableCell>
-                    <TableCell>
-                      <span className={`${row.isApprove === 'Approve' ? 'bg-success' : 'bg-warning'} text-white rounded px-2`}>
-                        {row.isApprove === 'Approve' ? 'Approved' : row.isApprove}
-                      </span>
-                    </TableCell>
-                    <TableCell>
-                      <span className={`${row.paymentStatus === 'Approve' ? 'bg-success' : 'bg-warning'} text-white rounded px-2`}>
-                        {row.paymentStatus === 'Approve' ? 'Approved' : row.paymentStatus}
-                      </span>
-                    </TableCell>
-                  </TableRow>
-                ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+        
+          <TableContainer component={Paper} sx={{ boxShadow: 3 }}>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>Sl.No.</TableCell>
+                  <TableCell>Month</TableCell>
+                  <TableCell>Liter</TableCell>
+                  <TableCell>Amount</TableCell>
+                  <TableCell>Approval Status</TableCell>
+                  <TableCell>Payment Status</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {data &&
+                  data.map((row, index) => (
+                    <TableRow key={index}>
+                      <TableCell>{index + 1}</TableCell>
+                      <TableCell>{row.month}</TableCell>
+                      <TableCell>{row.litter}</TableCell>
+                      <TableCell>{row.amount}</TableCell>
+                      <TableCell>
+                        <span className={`${row.isApprove === 'Approve' ? 'bg-success' : 'bg-warning'} text-white rounded px-2`}>
+                          {row.isApprove === 'Approve' ? 'Approved' : row.isApprove}
+                        </span>
+                      </TableCell>
+                      <TableCell>
+                        <span className={`${row.paymentStatus === 'Approve' ? 'bg-success' : 'bg-warning'} text-white rounded px-2`}>
+                          {row.paymentStatus === 'Approve' ? 'Approved' : row.paymentStatus}
+                        </span>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+          </>
+        }
+
+
       </Paper>
     </div>
   );

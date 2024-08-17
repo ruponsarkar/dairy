@@ -30,7 +30,8 @@ module.exports = {
     let data = req.body.data;
     let month = req.body.month;
     let amountPerLitter = req.body.amountPerLitter;
-    MasterModel.postMonthlyReport(data, month, amountPerLitter, (result) => {
+    let approveBy = req.body.approveBy;
+    MasterModel.postMonthlyReport(data, month, amountPerLitter, approveBy, (result) => {
       res.status(200).send(result);
     });
   },
@@ -40,7 +41,8 @@ module.exports = {
     let data = req.body.data;
     let month = req.body.month;
     let amountPerLitter = req.body.amountPerLitter;
-    MasterModel.updateMonthlyReport(data, month, amountPerLitter, (result) => {
+    let approveBy = req.body.approveBy;
+    MasterModel.updateMonthlyReport(data, month, amountPerLitter, approveBy, (result) => {
       res.status(200).send(result);
     });
   },
@@ -48,7 +50,8 @@ module.exports = {
   getMasterWithReport(req, res) {
     let month = req.body.month;
     let district = req.body.district;
-    MasterModel.getMasterWithReport(month, district, (result) => {
+    let user = req.body.user;
+    MasterModel.getMasterWithReport(month, district, user, (result) => {
       res.status(200).send(result);
     });
   },
@@ -62,7 +65,8 @@ module.exports = {
   getRangeSubsidy(req, res) {
     let from = req.body.from;
     let to = req.body.to;
-    MasterModel.getRangeSubsidy(from, to, (result) => {
+    let district = req.body.district;
+    MasterModel.getRangeSubsidy(from, to, district, (result) => {
       res.status(200).send(result);
     });
   },

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Card } from '@mui/material';
+import { Card, Paper } from '@mui/material';
 import AdminTable from '../table/adminTable';
 
 import Button from '@mui/material/Button';
@@ -7,6 +7,7 @@ import Modal from '../../ui-component/modal';
 import Swal from 'sweetalert2';
 import Loader from '../../components/pannel/loader';
 import api from '../../API/api';
+import DCSTable from '../table/DCSTable';
 
 const districts = [
     'Baksa', 'Barpeta', 'Biswanath', 'Bongaigaon', 'Cachar', 'Charaideo', 'Chirang',
@@ -16,41 +17,42 @@ const districts = [
     'Sivasagar', 'Sonitpur', 'South Salmara-Mankachar', 'Tinsukia', 'Udalguri', 'West Karbi Anglong'
   ];
 
-const AdminCategory = () => {
+const AddDCS = () => {
 
     const [open, setOpen] = React.useState(false);
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false)
 
     const [formData, setFormData] = useState({
-        'status': 'Active'
+        'status': 1
     });
 
     useEffect(()=>{
-        getAdmins();
+        getAllDCS();
     },[])
 
-    const handleSaveAdmin=()=>{
-        console.log(formData);
 
-        api.addOrUpdateAdmin(formData).then((res)=>{
-            console.log("res", res);
+    const handleCreateDCS=()=>{
+
+        api.createDCS(formData).then((res)=>{
+            console.log("res ", res);
             setOpen(false)
-            Swal.fire('Admin added successfully');
-            getAdmins();
+            Swal.fire('DCS added successfully');
+            getAllDCS();
         })
         .catch((err)=>{
-            console.log("err", err);
+            console.log("err ", err);
+            setOpen(false)
             Swal.fire('Something went wrong');
         })
     }
 
 
-    const getAdmins=()=>{
+    const getAllDCS=()=>{
         setLoading(true)
-        api.getAdmins().then((res)=>{
-            console.log("res", res.data.message);
-            setData(res.data.message)
+        api.getAllDCS().then((res)=>{
+            console.log("res", res.data);
+            setData(res.data.data)
             setLoading(false)
         })
         .catch((err)=>{
@@ -63,53 +65,49 @@ const AdminCategory = () => {
     const addAdminForm = () => {
         return (
             <>
+            <Paper elevation={1}>
             
                 <div className='p-3'>
                     <div className="row">
-                        <div className="col-md-6">
-                            <label htmlFor="">Admin Name</label>
+                        <div className="col-md-12">
+                            <label htmlFor=""> Name of DCS</label>
                             <input type="text" className='form-control' name="name" id="" onChange={(e)=>setFormData({...formData, [e.target.name]: e.target.value})} />
                         </div>
                         <div className="col-md-6">
-                            <label htmlFor="">Admin Phone number</label>
-                            <input type="text" className='form-control' name="mobileNumber" id="" onChange={(e)=>setFormData({...formData, [e.target.name]: e.target.value})} />
+                            <label htmlFor="">Registration no</label>
+                            <input type="text" className='form-control' name="registration_no" id="" onChange={(e)=>setFormData({...formData, [e.target.name]: e.target.value})} />
                         </div>
                         <div className="col-md-6">
-                            <label htmlFor="">Admin Email Id</label>
-                            <input type="text" className='form-control' name="email" id="" onChange={(e)=>setFormData({...formData, [e.target.name]: e.target.value})} />
-                        </div>
+                            <label htmlFor="">District</label>
 
-                        <div className="col-md-6">
-                            <label htmlFor="">Admin Role</label>
-                            <select className='form-control' name="role" id="" onChange={(e)=>setFormData({...formData, [e.target.name]: e.target.value})} >
-                                <option value="">------</option>
-                                <option value="SLSC">SLSC</option>
-                                {/* <option value="Admin">Admin (DCS)</option> */}
-                                <option value="Super Admin">Super Admin</option>
-                            </select>
-                        </div>
-
-
-                        <div className="col-md-6">
-                            <label htmlFor="">Assign District</label>
-                            <select className='form-control' name="district" id="" onChange={(e)=>setFormData({...formData, [e.target.name]: e.target.value})} >
-                                <option value="">------</option>
-                                {districts && districts.map((d)=>(
-                                <option value={d}>{d}</option>
+                            <select className="form-control"
+                                name="district"
+                                onChange={(e)=>setFormData({...formData, [e.target.name]: e.target.value})} id="">
+                                <option value="">-select-</option>
+                                {districts && districts.map((d) => (
+                                    <option value={d}>{d}</option>
                                 ))}
                             </select>
-                            {/* <input type="text" className='form-control' name="district" id="" onChange={(e)=>setFormData({...formData, [e.target.name]: e.target.value})} /> */}
+
                         </div>
-                        <div className="col-md-6">
+                        <div className="col-md-12">
+                            <label htmlFor=""> Address of DCS</label>
+                            <input type="text" className='form-control' name="address" id="" onChange={(e)=>setFormData({...formData, [e.target.name]: e.target.value})} />
+                        </div>
+                        <div className="col-md-12">
                             <label htmlFor="">Password</label>
                             <input type="password" className='form-control' name="password" id="" onChange={(e)=>setFormData({...formData, [e.target.name]: e.target.value})} />
                         </div>
 
+
+
                         <div className='text-center'>
-                            <Button variant='contained' onClick={handleSaveAdmin}>Save Admin</Button>
+                            <Button variant='contained' onClick={handleCreateDCS}>Add DCS</Button>
                         </div>
                     </div>
                 </div>
+
+                </Paper>
             </>
         )
     }
@@ -136,7 +134,7 @@ const AdminCategory = () => {
                                   },
                                 }}
                                  onClick={() => setOpen(true)}>
-                                    + Add New Admin
+                                    + Add New DCS
                                 </Button>
 
                                 <Modal maxWidth='md' open={open} handleClose={() => setOpen(false)} modaldata={addAdminForm()} />
@@ -151,11 +149,11 @@ const AdminCategory = () => {
                         <div className="row">
                             <div className="col-12">
                                 <div className='m-2 text-center'>
-                                    <h4> Admins</h4>
+                                    <h4> DCS</h4>
                                 </div>
 
 
-                                <AdminTable data={data} getAdmins={getAdmins}/>
+                                <DCSTable data={data} />
 
 
 
@@ -170,4 +168,4 @@ const AdminCategory = () => {
     )
 }
 
-export default AdminCategory;
+export default AddDCS;
