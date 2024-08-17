@@ -1,46 +1,88 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import CountStatus from "../../components/home/countStatus";
-const DashboardPage = () => {
 
+// Chart JS
+import Chart from "chart.js/auto";
+import { CategoryScale } from "chart.js";
+import PieChart from "../../charts/PieChart";
+import BarChart from "../../charts/BarChart";
+
+Chart.register(CategoryScale);
+
+const myData = [
+    {
+        id: 1,
+        year: 2016,
+        userGain: 80000,
+        userLost: 823
+    },
+    {
+        id: 2,
+        year: 2017,
+        userGain: 45677,
+        userLost: 345
+    },
+    {
+        id: 3,
+        year: 2018,
+        userGain: 78888,
+        userLost: 555
+    },
+    {
+        id: 4,
+        year: 2019,
+        userGain: 90000,
+        userLost: 4555
+    },
+    {
+        id: 5,
+        year: 2020,
+        userGain: 4300,
+        userLost: 234
+    }
+];
+
+const DashboardPage = () => {
+    const [chartData, setChartData] = useState({
+        labels: myData.map((data) => data.year),
+        datasets: [
+            {
+                label: "Users Gained ",
+                data: myData.map((data) => data.userGain),
+                backgroundColor: [
+                    "rgba(75,192,192,1)",
+                    "#ecf0f1",
+                    "#50AF95",
+                    "#f3ba2f",
+                    "#2a71d0"
+                ],
+                borderColor: "gray",
+                borderWidth: 1
+            }
+        ]
+    });
 
     return (
-        
+
         <section className="dash m-0 p-0">
             <div className="container">
-
-                {/* <div className="row text-center">
-	                <div className="col-md-3 p-1">
-	                    <div className="counter">
-                            <i className="fa fa-file fa-2x"></i>
-                            <h2 className="timer count-title count-number">100</h2>
-                            <p className="count-text ">Total Applied</p>
-                        </div>
-	                </div>
-                    <div className="col-md-3 p-1">
-                        <div className="counter">
-                            <i className="fa fa-check fa-2x"></i>
-                            <h2 className="timer count-title count-number">460</h2>
-                            <p className="count-text ">Approved</p>
-                        </div>
-                    </div>
-                    <div className="col-md-3 p-1">
-                        <div className="counter">
-                            <i className="fa fa-inr fa-2x"></i>
-                            <h2 className="timer count-title count-number">900</h2>
-                            <p className="count-text ">Ammount Paid</p>
-                        </div>
-                    </div>
-                    <div className="col-md-3 p-1">
-                        <div className="counter">
-                            <i className="fa fa-refresh fa-2x"></i>
-                            <h2 className="timer count-title count-number">760</h2>
-                            <p className="count-text ">Under Verification</p>
-                        </div>
-                    </div>
-                </div> */}
                 <CountStatus />
+                <div className="row  text-center">
+                    <div className="col-md-6 p-1">
+                        <div class="counter">
+                            <PieChart chartData={chartData} />
+                            {/* <BarChart chartData={chartData} /> */}
+                        </div>
 
-
+                    </div>
+                    <div className="col-md-6 p-1">
+                        <div class="counter text-center">
+                            <BarChart chartData={chartData} />
+                            
+                        </div>
+                    </div>
+                </div>
+                {/* <PieChart chartData={chartData} /> */}
                 {/* <div className="row my-5 justify-content-center">
                     <div className="reports my-2">
                         <h3 className="p-3 text-center">Status Reports</h3>

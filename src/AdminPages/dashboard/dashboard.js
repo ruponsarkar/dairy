@@ -39,7 +39,6 @@ import SummarizeIcon from '@mui/icons-material/Summarize';
 
 
 
-
 const drawerWidth = 240;
 
 const SearchBar = styled("div")(({ theme }) => ({
@@ -111,18 +110,17 @@ const Dashboard = (props) => {
 
   const drawer = (
     <div>
-      <Toolbar>
-        <a href="/#/admin">
+      <Toolbar style={{background:'rgb(117 117 117)', 'text-shadow': '2px 2px 20px blue'}}>
+        <a href="javascript:;"  onClick={() => navigate("/admin/dashboard")}>
           {/* <img src="/logo.png" className='img-fluid' /> */}
-          {/* <h2 style={{color:'aliceblue'}}>Admin Panel</h2> */}
-          <h2>Admin Panel</h2>
+          <h2 style={{color:'aliceblue'}}>Admin Panel</h2>
         </a>
       </Toolbar>
       <Divider />
       <List>
         <ListItem disablePadding onClick={() => navigate("/admin/dashboard")}>
           <ListItemButton>
-            <ListItemIcon style={{color:'aliceblue'}}>
+            <ListItemIcon>
               <LeaderboardSharpIcon />
             </ListItemIcon>
             <ListItemText>Dashboard</ListItemText>
@@ -139,7 +137,7 @@ const Dashboard = (props) => {
         </ListItem>
 
         <ListItemButton onClick={handleClick}>
-          <ListItemIcon style={{color:'aliceblue'}}>
+          <ListItemIcon>
             <LibraryBooksIcon />
           </ListItemIcon>
           <ListItemText primary="Request" />
@@ -280,7 +278,7 @@ const Dashboard = (props) => {
 
         <ListItem disablePadding onClick={logout}>
           <ListItemButton>
-            <ListItemIcon style={{color:'aliceblue'}}>
+            <ListItemIcon>
               <AccountCircleIcon />
             </ListItemIcon>
             <ListItemText>Logout</ListItemText>

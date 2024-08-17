@@ -524,13 +524,13 @@ const ApprovalTable = () => {
                     <h3>Pan Card</h3>
                     {/* <a href={`http://localhost:8800/${selectedRow.panCard}`}> */}
                     <img
-                      src={`http://localhost:8800/${selectedRow.panCard}`}
+                      src={`https://milksubsidydairyassam.com:8800/${selectedRow.panCard}`}
                       className="img"
                       alt=""
                       onClick={() => {
                         setOpenImgView(true);
                         setSelectedImg(
-                          `http://localhost:8800/${selectedRow.panCard}`
+                          `https://milksubsidydairyassam.com:8800/${selectedRow.panCard}`
                         );
                       }}
                     />
@@ -539,13 +539,13 @@ const ApprovalTable = () => {
                   <div className="text-center card">
                     <h3>Aadhar Card</h3>
                     <img
-                      src={`http://localhost:8800/${selectedRow.aadharCard}`}
+                      src={`https://milksubsidydairyassam.com:8800/${selectedRow.aadharCard}`}
                       className="img"
                       alt=""
                       onClick={() => {
                         setOpenImgView(true);
                         setSelectedImg(
-                          `http://localhost:8800/${selectedRow.aadharCard}`
+                          `https://milksubsidydairyassam.com:8800/${selectedRow.aadharCard}`
                         );
                       }}
                     />
@@ -553,13 +553,13 @@ const ApprovalTable = () => {
                   <div className="text-center card">
                     <h3>Passbook</h3>
                     <img
-                      src={`http://localhost:8800/${selectedRow.passbook}`}
+                      src={`https://milksubsidydairyassam.com:8800/${selectedRow.passbook}`}
                       className="img"
                       alt=""
                       onClick={() => {
                         setOpenImgView(true);
                         setSelectedImg(
-                          `http://localhost:8800/${selectedRow.passbook}`
+                          `https://milksubsidydairyassam.com:8800/${selectedRow.passbook}`
                         );
                       }}
                     />
