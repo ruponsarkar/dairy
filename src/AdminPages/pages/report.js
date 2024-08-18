@@ -258,7 +258,7 @@ export default function Report() {
                   </StyledTableCell>
                   <StyledTableCell align="center">
                     {" "}
-                    <strong> {row.total_amount} </strong>{" "}
+                    <strong> {row.total_amount} ₹</strong>{" "}
                   </StyledTableCell>
                   {/* <StyledTableCell>{row.bank_account_no}</StyledTableCell> */}
                   <StyledTableCell>

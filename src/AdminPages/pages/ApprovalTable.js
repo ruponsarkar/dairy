@@ -39,6 +39,7 @@ import Checkbox from "@mui/material/Checkbox";
 import { CSVLink, CSVDownload } from "react-csv";
 import PaymentsIcon from "@mui/icons-material/Payments";
 import Loader from "../../components/pannel/loader";
+import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined';
 
 
 import Breadcrumbs from '@mui/material/Breadcrumbs';
@@ -474,7 +475,10 @@ const postMonthlyReport = (selectedData, approveBy) => {
                   {data && (
                     <div>
                       <CSVLink data={data} filename={"AHVD_DATA.csv"}>
-                      <Button variant="contained">Download Data</Button>
+                      <Button variant="contained">
+                        <FileDownloadOutlinedIcon />
+                         Download Data
+                      </Button>
                       </CSVLink>
                     </div>
                   )}
@@ -489,15 +493,15 @@ const postMonthlyReport = (selectedData, approveBy) => {
         >
           <TableHead>
             <TableRow>
-              <StyledTableCell>#</StyledTableCell>
-              <StyledTableCell>Applicant Name</StyledTableCell>
-              <StyledTableCell>Name of DCS</StyledTableCell>
-              <StyledTableCell>Registration no</StyledTableCell>
-              <StyledTableCell>District</StyledTableCell>
-              <StyledTableCell>Quantity of Milk(in Litres)</StyledTableCell>
-              <StyledTableCell>Amount (in Rs)</StyledTableCell>
-              <StyledTableCell align="center">Status</StyledTableCell>
-              <StyledTableCell align="center">Action</StyledTableCell>
+              <StyledTableCell className="text-center p-2">#</StyledTableCell>
+              <StyledTableCell className="text-center p-2">Applicant Name</StyledTableCell>
+              <StyledTableCell className="text-center p-2">Name of DCS</StyledTableCell>
+              <StyledTableCell className="text-center p-2">Registration no</StyledTableCell>
+              <StyledTableCell className="text-center p-2">District</StyledTableCell>
+              <StyledTableCell className="text-center p-2">Quantity of Milk(in Litres)</StyledTableCell>
+              <StyledTableCell className="text-center p-2">Amount (in Rs)</StyledTableCell>
+              <StyledTableCell className="text-center p-2">Status</StyledTableCell>
+              <StyledTableCell className="text-center p-2">Action</StyledTableCell>
             </TableRow>
           </TableHead>
 
@@ -506,31 +510,32 @@ const postMonthlyReport = (selectedData, approveBy) => {
               data.map((row, index) => {
                 return (
                   <TableRow hover tabIndex={-1} key={row.name}>
-                    <TableCell>{index + 1}</TableCell>
-                    <TableCell component="th" scope="row">
+                    <TableCell className="text-center p-2">{index + 1}</TableCell>
+                    <TableCell className="text-center p-2" component="th" scope="row">
                       {row.name}
                     </TableCell>
-                    <TableCell>{row.dcs_name}</TableCell>
-                    <TableCell>
+                    <TableCell className="text-center p-2">{row.dcs_name}</TableCell>
+                    <TableCell className="text-center p-2">
                       {row.dcs_registration_no}
                     </TableCell>
-                    <TableCell>{row.district}</TableCell>
-                    <TableCell>
+                    <TableCell className="text-center p-2">{row.district}</TableCell>
+                    <TableCell className="text-center p-2">
                       <input
                         type="number"
                         name=""
                         disabled={row.isApprove === "Approve" ? true : false}
                         value={row.litter ? row.litter : ""}
                         id=""
+                        
                         onChange={(e) =>
                           handleAddLitter(row.id, e.target.value)
                         }
                       />
                     </TableCell>
-                    <TableCell align="center">
-                      {row.litter ? row.litter * 5 : 0}
+                    <TableCell className="text-center p-2">
+                      {row.litter ? row.litter * 5 : 0} ₹
                     </TableCell>
-                    <TableCell>
+                    <TableCell className="text-center p-2">
                       <span
                         className={`${
                           row.isApprove === "Pending" || !row.isApprove
@@ -545,7 +550,7 @@ const postMonthlyReport = (selectedData, approveBy) => {
                           : "Pending"}
                       </span>
                     </TableCell>
-                    <TableCell align="center">
+                    <TableCell className="text-center p-2">
                       <Button
                         variant="outlined"
                         color="primary"

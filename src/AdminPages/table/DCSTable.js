@@ -15,7 +15,7 @@ import api from "../../API/api";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
-    backgroundColor: theme.palette.common.black,
+    backgroundColor: theme.palette.common.blue,
     color: theme.palette.common.white,
   },
   [`&.${tableCellClasses.body}`]: {
