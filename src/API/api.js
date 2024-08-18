@@ -36,14 +36,14 @@ export default {
     getMaster(data){
         return API.post('getMaster', {data});
     },
-    postMonthlyReport(data, month, amountPerLitter){
-        return API.post('postMonthlyReport', {data, month, amountPerLitter});
+    postMonthlyReport(data, month, amountPerLitter, approveBy){
+        return API.post('postMonthlyReport', {data, month, amountPerLitter, approveBy});
     },
     updateMonthlyReport(data, month, amountPerLitter){
         return API.post('updateMonthlyReport', {data, month, amountPerLitter});
     },
-    getMasterWithReport(month, district){
-        return API.post('getMasterWithReport', {month, district});
+    getMasterWithReport(month, district, user){
+        return API.post('getMasterWithReport', {month, district, user});
     },
     getMonthlyReport(month){
         return API.post('getMonthlyReport', {month});
@@ -63,6 +63,20 @@ export default {
     getGrievance(data){
         return API.post('getGrievance', {data})
     },
+    // createDCS
+    createDCS(formData){
+        return API.post('/createDCS', {formData})
+    },
+    getAllDCS(){
+        return API.post('/getAllDCS')
+    },
+    createFarmer(formData){
+        return API.post('/createFarmer', {formData})
+    },
+    getAllFarmers(dsc){
+        return API.post('/getAllFarmers', {dsc})
+    },
+
 
     
 

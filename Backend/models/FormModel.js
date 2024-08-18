@@ -117,7 +117,15 @@ module.exports = {
     let limit = data.limit;
     let filterBy = data.filterBy;
     let filterData = data.filterData;
-    console.log("user=>: ", role, offset, limit, filterBy, filterData, district);
+    console.log(
+      "user=>: ",
+      role,
+      offset,
+      limit,
+      filterBy,
+      filterData,
+      district
+    );
 
     let query = "";
     switch (role) {
@@ -125,8 +133,7 @@ module.exports = {
         if (filterBy) {
           query = `SELECT * FROM forms WHERE ${filterBy} = '${filterData}'  ORDER BY id DESC LIMIT ${limit} OFFSET ${offset}  `;
           console.log("1=>", query);
-        }
-        else {
+        } else {
           query = `SELECT * FROM forms ORDER BY id DESC LIMIT ${limit} OFFSET ${offset}  `;
           console.log("2=>", query);
         }
@@ -137,14 +144,22 @@ module.exports = {
         if (filterBy) {
           query = `SELECT * FROM forms WHERE ${filterBy} = '${filterData}' AND district= '${district}' ORDER BY id DESC LIMIT ${limit} OFFSET ${offset}  `;
           console.log("3=>", query);
-        }
-        else {
+        } else {
           query = `SELECT * FROM forms WHERE district = '${district}' ORDER BY id DESC LIMIT ${limit} OFFSET ${offset}  `;
           console.log("4=>", query);
         }
+
+        break;
+
+      default:
+        if (filterBy) {
+          query = `SELECT * FROM forms WHERE ${filterBy} = '${filterData}'  ORDER BY id DESC LIMIT ${limit} OFFSET ${offset}  `;
+          console.log("1=>", query);
+        } else {
+          query = `SELECT * FROM forms ORDER BY id DESC LIMIT ${limit} OFFSET ${offset}  `;
+          console.log("2=>", query);
+        }
     }
-
-
 
     // return;
     // let query = `SELECT * FROM forms LIMIT ${limit} OFFSET ${offset}`;
@@ -198,7 +213,6 @@ module.exports = {
     });
   },
 
-
   countStatus(callback) {
     // Define your queries
     let queries = {
@@ -206,11 +220,11 @@ module.exports = {
       draft: `SELECT COUNT(*) AS count FROM forms WHERE status = 'Draft';`,
       rejected: `SELECT COUNT(*) AS count FROM forms WHERE status = 'Reject';`,
       incompleted: `SELECT COUNT(*) AS count FROM forms WHERE status = 'Incompleted';`,
-      total: `SELECT COUNT(*) AS count FROM forms;`
+      total: `SELECT COUNT(*) AS count FROM forms;`,
     };
 
     // Execute all queries using promises
-    let promises = Object.keys(queries).map(key => {
+    let promises = Object.keys(queries).map((key) => {
       return new Promise((resolve, reject) => {
         db.query(queries[key], (err, result) => {
           if (err) {
@@ -224,20 +238,110 @@ module.exports = {
 
     // Handle all promises
     Promise.all(promises)
-      .then(results => {
+      .then((results) => {
         // Transform the results into an object
         let statusCounts = {};
-        results.forEach(result => {
+        results.forEach((result) => {
           statusCounts[result.key] = result.count;
         });
 
         // Return the results via callback
         callback && callback({ status: 200, message: statusCounts });
       })
-      .catch(err => {
+      .catch((err) => {
         // Handle errors
         callback && callback({ status: 400, message: err });
       });
-  }
+  },
 
+  // createFarmer
+  createFarmer(form, callback) {
+    console.log("==>>", form);
+    let insertQuery = `INSERT INTO farmers(dcsID, applicationId, mobileNumber, name, fathersName, gender, dob, aadhaarNo, aadharMobile, pan_number, voterID, area, district, LAC, village, gaon_panchayat, block, pincode, police_station, bank_name, bank_account_holder_name, bank_account_no, ifsc_code, milk_production_per_month, status)  VALUES ?`;
+    let id = uuid();
+    let params = [];
+    params.push(form.dcsID);
+    params.push(id);
+    params.push(form.mobileNumber);
+    params.push(form.name);
+    params.push(form.fathersName);
+    params.push(form.gender);
+    params.push(form.dob);
+    params.push(form.aadhaarNo);
+    params.push(form.aadharMobile);
+    params.push(form.pan_number);
+    params.push(form.voterID);
+    params.push(form.area);
+    params.push(form.district);
+    params.push(form.LAC);
+    params.push(form.village);
+    params.push(form.gaon_panchayat);
+    params.push(form.block);
+    params.push(form.pincode);
+    params.push(form.police_station);
+    params.push(form.bank_name);
+    params.push(form.bank_account_holder_name);
+    params.push(form.bank_account_no);
+    params.push(form.ifsc_code);
+    params.push(form.milk_production_per_month);
+    params.push(form.status);
+
+    let message = {};
+    db.query(insertQuery, [[params]], (err, result) => {
+      console.log(err);
+      if (!err) {
+        message = {
+          status: 200,
+          message: "success",
+          applicationId: id,
+        };
+        callback && callback(message);
+      } else {
+        message = {
+          status: 400,
+          message: "failed",
+        };
+        callback && callback(message);
+      }
+    });
+  },
+
+  getAllFarmers(dsc, callback) {
+    console.log("dsc ==> ", dsc);
+    let query = `
+    SELECT 
+        farmers.*, 
+        dcs.name AS dcs_name, 
+        dcs.registration_no AS dcs_registration_no, 
+        dcs.address AS dcs_address,
+        dcs.status AS dcs_status
+    FROM 
+        farmers
+    JOIN 
+        dcs ON farmers.dcsID = dcs.uid
+  `;
+
+    if (dsc) {
+      query += `WHERE dcs.uid = ${dsc}`;
+    }
+
+    db.query(query, (err, results) => {
+      if (err) {
+        console.error("Database error:", err);
+        callback &&
+          callback({
+            status: 400,
+            message: "failed",
+            data: null,
+          });
+      } else {
+        callback &&
+          callback({
+            status: 200,
+            message: "success",
+            data: results,
+          });
+      }
+    });
+  },
 };

@@ -34,10 +34,7 @@ import NewspaperIcon from "@mui/icons-material/Newspaper";
 import NewReleasesIcon from "@mui/icons-material/NewReleases";
 import { useNavigate, Outlet } from "react-router-dom";
 import AuthUser from "../../API/token";
-import SummarizeIcon from '@mui/icons-material/Summarize';
-
-
-
+import SummarizeIcon from "@mui/icons-material/Summarize";
 
 const drawerWidth = 240;
 
@@ -89,6 +86,7 @@ const Dashboard = (props) => {
   };
 
   const [open, setOpen] = React.useState(false);
+  const [open1, setOpen1] = React.useState(false);
 
   const [openBlog, setBlogOpen] = React.useState(false);
   const [openPay, setOpenPay] = React.useState(false);
@@ -96,6 +94,9 @@ const Dashboard = (props) => {
 
   const handleClick = () => {
     setOpen(!open);
+  };
+  const handleClick1 = () => {
+    setOpen1(!open1);
   };
 
   const blogClick = () => {
@@ -110,10 +111,9 @@ const Dashboard = (props) => {
 
   const drawer = (
     <div>
-      <Toolbar style={{background:'rgb(117 117 117)', 'text-shadow': '2px 2px 20px blue'}}>
-        <a href="javascript:;"  onClick={() => navigate("/admin/dashboard")}>
-          {/* <img src="/logo.png" className='img-fluid' /> */}
-          <h2 style={{color:'aliceblue'}}>Admin Panel</h2>
+      <Toolbar className="shadow p-1">
+        <a className="text-dark header-name text-center" href="/admin">
+          <h4>DCS Admin Panel</h4>
         </a>
       </Toolbar>
       <Divider />
@@ -127,23 +127,23 @@ const Dashboard = (props) => {
           </ListItemButton>
         </ListItem>
 
-        <ListItem disablePadding onClick={() => navigate("/admin/MasterTable")}>
+        {/* <ListItem disablePadding onClick={() => navigate("/admin/MasterTable")}>
           <ListItemButton>
             <ListItemIcon>
               <BackupTableIcon />
             </ListItemIcon>
             <ListItemText>Master Table</ListItemText>
           </ListItemButton>
-        </ListItem>
+        </ListItem> */}
 
-        <ListItemButton onClick={handleClick}>
+        {/* <ListItemButton onClick={handleClick}>
           <ListItemIcon>
             <LibraryBooksIcon />
           </ListItemIcon>
           <ListItemText primary="Request" />
           {open ? <ExpandLess /> : <ExpandMore />}
-        </ListItemButton>
-
+        </ListItemButton> */}
+        {/* 
         <Collapse in={open} timeout="auto" unmountOnExit>
           <List component="div" disablePadding>
             <ListItemButton
@@ -155,12 +155,6 @@ const Dashboard = (props) => {
               </ListItemIcon>
               <ListItemText primary="New Request" />
             </ListItemButton>
-            {/* <ListItemButton sx={{ pl: 4 }} onClick={() => navigate("/admin/MasterTable")}>
-              <ListItemIcon>
-                <SubdirectoryArrowRightIcon />
-              </ListItemIcon>
-              <ListItemText primary="Master Table" />
-            </ListItemButton> */}
             <ListItemButton
               sx={{ pl: 4 }}
               onClick={() => navigate("/admin/ApprovalTable")}
@@ -170,6 +164,56 @@ const Dashboard = (props) => {
               </ListItemIcon>
               <ListItemText primary="Approval Table" />
             </ListItemButton>
+          </List>
+        </Collapse> */}
+
+        <ListItemButton onClick={handleClick1}>
+          <ListItemIcon>
+            <LibraryBooksIcon />
+          </ListItemIcon>
+          <ListItemText primary="Farmer" />
+          {open1 ? <ExpandLess /> : <ExpandMore />}
+        </ListItemButton>
+
+        <Collapse in={open1} timeout="auto" unmountOnExit>
+          <List component="div" disablePadding>
+            {role === "DCS"  && (
+              <>
+                <ListItemButton
+                  sx={{ pl: 4 }}
+                  onClick={() => navigate("/admin/AddFarmer")}
+                >
+                  <ListItemIcon>
+                    <SubdirectoryArrowRightIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Add Farmer" />
+                </ListItemButton>
+
+                <ListItemButton
+                  sx={{ pl: 4 }}
+                  onClick={() => navigate("/admin/ApprovalTable")}
+                >
+                  <ListItemIcon>
+                    <SubdirectoryArrowRightIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Add milk amount" />
+                </ListItemButton>
+              </>
+             )}
+
+            {role === "SLSC" && (
+              <>
+                <ListItemButton
+                  sx={{ pl: 4 }}
+                  onClick={() => navigate("/admin/SLSCApproval")}
+                >
+                  <ListItemIcon>
+                    <SubdirectoryArrowRightIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="View Farmers" />
+                </ListItemButton>
+              </>
+            )}
           </List>
         </Collapse>
 
@@ -217,6 +261,18 @@ const Dashboard = (props) => {
                   <ListItemText primary="Add Admin" />
                 </ListItemButton>
               </List>
+
+              <List component="div" disablePadding>
+                <ListItemButton
+                  sx={{ pl: 4 }}
+                  onClick={() => navigate("/admin/AddDCS")}
+                >
+                  <ListItemIcon>
+                    <SubdirectoryArrowRightIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Add DCS" />
+                </ListItemButton>
+              </List>
             </Collapse>
           </>
         )}
@@ -239,43 +295,6 @@ const Dashboard = (props) => {
           </ListItemButton>
         </ListItem>
 
-        {/* <ListItemButton onClick={publisherClick}>
-          <ListItemIcon>
-            <NewspaperIcon />
-          </ListItemIcon>
-          <ListItemText primary="Publisher" />
-          {openPublisher ? <ExpandLess /> : <ExpandMore />}
-        </ListItemButton>
-
-        <Collapse in={openPublisher} timeout="auto" unmountOnExit>
-          <List component="div" disablePadding>
-            <ListItemButton sx={{ pl: 4 }} onClick={() => navigate("/admin/publisher")}>
-              <ListItemIcon>
-                <SubdirectoryArrowRightIcon />
-              </ListItemIcon>
-              <ListItemText primary="Create Publisher" />
-            </ListItemButton>
-          </List>
-        </Collapse> */}
-
-        {/* <ListItem disablePadding onClick={() => navigate("/admin/youtubelink")}>
-          <ListItemButton>
-            <ListItemIcon>
-              <SubscriptionsIcon />
-            </ListItemIcon>
-            <ListItemText> Youtube Embaded </ListItemText>
-          </ListItemButton>
-        </ListItem> */}
-
-        {/* <ListItem disablePadding onClick={() => navigate("/admin/contactRequest")}>
-          <ListItemButton>
-            <ListItemIcon>
-              <ListAltIcon />
-            </ListItemIcon>
-            <ListItemText>Contact Request</ListItemText>
-          </ListItemButton>
-        </ListItem> */}
-
         <ListItem disablePadding onClick={logout}>
           <ListItemButton>
             <ListItemIcon>
@@ -284,15 +303,6 @@ const Dashboard = (props) => {
             <ListItemText>Logout</ListItemText>
           </ListItemButton>
         </ListItem>
-
-        {/* <ListItem disablePadding onClick={() => navigate("/admin/research")}>
-          <ListItemButton>
-            <ListItemIcon>
-              <AttachmentIcon />
-            </ListItemIcon>
-            <ListItemText>Research Papers</ListItemText>
-          </ListItemButton>
-        </ListItem> */}
       </List>
       <Divider />
     </div>
@@ -328,8 +338,6 @@ const Dashboard = (props) => {
       >
         <Container maxWidth="xl">
           <Toolbar disableGutters>
-            {/* <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} /> */}
-
             <IconButton
               color="inherit"
               aria-label="open drawer"
@@ -340,35 +348,13 @@ const Dashboard = (props) => {
               <MenuIcon />
             </IconButton>
 
-            {/* <Typography
-              variant="h6"
-              noWrap
-              component="a"
-              href="/"
-              sx={{
-                mr: 2,
-                display: { xs: 'none', md: 'flex' },
-                fontFamily: 'monospace',
-                fontWeight: 700,
-                letterSpacing: '.3rem',
-                color: 'inherit',
-                textDecoration: 'none',
-              }}
-            >
-              LOGO
-            </Typography> */}
+
+            <Typography>
+              DCS Name
+            </Typography>
+
 
             <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
-              {/* <IconButton
-                size="large"
-                aria-label="account of current user"
-                aria-controls="menu-appbar"
-                aria-haspopup="true"
-                onClick={handleOpenNavMenu}
-                color="inherit"
-              >
-                <MenuIcon />
-              </IconButton> */}
               <Menu
                 id="menu-appbar"
                 anchorEl={anchorElNav}
@@ -394,25 +380,6 @@ const Dashboard = (props) => {
                 ))}
               </Menu>
             </Box>
-            {/* <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
-            <Typography
-              variant="h5"
-              noWrap
-              component="a"
-              href=""
-              sx={{
-                mr: 2,
-                display: { xs: 'flex', md: 'none' },
-                flexGrow: 1,
-                fontFamily: 'monospace',
-                fontWeight: 700,
-                letterSpacing: '.3rem',
-                color: 'inherit',
-                textDecoration: 'none',
-              }}
-            >
-              LOGO
-            </Typography> */}
             <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
               {pages.map((page) => (
                 <Button
@@ -429,10 +396,8 @@ const Dashboard = (props) => {
               <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                   {/* <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" /> */}
-                  <AccountCircleIcon
-                    fontSize="large"
-                    style={{ color: "white" }}
-                  />
+                  <AccountCircleIcon fontSize="large" style={{ color: 'white' }} />
+                  <Typography color={"white"}> Arnab</Typography>
                 </IconButton>
               </Tooltip>
               <Menu

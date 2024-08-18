@@ -163,8 +163,8 @@ table {
 }
 
 thead tr th{
-  background-color: #a8bcd0;
-  color: white !important;
+  background-color: #c4d2e0;
+  color: black !important;
 }
 
 td, th {
@@ -342,7 +342,7 @@ body {
   line-height: 1.5;
   color: #212529;
   text-align: left;
-  background-color: #fff;
+  background-color: #ebe9e9 !important;
 }
 
 [tabindex="-1"]:focus:not(:focus-visible) {
@@ -360,6 +360,9 @@ h1, h2, h3, h4, h5, h6 {
   margin-bottom: 0.5rem;
 }
 
+.header-name {
+  font-family: "Grey Qo", cursive;
+}
 p {
   margin-top: 0;
   margin-bottom: 1rem;

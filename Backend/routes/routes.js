@@ -42,6 +42,11 @@ module.exports = (app) => {
   app.post("/getGrievance", MasterController.getGrievance);
   
   app.post("/getRangeSubsidy", MasterController.getRangeSubsidy);
+
+  app.post("/createDCS", AdminController.createDCS);
+  app.post("/getAllDCS", AdminController.getAllDCS);
+  app.post("/createFarmer", FormController.createFarmer);
+  app.post("/getAllFarmers", FormController.getAllFarmers);
 };
 
 function authenticateToken(req, res, next) {

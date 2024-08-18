@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import CountStatus from "../../components/home/countStatus";
-
+import { Paper } from "@mui/material";
+import DashboardTable from "./dashboardTable";
 // Chart JS
 import Chart from "chart.js/auto";
 import { CategoryScale } from "chart.js";
@@ -67,21 +68,35 @@ const DashboardPage = () => {
         <section className="dash m-0 p-0">
             <div className="container">
                 <CountStatus />
-                <div className="row  text-center">
+                <div className="row">
                     <div className="col-md-6 p-1">
-                        <div class="counter">
-                            <PieChart chartData={chartData} />
-                            {/* <BarChart chartData={chartData} /> */}
-                        </div>
+                        <Paper>
+                        <div class="counter bg-light">
+                            <div class="panel panel-default">
+                                <div class="panel-heading ">
+                                    Subsidy applications(District Wise)
+                                    <select>
+                                        <option value="Guwahati">Guwahati</option>
+                                    </select>
+                                </div>
+                                <div class="panel-body">
+                                    <BarChart chartData={chartData} />
+                                </div>
 
+                            </div>
+                            {/* <PieChart chartData={chartData} /> */}
+
+                        </div>
+                        </Paper>
                     </div>
                     <div className="col-md-6 p-1">
                         <div class="counter text-center">
                             <BarChart chartData={chartData} />
-                            
+
                         </div>
                     </div>
                 </div>
+                <DashboardTable />
                 {/* <PieChart chartData={chartData} /> */}
                 {/* <div className="row my-5 justify-content-center">
                     <div className="reports my-2">
