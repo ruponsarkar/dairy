@@ -131,12 +131,17 @@ const Grievance = () => {
                 </Table>
 
                 <div>
-                    {!data &&
-                        <div className="text-center">
-                            <h3>Data not found</h3>
+                    {!data && (
+                        <div className="text-center p-5">
+                        <img
+                        src="../assets/noData.png"
+                        alt="no data"
+                        className="govt-logo"
+                    />
+                        <p>Data not found</p>
                         </div>
-                    }
-                </div>
+                    )}
+                    </div>
 
 
             </TableContainer>

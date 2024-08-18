@@ -35,6 +35,7 @@ import NewReleasesIcon from "@mui/icons-material/NewReleases";
 import { useNavigate, Outlet } from "react-router-dom";
 import AuthUser from "../../API/token";
 import SummarizeIcon from "@mui/icons-material/Summarize";
+import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
 
 const drawerWidth = 240;
 
@@ -298,7 +299,7 @@ const Dashboard = (props) => {
         <ListItem disablePadding onClick={logout}>
           <ListItemButton>
             <ListItemIcon>
-              <AccountCircleIcon />
+              <LogoutRoundedIcon />
             </ListItemIcon>
             <ListItemText>Logout</ListItemText>
           </ListItemButton>

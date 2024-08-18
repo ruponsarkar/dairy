@@ -14,10 +14,11 @@ import { Button } from "@mui/material";
 import Swal from "sweetalert2";
 
 import api from "../../API/api";
+import { Padding } from "@mui/icons-material";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
-    backgroundColor: theme.palette.common.black,
+    backgroundColor: theme.palette.common.blue,
     color: theme.palette.common.white,
   },
   [`&.${tableCellClasses.body}`]: {
@@ -37,22 +38,18 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 export default function FarmerTable({ data, getAdmins }) {
   return (
-    <Paper className="p-2">
+    <>
       <TableContainer component={Paper}>
-        <Table
-          sx={{ minWidth: 750 }}
-          aria-labelledby="tableTitle"
-          size="medium"
-        >
+        <Table className="table-bordered table-striped">
           <TableHead>
             <TableRow>
-              <StyledTableCell>#</StyledTableCell>
-              <StyledTableCell>Applicant Name</StyledTableCell>
-              <StyledTableCell>Name of DCS</StyledTableCell>
-              <StyledTableCell>Registration No</StyledTableCell>
-              <StyledTableCell>District</StyledTableCell>
+              <StyledTableCell className="p-2 text-center">#</StyledTableCell>
+              <StyledTableCell className="p-2 text-center">Applicant Name</StyledTableCell>
+              <StyledTableCell className="p-2 text-center">Name of DCS</StyledTableCell>
+              <StyledTableCell className="p-2 text-center">Registration No</StyledTableCell>
+              <StyledTableCell className="p-2 text-center">District</StyledTableCell>
               {/* <StyledTableCell align="center">Status</StyledTableCell> */}
-              <StyledTableCell align="center">Action</StyledTableCell>
+              <StyledTableCell className="p-2 text-center">Action</StyledTableCell>
             </TableRow>
           </TableHead>
 
@@ -61,14 +58,14 @@ export default function FarmerTable({ data, getAdmins }) {
               data.map((row, index) => {
                 return (
                   <TableRow hover tabIndex={-1} key={row.name}>
-                    <TableCell>{index + 1}</TableCell>
-                    <TableCell component="th" scope="row">
+                    <TableCell className="p-2 text-center">{index + 1}</TableCell>
+                    <TableCell className="p-2 text-center" component="th" scope="row">
                       {row.name}
                     </TableCell>
-                    <TableCell>{row.dcs_name}</TableCell>
-                    <TableCell>{row.dcs_registration_no}</TableCell>
-                    <TableCell>{row.district}</TableCell>
-                    <TableCell align="center">
+                    <TableCell className="p-2 text-center">{row.dcs_name}</TableCell>
+                    <TableCell className="p-2 text-center">{row.dcs_registration_no}</TableCell>
+                    <TableCell className="p-2 text-center">{row.district}</TableCell>
+                    <TableCell className="p-2 text-center">
                       <Button
                         variant="outlined"
                         color="primary"
@@ -86,12 +83,17 @@ export default function FarmerTable({ data, getAdmins }) {
 
         <div>
           {!data && (
-            <div className="text-center">
-              <h3>Data not found</h3>
+            <div className="text-center p-5">
+              <img
+            src="../assets/noData.png"
+            alt="no data"
+            className="govt-logo"
+          />
+              <p>Data not found</p>
             </div>
           )}
         </div>
       </TableContainer>
-    </Paper>
+    </>
   );
 }
