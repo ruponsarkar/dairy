@@ -23,7 +23,7 @@ import Report from './AdminPages/pages/report';
 import AddDCS from './AdminPages/pages/addDCS';
 import AddFarmer from './AdminPages/pages/addFarmer';
 import SLSCApproval from './AdminPages/pages/slscApproval';
-
+import DLCApproval from './AdminPages/pages/dlcApproval';
 
 
 
@@ -99,6 +99,7 @@ function App() {
             <Route path='AddDCS' element={<AddDCS />} />
             <Route path='AddFarmer' element={<AddFarmer />} />
             <Route path='SLSCApproval' element={<SLSCApproval />} />
+            <Route path='DLCApproval' element={<DLCApproval />} />
 
           </Route>
 

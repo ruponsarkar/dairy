@@ -39,8 +39,8 @@ export default {
     postMonthlyReport(data, month, amountPerLitter, approveBy){
         return API.post('postMonthlyReport', {data, month, amountPerLitter, approveBy});
     },
-    updateMonthlyReport(data, month, amountPerLitter){
-        return API.post('updateMonthlyReport', {data, month, amountPerLitter});
+    updateMonthlyReport(data, month, amountPerLitter, approveBy){
+        return API.post('updateMonthlyReport', {data, month, amountPerLitter, approveBy});
     },
     getMasterWithReport(month, district, user){
         return API.post('getMasterWithReport', {month, district, user});

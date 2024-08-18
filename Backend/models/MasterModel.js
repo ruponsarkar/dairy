@@ -162,6 +162,9 @@ module.exports = {
   },
 
   async updateMonthlyReport(data, month, amountPerLitter, approveBy, callback) {
+    console.log("approveBy", approveBy);
+
+
     const query = `UPDATE monthly_reports SET litter = ?, amount = ?, isApprove = ?, paymentStatus = ? , approveBy= ? WHERE applicationId = ? AND month = ?`;
     const batchSize = 100;
     let insertedLength = 0;
@@ -254,8 +257,11 @@ module.exports = {
       params.push(user.uid);
     }
 
-    if (user.role === 'SLSC') {
+    if (user.role === 'DLC') {
       query += " WHERE monthly_reports.approveBy = 1 OR monthly_reports.approveBy = 2 ";
+    }
+    if (user.role === 'SLSC') {
+      query += " WHERE monthly_reports.approveBy = 2 OR monthly_reports.approveBy = 3 ";
     }
 
     // else{
@@ -343,21 +349,19 @@ module.exports = {
       mr.paymentStatus,
       u.name,
       u.district,
-      u.name_of_co_operatice_society,
-      u.registration_no_of_co_operatice_society,
+      
       u.bank_name,
       u.bank_account_holder_name,
       u.bank_account_no,
       u.ifsc_code,
-      u.approverName,
-      u.approverId,
+     
       GROUP_CONCAT(CONCAT(mr.month, ': ', mr.amount, ' (L: ', mr.litter, ')') ORDER BY mr.month ASC SEPARATOR ', ') AS subsidy_details,
       SUM(mr.amount) AS total_amount,
       SUM(mr.litter) AS quantity
     FROM 
       monthly_reports mr
     JOIN 
-      masters u ON mr.applicationId = u.applicationId
+      farmers u ON mr.applicationId = u.applicationId
     WHERE 
       mr.month BETWEEN ? AND ? 
       AND mr.paymentStatus = 'Pending'
@@ -377,21 +381,19 @@ module.exports = {
       mr.paymentStatus,
       u.name,
       u.district,
-      u.name_of_co_operatice_society,
-      u.registration_no_of_co_operatice_society,
+      
       u.bank_name,
       u.bank_account_holder_name,
       u.bank_account_no,
       u.ifsc_code,
-      u.approverName,
-      u.approverId,
+     
       GROUP_CONCAT(CONCAT(mr.month, ': ', mr.amount, ' (L: ', mr.litter, ')') ORDER BY mr.month ASC SEPARATOR ', ') AS subsidy_details,
       SUM(mr.amount) AS total_amount,
       SUM(mr.litter) AS quantity
     FROM 
       monthly_reports mr
     JOIN 
-      masters u ON mr.applicationId = u.applicationId
+      farmers u ON mr.applicationId = u.applicationId
     WHERE 
       mr.month BETWEEN ? AND ? 
       AND mr.paymentStatus = 'Pending'
