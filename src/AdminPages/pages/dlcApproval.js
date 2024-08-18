@@ -88,7 +88,7 @@ const defaultdistricts = [
 
 const statuses = ["Approve", "Reject", "Draft", "Incompleted"];
 
-const SLSCApproval = () => {
+const DLCApproval = () => {
   const [selectedDistrict, setSelectedDistrict] = useState("");
   const [selectedStatus, setSelectedStatus] = useState("");
   const [loading, setLoading] = useState(false);
@@ -204,14 +204,14 @@ const SLSCApproval = () => {
 
     console.log(month);
     console.log(data);
-    let selectedData = data.filter((e) => e.litter && e.approveBy == 2);
+    let selectedData = data.filter((e) => e.litter && e.approveBy == 1);
     let needUpdatesData = data.filter(
       (e) => e.litter && e.isApprove == "Pending"
     );
 
     console.log("selectedData", selectedData);
 
-    let approveBy = 3;
+    let approveBy = 2;
     updateMonthlyReport(selectedData, approveBy);
 
 
@@ -301,7 +301,6 @@ const postMonthlyReport = (selectedData, approveBy) => {
     }
     console.log(user);
     setLoading(true);
-    console.log("selectedDistrict ", selectedDistrict);
     api
       .getMasterWithReport(month, selectedDistrict, user)
       .then((res) => {
@@ -405,7 +404,7 @@ const postMonthlyReport = (selectedData, approveBy) => {
         />
         <div>
           <Button variant="contained" onClick={handleApproveAll}>
-            Approve and sent to Finance
+            Approve to SLSC
           </Button>
         </div>
       </div>
@@ -453,13 +452,13 @@ const postMonthlyReport = (selectedData, approveBy) => {
                     <TableCell>
                       <span
                         className={`${
-                          row.approveBy !== 3
+                          row.approveBy !== 2
                             ? "bg-warning"
                             : "bg-success"
                         } rounded px-2`}
                       >
                         {
-                            row.approveBy === 3 ? 'Approved': 'Pending'
+                            row.approveBy === 2 ? 'Approved': 'Pending'
                         }
                       </span>
                     </TableCell>
@@ -616,4 +615,4 @@ const postMonthlyReport = (selectedData, approveBy) => {
   );
 };
 
-export default SLSCApproval;
+export default DLCApproval;

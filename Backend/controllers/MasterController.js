@@ -42,6 +42,7 @@ module.exports = {
     let month = req.body.month;
     let amountPerLitter = req.body.amountPerLitter;
     let approveBy = req.body.approveBy;
+    console.log("approveBy==>", approveBy);
     MasterModel.updateMonthlyReport(data, month, amountPerLitter, approveBy, (result) => {
       res.status(200).send(result);
     });

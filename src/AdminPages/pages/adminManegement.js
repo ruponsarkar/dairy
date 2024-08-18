@@ -83,7 +83,9 @@ const AdminCategory = () => {
                             <label htmlFor="">Admin Role</label>
                             <select className='form-control' name="role" id="" onChange={(e)=>setFormData({...formData, [e.target.name]: e.target.value})} >
                                 <option value="">------</option>
+                                <option value="DLC">DLC</option>
                                 <option value="SLSC">SLSC</option>
+                                <option value="Finance">Finance</option>
                                 {/* <option value="Admin">Admin (DCS)</option> */}
                                 <option value="Super Admin">Super Admin</option>
                             </select>

@@ -50,7 +50,7 @@ const settings = ["Profile", "Account", "Dashboard", "Logout"];
 const pages = [];
 
 const Dashboard = (props) => {
-  const { token, logout, user } = AuthUser();
+  const { token, logout } = AuthUser();
 
   const logoutuser = () => {
     // if (token != undefined) {
@@ -92,6 +92,7 @@ const Dashboard = (props) => {
   const [openBlog, setBlogOpen] = React.useState(false);
   const [openPay, setOpenPay] = React.useState(false);
   const [role, setRole] = useState();
+  const [user, setUser] = useState();
 
   const handleClick = () => {
     setOpen(!open);
@@ -108,6 +109,9 @@ const Dashboard = (props) => {
     // if (JSON.parse(sessionStorage.getItem('user')).role === 'Admin') {
     setRole(JSON.parse(sessionStorage.getItem("user")).role);
     // }
+  }, []);
+  useEffect(() => {
+    setUser(JSON.parse(sessionStorage.getItem("user")));
   }, []);
 
   const drawer = (
@@ -178,7 +182,7 @@ const Dashboard = (props) => {
 
         <Collapse in={open1} timeout="auto" unmountOnExit>
           <List component="div" disablePadding>
-            {role === "DCS"  && (
+            {role === "DCS" && (
               <>
                 <ListItemButton
                   sx={{ pl: 4 }}
@@ -200,7 +204,21 @@ const Dashboard = (props) => {
                   <ListItemText primary="Add milk amount" />
                 </ListItemButton>
               </>
-             )}
+            )}
+
+            {role === "dlc" &&
+              <>
+                <ListItemButton
+                  sx={{ pl: 4 }}
+                  onClick={() => navigate("/admin/DLCApproval")}
+                >
+                  <ListItemIcon>
+                    <SubdirectoryArrowRightIcon />
+                  </ListItemIcon>
+                  <ListItemText primary={`DLC Approval`} />
+                </ListItemButton>
+              </>
+            }
 
             {role === "SLSC" && (
               <>
@@ -211,7 +229,7 @@ const Dashboard = (props) => {
                   <ListItemIcon>
                     <SubdirectoryArrowRightIcon />
                   </ListItemIcon>
-                  <ListItemText primary="View Farmers" />
+                  <ListItemText primary="SLSC Approval" />
                 </ListItemButton>
               </>
             )}
@@ -349,11 +367,7 @@ const Dashboard = (props) => {
               <MenuIcon />
             </IconButton>
 
-
-            <Typography>
-              DCS Name
-            </Typography>
-
+            <Typography>{role}</Typography>
 
             <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
               <Menu
@@ -397,8 +411,11 @@ const Dashboard = (props) => {
               <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                   {/* <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" /> */}
-                  <AccountCircleIcon fontSize="large" style={{ color: 'white' }} />
-                  <Typography color={"white"}> Arnab</Typography>
+                  <AccountCircleIcon
+                    fontSize="large"
+                    style={{ color: "white" }}
+                  />
+                  <Typography color={"white"}> {user?.name}</Typography>
                 </IconButton>
               </Tooltip>
               <Menu
