@@ -841,6 +841,7 @@ export default function AddFarmer() {
     const [data, setData] = useState();
     const [temp, setTemp] = useState();
     const [modalOpen, setModalOpen] = useState(false);
+    const [user, setUser] = useState(JSON.parse(sessionStorage.getItem("user")));
     const [dsc, setDcs] = useState(
         JSON.parse(sessionStorage.getItem("user")).role === "DCS"
             ? JSON.parse(sessionStorage.getItem("user")).uid
@@ -1040,6 +1041,7 @@ export default function AddFarmer() {
                                 onChange={handleInput}
                                 id=""
                             >
+                                {/* {user && user.dis } */}
                                 <option value="">Please select</option>
                                 {districts &&
                                     districts.map((d) => <option value={d}>{d}</option>)}

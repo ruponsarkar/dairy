@@ -39,32 +39,31 @@ import Checkbox from "@mui/material/Checkbox";
 import { CSVLink, CSVDownload } from "react-csv";
 import PaymentsIcon from "@mui/icons-material/Payments";
 import Loader from "../../components/pannel/loader";
-import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined';
+import FileDownloadOutlinedIcon from "@mui/icons-material/FileDownloadOutlined";
 
-
-import Breadcrumbs from '@mui/material/Breadcrumbs';
-import Chip from '@mui/material/Chip';
-import HomeIcon from '@mui/icons-material/Home';
+import Breadcrumbs from "@mui/material/Breadcrumbs";
+import Chip from "@mui/material/Chip";
+import HomeIcon from "@mui/icons-material/Home";
 
 const StyledBreadcrumb = styled(Chip)(({ theme }) => {
-    const backgroundColor =
-      theme.palette.mode === 'light'
-        ? theme.palette.grey[100]
-        : theme.palette.grey[800];
-    return {
-      backgroundColor,
-      height: theme.spacing(3),
-      color: theme.palette.text.primary,
-      fontWeight: theme.typography.fontWeightRegular,
-      '&:hover, &:focus': {
-        backgroundColor: emphasize(backgroundColor, 0.06),
-      },
-      '&:active': {
-        boxShadow: theme.shadows[1],
-        backgroundColor: emphasize(backgroundColor, 0.12),
-      },
-    };
-  });
+  const backgroundColor =
+    theme.palette.mode === "light"
+      ? theme.palette.grey[100]
+      : theme.palette.grey[800];
+  return {
+    backgroundColor,
+    height: theme.spacing(3),
+    color: theme.palette.text.primary,
+    fontWeight: theme.typography.fontWeightRegular,
+    "&:hover, &:focus": {
+      backgroundColor: emphasize(backgroundColor, 0.06),
+    },
+    "&:active": {
+      boxShadow: theme.shadows[1],
+      backgroundColor: emphasize(backgroundColor, 0.12),
+    },
+  };
+});
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -209,8 +208,6 @@ const ApprovalTable = () => {
     getMasterWithReport();
   }, [month, user?.uid]);
 
-
-
   const handleAddLitter = (id, litter) => {
     const updatedItems = data.map((item) =>
       item.id === id ? { ...item, litter: litter } : item
@@ -236,10 +233,10 @@ const ApprovalTable = () => {
     );
 
     console.log("user", user);
-    let approveBy = '';
+    let approveBy = "";
     switch (user.role) {
       case "DCS":
-         approveBy = 1;
+        approveBy = 1;
         postMonthlyReport(selectedData, approveBy);
         break;
       case "SLSC":
@@ -250,24 +247,23 @@ const ApprovalTable = () => {
       default:
         console.log("user role not found");
         Swal.fire({
-            title: "Opss",
-            text: "Only DCS or SLSC can approve it",
-            icon: "warning",
-          });
+          title: "Opss",
+          text: "Only DCS or SLSC can approve it",
+          icon: "warning",
+        });
         break;
     }
 
     return;
 
-    
     updateMonthlyReport(needUpdatesData);
     postMonthlyReport(selectedData);
-};
+  };
 
-const postMonthlyReport = (selectedData, approveBy) => {
+  const postMonthlyReport = (selectedData, approveBy) => {
     console.log("selectedData=>", selectedData);
     console.log("approveBy=>", approveBy);
-    
+
     setLoading(true);
 
     api
@@ -297,8 +293,8 @@ const postMonthlyReport = (selectedData, approveBy) => {
       .then((res) => {
         console.log("updateMonthlyReport: ", res);
         Swal.fire({
-          title: "Approved for Payment!",
-          text: "Data sent for payment!",
+          title: "Approved!",
+          text: "Data approved!",
           icon: "success",
         });
 
@@ -318,9 +314,9 @@ const postMonthlyReport = (selectedData, approveBy) => {
   };
 
   const getMasterWithReport = () => {
-    if(!user){
-        console.log("");
-        return;
+    if (!user) {
+      console.log("");
+      return;
     }
     console.log("user==>>>", user);
     setLoading(true);
@@ -340,38 +336,44 @@ const postMonthlyReport = (selectedData, approveBy) => {
 
   return (
     <>
-            <Paper className="p-1 mb-3">
-                <Toolbar sx={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-                flexWrap: "wrap",
-                "@media (max-width: 600px)": {
-                flexDirection: "column",
-                alignItems: "flex-start",
-                },
-                }}>
-                <Typography sx={{ display: "flex", gap: 2 }} variant="h6" id="tableTitle" component="div">
-                Milk details
-                </Typography>
-                <div role="presentation" >
-                <Breadcrumbs aria-label="breadcrumb">
-                <StyledBreadcrumb
-                    component="a"
-                    href="/admin"
-                    label="Home"
-                    icon={<HomeIcon fontSize="small" />}
-                />
-                {/* <StyledBreadcrumb component="a" href="#" label="Catalog" /> */}
-                <StyledBreadcrumb label="Milk details"/>
-                </Breadcrumbs>
-                </div>
-                </Toolbar>
-
-            </Paper>
-    <Paper className="p-2">
-      <Loader open={loading} />
-      {/* <Toolbar>
+      <Paper className="p-1 mb-3">
+        <Toolbar
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            flexWrap: "wrap",
+            "@media (max-width: 600px)": {
+              flexDirection: "column",
+              alignItems: "flex-start",
+            },
+          }}
+        >
+          <Typography
+            sx={{ display: "flex", gap: 2 }}
+            variant="h6"
+            id="tableTitle"
+            component="div"
+          >
+            Milk details
+          </Typography>
+          <div role="presentation">
+            <Breadcrumbs aria-label="breadcrumb">
+              <StyledBreadcrumb
+                component="a"
+                href="/admin"
+                label="Home"
+                icon={<HomeIcon fontSize="small" />}
+              />
+              {/* <StyledBreadcrumb component="a" href="#" label="Catalog" /> */}
+              <StyledBreadcrumb label="Milk details" />
+            </Breadcrumbs>
+          </div>
+        </Toolbar>
+      </Paper>
+      <Paper className="p-2">
+        <Loader open={loading} />
+        {/* <Toolbar>
         <Typography variant="h6" id="tableTitle" component="div">
           Master Data
         </Typography>
@@ -382,7 +384,7 @@ const postMonthlyReport = (selectedData, approveBy) => {
         </Tooltip>
       </Toolbar> */}
 
-      {/* <Box
+        {/* <Box
         sx={{
           display: "flex",
           alignItems: "center",
@@ -445,204 +447,228 @@ const postMonthlyReport = (selectedData, approveBy) => {
             </div>
           )}
         </div> */}
-      {/* </Box> */}
+        {/* </Box> */}
 
-      
-
-
-
-              <Toolbar className="p-0" sx={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-                }}>
-                <div className="my-3 p-0 d-flex gap-3">
-                  <input
-                    type="month"
-                    name=""
-                    value={month}
-                    className="form-control col-4"
-                    id=""
-                    onChange={(e) => handleChangeMonth(e)}
-                  />
-                  <div>
-                    <Button variant="contained" onClick={handleApproveAll}>
-                      Approve and sent to DLC
-                    </Button>
-                  </div>
-                </div>
-                <div>
-                  {data && (
-                    <div>
-                      <CSVLink data={data} filename={"AHVD_DATA.csv"}>
-                      <Button variant="contained">
-                        <FileDownloadOutlinedIcon />
-                         Download Data
-                      </Button>
-                      </CSVLink>
-                    </div>
-                  )}
-                </div>
-                </Toolbar>
-
-      <TableContainer component={Paper}>
-        <Table
-          sx={{ minWidth: 750 }}
-          aria-labelledby="tableTitle"
-          size="medium"
+        <Toolbar
+          className="p-0"
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+          }}
         >
-          <TableHead>
-            <TableRow>
-              <StyledTableCell className="text-center p-2">#</StyledTableCell>
-              <StyledTableCell className="text-center p-2">Applicant Name</StyledTableCell>
-              <StyledTableCell className="text-center p-2">Name of DCS</StyledTableCell>
-              <StyledTableCell className="text-center p-2">Registration no</StyledTableCell>
-              <StyledTableCell className="text-center p-2">District</StyledTableCell>
-              <StyledTableCell className="text-center p-2">Quantity of Milk(in Litres)</StyledTableCell>
-              <StyledTableCell className="text-center p-2">Amount (in Rs)</StyledTableCell>
-              <StyledTableCell className="text-center p-2">Status</StyledTableCell>
-              <StyledTableCell className="text-center p-2">Action</StyledTableCell>
-            </TableRow>
-          </TableHead>
-
-          <TableBody>
-            {data &&
-              data.map((row, index) => {
-                return (
-                  <TableRow hover tabIndex={-1} key={row.name}>
-                    <TableCell className="text-center p-2">{index + 1}</TableCell>
-                    <TableCell className="text-center p-2" component="th" scope="row">
-                      {row.name}
-                    </TableCell>
-                    <TableCell className="text-center p-2">{row.dcs_name}</TableCell>
-                    <TableCell className="text-center p-2">
-                      {row.dcs_registration_no}
-                    </TableCell>
-                    <TableCell className="text-center p-2">{row.district}</TableCell>
-                    <TableCell className="text-center p-2">
-                      <input
-                        type="number"
-                        name=""
-                        disabled={row.isApprove === "Approve" ? true : false}
-                        value={row.litter ? row.litter : ""}
-                        id=""
-                        
-                        onChange={(e) =>
-                          handleAddLitter(row.id, e.target.value)
-                        }
-                      />
-                    </TableCell>
-                    <TableCell className="text-center p-2">
-                      {row.litter ? row.litter * 5 : 0} ₹
-                    </TableCell>
-                    <TableCell className="text-center p-2">
-                      <span
-                        className={`${
-                          row.isApprove === "Pending" || !row.isApprove
-                            ? "bg-warning"
-                            : "bg-success"
-                        } rounded px-2`}
-                      >
-                        {row.isApprove
-                          ? row.isApprove === "Approve"
-                            ? "Approved"
-                            : row.isApprove
-                          : "Pending"}
-                      </span>
-                    </TableCell>
-                    <TableCell className="text-center p-2">
-                      <Button
-                        variant="outlined"
-                        color="primary"
-                        size="small"
-                        onClick={() => handleClickOpen(row)}
-                      >
-                        View
-                      </Button>
-                    </TableCell>
-                  </TableRow>
-                );
-              })}
-          </TableBody>
-        </Table>
-
-        <div>
-          {!data && (
-            <div className="text-center p-5">
-              <img
-            src="../assets/noData.png"
-            alt="no data"
-            className="govt-logo"
-          />
-              <p>Data not found</p>
-            </div>
-          )}
-        </div>
-      </TableContainer>
-
-      <Dialog
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="protein-modal-title"
-        fullWidth={true}
-        maxWidth={"lg"}
-      >
-        <DialogTitle id="protein-modal-title"> Details</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
+          <div className="my-3 p-0 d-flex gap-3">
+            <input
+              type="month"
+              name=""
+              value={month}
+              className="form-control col-4"
+              id=""
+              onChange={(e) => handleChangeMonth(e)}
+            />
             <div>
-              <Application data={selectedRow} />
+              <Button variant="contained" onClick={handleApproveAll}>
+                Approve and sent to DLC
+              </Button>
+            </div>
+          </div>
+          <div>
+            {data && (
+              <div>
+                <CSVLink data={data} filename={"AHVD_DATA.csv"}>
+                  <Button variant="contained">
+                    <FileDownloadOutlinedIcon />
+                    Download Data
+                  </Button>
+                </CSVLink>
+              </div>
+            )}
+          </div>
+        </Toolbar>
 
-              {selectedRow && (
-                <div className="documents d-flex justify-content-center border p-3 gap-4">
-                  <div className="text-center card">
-                    <h3>Pan Card</h3>
-                    {/* <a href={`http://localhost:8800/${selectedRow.panCard}`}> */}
-                    <img
-                      src={`http://localhost:8800/${selectedRow.panCard}`}
-                      className="img"
-                      alt=""
-                      onClick={() => {
-                        setOpenImgView(true);
-                        setSelectedImg(
-                          `http://localhost:8800/${selectedRow.panCard}`
-                        );
-                      }}
-                    />
-                    {/* </a> */}
-                  </div>
-                  <div className="text-center card">
-                    <h3>Aadhar Card</h3>
-                    <img
-                      src={`http://localhost:8800/${selectedRow.aadharCard}`}
-                      className="img"
-                      alt=""
-                      onClick={() => {
-                        setOpenImgView(true);
-                        setSelectedImg(
-                          `http://localhost:8800/${selectedRow.aadharCard}`
-                        );
-                      }}
-                    />
-                  </div>
-                  <div className="text-center card">
-                    <h3>Passbook</h3>
-                    <img
-                      src={`http://localhost:8800/${selectedRow.passbook}`}
-                      className="img"
-                      alt=""
-                      onClick={() => {
-                        setOpenImgView(true);
-                        setSelectedImg(
-                          `http://localhost:8800/${selectedRow.passbook}`
-                        );
-                      }}
-                    />
-                  </div>
-                </div>
-              )}
+        <TableContainer component={Paper}>
+          <Table
+            sx={{ minWidth: 750 }}
+            aria-labelledby="tableTitle"
+            size="medium"
+          >
+            <TableHead>
+              <TableRow>
+                <StyledTableCell className="text-center p-2">#</StyledTableCell>
+                <StyledTableCell className="text-center p-2">
+                  Applicant Name
+                </StyledTableCell>
+                <StyledTableCell className="text-center p-2">
+                  Name of DCS
+                </StyledTableCell>
+                <StyledTableCell className="text-center p-2">
+                  Registration no
+                </StyledTableCell>
+                <StyledTableCell className="text-center p-2">
+                  District
+                </StyledTableCell>
+                <StyledTableCell className="text-center p-2">
+                  Quantity of Milk(in Litres)
+                </StyledTableCell>
+                <StyledTableCell className="text-center p-2">
+                  Amount (in Rs)
+                </StyledTableCell>
+                <StyledTableCell className="text-center p-2">
+                  Status
+                </StyledTableCell>
+                <StyledTableCell className="text-center p-2">
+                  Action
+                </StyledTableCell>
+              </TableRow>
+            </TableHead>
 
-              {/* <div className="d-flex justify-content-center gap-3 m-3">
+            <TableBody>
+              {data &&
+                data.map((row, index) => {
+                  return (
+                    <TableRow hover tabIndex={-1} key={row.name}>
+                      <TableCell className="text-center p-2">
+                        {index + 1}
+                      </TableCell>
+                      <TableCell
+                        className="text-center p-2"
+                        component="th"
+                        scope="row"
+                      >
+                        {row.name}
+                      </TableCell>
+                      <TableCell className="text-center p-2">
+                        {row.dcs_name}
+                      </TableCell>
+                      <TableCell className="text-center p-2">
+                        {row.dcs_registration_no}
+                      </TableCell>
+                      <TableCell className="text-center p-2">
+                        {row.district}
+                      </TableCell>
+                      <TableCell className="text-center p-2">
+                        <input
+                          type="number"
+                          name=""
+                          disabled={row.isApprove === "Approve" ? true : false}
+                          value={row.litter ? row.litter : ""}
+                          id=""
+                          onChange={(e) =>
+                            handleAddLitter(row.id, e.target.value)
+                          }
+                        />
+                      </TableCell>
+                      <TableCell className="text-center p-2">
+                        {row.litter ? row.litter * 5 : 0} ₹
+                      </TableCell>
+                      <TableCell className="text-center p-2">
+                        <span
+                          className={`${
+                            row.isApprove === "Pending" || !row.isApprove
+                              ? "bg-warning"
+                              : "bg-success"
+                          } rounded px-2`}
+                        >
+                          {row.isApprove
+                            ? row.isApprove === "Approve"
+                              ? "Approved"
+                              : row.isApprove
+                            : "Pending"}
+                        </span>
+                      </TableCell>
+                      <TableCell className="text-center p-2">
+                        <Button
+                          variant="outlined"
+                          color="primary"
+                          size="small"
+                          onClick={() => handleClickOpen(row)}
+                        >
+                          View
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
+            </TableBody>
+          </Table>
+
+          <div>
+            {!data && (
+              <div className="text-center p-5">
+                <img
+                  src="../assets/noData.png"
+                  alt="no data"
+                  className="govt-logo"
+                />
+                <p>Data not found</p>
+              </div>
+            )}
+          </div>
+        </TableContainer>
+
+        <Dialog
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="protein-modal-title"
+          fullWidth={true}
+          maxWidth={"lg"}
+        >
+          <DialogTitle id="protein-modal-title"> Details</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              <div>
+                <Application data={selectedRow} />
+
+                {selectedRow && (
+                  <div className="documents d-flex justify-content-center border p-3 gap-4">
+                    <div className="text-center card">
+                      <h3>Pan Card</h3>
+                      {/* <a href={`http://localhost:8800/${selectedRow.panCard}`}> */}
+                      <img
+                        src={`http://localhost:8800/${selectedRow.panCard}`}
+                        className="img"
+                        alt=""
+                        onClick={() => {
+                          setOpenImgView(true);
+                          setSelectedImg(
+                            `http://localhost:8800/${selectedRow.panCard}`
+                          );
+                        }}
+                      />
+                      {/* </a> */}
+                    </div>
+                    <div className="text-center card">
+                      <h3>Aadhar Card</h3>
+                      <img
+                        src={`http://localhost:8800/${selectedRow.aadharCard}`}
+                        className="img"
+                        alt=""
+                        onClick={() => {
+                          setOpenImgView(true);
+                          setSelectedImg(
+                            `http://localhost:8800/${selectedRow.aadharCard}`
+                          );
+                        }}
+                      />
+                    </div>
+                    <div className="text-center card">
+                      <h3>Passbook</h3>
+                      <img
+                        src={`http://localhost:8800/${selectedRow.passbook}`}
+                        className="img"
+                        alt=""
+                        onClick={() => {
+                          setOpenImgView(true);
+                          setSelectedImg(
+                            `http://localhost:8800/${selectedRow.passbook}`
+                          );
+                        }}
+                      />
+                    </div>
+                  </div>
+                )}
+
+                {/* <div className="d-flex justify-content-center gap-3 m-3">
                 <div>
                   <select
                     name=""
@@ -677,34 +703,34 @@ const postMonthlyReport = (selectedData, approveBy) => {
                   </Button>
                 </div>
               </div> */}
-            </div>
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose} color="primary">
-            Close
-          </Button>
-        </DialogActions>
-      </Dialog>
+              </div>
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose} color="primary">
+              Close
+            </Button>
+          </DialogActions>
+        </Dialog>
 
-      {/* for image view  */}
+        {/* for image view  */}
 
-      <Dialog
-        open={openImgView}
-        onClose={() => setOpenImgView(false)}
-        aria-labelledby="protein-modal-title"
-        fullWidth={true}
-        maxWidth={"lg"}
-      >
-        <DialogContent>
-          <DialogContentText>
-            <div className="text-center">
-              <img src={`${selectedImg}`} className="img-fluid" alt="" />
-            </div>
-          </DialogContentText>
-        </DialogContent>
-      </Dialog>
-    </Paper>
+        <Dialog
+          open={openImgView}
+          onClose={() => setOpenImgView(false)}
+          aria-labelledby="protein-modal-title"
+          fullWidth={true}
+          maxWidth={"lg"}
+        >
+          <DialogContent>
+            <DialogContentText>
+              <div className="text-center">
+                <img src={`${selectedImg}`} className="img-fluid" alt="" />
+              </div>
+            </DialogContentText>
+          </DialogContent>
+        </Dialog>
+      </Paper>
     </>
   );
 };

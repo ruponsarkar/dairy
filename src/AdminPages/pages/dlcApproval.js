@@ -261,8 +261,8 @@ const DLCApproval = () => {
       .then((res) => {
         console.log("updateMonthlyReport: ", res);
         Swal.fire({
-          title: "Approved for Finace!",
-          text: "Data sent for Finance!",
+          title: "Approved!",
+          text: "Data approved!",
           icon: "success",
         });
 

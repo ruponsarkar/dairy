@@ -276,10 +276,10 @@ const SLSCApproval = () => {
       .then((res) => {
         console.log("updateMonthlyReport: ", res);
         Swal.fire({
-          title: "Approved for Finace!",
-          text: "Data sent for Finance!",
-          icon: "success",
-        });
+            title: "Approved!",
+            text: "Data approved!",
+            icon: "success",
+          });
 
         setLoading(false);
         getMasterWithReport();

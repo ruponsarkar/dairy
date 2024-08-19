@@ -29,7 +29,8 @@ module.exports = {
 
   createDCS(req, res) {
     let data = req.body.formData;
-    AdminModel.createDCS(data, (result) => {
+    let user = req.body.user;
+    AdminModel.createDCS(data, user, (result) => {
       res.status(200).send(result);
     });
   },
