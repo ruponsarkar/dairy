@@ -116,8 +116,8 @@ export default function AdminTable({ data, getAdmins }) {
                   </StyledTableCell>
                   <StyledTableCell className="text-center p-2">{row.name}</StyledTableCell>
                   <StyledTableCell className="text-center p-2">{row.email}</StyledTableCell>
-                  <StyledTableCell className="text-center p-2">{row.mobileNumber}</StyledTableCell>
-                  <StyledTableCell className="text-center p-2">{row.district}</StyledTableCell>
+                  <StyledTableCell className="text-center p-2">{row.mobileNumber ? row.mobileNumber : '---'}</StyledTableCell>
+                  <StyledTableCell className="text-center p-2">{row.district ? row.district : '---' }</StyledTableCell>
                   <StyledTableCell className="text-center p-2">{row.role}</StyledTableCell>
 
                   <StyledTableCell className="text-center p-2">------</StyledTableCell>

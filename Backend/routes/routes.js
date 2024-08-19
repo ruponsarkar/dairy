@@ -36,6 +36,8 @@ module.exports = (app) => {
   app.post("/getAllDCS", AdminController.getAllDCS);
   app.post("/createFarmer", FormController.createFarmer);
   app.post("/getAllFarmers", FormController.getAllFarmers);
+  app.post("/searchFarmer", FormController.searchFarmer);
+  app.post("/dcsData", FormController.dcsData);
 };
 
 function authenticateToken(req, res, next) {

@@ -207,7 +207,7 @@ const ApprovalTable = () => {
   useEffect(() => {
     // getFrom();
     getMasterWithReport();
-  }, [requestData, selectedDistrict, month, user?.uid]);
+  }, [month, user?.uid]);
 
 
 
@@ -314,7 +314,7 @@ const postMonthlyReport = (selectedData, approveBy) => {
 
   const handleChangeMonth = (e) => {
     setMonth(e.target.value);
-    getMasterWithReport(e.target.value);
+    // getMasterWithReport(e.target.value);
   };
 
   const getMasterWithReport = () => {

@@ -181,39 +181,26 @@ const DLCApproval = () => {
   useEffect(() => {
     // getFrom();
     getMasterWithReport();
-  }, [requestData, selectedDistrict, month]);
-
-
-
-  const handleAddLitter = (id, litter) => {
-    const updatedItems = data.map((item) =>
-      item.id === id ? { ...item, litter: litter } : item
-    );
-    setData(updatedItems);
-  };
+  }, [month]);
 
   const handleApproveAll = () => {
-    if (!month) {
-      Swal.fire({
-        title: "Month Not selected !",
-        text: "You must selct a month!",
-        icon: "warning",
-      });
-      return;
-    }
-
-    console.log(month);
-    console.log(data);
-    let selectedData = data.filter((e) => e.litter && e.approveBy == 1);
-    let needUpdatesData = data.filter(
-      (e) => e.litter && e.isApprove == "Pending"
-    );
-
+    let selectedData = data.filter((e) => e.selected && e.approveBy == 1);
+    // let needUpdatesData = data.filter(
+    //   (e) => e.litter && e.isApprove == "Pending"
+    // );
     console.log("selectedData", selectedData);
+
+    if (!month || !selectedData.length) {
+        Swal.fire({
+          title: "No data selected !",
+          text: "You must selct a data!",
+          icon: "warning",
+        });
+        return;
+      }
 
     let approveBy = 2;
     updateMonthlyReport(selectedData, approveBy);
-
 
     return;
 
@@ -239,12 +226,12 @@ const DLCApproval = () => {
     // }
 
     return;
-};
+  };
 
-const postMonthlyReport = (selectedData, approveBy) => {
+  const postMonthlyReport = (selectedData, approveBy) => {
     console.log("selectedData=>", selectedData);
     console.log("approveBy=>", approveBy);
-    
+
     setLoading(true);
 
     api
@@ -291,13 +278,13 @@ const postMonthlyReport = (selectedData, approveBy) => {
 
   const handleChangeMonth = (e) => {
     setMonth(e.target.value);
-    getMasterWithReport(e.target.value);
+    // getMasterWithReport(e.target.value);
   };
 
   const getMasterWithReport = () => {
-    if(!user){
-        console.log("user not found");
-        return;
+    if (!user) {
+      console.log("user not found");
+      return;
     }
     console.log(user);
     setLoading(true);
@@ -312,6 +299,23 @@ const postMonthlyReport = (selectedData, approveBy) => {
         setLoading(false);
         console.log("getMasterWithReport err", err);
       });
+  };
+
+  const [selectAll, setSelectAll] = useState(false);
+  const handeSelectAll = () => {
+    const newSelectAll = !selectAll;
+    setSelectAll(newSelectAll);
+    setData(data.map((item) => ({ ...item, selected: newSelectAll })));
+  };
+
+  const handleSelect = (id) => {
+    const updatedItems = data.map((item) =>
+      item.id === id ? { ...item, selected: !item.selected } : item
+    );
+    setData(updatedItems);
+    // Update the selectAll state based on the individual selections
+    const allSelected = updatedItems.every((item) => item.selected);
+    setSelectAll(allSelected);
   };
 
   return (
@@ -341,47 +345,6 @@ const postMonthlyReport = (selectedData, approveBy) => {
           },
         }}
       >
-        {/* <Box sx={{ display: "flex", gap: 2 }}>
-          <FormControl sx={{ minWidth: 180, maxWidth: 200 }} size="small">
-            <InputLabel id="assam-district-label">Select District</InputLabel>
-            <Select
-              labelId="assam-district-label"
-              id="assam-district"
-              value={selectedDistrict}
-              label="Select District"
-              onChange={handleDistrictChange}
-            >
-              {districts &&
-                districts.map((district) => (
-                  <MenuItem key={district} value={district}>
-                    {district}
-                  </MenuItem>
-                ))}
-            </Select>
-          </FormControl>
-          <FormControl sx={{ minWidth: 180, maxWidth: 200 }} size="small">
-            <InputLabel id="status-label">Select Status</InputLabel>
-            <Select
-              labelId="status-label"
-              id="status"
-              value={selectedStatus}
-              label="Select Status"
-              onChange={handleStatusChange}
-            >
-              {statuses.map((status) => (
-                <MenuItem key={status} value={status}>
-                  {status}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-          {requestData.filterBy && (
-            <IconButton onClick={handleClearFilter}>
-              <CancelIcon />
-            </IconButton>
-          )}
-        </Box> */}
-
         <div>
           {data && (
             <div>
@@ -417,7 +380,12 @@ const postMonthlyReport = (selectedData, approveBy) => {
         >
           <TableHead>
             <TableRow>
-              <StyledTableCell>#</StyledTableCell>
+              <StyledTableCell>
+                <Checkbox
+                  checked={selectAll ? true : false}
+                  onClick={handeSelectAll}
+                />
+              </StyledTableCell>
               <StyledTableCell>Applicant Name</StyledTableCell>
               <StyledTableCell>Name of DCS</StyledTableCell>
               <StyledTableCell>Registration no</StyledTableCell>
@@ -434,17 +402,21 @@ const postMonthlyReport = (selectedData, approveBy) => {
               data.map((row, index) => {
                 return (
                   <TableRow hover tabIndex={-1} key={row.name}>
-                    <TableCell>{index + 1}</TableCell>
+                    <TableCell>
+                      <Checkbox
+                        checked={row.selected ? true : false}
+                        onClick={() => handleSelect(row.id)}
+                        disabled ={row.approveBy == 2? true:false}
+                      />
+                    </TableCell>
                     <TableCell component="th" scope="row">
                       {row.name}
                     </TableCell>
                     <TableCell>{row.dcs_name}</TableCell>
-                    <TableCell>
-                      {row.dcs_registration_no}
-                    </TableCell>
+                    <TableCell>{row.dcs_registration_no}</TableCell>
                     <TableCell>{row.district}</TableCell>
                     <TableCell align="center">
-                    {row.litter ? row.litter : ""}
+                      {row.litter ? row.litter : ""}
                     </TableCell>
                     <TableCell align="center">
                       {row.litter ? row.litter * 5 : 0}
@@ -452,14 +424,10 @@ const postMonthlyReport = (selectedData, approveBy) => {
                     <TableCell>
                       <span
                         className={`${
-                          row.approveBy !== 2
-                            ? "bg-warning"
-                            : "bg-success"
+                          row.approveBy !== 2 ? "bg-warning" : "bg-success"
                         } rounded px-2`}
                       >
-                        {
-                            row.approveBy === 2 ? 'Approved': 'Pending'
-                        }
+                        {row.approveBy === 2 ? "Approved" : "Pending"}
                       </span>
                     </TableCell>
                     <TableCell align="center">

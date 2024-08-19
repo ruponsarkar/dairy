@@ -44,7 +44,7 @@ export default function FarmerTable({ data, getAdmins }) {
           <TableHead>
             <TableRow>
               <StyledTableCell className="p-2 text-center">#</StyledTableCell>
-              <StyledTableCell className="p-2 text-center">Applicant Name</StyledTableCell>
+              <StyledTableCell className="p-2 text-center">Farmer Name</StyledTableCell>
               <StyledTableCell className="p-2 text-center">Name of DCS</StyledTableCell>
               <StyledTableCell className="p-2 text-center">Registration No</StyledTableCell>
               <StyledTableCell className="p-2 text-center">District</StyledTableCell>
