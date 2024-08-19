@@ -48,6 +48,8 @@ module.exports = (app) => {
   app.post("/getAllDCS_DistrictWise", AdminController.getAllDCS_DistrictWise);
   app.post("/createFarmer", FormController.createFarmer);
   app.post("/getAllFarmers", FormController.getAllFarmers);
+  app.post("/searchFarmer", FormController.searchFarmer);
+  app.post("/dcsData", FormController.dcsData);
 };
 
 function authenticateToken(req, res, next) {

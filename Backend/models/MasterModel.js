@@ -164,7 +164,6 @@ module.exports = {
   async updateMonthlyReport(data, month, amountPerLitter, approveBy, callback) {
     console.log("approveBy", approveBy);
 
-
     const query = `UPDATE monthly_reports SET litter = ?, amount = ?, isApprove = ?, paymentStatus = ? , approveBy= ? WHERE applicationId = ? AND month = ?`;
     const batchSize = 100;
     let insertedLength = 0;
@@ -207,10 +206,6 @@ module.exports = {
     }
   },
 
-
-
-
-
   async getMasterWithReport(month, district, user, callback) {
     console.log("month", month);
     // console.log("district==>>", district);
@@ -252,16 +247,18 @@ module.exports = {
 
     // Add the district filter if provided
     const params = [month];
-    if (user.role === 'DCS') {
+    if (user.role === "DCS") {
       query += " WHERE dcs.uid = ?";
       params.push(user.uid);
     }
 
-    if (user.role === 'DLC') {
-      query += " WHERE monthly_reports.approveBy = 1 OR monthly_reports.approveBy = 2 ";
+    if (user.role === "DLC") {
+      query +=
+        " WHERE monthly_reports.approveBy = 1 OR monthly_reports.approveBy = 2 ";
     }
-    if (user.role === 'SLSC') {
-      query += " WHERE monthly_reports.approveBy = 2 OR monthly_reports.approveBy = 3 ";
+    if (user.role === "SLSC") {
+      query +=
+        " WHERE monthly_reports.approveBy = 2 OR monthly_reports.approveBy = 3 ";
     }
 
     // else{
@@ -269,7 +266,7 @@ module.exports = {
     // }
 
     console.log("query", query);
-    console.log("user.role ", user.role );
+    console.log("user.role ", user.role);
 
     db.query(query, params, (err, result) => {
       if (err) {
@@ -283,7 +280,7 @@ module.exports = {
         }
       }
     });
-},
+  },
 
   getMonthlyReport(month, callback) {
     console.log("month", month);
@@ -337,77 +334,108 @@ module.exports = {
     });
   },
 
-  getRangeSubsidy(from, to, district, callback) {
+  // reports
+  getRangeSubsidy(from, to, id, role, callback) {
+    let query = "";
+    let approveBy = "";
+    if (role === "DCS") {
+      approveBy = 1;
+    }
+    if (role === "DLC") {
+      approveBy = 2;
+    }
+    if (role === "SLSC") {
+      approveBy = 3;
+    }
+    if (role === "Finance") {
+      approveBy = 3;
+    }
+    if (role === "Super Admin") {
+      approveBy = 3;
+    }
 
-    let query = ''
+
     const params = [from, to];
+    if (id) {
+      console.log("id filter used: ", id);
+      query = `
+        SELECT 
+            mr.applicationId,
+            mr.paymentStatus,
+            mr.approveBy,
+            u.name,
+            u.district,
+            u.bank_name,
+            u.bank_account_holder_name,
+            u.bank_account_no,
+            u.ifsc_code,
+            dcs.name AS dcs_name,
+            dcs.registration_no AS dcs_registration_no,
+            dcs.address AS dcs_address,
+            dcs.status AS dcs_status,
+            GROUP_CONCAT(CONCAT(DATE_FORMAT(STR_TO_DATE(mr.month, '%Y-%m'), '%M %Y'), ' (', mr.litter, ')') ORDER BY mr.month ASC SEPARATOR '/ ') AS subsidy_details,
+            GROUP_CONCAT(CONCAT(mr.amount) ORDER BY mr.month ASC SEPARATOR ', ') AS amounts,
+            SUM(mr.amount) AS total_amount,
+            SUM(mr.litter) AS quantity
+        FROM 
+            monthly_reports mr
+        JOIN 
+            farmers u ON mr.applicationId = u.applicationId
+        LEFT JOIN 
+            dcs ON u.dcsID = dcs.uid
+        WHERE 
+            mr.month BETWEEN ? AND ? 
+            AND mr.paymentStatus = 'Pending'
+            AND mr.isApprove = 'Approve'
+            AND u.dcsID = ?
+        GROUP BY 
+            mr.applicationId, u.name`;
 
-    if (district) {
-      console.log("district filter used ");
-      query = `SELECT 
-      mr.applicationId,
-      mr.paymentStatus,
-      u.name,
-      u.district,
-      
-      u.bank_name,
-      u.bank_account_holder_name,
-      u.bank_account_no,
-      u.ifsc_code,
-     
-      GROUP_CONCAT(CONCAT(mr.month, ': ', mr.amount, ' (L: ', mr.litter, ')') ORDER BY mr.month ASC SEPARATOR ', ') AS subsidy_details,
-      SUM(mr.amount) AS total_amount,
-      SUM(mr.litter) AS quantity
-    FROM 
-      monthly_reports mr
-    JOIN 
-      farmers u ON mr.applicationId = u.applicationId
-    WHERE 
-      mr.month BETWEEN ? AND ? 
-      AND mr.paymentStatus = 'Pending'
-      AND mr.isApprove = 'Approve'
-      AND u.district = ?
-    GROUP BY 
-      mr.applicationId, u.name`;
-      
-
-      params.push(district);
+      params.push(id);
+    } else {
+      console.log("no filter used");
+      query = `
+        SELECT 
+            mr.applicationId,
+            mr.paymentStatus,
+            mr.approveBy,
+            u.name,
+            u.district,
+            u.bank_name,
+            u.bank_account_holder_name,
+            u.bank_account_no,
+            u.ifsc_code,
+            dcs.name AS dcs_name,
+            dcs.registration_no AS dcs_registration_no,
+            dcs.address AS dcs_address,
+            dcs.status AS dcs_status,
+            GROUP_CONCAT(CONCAT(DATE_FORMAT(STR_TO_DATE(mr.month, '%Y-%m'), '%M %Y'), ' (', mr.litter, ')') ORDER BY mr.month ASC SEPARATOR '/ ') AS subsidy_details,
+            GROUP_CONCAT(CONCAT(mr.amount) ORDER BY mr.month ASC SEPARATOR ', ') AS amounts,
+            SUM(mr.amount) AS total_amount,
+            SUM(mr.litter) AS quantity
+        FROM 
+            monthly_reports mr
+        JOIN 
+            farmers u ON mr.applicationId = u.applicationId
+        LEFT JOIN 
+            dcs ON u.dcsID = dcs.uid
+        WHERE 
+            mr.month BETWEEN ? AND ? 
+            AND mr.paymentStatus = 'Pending'
+            AND mr.isApprove = 'Approve'
+            AND mr.approveBy = ${approveBy}
+        GROUP BY 
+            mr.applicationId, u.name`;
     }
-    else{
 
-      console.log("no filter used ");
-      query = `SELECT 
-      mr.applicationId,
-      mr.paymentStatus,
-      u.name,
-      u.district,
-      
-      u.bank_name,
-      u.bank_account_holder_name,
-      u.bank_account_no,
-      u.ifsc_code,
-     
-      GROUP_CONCAT(CONCAT(mr.month, ': ', mr.amount, ' (L: ', mr.litter, ')') ORDER BY mr.month ASC SEPARATOR ', ') AS subsidy_details,
-      SUM(mr.amount) AS total_amount,
-      SUM(mr.litter) AS quantity
-    FROM 
-      monthly_reports mr
-    JOIN 
-      farmers u ON mr.applicationId = u.applicationId
-    WHERE 
-      mr.month BETWEEN ? AND ? 
-      AND mr.paymentStatus = 'Pending'
-      AND mr.isApprove = 'Approve'
-    GROUP BY 
-      mr.applicationId, u.name`;
-    }
-
+    console.log("id ", id);
+    console.log("role ", role);
     db.query(query, params, (err, result) => {
       if (err) {
         console.log("Error: ", err);
         callback && callback({ message: "Error occurred", error: err });
       } else {
-        console.log("result ==>>", result);
+        // console.log("result ==>>", result);
         callback && callback({ message: "success", data: result });
       }
     });

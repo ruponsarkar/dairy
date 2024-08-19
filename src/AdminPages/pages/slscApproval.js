@@ -181,9 +181,7 @@ const SLSCApproval = () => {
   useEffect(() => {
     // getFrom();
     getMasterWithReport();
-  }, [requestData, selectedDistrict, month]);
-
-
+  }, [month]);
 
   const handleAddLitter = (id, litter) => {
     const updatedItems = data.map((item) =>
@@ -193,27 +191,31 @@ const SLSCApproval = () => {
   };
 
   const handleApproveAll = () => {
-    if (!month) {
-      Swal.fire({
-        title: "Month Not selected !",
-        text: "You must selct a month!",
-        icon: "warning",
-      });
-      return;
-    }
 
     console.log(month);
     console.log(data);
-    let selectedData = data.filter((e) => e.litter && e.approveBy == 2);
+    let selectedData = data.filter((e) => e.selected && e.approveBy == 2);
     let needUpdatesData = data.filter(
       (e) => e.litter && e.isApprove == "Pending"
     );
 
     console.log("selectedData", selectedData);
 
+    if (!month || !selectedData.length) {
+        Swal.fire({
+          title: "No data selected !",
+          text: "You must selct a data!",
+          icon: "warning",
+        });
+        return;
+      }
+
+
+
+    // return;
+
     let approveBy = 3;
     updateMonthlyReport(selectedData, approveBy);
-
 
     return;
 
@@ -239,12 +241,12 @@ const SLSCApproval = () => {
     // }
 
     return;
-};
+  };
 
-const postMonthlyReport = (selectedData, approveBy) => {
+  const postMonthlyReport = (selectedData, approveBy) => {
     console.log("selectedData=>", selectedData);
     console.log("approveBy=>", approveBy);
-    
+
     setLoading(true);
 
     api
@@ -291,13 +293,13 @@ const postMonthlyReport = (selectedData, approveBy) => {
 
   const handleChangeMonth = (e) => {
     setMonth(e.target.value);
-    getMasterWithReport(e.target.value);
+    // getMasterWithReport(e.target.value);
   };
 
   const getMasterWithReport = () => {
-    if(!user){
-        console.log("user not found");
-        return;
+    if (!user) {
+      console.log("user not found");
+      return;
     }
     console.log(user);
     setLoading(true);
@@ -315,19 +317,26 @@ const postMonthlyReport = (selectedData, approveBy) => {
       });
   };
 
+  const [selectAll, setSelectAll] = useState(false);
+  const handeSelectAll = () => {
+    const newSelectAll = !selectAll;
+    setSelectAll(newSelectAll);
+    setData(data.map((item) => ({ ...item, selected: newSelectAll })));
+  };
+
+  const handleSelect = (id) => {
+    const updatedItems = data.map((item) =>
+      item.id === id ? { ...item, selected: !item.selected } : item
+    );
+    setData(updatedItems);
+    // Update the selectAll state based on the individual selections
+    const allSelected = updatedItems.every((item) => item.selected);
+    setSelectAll(allSelected);
+  };
+
   return (
     <Paper className="p-2">
       <Loader open={loading} />
-      {/* <Toolbar>
-        <Typography variant="h6" id="tableTitle" component="div">
-          Master Data
-        </Typography>
-        <Tooltip title="Filter list">
-          <IconButton aria-label="filter list">
-            <FilterListIcon />
-          </IconButton>
-        </Tooltip>
-      </Toolbar> */}
 
       <Box
         sx={{
@@ -418,7 +427,12 @@ const postMonthlyReport = (selectedData, approveBy) => {
         >
           <TableHead>
             <TableRow>
-              <StyledTableCell>#</StyledTableCell>
+              <StyledTableCell>
+                <Checkbox
+                  checked={selectAll ? true : false}
+                  onClick={handeSelectAll}
+                />
+              </StyledTableCell>
               <StyledTableCell>Applicant Name</StyledTableCell>
               <StyledTableCell>Name of DCS</StyledTableCell>
               <StyledTableCell>Registration no</StyledTableCell>
@@ -435,17 +449,21 @@ const postMonthlyReport = (selectedData, approveBy) => {
               data.map((row, index) => {
                 return (
                   <TableRow hover tabIndex={-1} key={row.name}>
-                    <TableCell>{index + 1}</TableCell>
+                    <TableCell>
+                      <Checkbox
+                        checked={row.selected ? true : false}
+                        onClick={() => handleSelect(row.id)}
+                        disabled={row.approveBy == 3 ? true : false}
+                      />
+                    </TableCell>
                     <TableCell component="th" scope="row">
                       {row.name}
                     </TableCell>
                     <TableCell>{row.dcs_name}</TableCell>
-                    <TableCell>
-                      {row.dcs_registration_no}
-                    </TableCell>
+                    <TableCell>{row.dcs_registration_no}</TableCell>
                     <TableCell>{row.district}</TableCell>
                     <TableCell align="center">
-                    {row.litter ? row.litter : ""}
+                      {row.litter ? row.litter : ""}
                     </TableCell>
                     <TableCell align="center">
                       {row.litter ? row.litter * 5 : 0}
@@ -453,14 +471,10 @@ const postMonthlyReport = (selectedData, approveBy) => {
                     <TableCell>
                       <span
                         className={`${
-                          row.approveBy !== 3
-                            ? "bg-warning"
-                            : "bg-success"
+                          row.approveBy !== 3 ? "bg-warning" : "bg-success"
                         } rounded px-2`}
                       >
-                        {
-                            row.approveBy === 3 ? 'Approved': 'Pending'
-                        }
+                        {row.approveBy === 3 ? "Approved" : "Pending"}
                       </span>
                     </TableCell>
                     <TableCell align="center">

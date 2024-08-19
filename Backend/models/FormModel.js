@@ -344,4 +344,80 @@ module.exports = {
       }
     });
   },
+
+  // searchFarmer
+  // searchFarmer(dcsIds, registrationNos, callback) {
+  searchFarmer(search, callback) {
+    let query = `
+            SELECT 
+            farmers.*, 
+            dcs.name AS dcs_name, 
+            dcs.registration_no AS dcs_registration_no, 
+            dcs.address AS dcs_address,
+            dcs.status AS dcs_status
+            FROM 
+                farmers
+            JOIN 
+                dcs ON farmers.dcsID = dcs.uid
+            WHERE 
+                1 = 1
+        `;
+
+    const params = [];
+
+    // Add filter for dcs.name using LIKE if provided
+    if (search.dcs) {
+      query += ` AND dcs.name LIKE ?`;
+      params.push(`%${search.dcs}%`);
+    }
+
+    // Add filter for dcs.registration_no using LIKE if provided
+    if (search.regno) {
+      query += ` AND dcs.registration_no LIKE ?`;
+      params.push(`%${search.regno}%`);
+    }
+
+    // Execute the query
+    db.query(query, params, (err, result) => {
+      if (err) {
+        console.log("Error: ", err);
+        callback && callback({ message: "Error occurred", error: err });
+      } else {
+        callback && callback({ message: "success", data: result });
+      }
+    });
+  },
+
+  // dcsData
+  dcsData(callback) {
+    let query = `
+        SELECT 
+            d.district AS DISTRICT,
+            COUNT(DISTINCT d.uid) AS TOTAL_DCS,
+            COUNT(DISTINCT f.id) AS TOTAL_SHAREHOLDERS,
+            SUM(mr.litter) AS TOTAL_MILK_SALE
+        FROM 
+            dcs d
+        LEFT JOIN 
+            farmers f ON d.uid = f.dcsID
+        LEFT JOIN 
+            monthly_reports mr ON f.applicationId = mr.applicationId
+
+           
+        GROUP BY 
+            d.district
+        ORDER BY 
+            d.district ASC;
+    `;
+
+    db.query(query, (err, result) => {
+        if (err) {
+            console.log("Error executing query: ", err);
+            callback && callback({ message: "Error occurred", error: err });
+        } else {
+            callback && callback({ message: "success", data: result });
+        }
+    });
+}
+
 };

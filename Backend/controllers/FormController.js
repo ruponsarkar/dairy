@@ -126,6 +126,19 @@ module.exports = {
   },
 
 
+  searchFarmer(req, res) {
+    let search = req.body.search;
+    FormModel.searchFarmer(search, (result) => {
+      res.status(200).send(result);
+    });
+  },
+  dcsData(req, res) {
+    FormModel.dcsData((result) => {
+      res.status(200).send(result);
+    });
+  },
+
+
 
 
 

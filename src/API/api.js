@@ -48,8 +48,8 @@ export default {
     getMonthlyReport(month){
         return API.post('getMonthlyReport', {month});
     },
-    getRangeSubsidy(from, to, district){
-        return API.post('getRangeSubsidy', {from, to, district});
+    getRangeSubsidy(from, to, id, role){
+        return API.post('getRangeSubsidy', {from, to, id, role});
     },
     individualMonthlyReport(formData){
         return API.post('individualMonthlyReport', {formData})
@@ -81,6 +81,12 @@ export default {
     },
     getAllFarmers(dsc){
         return API.post('/getAllFarmers', {dsc})
+    },
+    searchFarmer(search){
+        return API.post('/searchFarmer', {search})
+    },
+    dcsData(){
+        return API.post('/dcsData')
     },
 
 
