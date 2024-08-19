@@ -307,6 +307,7 @@ const DashboardPage = () => {
             ]
         });
         setIsGraph1(true);
+        // setLoading(false);
     }
 
     return (
