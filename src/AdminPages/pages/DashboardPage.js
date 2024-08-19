@@ -8,7 +8,7 @@ const DashboardPage = () => {
     return (
         
         <section className="dash m-0 p-0">
-            <div className="container">
+            <div className="container p-0">
 
                 {/* <div class="row text-center">
 	                <div class="col-md-3 p-1">

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { styled } from "@mui/material/styles";
+import { styled, emphasize } from "@mui/material/styles";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell, { tableCellClasses } from "@mui/material/TableCell";
@@ -8,7 +8,8 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import BasicMenu from "../../ui-component/menu";
-import { Button } from "@mui/material";
+import { Button, Toolbar,
+  Typography, } from "@mui/material";
 import Checkbox from "@mui/material/Checkbox";
 import Swal from "sweetalert2";
 import PaymentsIcon from "@mui/icons-material/Payments";
@@ -16,6 +17,32 @@ import { CSVLink, CSVDownload } from "react-csv";
 import api from "../../API/api";
 import SearchIcon from "@mui/icons-material/Search";
 import Loader from "../../components/pannel/loader";
+
+
+import Breadcrumbs from '@mui/material/Breadcrumbs';
+import Chip from '@mui/material/Chip';
+import HomeIcon from '@mui/icons-material/Home';
+
+const StyledBreadcrumb = styled(Chip)(({ theme }) => {
+    const backgroundColor =
+      theme.palette.mode === 'light'
+        ? theme.palette.grey[100]
+        : theme.palette.grey[800];
+    return {
+      backgroundColor,
+      height: theme.spacing(3),
+      color: theme.palette.text.primary,
+      fontWeight: theme.typography.fontWeightRegular,
+      '&:hover, &:focus': {
+        backgroundColor: emphasize(backgroundColor, 0.06),
+      },
+      '&:active': {
+        boxShadow: theme.shadows[1],
+        backgroundColor: emphasize(backgroundColor, 0.12),
+      },
+    };
+  });
+
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -110,6 +137,37 @@ export default function Report() {
   };
 
   return (
+
+    <>
+    <Paper className="p-1 mb-3">
+                <Toolbar sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                flexWrap: "wrap",
+                "@media (max-width: 600px)": {
+                flexDirection: "column",
+                alignItems: "flex-start",
+                },
+                }}>
+                <Typography sx={{ display: "flex", gap: 2 }} variant="h6" id="tableTitle" component="div">
+                Report
+                </Typography>
+                <div role="presentation" >
+                <Breadcrumbs aria-label="breadcrumb">
+                <StyledBreadcrumb
+                    component="a"
+                    href="/admin"
+                    label="Home"
+                    icon={<HomeIcon fontSize="small" />}
+                />
+                {/* <StyledBreadcrumb component="a" href="#" label="Catalog" /> */}
+                <StyledBreadcrumb label="Report"/>
+                </Breadcrumbs>
+                </div>
+                </Toolbar>
+
+            </Paper>
     <Paper className="p-2">
         <Loader open={loading}/>
       <div className="my-3 d-flex gap-3"></div>
@@ -143,9 +201,11 @@ export default function Report() {
         <div className="d-flex align-items-center gap-4">
           {all && (
             <div className="">
-              <CSVLink data={all} filename={"AHVD_SUBSIDYcsv"}>
+              <Button variant="contained">
+              <CSVLink data={all} filename={"AHVD_SUBSIDYcsv"} className="text-white">
                 {data ? "Download Report" : "Download Report(All)"}
               </CSVLink>
+              </Button>
             </div>
           )}
         </div>
@@ -198,7 +258,7 @@ export default function Report() {
                   </StyledTableCell>
                   <StyledTableCell align="center">
                     {" "}
-                    <strong> {row.total_amount} </strong>{" "}
+                    <strong> {row.total_amount} ₹</strong>{" "}
                   </StyledTableCell>
                   {/* <StyledTableCell>{row.bank_account_no}</StyledTableCell> */}
                   <StyledTableCell>
@@ -218,12 +278,18 @@ export default function Report() {
         </Table>
         <div>
           {!data && (
-            <div className="text-center">
-              <h3>Data not found</h3>
+            <div className="text-center p-5">
+              <img
+            src="../assets/noData.png"
+            alt="no data"
+            className="govt-logo"
+          />
+              <p>Data not found</p>
             </div>
           )}
         </div>
       </TableContainer>
     </Paper>
+    </>
   );
 }

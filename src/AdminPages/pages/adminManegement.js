@@ -2,11 +2,49 @@ import React, { useEffect, useState } from 'react';
 import { Card } from '@mui/material';
 import AdminTable from '../table/adminTable';
 
-import Button from '@mui/material/Button';
 import Modal from '../../ui-component/modal';
 import Swal from 'sweetalert2';
 import Loader from '../../components/pannel/loader';
 import api from '../../API/api';
+
+import { styled, emphasize } from "@mui/material/styles";
+import {
+    
+    Paper,
+    Box,
+    Toolbar,
+    Typography,
+    IconButton,
+    Tooltip,
+    
+    Button,
+  } from "@mui/material";
+
+
+import Breadcrumbs from '@mui/material/Breadcrumbs';
+import Chip from '@mui/material/Chip';
+import HomeIcon from '@mui/icons-material/Home';
+
+const StyledBreadcrumb = styled(Chip)(({ theme }) => {
+    const backgroundColor =
+      theme.palette.mode === 'light'
+        ? theme.palette.grey[100]
+        : theme.palette.grey[800];
+    return {
+      backgroundColor,
+      height: theme.spacing(3),
+      color: theme.palette.text.primary,
+      fontWeight: theme.typography.fontWeightRegular,
+      '&:hover, &:focus': {
+        backgroundColor: emphasize(backgroundColor, 0.06),
+      },
+      '&:active': {
+        boxShadow: theme.shadows[1],
+        backgroundColor: emphasize(backgroundColor, 0.12),
+      },
+    };
+  });
+
 
 const districts = [
     'Baksa', 'Barpeta', 'Biswanath', 'Bongaigaon', 'Cachar', 'Charaideo', 'Chirang',
@@ -120,9 +158,41 @@ const AdminCategory = () => {
 
     return (
         <>
+         <Paper className="p-1 mb-3">
+                <Toolbar sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                flexWrap: "wrap",
+                "@media (max-width: 600px)": {
+                flexDirection: "column",
+                alignItems: "flex-start",
+                },
+                }}>
+                <Typography sx={{ display: "flex", gap: 2 }} variant="h6" id="tableTitle" component="div">
+                Admin details
+                </Typography>
+                <div role="presentation" >
+                <Breadcrumbs aria-label="breadcrumb">
+                <StyledBreadcrumb
+                    component="a"
+                    href="/admin"
+                    label="Home"
+                    icon={<HomeIcon fontSize="small" />}
+                />
+                {/* <StyledBreadcrumb component="a" href="#" label="Catalog" /> */}
+                <StyledBreadcrumb label="Admin details"/>
+                </Breadcrumbs>
+                </div>
+                </Toolbar>
+
+            </Paper>
         <Loader open={loading}/>
-            <div className="container">
-                <Card>
+            <div className="container p-0 m-0">
+               
+                <div>
+
+                    <Card>
                     <div className="row">
                         <div className="col-6">
                             <div className='m-2'>
@@ -146,14 +216,13 @@ const AdminCategory = () => {
                             </div>
                         </div>
                     </div>
-                </Card>
-                <div className='mt-2'>
-
-                    <Card>
                         <div className="row">
                             <div className="col-12">
-                                <div className='m-2 text-center'>
-                                    <h4> Admins</h4>
+                                <div className='m-2'>
+                                    <h4> Admin list</h4>
+                                    <Typography>
+                                        All admina are available here. You can create/delete/suspend from the action button.
+                                    </Typography>
                                 </div>
 
 
