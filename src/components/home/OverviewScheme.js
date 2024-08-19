@@ -50,9 +50,8 @@ const OverviewScheme = () => {
           <div class="col-md-5 d-flex flex-column justify-content-center">
             <h2 class="section-title text-center">Register</h2>
             <p class="about-us-text text-center">
-              Farmer should be a pouring member of a functional DCS formed on or
-              before 31st March, 2024 (as per Assam Co-operative Societies Act,
-              2007).
+            The DCS must be functional before March 31, 2024 and registered under the Assam Co-operative Societies Act, 2007.
+              .
             </p>
             {/* <div class="row">
                 <div class="col-md-6">

@@ -1238,6 +1238,12 @@ export default function AddFarmer() {
                 <div>
                     <Paper className="p-2">
 
+                    <Typography className="pt-1 pb-2" variant="h6" id="tableTitle" component="div">
+                    Farmer Data
+                    </Typography>
+                    <Typography className="py-2">
+                    Here is the full registered farmer list
+                    </Typography>
 
                         <div className="py-3">
                             <div className="d-flex justify-content-between">

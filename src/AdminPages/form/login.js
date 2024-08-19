@@ -84,7 +84,7 @@ const Login = () => {
                                                 {/* <form> */}
 
                                                 <div className="inputs">
-                                                    <label>Email Address</label>
+                                                    <label>Email Address or User ID</label>
                                                     <input type="email" className='form-control' value={email} onChange={e => setEmail(e.target.value)} placeholder="enter a valid email address" />
                                                     
                                                     <label>Password</label>

@@ -233,14 +233,14 @@ const Dashboard = (props) => {
             </ListItemButton>
           </ListItem>
 
-          <ListItem disablePadding onClick={() => navigate("/admin/Grievance")}>
+          {/* <ListItem disablePadding onClick={() => navigate("/admin/Grievance")}>
             <ListItemButton>
               <ListItemIcon>
                 <LiveHelpOutlinedIcon />
               </ListItemIcon>
               <ListItemText>Grievance</ListItemText>
             </ListItemButton>
-          </ListItem>
+          </ListItem> */}
 
           <ListItem disablePadding onClick={logout}>
             <ListItemButton>
@@ -375,14 +375,14 @@ const Dashboard = (props) => {
             </List>
           </Collapse>
 
-          <ListItem disablePadding onClick={() => navigate("/admin/Grievance")}>
+          {/* <ListItem disablePadding onClick={() => navigate("/admin/Grievance")}>
             <ListItemButton>
               <ListItemIcon>
                 <LiveHelpOutlinedIcon />
               </ListItemIcon>
               <ListItemText>Grievance</ListItemText>
             </ListItemButton>
-          </ListItem>
+          </ListItem> */}
 
           <ListItem disablePadding onClick={logout}>
             <ListItemButton>
@@ -461,14 +461,14 @@ const Dashboard = (props) => {
 
         
 
-          <ListItem disablePadding onClick={() => navigate("/admin/Grievance")}>
+          {/* <ListItem disablePadding onClick={() => navigate("/admin/Grievance")}>
             <ListItemButton>
               <ListItemIcon>
                 <LiveHelpOutlinedIcon />
               </ListItemIcon>
               <ListItemText>Grievance</ListItemText>
             </ListItemButton>
-          </ListItem>
+          </ListItem> */}
 
           <ListItem disablePadding onClick={logout}>
             <ListItemButton>
@@ -526,14 +526,14 @@ const Dashboard = (props) => {
             </ListItemButton>
           </ListItem>
 
-          <ListItem disablePadding onClick={() => navigate("/admin/Grievance")}>
+          {/* <ListItem disablePadding onClick={() => navigate("/admin/Grievance")}>
             <ListItemButton>
               <ListItemIcon>
                 <LiveHelpOutlinedIcon />
               </ListItemIcon>
               <ListItemText>Grievance</ListItemText>
             </ListItemButton>
-          </ListItem>
+          </ListItem> */}
 
           <ListItem disablePadding onClick={logout}>
             <ListItemButton>
@@ -659,14 +659,14 @@ const Dashboard = (props) => {
             </List>
           </Collapse>
 
-          <ListItem disablePadding onClick={() => navigate("/admin/Grievance")}>
+          {/* <ListItem disablePadding onClick={() => navigate("/admin/Grievance")}>
             <ListItemButton>
               <ListItemIcon>
                 <LiveHelpOutlinedIcon />
               </ListItemIcon>
               <ListItemText>Grievance</ListItemText>
             </ListItemButton>
-          </ListItem>
+          </ListItem> */}
 
           <ListItem disablePadding onClick={logout}>
             <ListItemButton>
