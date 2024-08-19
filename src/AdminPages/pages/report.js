@@ -184,10 +184,10 @@ export default function Report() {
                   </StyledTableCell>
                   <StyledTableCell>{row.name}</StyledTableCell>
                   <StyledTableCell>
-                    {row.name_of_co_operatice_society}
+                    {row.dcs_name}
                   </StyledTableCell>
                   {/* <StyledTableCell>{row.approverName}</StyledTableCell> */}
-                  <StyledTableCell>{row.registration_no_of_co_operatice_society}</StyledTableCell>
+                  <StyledTableCell>{row.dcs_registration_no}</StyledTableCell>
                   <StyledTableCell width={200}>
                     {row.subsidy_details}
                   </StyledTableCell>
