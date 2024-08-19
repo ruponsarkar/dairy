@@ -26,7 +26,7 @@ module.exports = {
     let response = {};
     db.query(selectQuery, [email, password], (err, result) => {
       if (!err) {
-        if(result.length>=1){
+        if (result.length >= 1) {
           response = {
             status: 200,
             authenticated: true,
@@ -197,24 +197,43 @@ module.exports = {
   `;
 
     db.query(query, (err, results) => {
-        if (err) {
-            console.error("Database error:", err);
-            callback && callback({
-                status: 400,
-                message: "failed",
-                data: null
-            });
-        } else {
-            callback && callback({
-                status: 200,
-                message: "success",
-                data: results
-            });
-        }
+      if (err) {
+        console.error("Database error:", err);
+        callback && callback({
+          status: 400,
+          message: "failed",
+          data: null
+        });
+      } else {
+        callback && callback({
+          status: 200,
+          message: "success",
+          data: results
+        });
+      }
     });
-}
+  },
 
+  getAllDCS_DistrictWise(district, callback) {
+    let query = `SELECT * FROM dcs WHERE district=? AND status = 1`;
 
+    db.query(query, [district], (err, results) => {
+      if (err) {
+        console.error("Database error:", err);
+        callback && callback({
+          status: 400,
+          message: "failed",
+          data: null
+        });
+      } else {
+        callback && callback({
+          status: 200,
+          message: "success",
+          data: results
+        });
+      }
+    });
+  }
 
 
 

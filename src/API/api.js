@@ -70,6 +70,12 @@ export default {
     getAllDCS(){
         return API.post('/getAllDCS')
     },
+    getAllDCS_DistrictWise(selectedDistrict){
+        let param = {
+            disctrict: selectedDistrict
+        }
+        return API.post('/getAllDCS_DistrictWise', {param})
+    },
     createFarmer(formData){
         return API.post('/createFarmer', {formData})
     },

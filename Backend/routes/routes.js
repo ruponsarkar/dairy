@@ -45,6 +45,7 @@ module.exports = (app) => {
 
   app.post("/createDCS", AdminController.createDCS);
   app.post("/getAllDCS", AdminController.getAllDCS);
+  app.post("/getAllDCS_DistrictWise", AdminController.getAllDCS_DistrictWise);
   app.post("/createFarmer", FormController.createFarmer);
   app.post("/getAllFarmers", FormController.getAllFarmers);
 };

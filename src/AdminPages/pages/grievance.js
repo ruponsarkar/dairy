@@ -29,12 +29,39 @@ import {
     Link,
 } from "@mui/material";
 import { tableCellClasses } from "@mui/material/TableCell";
-import { styled } from "@mui/material/styles";
+import { styled, emphasize } from "@mui/material/styles";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import Application from "../../components/register/application";
 import api from "../../API/api";
 import Swal from "sweetalert2";
 import Loader from "../../components/pannel/loader";
+
+
+import Breadcrumbs from '@mui/material/Breadcrumbs';
+import Chip from '@mui/material/Chip';
+import HomeIcon from '@mui/icons-material/Home';
+
+const StyledBreadcrumb = styled(Chip)(({ theme }) => {
+    const backgroundColor =
+      theme.palette.mode === 'light'
+        ? theme.palette.grey[100]
+        : theme.palette.grey[800];
+    return {
+      backgroundColor,
+      height: theme.spacing(3),
+      color: theme.palette.text.primary,
+      fontWeight: theme.typography.fontWeightRegular,
+      '&:hover, &:focus': {
+        backgroundColor: emphasize(backgroundColor, 0.06),
+      },
+      '&:active': {
+        boxShadow: theme.shadows[1],
+        backgroundColor: emphasize(backgroundColor, 0.12),
+      },
+    };
+  });
+
+
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
@@ -74,18 +101,39 @@ const Grievance = () => {
    
 
     return (
+        <>
+        <Paper className="p-1 mb-3">
+                <Toolbar sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                flexWrap: "wrap",
+                "@media (max-width: 600px)": {
+                flexDirection: "column",
+                alignItems: "flex-start",
+                },
+                }}>
+                <Typography sx={{ display: "flex", gap: 2 }} variant="h6" id="tableTitle" component="div">
+                Grievance
+                </Typography>
+                <div role="presentation" >
+                <Breadcrumbs aria-label="breadcrumb">
+                <StyledBreadcrumb
+                    component="a"
+                    href="/admin"
+                    label="Home"
+                    icon={<HomeIcon fontSize="small" />}
+                />
+                {/* <StyledBreadcrumb component="a" href="#" label="Catalog" /> */}
+                <StyledBreadcrumb label="Grievance"/>
+                </Breadcrumbs>
+                </div>
+                </Toolbar>
+
+            </Paper>
+
         <Paper className="p-2">
             <Loader open={loading}/>
-            <Toolbar>
-                <Typography variant="h6" id="tableTitle" component="div">
-                    Grievance
-                </Typography>
-                <Tooltip title="Filter list">
-                    <IconButton aria-label="filter list">
-                        <FilterListIcon />
-                    </IconButton>
-                </Tooltip>
-            </Toolbar>
 
 
 
@@ -131,17 +179,23 @@ const Grievance = () => {
                 </Table>
 
                 <div>
-                    {!data &&
-                        <div className="text-center">
-                            <h3>Data not found</h3>
+                    {!data && (
+                        <div className="text-center p-5">
+                        <img
+                        src="../assets/noData.png"
+                        alt="no data"
+                        className="govt-logo"
+                    />
+                        <p>Data not found</p>
                         </div>
-                    }
-                </div>
+                    )}
+                    </div>
 
 
             </TableContainer>
 
         </Paper>
+        </>
     );
 };
 

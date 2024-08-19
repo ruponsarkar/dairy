@@ -29,7 +29,7 @@ import {
   Link,
 } from "@mui/material";
 import { tableCellClasses } from "@mui/material/TableCell";
-import { styled } from "@mui/material/styles";
+import { styled, emphasize } from "@mui/material/styles";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import Application from "../../components/register/application";
 import api from "../../API/api";
@@ -39,6 +39,32 @@ import Checkbox from "@mui/material/Checkbox";
 import { CSVLink, CSVDownload } from "react-csv";
 import PaymentsIcon from "@mui/icons-material/Payments";
 import Loader from "../../components/pannel/loader";
+import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined';
+
+
+import Breadcrumbs from '@mui/material/Breadcrumbs';
+import Chip from '@mui/material/Chip';
+import HomeIcon from '@mui/icons-material/Home';
+
+const StyledBreadcrumb = styled(Chip)(({ theme }) => {
+    const backgroundColor =
+      theme.palette.mode === 'light'
+        ? theme.palette.grey[100]
+        : theme.palette.grey[800];
+    return {
+      backgroundColor,
+      height: theme.spacing(3),
+      color: theme.palette.text.primary,
+      fontWeight: theme.typography.fontWeightRegular,
+      '&:hover, &:focus': {
+        backgroundColor: emphasize(backgroundColor, 0.06),
+      },
+      '&:active': {
+        boxShadow: theme.shadows[1],
+        backgroundColor: emphasize(backgroundColor, 0.12),
+      },
+    };
+  });
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -313,6 +339,36 @@ const postMonthlyReport = (selectedData, approveBy) => {
   };
 
   return (
+    <>
+            <Paper className="p-1 mb-3">
+                <Toolbar sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                flexWrap: "wrap",
+                "@media (max-width: 600px)": {
+                flexDirection: "column",
+                alignItems: "flex-start",
+                },
+                }}>
+                <Typography sx={{ display: "flex", gap: 2 }} variant="h6" id="tableTitle" component="div">
+                Milk details
+                </Typography>
+                <div role="presentation" >
+                <Breadcrumbs aria-label="breadcrumb">
+                <StyledBreadcrumb
+                    component="a"
+                    href="/admin"
+                    label="Home"
+                    icon={<HomeIcon fontSize="small" />}
+                />
+                {/* <StyledBreadcrumb component="a" href="#" label="Catalog" /> */}
+                <StyledBreadcrumb label="Milk details"/>
+                </Breadcrumbs>
+                </div>
+                </Toolbar>
+
+            </Paper>
     <Paper className="p-2">
       <Loader open={loading} />
       {/* <Toolbar>
@@ -326,7 +382,7 @@ const postMonthlyReport = (selectedData, approveBy) => {
         </Tooltip>
       </Toolbar> */}
 
-      <Box
+      {/* <Box
         sx={{
           display: "flex",
           alignItems: "center",
@@ -338,7 +394,7 @@ const postMonthlyReport = (selectedData, approveBy) => {
             alignItems: "flex-start",
           },
         }}
-      >
+      > */}
         {/* <Box sx={{ display: "flex", gap: 2 }}>
           <FormControl sx={{ minWidth: 180, maxWidth: 200 }} size="small">
             <InputLabel id="assam-district-label">Select District</InputLabel>
@@ -380,7 +436,7 @@ const postMonthlyReport = (selectedData, approveBy) => {
           )}
         </Box> */}
 
-        <div>
+        {/* <div>
           {data && (
             <div>
               <CSVLink data={data} filename={"AHVD_DATA.csv"}>
@@ -388,24 +444,46 @@ const postMonthlyReport = (selectedData, approveBy) => {
               </CSVLink>
             </div>
           )}
-        </div>
-      </Box>
+        </div> */}
+      {/* </Box> */}
 
-      <div className="my-3 d-flex gap-3">
-        <input
-          type="month"
-          name=""
-          value={month}
-          className="form-control col-2"
-          id=""
-          onChange={(e) => handleChangeMonth(e)}
-        />
-        <div>
-          <Button variant="contained" onClick={handleApproveAll}>
-            Approve and sent to DLC
-          </Button>
-        </div>
-      </div>
+      
+
+
+
+              <Toolbar className="p-0" sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                }}>
+                <div className="my-3 p-0 d-flex gap-3">
+                  <input
+                    type="month"
+                    name=""
+                    value={month}
+                    className="form-control col-4"
+                    id=""
+                    onChange={(e) => handleChangeMonth(e)}
+                  />
+                  <div>
+                    <Button variant="contained" onClick={handleApproveAll}>
+                      Approve and sent to DLC
+                    </Button>
+                  </div>
+                </div>
+                <div>
+                  {data && (
+                    <div>
+                      <CSVLink data={data} filename={"AHVD_DATA.csv"}>
+                      <Button variant="contained">
+                        <FileDownloadOutlinedIcon />
+                         Download Data
+                      </Button>
+                      </CSVLink>
+                    </div>
+                  )}
+                </div>
+                </Toolbar>
 
       <TableContainer component={Paper}>
         <Table
@@ -415,15 +493,15 @@ const postMonthlyReport = (selectedData, approveBy) => {
         >
           <TableHead>
             <TableRow>
-              <StyledTableCell>#</StyledTableCell>
-              <StyledTableCell>Applicant Name</StyledTableCell>
-              <StyledTableCell>Name of DCS</StyledTableCell>
-              <StyledTableCell>Registration no</StyledTableCell>
-              <StyledTableCell>District</StyledTableCell>
-              <StyledTableCell>Quantity of Milk(in Litres)</StyledTableCell>
-              <StyledTableCell>Amount (in Rs)</StyledTableCell>
-              <StyledTableCell align="center">Status</StyledTableCell>
-              <StyledTableCell align="center">Action</StyledTableCell>
+              <StyledTableCell className="text-center p-2">#</StyledTableCell>
+              <StyledTableCell className="text-center p-2">Applicant Name</StyledTableCell>
+              <StyledTableCell className="text-center p-2">Name of DCS</StyledTableCell>
+              <StyledTableCell className="text-center p-2">Registration no</StyledTableCell>
+              <StyledTableCell className="text-center p-2">District</StyledTableCell>
+              <StyledTableCell className="text-center p-2">Quantity of Milk(in Litres)</StyledTableCell>
+              <StyledTableCell className="text-center p-2">Amount (in Rs)</StyledTableCell>
+              <StyledTableCell className="text-center p-2">Status</StyledTableCell>
+              <StyledTableCell className="text-center p-2">Action</StyledTableCell>
             </TableRow>
           </TableHead>
 
@@ -432,31 +510,32 @@ const postMonthlyReport = (selectedData, approveBy) => {
               data.map((row, index) => {
                 return (
                   <TableRow hover tabIndex={-1} key={row.name}>
-                    <TableCell>{index + 1}</TableCell>
-                    <TableCell component="th" scope="row">
+                    <TableCell className="text-center p-2">{index + 1}</TableCell>
+                    <TableCell className="text-center p-2" component="th" scope="row">
                       {row.name}
                     </TableCell>
-                    <TableCell>{row.dcs_name}</TableCell>
-                    <TableCell>
+                    <TableCell className="text-center p-2">{row.dcs_name}</TableCell>
+                    <TableCell className="text-center p-2">
                       {row.dcs_registration_no}
                     </TableCell>
-                    <TableCell>{row.district}</TableCell>
-                    <TableCell>
+                    <TableCell className="text-center p-2">{row.district}</TableCell>
+                    <TableCell className="text-center p-2">
                       <input
                         type="number"
                         name=""
                         disabled={row.isApprove === "Approve" ? true : false}
                         value={row.litter ? row.litter : ""}
                         id=""
+                        
                         onChange={(e) =>
                           handleAddLitter(row.id, e.target.value)
                         }
                       />
                     </TableCell>
-                    <TableCell align="center">
-                      {row.litter ? row.litter * 5 : 0}
+                    <TableCell className="text-center p-2">
+                      {row.litter ? row.litter * 5 : 0} ₹
                     </TableCell>
-                    <TableCell>
+                    <TableCell className="text-center p-2">
                       <span
                         className={`${
                           row.isApprove === "Pending" || !row.isApprove
@@ -471,7 +550,7 @@ const postMonthlyReport = (selectedData, approveBy) => {
                           : "Pending"}
                       </span>
                     </TableCell>
-                    <TableCell align="center">
+                    <TableCell className="text-center p-2">
                       <Button
                         variant="outlined"
                         color="primary"
@@ -489,8 +568,13 @@ const postMonthlyReport = (selectedData, approveBy) => {
 
         <div>
           {!data && (
-            <div className="text-center">
-              <h3>Data not found</h3>
+            <div className="text-center p-5">
+              <img
+            src="../assets/noData.png"
+            alt="no data"
+            className="govt-logo"
+          />
+              <p>Data not found</p>
             </div>
           )}
         </div>
@@ -621,6 +705,7 @@ const postMonthlyReport = (selectedData, approveBy) => {
         </DialogContent>
       </Dialog>
     </Paper>
+    </>
   );
 };
 

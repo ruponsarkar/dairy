@@ -2,11 +2,13 @@ import React, { useEffect, useState } from "react";
 import CountStatus from "../../components/home/countStatus";
 import { Paper } from "@mui/material";
 import DashboardTable from "./dashboardTable";
+import Loader from "../../components/pannel/loader";
 // Chart JS
 import Chart from "chart.js/auto";
 import { CategoryScale } from "chart.js";
 import PieChart from "../../charts/PieChart";
 import BarChart from "../../charts/BarChart";
+import api from "../../API/api";
 
 Chart.register(CategoryScale);
 
@@ -43,7 +45,46 @@ const myData = [
     }
 ];
 
+const allDistricts = [
+    "Baksa",
+    "Barpeta",
+    "Biswanath",
+    "Bongaigaon",
+    "Cachar",
+    "Charaideo",
+    "Chirang",
+    "Darrang",
+    "Dhemaji",
+    "Dhubri",
+    "Dibrugarh",
+    "Goalpara",
+    "Golaghat",
+    "Hailakandi",
+    "Hojai",
+    "Jorhat",
+    "Kamrup Metropolitan",
+    "Kamrup",
+    "Karbi Anglong",
+    "Karimganj",
+    "Kokrajhar",
+    "Lakhimpur",
+    "Majuli",
+    "Morigaon",
+    "Nagaon",
+    "Nalbari",
+    "Dima Hasao",
+    "Sivasagar",
+    "Sonitpur",
+    "South Salmara-Mankachar",
+    "Tinsukia",
+    "Udalguri",
+    "West Karbi Anglong",
+];
 const DashboardPage = () => {
+    const [loading, setLoading] = useState(false);
+    const [userDistrict, setUserDistrict] = useState([]);
+    const [selectedDistrict, setSelectedDistrict] = useState('');
+    const [dcsList, setDcsList] = useState([]);
     const [chartData, setChartData] = useState({
         labels: myData.map((data) => data.year),
         datasets: [
@@ -63,40 +104,149 @@ const DashboardPage = () => {
         ]
     });
 
-    return (
+    useEffect(() => {
+        init();
+    }, [selectedDistrict]);
 
+    const init = () => {
+        let districts = JSON.parse(sessionStorage.getItem('user'));
+        if (districts?.district?.toUpperCase() == 'ALL') {
+            setUserDistrict(allDistricts);
+        } else {
+            setUserDistrict([districts?.district]);
+        }
+        setSelectedDistrict(userDistrict[0]);
+        getApplicationStatisticsData_DistrictWise(selectedDistrict);
+        getAllDCS_DistrictWise(selectedDistrict);
+        console.log("userDistrict===", userDistrict);
+        console.log("selectedDistrict===", selectedDistrict);
+    }
+
+    const getApplicationStatisticsData_DistrictWise = (selectedDistrict) => {
+        // setLoading(true)
+        // api
+        //     .getMaster(requestData)
+        //     .then((res) => {
+        //         console.log("res :", res);
+        //         setData(res.data.data);
+        //         setLoading(false)
+        //     })
+        //     .catch((err) => {
+        //         setLoading(false)
+        //         console.log("err: ", err);
+        //     });
+    };
+
+    const getAllDCS_DistrictWise = (selectedDistrict) => {
+        api
+            .getAllDCS_DistrictWise(selectedDistrict)
+            .then((res) => {
+                console.log("res :", res);
+                if(res.status===200){
+                    initDCSDropdown(res.data.data);
+                }
+                // setData(res.data.data);
+                setLoading(false);
+            })
+            .catch((err) => {
+                setLoading(false);
+                console.log("err: ", err);
+            });
+    }
+
+    const initDCSDropdown = (data) =>{
+        let dcsOptions=[];
+        if(data.length>0){
+            data.map(item=>{
+                dcsOptions.push({id:item.id, name:item.name, registration: item.registration_no});
+            });
+        }
+        setDcsList(dcsOptions);
+    }
+
+    const onChangeDistrict = (district) =>{
+        getAllDCS_DistrictWise(district); 
+    }
+
+    return (
         <section className="dash m-0 p-0">
             <div className="container">
-                <CountStatus />
                 <div className="row">
+                    <div className="col-md-12 p-1">
+                        <CountStatus />
+                    </div>
+                </div>
+
+                <div className="row">
+                    <Loader open={loading} />
                     <div className="col-md-6 p-1">
                         <Paper>
-                        <div class="counter bg-light">
-                            <div class="panel panel-default">
-                                <div class="panel-heading ">
-                                    Subsidy applications(District Wise)
-                                    <select>
-                                        <option value="Guwahati">Guwahati</option>
-                                    </select>
+                            <div class="counter bg-light">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading p-2">
+                                        <h5>Subsidy Applications Summary
+                                            <span style={{ fontSize: '14px' }}>
+                                                <div style={{ float: 'right' }}>
+                                                    District Wise &nbsp;&nbsp;
+                                                    <select onChange={(e) => onChangeDistrict(e.target.value)}>
+                                                        {userDistrict &&
+                                                            userDistrict.map((district) => (
+                                                                <option value={district}>{district}</option>
+                                                            ))}
+
+                                                    </select>
+                                                </div>
+                                            </span>
+
+                                        </h5>
+                                    </div>
+                                    <div class="panel-body">
+                                        <BarChart chartData={chartData} />
+                                    </div>
+
                                 </div>
-                                <div class="panel-body">
-                                    <BarChart chartData={chartData} />
-                                </div>
+                                {/* <PieChart chartData={chartData} /> */}
 
                             </div>
-                            {/* <PieChart chartData={chartData} /> */}
-
-                        </div>
                         </Paper>
                     </div>
                     <div className="col-md-6 p-1">
-                        <div class="counter text-center">
-                            <BarChart chartData={chartData} />
+                        <Paper>
+                            <div class="counter bg-light">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading p-2">
+                                        <h5>Subsidy Applications Summary
+                                            <span style={{ fontSize: '14px' }}>
+                                                <div style={{ float: 'right' }}>
+                                                    DCS Wise &nbsp;&nbsp;
+                                                    <select>
+                                                    {dcsList &&
+                                                            dcsList.map((dcs) => (
+                                                                <option value={dcs.registration}>{dcs.name}</option>
+                                                            ))}
+                                                    </select>
+                                                </div>
+                                            </span>
 
-                        </div>
+                                        </h5>
+                                    </div>
+                                    <div class="panel-body">
+                                        <BarChart chartData={chartData} />
+                                    </div>
+
+                                </div>
+                                {/* <PieChart chartData={chartData} /> */}
+
+                            </div>
+                        </Paper>
                     </div>
                 </div>
-                <DashboardTable />
+                <div className="row">
+                    <div className="col-md-12 p-1">
+                        <DashboardTable />
+                    </div>
+                </div>
+
                 {/* <PieChart chartData={chartData} /> */}
                 {/* <div className="row my-5 justify-content-center">
                     <div className="reports my-2">

@@ -35,6 +35,12 @@ import NewReleasesIcon from "@mui/icons-material/NewReleases";
 import { useNavigate, Outlet } from "react-router-dom";
 import AuthUser from "../../API/token";
 import SummarizeIcon from "@mui/icons-material/Summarize";
+import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
+import CurrencyRupeeOutlinedIcon from '@mui/icons-material/CurrencyRupeeOutlined';
+import FolderSharedOutlinedIcon from '@mui/icons-material/FolderSharedOutlined';
+import AdminPanelSettingsOutlinedIcon from '@mui/icons-material/AdminPanelSettingsOutlined';
+import ContentPasteOutlinedIcon from '@mui/icons-material/ContentPasteOutlined';
+import LiveHelpOutlinedIcon from '@mui/icons-material/LiveHelpOutlined';
 
 const drawerWidth = 240;
 
@@ -104,6 +110,25 @@ const Dashboard = (props) => {
     setBlogOpen(!openBlog);
   };
 
+  const [currentDateTime, setCurrentDateTime] = useState(new Date());
+
+  // Format date to dd/mm/yyyy
+  const formattedDate = `${currentDateTime.getDate().toString().padStart(2, '0')}/${
+    (currentDateTime.getMonth() + 1).toString().padStart(2, '0')}/${currentDateTime.getFullYear()}`;
+  
+  // Format time to hh:mm:ss
+  const formattedTime = `${currentDateTime.getHours().toString().padStart(2, '0')}:${
+    currentDateTime.getMinutes().toString().padStart(2, '0')}:${currentDateTime.getSeconds().toString().padStart(2, '0')}`;
+
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentDateTime(new Date());
+    }, 1000); // Update every second
+
+    return () => clearInterval(timer); // Cleanup the interval on component unmount
+  }, []);
+
   useEffect(() => {
     // if (JSON.parse(sessionStorage.getItem('user')).role === 'Admin') {
     setRole(JSON.parse(sessionStorage.getItem("user")).role);
@@ -115,9 +140,9 @@ const Dashboard = (props) => {
 
   const drawer = (
     <div>
-      <Toolbar className="shadow p-1">
+      <Toolbar className="shadow text-center p-1">
         <a className="text-dark header-name text-center" href="/admin">
-          <h4>DCS Admin Panel</h4>
+          <h4>Admin Panel</h4>
         </a>
       </Toolbar>
       <Divider />
@@ -173,7 +198,7 @@ const Dashboard = (props) => {
 
         <ListItemButton onClick={handleClick1}>
           <ListItemIcon>
-            <LibraryBooksIcon />
+            <FolderSharedOutlinedIcon />
           </ListItemIcon>
           <ListItemText primary="Farmer" />
           {open1 ? <ExpandLess /> : <ExpandMore />}
@@ -239,7 +264,7 @@ const Dashboard = (props) => {
           <>
             <ListItemButton onClick={() => setOpenPay(!openPay)}>
               <ListItemIcon>
-                <RedeemIcon />
+                <CurrencyRupeeOutlinedIcon />
               </ListItemIcon>
               <ListItemText primary="Subsidy" />
               {openPay ? <ExpandLess /> : <ExpandMore />}
@@ -261,7 +286,7 @@ const Dashboard = (props) => {
 
             <ListItemButton onClick={blogClick}>
               <ListItemIcon>
-                <ClassIcon />
+                <AdminPanelSettingsOutlinedIcon />
               </ListItemIcon>
               <ListItemText primary="Admin" />
               {openBlog ? <ExpandLess /> : <ExpandMore />}
@@ -298,7 +323,7 @@ const Dashboard = (props) => {
         <ListItem disablePadding onClick={() => navigate("/admin/report")}>
           <ListItemButton>
             <ListItemIcon>
-              <SummarizeIcon />
+              <ContentPasteOutlinedIcon />
             </ListItemIcon>
             <ListItemText>Report</ListItemText>
           </ListItemButton>
@@ -307,7 +332,7 @@ const Dashboard = (props) => {
         <ListItem disablePadding onClick={() => navigate("/admin/Grievance")}>
           <ListItemButton>
             <ListItemIcon>
-              <NewReleasesIcon />
+              <LiveHelpOutlinedIcon />
             </ListItemIcon>
             <ListItemText>Grievance</ListItemText>
           </ListItemButton>
@@ -316,7 +341,7 @@ const Dashboard = (props) => {
         <ListItem disablePadding onClick={logout}>
           <ListItemButton>
             <ListItemIcon>
-              <AccountCircleIcon />
+              <LogoutRoundedIcon />
             </ListItemIcon>
             <ListItemText>Logout</ListItemText>
           </ListItemButton>
@@ -410,6 +435,8 @@ const Dashboard = (props) => {
               <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                   {/* <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" /> */}
+                  <Typography className="p-2 rounded" color={"white"} backgroundColor={"#0a56a1"}>{formattedDate} - {formattedTime}</Typography>
+                  &nbsp;
                   <AccountCircleIcon
                     fontSize="large"
                     style={{ color: "white" }}
@@ -485,7 +512,7 @@ const Dashboard = (props) => {
         component="main"
         sx={{
           flexGrow: 1,
-          p: 3,
+          p: 2,
           width: { sm: `calc(100% - ${drawerWidth}px)` },
         }}
       >
