@@ -1,4 +1,4 @@
 node_modules
 build
 Backend/upload
-# Backend/.env
+.env
