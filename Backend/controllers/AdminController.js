@@ -38,6 +38,12 @@ module.exports = {
       res.status(200).send(result);
     });
   },
+  getApplicationStatisticsData_DistrictWise(req, res) {
+    let disctrict = req.body.param.disctrict;
+    AdminModel.getApplicationStatisticsData_DistrictWise(disctrict, (result) => {
+      res.status(200).send(result);
+    });
+  },
   getAllDCS_DistrictWise(req, res) {
     let disctrict = req.body.param.disctrict;
     AdminModel.getAllDCS_DistrictWise(disctrict, (result) => {

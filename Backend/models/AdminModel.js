@@ -213,7 +213,26 @@ module.exports = {
       }
     });
   },
+  getApplicationStatisticsData_DistrictWise(district, callback) {
+    let query = `SELECT * FROM forms WHERE district=?`;
 
+    db.query(query, [district], (err, results) => {
+      if (err) {
+        console.error("Database error:", err);
+        callback && callback({
+          status: 400,
+          message: "failed",
+          data: null
+        });
+      } else {
+        callback && callback({
+          status: 200,
+          message: "success",
+          data: results
+        });
+      }
+    });
+  },
   getAllDCS_DistrictWise(district, callback) {
     let query = `SELECT * FROM dcs WHERE district=? AND status = 1`;
 

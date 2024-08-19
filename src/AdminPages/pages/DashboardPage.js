@@ -85,16 +85,81 @@ const DashboardPage = () => {
     const [userDistrict, setUserDistrict] = useState([]);
     const [selectedDistrict, setSelectedDistrict] = useState('');
     const [dcsList, setDcsList] = useState([]);
+    const [isGraph1, setIsGraph1] = useState(true);
+    const [isGraph2, setIsGraph2] = useState(true);
+    const [graph1_Data, setGraph1_Data]=useState([
+        {
+            title: 'Total Applications',
+            count: 0
+        },
+        {
+            title: 'Approved',
+            count: 0
+        },
+        {
+            title: 'Rejected',
+            count: 0
+        },
+        {
+            title: 'Draft',
+            count: 0
+        },
+        {
+            title: 'Incomplete',
+            count: 0
+        }
+    ]);
+    const [graph2_Data, setGraph2_Data]=useState([
+        {
+            title: 'Total Applications',
+            count: 7
+        },
+        {
+            title: 'Approved',
+            count: 3
+        },
+        {
+            title: 'Rejected',
+            count: 1
+        },
+        {
+            title: 'Draft',
+            count: 1
+        },
+        {
+            title: 'Incomplete',
+            count: 2
+        }
+    ]);
     const [chartData, setChartData] = useState({
-        labels: myData.map((data) => data.year),
+        labels: graph1_Data.map((data) => data.title),
         datasets: [
             {
-                label: "Users Gained ",
-                data: myData.map((data) => data.userGain),
+                label: "District Wise Statistics",
+                data: graph1_Data.map((data) => data.count),
                 backgroundColor: [
                     "rgba(75,192,192,1)",
-                    "#ecf0f1",
                     "#50AF95",
+                    "#Ff0000",
+                    "#f3ba2f",
+                    "#2a71d0"
+                ],
+                borderColor: "gray",
+                borderWidth: 1
+            }
+        ]
+    });
+
+    const [chartData2, setChartData2] = useState({
+        labels: graph2_Data.map((data) => data.title),
+        datasets: [
+            {
+                label: "DCS Wise Statistics",
+                data: graph2_Data.map((data) => data.count),
+                backgroundColor: [
+                    "rgba(75,192,192,1)",
+                    "#50AF95",
+                    "#Ff0000",
                     "#f3ba2f",
                     "#2a71d0"
                 ],
@@ -123,18 +188,21 @@ const DashboardPage = () => {
     }
 
     const getApplicationStatisticsData_DistrictWise = (selectedDistrict) => {
-        // setLoading(true)
-        // api
-        //     .getMaster(requestData)
-        //     .then((res) => {
-        //         console.log("res :", res);
-        //         setData(res.data.data);
-        //         setLoading(false)
-        //     })
-        //     .catch((err) => {
-        //         setLoading(false)
-        //         console.log("err: ", err);
-        //     });
+        setLoading(true)
+        api
+            .getApplicationStatisticsData_DistrictWise(selectedDistrict)
+            .then((res) => {
+                console.log("getApplicationStatisticsData_DistrictWise==", res);
+                // setData(res.data.data);
+                if(res.status===200){
+                    graph1_DataFormatter(res.data.data);
+                }
+                setLoading(false)
+            })
+            .catch((err) => {
+                setLoading(false)
+                console.log("err: ", err);
+            });
     };
 
     const getAllDCS_DistrictWise = (selectedDistrict) => {
@@ -164,8 +232,81 @@ const DashboardPage = () => {
         setDcsList(dcsOptions);
     }
 
+    useEffect(()=>{
+        getApplicationStatisticsData_DistrictWise(selectedDistrict);
+    },[selectedDistrict])
     const onChangeDistrict = (district) =>{
+        // getApplicationStatisticsData_DistrictWise(district);
+        setSelectedDistrict(district);
         getAllDCS_DistrictWise(district); 
+    }
+
+    const graph1_DataFormatter = (data) =>{
+        setIsGraph1(false);
+        let total = 0;
+        let approved = 0;
+        let rejected = 0;
+        let draft = 0;
+        let incomplete = 0;
+        if(data.length>0){
+            data.map(item=>{
+                total+=1;
+                if(item.status=='Approve'){
+                    approved+=1;
+                }
+                if(item.status=='Reject'){
+                    rejected+=1;
+                }
+                if(item.status=='Draft'){
+                    draft+=1;
+                }
+                if(item.status=='Incompleted'){
+                    incomplete+=1;
+                }
+            });
+        }
+        setGraph1_Data([
+            {
+                title: 'Total Applications',
+                count: total
+            },
+            {
+                title: 'Approved',
+                count: approved
+            },
+            {
+                title: 'Rejected',
+                count: rejected
+            },
+            {
+                title: 'Draft',
+                count: draft
+            },
+            {
+                title: 'Incomplete',
+                count: incomplete
+            }
+        ]);
+        console.log("graph1_Data====",graph1_Data);
+        setChartData({
+            labels: graph1_Data.map((data) => data.title),
+            datasets: [
+                {
+                    label: "District Wise Statistics",
+                    data: graph1_Data.map((data) => data.count),
+                    backgroundColor: [
+                        "rgba(75,192,192,1)",
+                        "#50AF95",
+                        "#Ff0000",
+                        "#f3ba2f",
+                        "#2a71d0"
+                    ],
+                    borderColor: "gray",
+                    borderWidth: 1
+                }
+            ]
+        });
+        setIsGraph1(true);
     }
 
     return (
@@ -201,7 +342,9 @@ const DashboardPage = () => {
                                         </h5>
                                     </div>
                                     <div class="panel-body">
-                                        <BarChart chartData={chartData} />
+                                        {isGraph1 && 
+                                            <BarChart chartData={chartData} />
+                                        } 
                                     </div>
 
                                 </div>
@@ -231,7 +374,7 @@ const DashboardPage = () => {
                                         </h5>
                                     </div>
                                     <div class="panel-body">
-                                        <BarChart chartData={chartData} />
+                                        <BarChart chartData={chartData2} />
                                     </div>
 
                                 </div>

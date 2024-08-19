@@ -10,7 +10,7 @@ function BarChart ({ chartData }) {
           plugins: {
             title: {
               display: true,
-              text: "Current Months Statistics"
+              text: "Data Statistics"
             },
             legend: {
               display: false
