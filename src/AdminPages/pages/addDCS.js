@@ -48,6 +48,7 @@ const AddDCS = () => {
     const [open, setOpen] = React.useState(false);
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false)
+    const [user, setUser] = useState();
 
     const [formData, setFormData] = useState({
         'status': 1
@@ -56,11 +57,16 @@ const AddDCS = () => {
     useEffect(()=>{
         getAllDCS();
     },[])
+    useEffect(()=>{
+        let user = JSON.parse(sessionStorage.getItem("user"));
+        setUser(user)
+        // console.log("user ", user);
+    },[])
 
 
     const handleCreateDCS=()=>{
 
-        api.createDCS(formData).then((res)=>{
+        api.createDCS(formData, user).then((res)=>{
             console.log("res ", res);
             setOpen(false)
             Swal.fire('DCS added successfully');

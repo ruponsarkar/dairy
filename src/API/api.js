@@ -64,8 +64,8 @@ export default {
         return API.post('getGrievance', {data})
     },
     // createDCS
-    createDCS(formData){
-        return API.post('/createDCS', {formData})
+    createDCS(formData, user){
+        return API.post('/createDCS', {formData, user})
     },
     getAllDCS(){
         return API.post('/getAllDCS')

@@ -306,44 +306,51 @@ module.exports = {
     });
   },
 
-  getAllFarmers(dsc, callback) {
+   getAllFarmers(dsc,callback) {
     console.log("dsc ==> ", dsc);
+    let offset = '0';
+    let limit = '100';
     let query = `
-    SELECT 
-        farmers.*, 
-        dcs.name AS dcs_name, 
-        dcs.registration_no AS dcs_registration_no, 
-        dcs.address AS dcs_address,
-        dcs.status AS dcs_status
-    FROM 
-        farmers
-    JOIN 
-        dcs ON farmers.dcsID = dcs.uid
-  `;
+        SELECT 
+            farmers.*, 
+            dcs.name AS dcs_name, 
+            dcs.registration_no AS dcs_registration_no, 
+            dcs.address AS dcs_address,
+            dcs.status AS dcs_status
+        FROM 
+            farmers
+        JOIN 
+            dcs ON farmers.dcsID = dcs.uid
+    `;
 
     if (dsc) {
-      query += `WHERE dcs.uid = ${dsc}`;
+        query += ` WHERE dcs.uid = ?`;
     }
 
-    db.query(query, (err, results) => {
-      if (err) {
-        console.error("Database error:", err);
-        callback &&
-          callback({
-            status: 400,
-            message: "failed",
-            data: null,
-          });
-      } else {
-        callback &&
-          callback({
-            status: 200,
-            message: "success",
-            data: results,
-          });
-      }
+    query += ` LIMIT ${limit} OFFSET ${offset}`;
+
+    const params = [dsc].filter(param => param !== undefined);
+
+    db.query(query, params, (err, results) => {
+        if (err) {
+            console.error("Database error:", err);
+            callback &&
+                callback({
+                    status: 400,
+                    message: "failed",
+                    data: null,
+                });
+        } else {
+            callback &&
+                callback({
+                    status: 200,
+                    message: "success",
+                    data: results,
+                });
+        }
     });
-  },
+},
+
 
   // searchFarmer
   // searchFarmer(dcsIds, registrationNos, callback) {

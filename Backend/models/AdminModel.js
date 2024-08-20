@@ -123,16 +123,17 @@ module.exports = {
     });
   },
 
-  createDCS(form, callback) {
+  createDCS(form, user, callback) {
     let uid = Date.now();
 
     let dcsQuery = `
-    INSERT INTO dcs (uid, name, registration_no, district, address, status) 
-    VALUES (?, ?, ?, ?, ?, ?)
+    INSERT INTO dcs (uid, dlc_id, name, registration_no, district, address, status) 
+    VALUES (?, ?, ?, ?, ?, ?, ?)
   `;
 
     let dcsparams = [
       uid,
+      user.uid,
       form.name,
       form.registration_no,
       form.district,
@@ -167,7 +168,7 @@ module.exports = {
         null,
         uid,
         "DCS",
-        null,
+        form.district,
         form.password,
         form.status,
       ];

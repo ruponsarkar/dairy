@@ -213,14 +213,8 @@ module.exports = {
 
     let query = `
       SELECT 
-        farmers.name, 
-        farmers.bank_name, 
-        farmers.bank_account_holder_name, 
-        farmers.bank_account_no, 
-        farmers.ifsc_code, 
-        farmers.district,
-        farmers.id,
-        farmers.applicationId,
+        farmers.*,
+
         monthly_reports.litter,
         monthly_reports.isApprove,
         monthly_reports.paymentStatus,
