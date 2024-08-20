@@ -10,12 +10,15 @@ const CountStatus = () => {
   // countStatus
 
   const [count, setCount] = useState({});
+  const [user, setUser] = useState(JSON.parse(sessionStorage.getItem("user")));
 
   
 
   useEffect(() => {
+    if(user){
+      console.log("user ", user);
     api
-      .countStatus()
+      .countStatus(user)
       .then((res) => {
         console.log("count: ", res.data.message);
         setCount(res.data.message);
@@ -23,13 +26,14 @@ const CountStatus = () => {
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+    }
+  }, [user]);
 
   const cardsData = [
-    { color: '#66BB6A', icon: 'fa fa-file', title: 'Total Farmer', total: count.total },
-    { color: '#AB47BC', icon: 'fa fa-check',title: 'Total milk collection', total: count.approve },
-    { color: '#42A5F5', icon: 'fa fa-plus',title: 'Total amount',total: count.incompleted, },
-    { color: '#FFCA28', icon: 'fa fa-refresh',title: 'Disbursed Amount', total: count?.draft+" / "+count?.incompleted },
+    { color: '#66BB6A', icon: 'fa fa-file', title: 'Total Farmer', total: count.farmers },
+    { color: '#AB47BC', icon: 'fa fa-check',title: 'Total milk collection', total: count.tot_milk_amount },
+    { color: '#42A5F5', icon: 'fa fa-plus',title: 'Total amount',total: count.total_amount, },
+    { color: '#FFCA28', icon: 'fa fa-refresh',title: 'Current month milk', total: count?.current_month_milk },
   ];
 
   return (

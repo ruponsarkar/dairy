@@ -97,7 +97,9 @@ module.exports = {
   },
   
   countStatus(req, res){
-    FormModel.countStatus((result)=>{
+    let user = req.body.user;
+    // console.log("user ",user);
+    FormModel.countStatus(user, (result)=>{
       res.status(200).send(result);
       // res.status()
     })

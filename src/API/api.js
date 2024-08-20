@@ -27,8 +27,8 @@ export default {
     updateFormStatus(data){
         return API.post('/updateFormStatus', {data})
     },
-    countStatus(){
-        return API.get('countStatus');
+    countStatus(user){
+        return API.post('countStatus', {user});
     },
     saveToMaster(data, user){
         return API.post('saveToMaster', {data, user});
