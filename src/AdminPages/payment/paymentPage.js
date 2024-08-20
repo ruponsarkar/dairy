@@ -113,7 +113,10 @@ export default function PaymentPage() {
   // };
 
 
-
+  useEffect(()=>{
+    handleViewBeneficiary();
+  },[data]);
+  
   const [selectAll, setSelectAll] = useState(false);
   const handeSelectAll = () => {
     const newSelectAll = !selectAll;
@@ -154,6 +157,67 @@ export default function PaymentPage() {
     .catch((err) => {
       console.log("err e", err);
       setLoading(false)
+      })
+  }
+
+  const handleViewBeneficiary = () => {
+    api.viewBeneficiary(data).then((res) => {
+     let beneficiaries= res.data.data;
+     if(data?.length>0 && beneficiaries?.length>0){
+      data.map(item1=>{
+        let flag = false;
+        beneficiaries.map(item2=>{
+          let beneficiary_id = 'Beneficiary_'+item1?.bank_account_no+'_'+item1?.id;
+          if(item2.beneficiary_id==beneficiary_id){
+            flag = true;
+          }
+        });
+        item1.isBeneficiary = flag?true:false;
+      });
+      console.log("DATA===",data);
+      setData(data);
+     }
+    })
+      .catch((err) => {
+        console.log("err : ", err);
+      })
+  }
+
+  const handleCreateBeneficiary = (farmer) => {
+    console.log(farmer);
+    
+    let beneficiary_id = 'Beneficiary_' + farmer?.bank_account_no + '_' + farmer?.id;
+    const data = {
+      beneficiaryData: {
+        beneficiary_id: beneficiary_id,
+        beneficiary_name: farmer?.bank_account_holder_name,
+        beneficiary_contact_details: {
+          beneficiary_email: farmer?.bank_account_no + '@milksubsidydairyassam.com',
+          beneficiary_phone: farmer?.mobile || '',
+          beneficiary_country_code: '+91',
+          beneficiary_address: farmer?.district,
+          beneficiary_city: farmer?.district,
+          beneficiary_postal_code: farmer?.postal_code || '',
+        },
+        beneficiary_instrument_details: {
+          bank_account_number: farmer?.bank_account_no,
+          bank_ifsc: farmer?.ifsc_code,
+          vpa: 'test@upi'
+        }
+      },
+      additionalData: {
+        farmer_id: farmer?.id,
+        api_request_id: Math.floor(Math.random() * 10000000000000001)
+      }
+    }
+    console.log("data=", data);
+    api.createBeneficiary(data).then((res) => {
+      Swal.fire('Beneficiary created successfully !');
+      handleViewBeneficiary();
+    })
+      .catch((err) => {
+        console.log("err : ", err);
+        Swal.fire('Something went wrong !');
       })
   }
 
@@ -279,6 +343,17 @@ export default function PaymentPage() {
                     <span className={`${row.paymentStatus === 'Pending' ? 'bg-warning' : 'bg-success'} rounded px-2`}>
                       {row.paymentStatus}
                     </span>
+                  </StyledTableCell>
+                  <StyledTableCell>
+                    {!row.isBeneficiary &&
+                    <Button
+                      variant="outlined"
+                      color="primary"
+                      size="small"
+                      onClick={() => handleCreateBeneficiary(row)}
+                    >
+                      Add as Beneficiary
+                    </Button>}
                   </StyledTableCell>
                 </StyledTableRow>
               ))

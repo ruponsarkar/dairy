@@ -87,9 +87,8 @@ function App() {
       {user === 'admin' &&
         <Routes>
           {/* admin  */}
-          <Route path='/admin' element={<Dashboard />}>
-            
-            <Route path='/admin' element={<DashboardPage />} />
+          <Route path='admin' element={<Dashboard />}>
+            <Route path='dashboard' element={<DashboardPage />} />
             <Route path='newRequest' element={<NewRequest />} />
             <Route path='AdminManagement' element={<AdminManagement />} />
             <Route path='PaymentPage' element={<PaymentPage />} />

@@ -73,6 +73,9 @@ module.exports = {
       case "aadhaarCard":
         updateQuery = `UPDATE forms SET aadharCard = ? WHERE mobileNumber = ?`;
         break;
+      case "arcs_drcs":
+        updateQuery = `UPDATE forms SET arcs_drcs = ? WHERE mobileNumber = ?`;
+        break;
     }
 
     db.query(updateQuery, [filePath, mobileNumber], (err, result) => {

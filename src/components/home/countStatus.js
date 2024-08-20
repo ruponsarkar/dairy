@@ -29,7 +29,7 @@ const CountStatus = () => {
     { color: '#66BB6A', icon: 'fa fa-file', title: 'Total Farmer', total: count.total },
     { color: '#AB47BC', icon: 'fa fa-check',title: 'Total milk collection', total: count.approve },
     { color: '#42A5F5', icon: 'fa fa-plus',title: 'Total amount',total: count.incompleted, },
-    { color: '#FFCA28', icon: 'fa fa-refresh',title: 'Disbursed Amount', total: count.draft+" / "+count.incompleted },
+    { color: '#FFCA28', icon: 'fa fa-refresh',title: 'Disbursed Amount', total: count?.draft+" / "+count?.incompleted },
   ];
 
   return (

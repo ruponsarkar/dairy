@@ -70,6 +70,18 @@ export default {
     getAllDCS(user){
         return API.post('/getAllDCS', {user})
     },
+    getApplicationStatisticsData_DistrictWise(selectedDistrict){
+        let param = {
+            disctrict: selectedDistrict
+        }
+        return API.post('/getApplicationStatisticsData_DistrictWise', {param})
+    },
+    getAllDCS_DistrictWise(selectedDistrict){
+        let param = {
+            disctrict: selectedDistrict
+        }
+        return API.post('/getAllDCS_DistrictWise', {param})
+    },
     createFarmer(formData){
         return API.post('/createFarmer', {formData})
     },
@@ -96,9 +108,18 @@ export default {
 
     login(email, password) {
         return API.post('/login', { email, password })
+    },
+
+
+    // Payment 
+
+    createBeneficiary(data) {
+        return API.post('/createBeneficiary', { data });
+    },
+
+    viewBeneficiary(data) {
+        return API.post('/viewBeneficiary', { data });
     }
-
-
 
 
 }

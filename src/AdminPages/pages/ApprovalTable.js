@@ -554,54 +554,54 @@ const ApprovalTable = () => {
                             <div>
                                 <Application data={selectedRow} />
 
-                                {selectedRow && (
-                                    <div className="documents d-flex justify-content-center border p-3 gap-4">
-                                        <div className="text-center card">
-                                            <h3>Pan Card</h3>
-                                            {/* <a href={`http://localhost:8800/${selectedRow.panCard}`}> */}
-                                            <img
-                                                src={`http://localhost:8800/${selectedRow.panCard}`}
-                                                className="img"
-                                                alt=""
-                                                onClick={() => {
-                                                    setOpenImgView(true);
-                                                    setSelectedImg(
-                                                        `http://localhost:8800/${selectedRow.panCard}`
-                                                    );
-                                                }}
-                                            />
-                                            {/* </a> */}
-                                        </div>
-                                        <div className="text-center card">
-                                            <h3>Aadhar Card</h3>
-                                            <img
-                                                src={`http://localhost:8800/${selectedRow.aadharCard}`}
-                                                className="img"
-                                                alt=""
-                                                onClick={() => {
-                                                    setOpenImgView(true);
-                                                    setSelectedImg(
-                                                        `http://localhost:8800/${selectedRow.aadharCard}`
-                                                    );
-                                                }}
-                                            />
-                                        </div>
-                                        <div className="text-center card">
-                                            <h3>Passbook</h3>
-                                            <img
-                                                src={`http://localhost:8800/${selectedRow.passbook}`}
-                                                className="img"
-                                                alt=""
-                                                onClick={() => {
-                                                    setOpenImgView(true);
-                                                    setSelectedImg(
-                                                        `http://localhost:8800/${selectedRow.passbook}`
-                                                    );
-                                                }}
-                                            />
-                                        </div>
-                                    </div>
-                                )}
+              {selectedRow && (
+                <div className="documents d-flex justify-content-center border p-3 gap-4">
+                  <div className="text-center card">
+                    <h3>Pan Card</h3>
+                    {/* <a href={`http://localhost:8800/${selectedRow.panCard}`}> */}
+                    <img
+                      src={`https://milksubsidydairyassam.com:8800/${selectedRow.panCard}`}
+                      className="img"
+                      alt=""
+                      onClick={() => {
+                        setOpenImgView(true);
+                        setSelectedImg(
+                          `https://milksubsidydairyassam.com:8800/${selectedRow.panCard}`
+                        );
+                      }}
+                    />
+                    {/* </a> */}
+                  </div>
+                  <div className="text-center card">
+                    <h3>Aadhar Card</h3>
+                    <img
+                      src={`https://milksubsidydairyassam.com:8800/${selectedRow.aadharCard}`}
+                      className="img"
+                      alt=""
+                      onClick={() => {
+                        setOpenImgView(true);
+                        setSelectedImg(
+                          `https://milksubsidydairyassam.com:8800/${selectedRow.aadharCard}`
+                        );
+                      }}
+                    />
+                  </div>
+                  <div className="text-center card">
+                    <h3>Passbook</h3>
+                    <img
+                      src={`https://milksubsidydairyassam.com:8800/${selectedRow.passbook}`}
+                      className="img"
+                      alt=""
+                      onClick={() => {
+                        setOpenImgView(true);
+                        setSelectedImg(
+                          `https://milksubsidydairyassam.com:8800/${selectedRow.passbook}`
+                        );
+                      }}
+                    />
+                  </div>
+                </div>
+              )}
 
                                 {/* <div className="d-flex justify-content-center gap-3 m-3">
                 <div>

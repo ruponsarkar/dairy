@@ -18,8 +18,8 @@ function Nav2() {
       <section className="wrapper d-flex align-items-center" >
         <div class="container header-container">
           <h1 class="logo">
-            <a class="main_gov grey-text" target="_blank" href="http://assam.gov.in">Government Of Assam</a>
-            <a class="main_dept brown-text" href="https://animalhusbandry.assam.gov.in/" target="_blank">Animal Husbandry &amp; Veterinary</a>			<a class="sub_dept" href="https://dairy.assam.gov.in/">Directorate of Dairy Development</a>
+            <a class="main_gov grey-text" target="_blank" href="http://assam.gov.in" target="_blank">Government Of Assam</a>
+            <a class="main_dept brown-text" href="https://animalhusbandry.assam.gov.in/" target="_blank">Animal Husbandry &amp; Veterinary</a>			<a class="sub_dept" href="https://dairy.assam.gov.in/" target="_blank">Directorate of Dairy Development</a>
           </h1>
 
         </div>
