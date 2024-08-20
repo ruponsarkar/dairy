@@ -1,32 +1,32 @@
 // ProfessionalTable.js
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import {
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  TableSortLabel,
-  TablePagination,
-  Paper,
-  Box,
-  Toolbar,
-  Typography,
-  IconButton,
-  Tooltip,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-  Button,
-  MenuItem,
-  InputLabel,
-  Select,
-  FormControl,
-  Link,
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableHead,
+    TableRow,
+    TableSortLabel,
+    TablePagination,
+    Paper,
+    Box,
+    Toolbar,
+    Typography,
+    IconButton,
+    Tooltip,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogContentText,
+    DialogTitle,
+    Button,
+    MenuItem,
+    InputLabel,
+    Select,
+    FormControl,
+    Link,
 } from "@mui/material";
 import { tableCellClasses } from "@mui/material/TableCell";
 import { styled, emphasize } from "@mui/material/styles";
@@ -36,6 +36,7 @@ import api from "../../API/api";
 import Swal from "sweetalert2";
 import CancelIcon from "@mui/icons-material/Cancel";
 import Checkbox from "@mui/material/Checkbox";
+import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
 import { CSVLink, CSVDownload } from "react-csv";
 import PaymentsIcon from "@mui/icons-material/Payments";
 import Loader from "../../components/pannel/loader";
@@ -46,629 +47,563 @@ import Chip from "@mui/material/Chip";
 import HomeIcon from "@mui/icons-material/Home";
 
 const StyledBreadcrumb = styled(Chip)(({ theme }) => {
-  const backgroundColor =
-    theme.palette.mode === "light"
-      ? theme.palette.grey[100]
-      : theme.palette.grey[800];
-  return {
-    backgroundColor,
-    height: theme.spacing(3),
-    color: theme.palette.text.primary,
-    fontWeight: theme.typography.fontWeightRegular,
-    "&:hover, &:focus": {
-      backgroundColor: emphasize(backgroundColor, 0.06),
-    },
-    "&:active": {
-      boxShadow: theme.shadows[1],
-      backgroundColor: emphasize(backgroundColor, 0.12),
-    },
-  };
+    const backgroundColor =
+        theme.palette.mode === "light"
+            ? theme.palette.grey[100]
+            : theme.palette.grey[800];
+    return {
+        backgroundColor,
+        height: theme.spacing(3),
+        color: theme.palette.text.primary,
+        fontWeight: theme.typography.fontWeightRegular,
+        "&:hover, &:focus": {
+            backgroundColor: emphasize(backgroundColor, 0.06),
+        },
+        "&:active": {
+            boxShadow: theme.shadows[1],
+            backgroundColor: emphasize(backgroundColor, 0.12),
+        },
+    };
 });
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
-  [`&.${tableCellClasses.head}`]: {
-    backgroundColor: theme.palette.common.blue,
-    color: theme.palette.common.white,
-  },
-  [`&.${tableCellClasses.body}`]: {
-    fontSize: 14,
-  },
+    [`&.${tableCellClasses.head}`]: {
+        backgroundColor: theme.palette.common.blue,
+        color: theme.palette.common.white,
+    },
+    [`&.${tableCellClasses.body}`]: {
+        fontSize: 14,
+    },
 }));
 
 const defaultdistricts = [
-  "Baksa",
-  "Barpeta",
-  "Biswanath",
-  "Bongaigaon",
-  "Cachar",
-  "Charaideo",
-  "Chirang",
-  "Darrang",
-  "Dhemaji",
-  "Dhubri",
-  "Dibrugarh",
-  "Goalpara",
-  "Golaghat",
-  "Hailakandi",
-  "Hojai",
-  "Jorhat",
-  "Kamrup Metropolitan",
-  "Kamrup",
-  "Karbi Anglong",
-  "Karimganj",
-  "Kokrajhar",
-  "Lakhimpur",
-  "Majuli",
-  "Morigaon",
-  "Nagaon",
-  "Nalbari",
-  "Dima Hasao",
-  "Sivasagar",
-  "Sonitpur",
-  "South Salmara-Mankachar",
-  "Tinsukia",
-  "Udalguri",
-  "West Karbi Anglong",
+    "Baksa",
+    "Barpeta",
+    "Biswanath",
+    "Bongaigaon",
+    "Cachar",
+    "Charaideo",
+    "Chirang",
+    "Darrang",
+    "Dhemaji",
+    "Dhubri",
+    "Dibrugarh",
+    "Goalpara",
+    "Golaghat",
+    "Hailakandi",
+    "Hojai",
+    "Jorhat",
+    "Kamrup Metropolitan",
+    "Kamrup",
+    "Karbi Anglong",
+    "Karimganj",
+    "Kokrajhar",
+    "Lakhimpur",
+    "Majuli",
+    "Morigaon",
+    "Nagaon",
+    "Nalbari",
+    "Dima Hasao",
+    "Sivasagar",
+    "Sonitpur",
+    "South Salmara-Mankachar",
+    "Tinsukia",
+    "Udalguri",
+    "West Karbi Anglong",
 ];
 
 const statuses = ["Approve", "Reject", "Draft", "Incompleted"];
 
 const ApprovalTable = () => {
-  const [selectedDistrict, setSelectedDistrict] = useState("");
-  const [selectedStatus, setSelectedStatus] = useState("");
-  const [loading, setLoading] = useState(false);
+    const fileInput = useRef(null)
+    const [selectedDistrict, setSelectedDistrict] = useState("");
+    const [selectedStatus, setSelectedStatus] = useState("");
+    const [loading, setLoading] = useState(false);
 
-  const handleDistrictChange = (event) => {
-    setSelectedDistrict(event.target.value);
-    setRequestData({
-      ...requestData,
-      filterBy: "district",
-      filterData: event.target.value,
-    });
-    setSelectedStatus("");
-  };
-
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
-  const [open, setOpen] = useState(false);
-  const [selectedRow, setSelectedRow] = useState(null);
-  const [data, setData] = useState();
-  const [status, setStatus] = useState();
-  const [remark, setRemark] = useState();
-  const [districts, setDistricts] = useState(defaultdistricts);
-  const [openImgView, setOpenImgView] = useState(false);
-  const [selectedImg, setSelectedImg] = useState();
-  const [month, setMonth] = useState();
-  const [amountPerLitter, setAmountPerLitter] = useState(5);
-  const [user, setUser] = useState();
-
-  function getCurrentMonth() {
-    const now = new Date();
-    const year = now.getFullYear();
-    const month = String(now.getMonth() + 1).padStart(2, "0"); // Months are zero-indexed, so add 1
-
-    return `${year}-${month}`;
-  }
-
-  useEffect(() => {
-    setMonth(getCurrentMonth());
-  }, []);
-
-  const [requestData, setRequestData] = useState({
-    limit: 100,
-    offset: 0,
-    user: JSON.parse(sessionStorage.getItem("user")),
-    filterBy: "",
-    filterData: "",
-  });
-
-  useEffect(() => {
-    if (JSON.parse(sessionStorage.getItem("user")).role === "Admin") {
-      setSelectedDistrict(JSON.parse(sessionStorage.getItem("user")).district);
-      setDistricts([JSON.parse(sessionStorage.getItem("user")).district]);
-    }
-  }, []);
-
-  useEffect(() => {
-    setUser(JSON.parse(sessionStorage.getItem("user")));
-  }, []);
-
-  const handleStatusChange = (event) => {
-    setSelectedStatus(event.target.value);
-    setRequestData({
-      ...requestData,
-      filterBy: "status",
-      filterData: event.target.value,
-    });
-    setSelectedDistrict("");
-  };
-
-  const handleClearFilter = () => {
-    setRequestData({
-      ...requestData,
-      filterBy: "",
-      filterData: "",
-    });
-    setSelectedDistrict("");
-    setSelectedStatus("");
-  };
-
-  const handleClickOpen = (row) => {
-    setSelectedRow(row);
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-    // setSelectedRow(null);
-  };
-
-  useEffect(() => {
-    // getFrom();
-    getMasterWithReport();
-  }, [month, user?.uid]);
-
-  const handleAddLitter = (id, litter) => {
-    const updatedItems = data.map((item) =>
-      item.id === id ? { ...item, litter: litter } : item
-    );
-    setData(updatedItems);
-  };
-
-  const handleApproveAll = () => {
-    if (!month) {
-      Swal.fire({
-        title: "Month Not selected !",
-        text: "You must selct a month!",
-        icon: "warning",
-      });
-      return;
-    }
-
-    console.log(month);
-    console.log(data);
-    let selectedData = data.filter((e) => e.litter && e.isApprove == null);
-    let needUpdatesData = data.filter(
-      (e) => e.litter && e.isApprove == "Pending"
-    );
-
-    console.log("user", user);
-    let approveBy = "";
-    switch (user.role) {
-      case "DCS":
-        approveBy = 1;
-        postMonthlyReport(selectedData, approveBy);
-        break;
-      case "SLSC":
-        approveBy = 2;
-        postMonthlyReport(selectedData, approveBy);
-        break;
-
-      default:
-        console.log("user role not found");
-        Swal.fire({
-          title: "Opss",
-          text: "Only DCS or SLSC can approve it",
-          icon: "warning",
+    const handleDistrictChange = (event) => {
+        setSelectedDistrict(event.target.value);
+        setRequestData({
+            ...requestData,
+            filterBy: "district",
+            filterData: event.target.value,
         });
-        break;
+        setSelectedStatus("");
+    };
+
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(5);
+    const [open, setOpen] = useState(false);
+    const [selectedRow, setSelectedRow] = useState(null);
+    const [data, setData] = useState();
+    const [status, setStatus] = useState();
+    const [remark, setRemark] = useState();
+    const [districts, setDistricts] = useState(defaultdistricts);
+    const [openImgView, setOpenImgView] = useState(false);
+    const [selectedImg, setSelectedImg] = useState();
+    const [month, setMonth] = useState();
+    const [amountPerLitter, setAmountPerLitter] = useState(5);
+    const [user, setUser] = useState();
+
+    function getCurrentMonth() {
+        const now = new Date();
+        const year = now.getFullYear();
+        const month = String(now.getMonth() + 1).padStart(2, "0"); // Months are zero-indexed, so add 1
+
+        return `${year}-${month}`;
     }
 
-    return;
+    useEffect(() => {
+        setMonth(getCurrentMonth());
+    }, []);
 
-    updateMonthlyReport(needUpdatesData);
-    postMonthlyReport(selectedData);
-  };
+    const [requestData, setRequestData] = useState({
+        limit: 100,
+        offset: 0,
+        user: JSON.parse(sessionStorage.getItem("user")),
+        filterBy: "",
+        filterData: "",
+    });
 
-  const postMonthlyReport = (selectedData, approveBy) => {
-    console.log("selectedData=>", selectedData);
-    console.log("approveBy=>", approveBy);
+    useEffect(() => {
+        if (JSON.parse(sessionStorage.getItem("user")).role === "Admin") {
+            setSelectedDistrict(JSON.parse(sessionStorage.getItem("user")).district);
+            setDistricts([JSON.parse(sessionStorage.getItem("user")).district]);
+        }
+    }, []);
 
-    setLoading(true);
+    useEffect(() => {
+        setUser(JSON.parse(sessionStorage.getItem("user")));
+    }, []);
 
-    api
-      .postMonthlyReport(selectedData, month, amountPerLitter, approveBy)
-      .then((res) => {
-        console.log("postMonthlyReport: ", res);
-        Swal.fire({
-          title: "Approved for Payment!",
-          text: "Data sent for payment!",
-          icon: "success",
-        });
 
-        setLoading(false);
+
+    const handleClickOpen = (row) => {
+        setSelectedRow(row);
+        setOpen(true);
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+        // setSelectedRow(null);
+    };
+
+    useEffect(() => {
+        // getFrom();
         getMasterWithReport();
+    }, [month, user?.uid]);
+
+    const openFile = () => {
+        fileInput.current.click()
+    };
+
+    const handleAddLitter = (id, litter) => {
+        const updatedItems = data.map((item) =>
+            item.id === id ? { ...item, litter: litter } : item
+        );
+        setData(updatedItems);
+    };
+
+    const handleApproveAll = () => {
+        if (!month) {
+            Swal.fire({
+                title: "Month Not selected !",
+                text: "You must selct a month!",
+                icon: "warning",
+            });
+            return;
+        }
+
+        console.log(month);
+        console.log(data);
+        let selectedData = data.filter((e) => e.litter && e.isApprove == null);
+        let needUpdatesData = data.filter(
+            (e) => e.litter && e.isApprove == "Pending"
+        );
+
+        console.log("user", user);
+        let approveBy = "";
+        switch (user.role) {
+            case "DCS":
+                approveBy = 1;
+                postMonthlyReport(selectedData, approveBy);
+                break;
+            case "SLSC":
+                approveBy = 2;
+                postMonthlyReport(selectedData, approveBy);
+                break;
+
+            default:
+                console.log("user role not found");
+                Swal.fire({
+                    title: "Opss",
+                    text: "Only DCS or SLSC can approve it",
+                    icon: "warning",
+                });
+                break;
+        }
+
         return;
-      })
-      .catch((err) => {
-        console.log("err postMonthlyReport", err);
-        setLoading(false);
-      });
-  };
 
-  const updateMonthlyReport = (data) => {
-    setLoading(true);
-    api
-      .updateMonthlyReport(data, month, amountPerLitter)
-      .then((res) => {
-        console.log("updateMonthlyReport: ", res);
-        Swal.fire({
-          title: "Approved!",
-          text: "Data approved!",
-          icon: "success",
-        });
+        updateMonthlyReport(needUpdatesData);
+        postMonthlyReport(selectedData);
+    };
 
-        setLoading(false);
-        getMasterWithReport();
-        return;
-      })
-      .catch((err) => {
-        setLoading(false);
-        console.log("err updateMonthlyReport", err);
-      });
-  };
+    const postMonthlyReport = (selectedData, approveBy) => {
+        console.log("selectedData=>", selectedData);
+        console.log("approveBy=>", approveBy);
 
-  const handleChangeMonth = (e) => {
-    setMonth(e.target.value);
-    // getMasterWithReport(e.target.value);
-  };
+        setLoading(true);
 
-  const getMasterWithReport = () => {
-    if (!user) {
-      console.log("");
-      return;
+        api
+            .postMonthlyReport(selectedData, month, amountPerLitter, approveBy)
+            .then((res) => {
+                console.log("postMonthlyReport: ", res);
+                Swal.fire({
+                    title: "Approved!",
+                    text: "Data submitted successfully!",
+                    icon: "success",
+                });
+
+                setLoading(false);
+                getMasterWithReport();
+                return;
+            })
+            .catch((err) => {
+                console.log("err postMonthlyReport", err);
+                setLoading(false);
+            });
+    };
+
+    const updateMonthlyReport = (data) => {
+        setLoading(true);
+        api
+            .updateMonthlyReport(data, month, amountPerLitter)
+            .then((res) => {
+                console.log("updateMonthlyReport: ", res);
+                Swal.fire({
+                    title: "Approved!",
+                    text: "Data approved!",
+                    icon: "success",
+                });
+
+                setLoading(false);
+                getMasterWithReport();
+                return;
+            })
+            .catch((err) => {
+                setLoading(false);
+                console.log("err updateMonthlyReport", err);
+            });
+    };
+
+    const handleChangeMonth = (e) => {
+        setMonth(e.target.value);
+        // getMasterWithReport(e.target.value);
+    };
+
+    const getMasterWithReport = () => {
+        if (!user) {
+            console.log("admin not found");
+            return;
+        }
+        console.log("user==>>>", user);
+        setLoading(true);
+        console.log("selectedDistrict ", selectedDistrict);
+        api
+            .getMasterWithReport(month, selectedDistrict, user)
+            .then((res) => {
+                console.log("getMasterWithReport", res.data.data);
+                setData(res.data.data);
+                setLoading(false);
+            })
+            .catch((err) => {
+                setLoading(false);
+                console.log("getMasterWithReport err", err);
+            });
+    };
+
+    const handleFileChange = event => {
+        console.log("Make something", event.target.files[0])
+        let file = event.target.files[0];
+        const Data = new FormData();
+        Data.append('file', file);
+
+        // make upload api here 
+
     }
-    console.log("user==>>>", user);
-    setLoading(true);
-    console.log("selectedDistrict ", selectedDistrict);
-    api
-      .getMasterWithReport(month, selectedDistrict, user)
-      .then((res) => {
-        console.log("getMasterWithReport", res.data.data);
-        setData(res.data.data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        setLoading(false);
-        console.log("getMasterWithReport err", err);
-      });
-  };
 
-  return (
-    <>
-      <Paper className="p-1 mb-3">
-        <Toolbar
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            flexWrap: "wrap",
-            "@media (max-width: 600px)": {
-              flexDirection: "column",
-              alignItems: "flex-start",
-            },
-          }}
-        >
-          <Typography
-            sx={{ display: "flex", gap: 2 }}
-            variant="h6"
-            id="tableTitle"
-            component="div"
-          >
-            Milk details
-          </Typography>
-          <div role="presentation">
-            <Breadcrumbs aria-label="breadcrumb">
-              <StyledBreadcrumb
-                component="a"
-                href="/admin"
-                label="Home"
-                icon={<HomeIcon fontSize="small" />}
-              />
-              {/* <StyledBreadcrumb component="a" href="#" label="Catalog" /> */}
-              <StyledBreadcrumb label="Milk details" />
-            </Breadcrumbs>
-          </div>
-        </Toolbar>
-      </Paper>
-      <Paper className="p-2">
-        <Loader open={loading} />
-        {/* <Toolbar>
-        <Typography variant="h6" id="tableTitle" component="div">
-          Master Data
-        </Typography>
-        <Tooltip title="Filter list">
-          <IconButton aria-label="filter list">
-            <FilterListIcon />
-          </IconButton>
-        </Tooltip>
-      </Toolbar> */}
+    return (
+        <>
+            <Paper className="p-1 mb-3">
+                <Toolbar
+                    sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "space-between",
+                        flexWrap: "wrap",
+                        "@media (max-width: 600px)": {
+                            flexDirection: "column",
+                            alignItems: "flex-start",
+                        },
+                    }}
+                >
+                    <Typography
+                        sx={{ display: "flex", gap: 2 }}
+                        variant="h6"
+                        id="tableTitle"
+                        component="div"
+                    >
+                        Milk details
+                    </Typography>
+                    <div role="presentation">
+                        <Breadcrumbs aria-label="breadcrumb">
+                            <StyledBreadcrumb
+                                component="a"
+                                href="/admin"
+                                label="Home"
+                                icon={<HomeIcon fontSize="small" />}
+                            />
+                            {/* <StyledBreadcrumb component="a" href="#" label="Catalog" /> */}
+                            <StyledBreadcrumb label="Milk details" />
+                        </Breadcrumbs>
+                    </div>
+                </Toolbar>
+            </Paper>
+            <Paper className="p-2">
+                <Loader open={loading} />
 
-        {/* <Box
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          flexWrap: "wrap",
-          margin: "20px 0",
-          "@media (max-width: 600px)": {
-            flexDirection: "column",
-            alignItems: "flex-start",
-          },
-        }}
-      > */}
-        {/* <Box sx={{ display: "flex", gap: 2 }}>
-          <FormControl sx={{ minWidth: 180, maxWidth: 200 }} size="small">
-            <InputLabel id="assam-district-label">Select District</InputLabel>
-            <Select
-              labelId="assam-district-label"
-              id="assam-district"
-              value={selectedDistrict}
-              label="Select District"
-              onChange={handleDistrictChange}
-            >
-              {districts &&
-                districts.map((district) => (
-                  <MenuItem key={district} value={district}>
-                    {district}
-                  </MenuItem>
-                ))}
-            </Select>
-          </FormControl>
-          <FormControl sx={{ minWidth: 180, maxWidth: 200 }} size="small">
-            <InputLabel id="status-label">Select Status</InputLabel>
-            <Select
-              labelId="status-label"
-              id="status"
-              value={selectedStatus}
-              label="Select Status"
-              onChange={handleStatusChange}
-            >
-              {statuses.map((status) => (
-                <MenuItem key={status} value={status}>
-                  {status}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-          {requestData.filterBy && (
-            <IconButton onClick={handleClearFilter}>
-              <CancelIcon />
-            </IconButton>
-          )}
-        </Box> */}
 
-        {/* <div>
-          {data && (
-            <div>
-              <CSVLink data={data} filename={"AHVD_DATA.csv"}>
-                Download Data
-              </CSVLink>
-            </div>
-          )}
-        </div> */}
-        {/* </Box> */}
-
-        <Toolbar
-          className="p-0"
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-          }}
-        >
-          <div className="my-3 p-0 d-flex gap-3">
-            <input
-              type="month"
-              name=""
-              value={month}
-              className="form-control col-4"
-              id=""
-              onChange={(e) => handleChangeMonth(e)}
-            />
-            <div>
-              <Button variant="contained" onClick={handleApproveAll}>
-                Approve and sent to DLC
-              </Button>
-            </div>
-          </div>
-          <div>
-            {data && (
-              <div>
-                <CSVLink data={data} filename={"AHVD_DATA.csv"}>
-                  <Button variant="contained">
-                    <FileDownloadOutlinedIcon />
-                    Download Data
-                  </Button>
-                </CSVLink>
-              </div>
-            )}
-          </div>
-        </Toolbar>
-
-        <TableContainer component={Paper}>
-          <Table
-            sx={{ minWidth: 750 }}
-            aria-labelledby="tableTitle"
-            size="medium"
-          >
-            <TableHead>
-              <TableRow>
-                <StyledTableCell className="text-center p-2">#</StyledTableCell>
-                <StyledTableCell className="text-center p-2">
-                  Applicant Name
-                </StyledTableCell>
-                <StyledTableCell className="text-center p-2">
-                  Name of DCS
-                </StyledTableCell>
-                <StyledTableCell className="text-center p-2">
-                  Registration no
-                </StyledTableCell>
-                <StyledTableCell className="text-center p-2">
-                  District
-                </StyledTableCell>
-                <StyledTableCell className="text-center p-2">
-                  Quantity of Milk(in Litres)
-                </StyledTableCell>
-                <StyledTableCell className="text-center p-2">
-                  Amount (in Rs)
-                </StyledTableCell>
-                <StyledTableCell className="text-center p-2">
-                  Status
-                </StyledTableCell>
-                <StyledTableCell className="text-center p-2">
-                  Action
-                </StyledTableCell>
-              </TableRow>
-            </TableHead>
-
-            <TableBody>
-              {data &&
-                data.map((row, index) => {
-                  return (
-                    <TableRow hover tabIndex={-1} key={row.name}>
-                      <TableCell className="text-center p-2">
-                        {index + 1}
-                      </TableCell>
-                      <TableCell
-                        className="text-center p-2"
-                        component="th"
-                        scope="row"
-                      >
-                        {row.name}
-                      </TableCell>
-                      <TableCell className="text-center p-2">
-                        {row.dcs_name}
-                      </TableCell>
-                      <TableCell className="text-center p-2">
-                        {row.dcs_registration_no}
-                      </TableCell>
-                      <TableCell className="text-center p-2">
-                        {row.district}
-                      </TableCell>
-                      <TableCell className="text-center p-2">
+                <Toolbar
+                    className="p-0"
+                    sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "space-between",
+                    }}
+                >
+                    <div className="my-3 p-0 d-flex gap-3">
                         <input
-                          type="number"
-                          name=""
-                          disabled={row.isApprove === "Approve" ? true : false}
-                          value={row.litter ? row.litter : ""}
-                          id=""
-                          onChange={(e) =>
-                            handleAddLitter(row.id, e.target.value)
-                          }
+                            type="month"
+                            name=""
+                            value={month}
+                            className="form-control col-3"
+                            id=""
+                            onChange={(e) => handleChangeMonth(e)}
                         />
-                      </TableCell>
-                      <TableCell className="text-center p-2">
-                        {row.litter ? row.litter * 5 : 0} ₹
-                      </TableCell>
-                      <TableCell className="text-center p-2">
-                        <span
-                          className={`${
-                            row.isApprove === "Pending" || !row.isApprove
-                              ? "bg-warning"
-                              : "bg-success"
-                          } rounded px-2`}
-                        >
-                          {row.isApprove
-                            ? row.isApprove === "Approve"
-                              ? "Approved"
-                              : row.isApprove
-                            : "Pending"}
-                        </span>
-                      </TableCell>
-                      <TableCell className="text-center p-2">
-                        <Button
-                          variant="outlined"
-                          color="primary"
-                          size="small"
-                          onClick={() => handleClickOpen(row)}
-                        >
-                          View
-                        </Button>
-                      </TableCell>
-                    </TableRow>
-                  );
-                })}
-            </TableBody>
-          </Table>
+                        <div className="col-3">
+                            <input
+                                type="file"
+                                onChange={(e) => handleFileChange(e)}
+                                ref={fileInput}
+                                style={{ display: 'none' }}
+                            />
+                            <Button variant="outlined" onClick={() => openFile()}>
 
-          <div>
-            {!data && (
-              <div className="text-center p-5">
-                <img
-                  src="../assets/noData.png"
-                  alt="no data"
-                  className="govt-logo"
-                />
-                <p>Data not found</p>
-              </div>
-            )}
-          </div>
-        </TableContainer>
-
-        <Dialog
-          open={open}
-          onClose={handleClose}
-          aria-labelledby="protein-modal-title"
-          fullWidth={true}
-          maxWidth={"lg"}
-        >
-          <DialogTitle id="protein-modal-title"> Details</DialogTitle>
-          <DialogContent>
-            <DialogContentText>
-              <div>
-                <Application data={selectedRow} />
-
-                {selectedRow && (
-                  <div className="documents d-flex justify-content-center border p-3 gap-4">
-                    <div className="text-center card">
-                      <h3>Pan Card</h3>
-                      {/* <a href={`http://localhost:8800/${selectedRow.panCard}`}> */}
-                      <img
-                        src={`http://localhost:8800/${selectedRow.panCard}`}
-                        className="img"
-                        alt=""
-                        onClick={() => {
-                          setOpenImgView(true);
-                          setSelectedImg(
-                            `http://localhost:8800/${selectedRow.panCard}`
-                          );
-                        }}
-                      />
-                      {/* </a> */}
+                                <AddAPhotoIcon />
+                            </Button>
+                        </div>
+                        <div className="col-6">
+                            <Button variant="contained" onClick={handleApproveAll}>
+                                Approve and sent to DLC
+                            </Button>
+                        </div>
                     </div>
-                    <div className="text-center card">
-                      <h3>Aadhar Card</h3>
-                      <img
-                        src={`http://localhost:8800/${selectedRow.aadharCard}`}
-                        className="img"
-                        alt=""
-                        onClick={() => {
-                          setOpenImgView(true);
-                          setSelectedImg(
-                            `http://localhost:8800/${selectedRow.aadharCard}`
-                          );
-                        }}
-                      />
+                    <div>
+                        {data && (
+                            <div>
+                                <CSVLink data={data} filename={"AHVD_DATA.csv"}>
+                                    <Button variant="contained">
+                                        <FileDownloadOutlinedIcon />
+                                        Download Data
+                                    </Button>
+                                </CSVLink>
+                            </div>
+                        )}
                     </div>
-                    <div className="text-center card">
-                      <h3>Passbook</h3>
-                      <img
-                        src={`http://localhost:8800/${selectedRow.passbook}`}
-                        className="img"
-                        alt=""
-                        onClick={() => {
-                          setOpenImgView(true);
-                          setSelectedImg(
-                            `http://localhost:8800/${selectedRow.passbook}`
-                          );
-                        }}
-                      />
-                    </div>
-                  </div>
-                )}
+                </Toolbar>
 
-                {/* <div className="d-flex justify-content-center gap-3 m-3">
+                <TableContainer component={Paper}>
+                    <Table
+                        sx={{ minWidth: 750 }}
+                        aria-labelledby="tableTitle"
+                        size="medium"
+                    >
+                        <TableHead>
+                            <TableRow>
+                                <StyledTableCell className="text-center p-2">#</StyledTableCell>
+                                <StyledTableCell className="text-center p-2">
+                                    Applicant Name
+                                </StyledTableCell>
+                                <StyledTableCell className="text-center p-2">
+                                    Name of DCS
+                                </StyledTableCell>
+                                <StyledTableCell className="text-center p-2">
+                                    Registration no
+                                </StyledTableCell>
+                                <StyledTableCell className="text-center p-2">
+                                    District
+                                </StyledTableCell>
+                                <StyledTableCell className="text-center p-2">
+                                    Quantity of Milk(in Litres)
+                                </StyledTableCell>
+                                <StyledTableCell className="text-center p-2">
+                                    Amount (in Rs)
+                                </StyledTableCell>
+                                <StyledTableCell className="text-center p-2">
+                                    Status
+                                </StyledTableCell>
+                                <StyledTableCell className="text-center p-2">
+                                    Action
+                                </StyledTableCell>
+                            </TableRow>
+                        </TableHead>
+
+                        <TableBody>
+                            {data &&
+                                data.map((row, index) => {
+                                    return (
+                                        <TableRow hover tabIndex={-1} key={row.name}>
+                                            <TableCell className="text-center p-2">
+                                                {index + 1}
+                                            </TableCell>
+                                            <TableCell
+                                                className="text-center p-2"
+                                                component="th"
+                                                scope="row"
+                                            >
+                                                {row.name}
+                                            </TableCell>
+                                            <TableCell className="text-center p-2">
+                                                {row.dcs_name}
+                                            </TableCell>
+                                            <TableCell className="text-center p-2">
+                                                {row.dcs_registration_no}
+                                            </TableCell>
+                                            <TableCell className="text-center p-2">
+                                                {row.district}
+                                            </TableCell>
+                                            <TableCell className="text-center p-2">
+                                                <input
+                                                    type="number"
+                                                    name=""
+                                                    disabled={row.isApprove === "Approve" ? true : false}
+                                                    value={row.litter ? row.litter : ""}
+                                                    id=""
+                                                    onChange={(e) =>
+                                                        handleAddLitter(row.id, e.target.value)
+                                                    }
+                                                />
+                                            </TableCell>
+                                            <TableCell className="text-center p-2">
+                                                {row.litter ? row.litter * 5 : 0} ₹
+                                            </TableCell>
+                                            <TableCell className="text-center p-2">
+                                                <span
+                                                    className={`${row.isApprove === "Pending" || !row.isApprove
+                                                            ? "bg-warning"
+                                                            : "bg-success"
+                                                        } rounded px-2`}
+                                                >
+                                                    {row.isApprove
+                                                        ? row.isApprove === "Approve"
+                                                            ? "Approved"
+                                                            : row.isApprove
+                                                        : "Pending"}
+                                                </span>
+                                            </TableCell>
+                                            <TableCell className="text-center p-2">
+                                                <Button
+                                                    variant="outlined"
+                                                    color="primary"
+                                                    size="small"
+                                                    onClick={() => handleClickOpen(row)}
+                                                >
+                                                    View
+                                                </Button>
+                                            </TableCell>
+                                        </TableRow>
+                                    );
+                                })}
+                        </TableBody>
+                    </Table>
+
+                    <div>
+                        {!data && (
+                            <div className="text-center p-5">
+                                <img
+                                    src="../assets/noData.png"
+                                    alt="no data"
+                                    className="govt-logo"
+                                />
+                                <p>Data not found</p>
+                            </div>
+                        )}
+                    </div>
+                </TableContainer>
+
+                <Dialog
+                    open={open}
+                    onClose={handleClose}
+                    aria-labelledby="protein-modal-title"
+                    fullWidth={true}
+                    maxWidth={"lg"}
+                >
+                    <DialogTitle id="protein-modal-title"> Details</DialogTitle>
+                    <DialogContent>
+                        <DialogContentText>
+                            <div>
+                                <Application data={selectedRow} />
+
+                                {selectedRow && (
+                                    <div className="documents d-flex justify-content-center border p-3 gap-4">
+                                        <div className="text-center card">
+                                            <h3>Pan Card</h3>
+                                            {/* <a href={`http://localhost:8800/${selectedRow.panCard}`}> */}
+                                            <img
+                                                src={`http://localhost:8800/${selectedRow.panCard}`}
+                                                className="img"
+                                                alt=""
+                                                onClick={() => {
+                                                    setOpenImgView(true);
+                                                    setSelectedImg(
+                                                        `http://localhost:8800/${selectedRow.panCard}`
+                                                    );
+                                                }}
+                                            />
+                                            {/* </a> */}
+                                        </div>
+                                        <div className="text-center card">
+                                            <h3>Aadhar Card</h3>
+                                            <img
+                                                src={`http://localhost:8800/${selectedRow.aadharCard}`}
+                                                className="img"
+                                                alt=""
+                                                onClick={() => {
+                                                    setOpenImgView(true);
+                                                    setSelectedImg(
+                                                        `http://localhost:8800/${selectedRow.aadharCard}`
+                                                    );
+                                                }}
+                                            />
+                                        </div>
+                                        <div className="text-center card">
+                                            <h3>Passbook</h3>
+                                            <img
+                                                src={`http://localhost:8800/${selectedRow.passbook}`}
+                                                className="img"
+                                                alt=""
+                                                onClick={() => {
+                                                    setOpenImgView(true);
+                                                    setSelectedImg(
+                                                        `http://localhost:8800/${selectedRow.passbook}`
+                                                    );
+                                                }}
+                                            />
+                                        </div>
+                                    </div>
+                                )}
+
+                                {/* <div className="d-flex justify-content-center gap-3 m-3">
                 <div>
                   <select
                     name=""
@@ -703,36 +638,36 @@ const ApprovalTable = () => {
                   </Button>
                 </div>
               </div> */}
-              </div>
-            </DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleClose} color="primary">
-              Close
-            </Button>
-          </DialogActions>
-        </Dialog>
+                            </div>
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={handleClose} color="primary">
+                            Close
+                        </Button>
+                    </DialogActions>
+                </Dialog>
 
-        {/* for image view  */}
+                {/* for image view  */}
 
-        <Dialog
-          open={openImgView}
-          onClose={() => setOpenImgView(false)}
-          aria-labelledby="protein-modal-title"
-          fullWidth={true}
-          maxWidth={"lg"}
-        >
-          <DialogContent>
-            <DialogContentText>
-              <div className="text-center">
-                <img src={`${selectedImg}`} className="img-fluid" alt="" />
-              </div>
-            </DialogContentText>
-          </DialogContent>
-        </Dialog>
-      </Paper>
-    </>
-  );
+                <Dialog
+                    open={openImgView}
+                    onClose={() => setOpenImgView(false)}
+                    aria-labelledby="protein-modal-title"
+                    fullWidth={true}
+                    maxWidth={"lg"}
+                >
+                    <DialogContent>
+                        <DialogContentText>
+                            <div className="text-center">
+                                <img src={`${selectedImg}`} className="img-fluid" alt="" />
+                            </div>
+                        </DialogContentText>
+                    </DialogContent>
+                </Dialog>
+            </Paper>
+        </>
+    );
 };
 
 export default ApprovalTable;

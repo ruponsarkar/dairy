@@ -248,7 +248,7 @@ module.exports = {
 
     if (user.role === "DLC") {
       query +=
-        " WHERE monthly_reports.approveBy = 1 OR monthly_reports.approveBy = 2 ";
+        ` WHERE (monthly_reports.approveBy = 1 OR monthly_reports.approveBy = 2) AND dcs.dlc_id = ${user.uid}`;
     }
     if (user.role === "SLSC") {
       query +=

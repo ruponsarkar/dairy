@@ -120,7 +120,8 @@ module.exports = {
   
   getAllFarmers(req, res) {
     let dsc = req.body.dsc;
-    FormModel.getAllFarmers(dsc, (result) => {
+    let user = req.body.user;
+    FormModel.getAllFarmers(dsc, user, (result) => {
       res.status(200).send(result);
     });
   },
