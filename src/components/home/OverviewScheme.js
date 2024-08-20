@@ -71,7 +71,10 @@ const OverviewScheme = () => {
                   </ul>
                 </div>
               </div> */}
-            <a href="/#/RegisterPage" class="btn btn-primary pt-2">
+            {/* <a href="/#/RegisterPage" class="btn btn-primary pt-2">
+              Register Here &rarr;
+            </a> */}
+            <a href="javascript:;" class="btn btn-primary pt-2">
               Register Here &rarr;
             </a>
           </div>

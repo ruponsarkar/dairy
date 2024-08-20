@@ -45,6 +45,12 @@ module.exports = {
       res.status(200).send(result);
     });
   },
+  getApplicationStatisticsData_DCSWise(req, res) {
+    let dcs = req.body.param.dcs;
+    AdminModel.getApplicationStatisticsData_DCSWise(dcs, (result) => {
+      res.status(200).send(result);
+    });
+  },
   getAllDCS_DistrictWise(req, res) {
     let disctrict = req.body.param.disctrict;
     AdminModel.getAllDCS_DistrictWise(disctrict, (result) => {

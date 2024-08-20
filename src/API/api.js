@@ -76,6 +76,12 @@ export default {
         }
         return API.post('/getApplicationStatisticsData_DistrictWise', {param})
     },
+    getApplicationStatisticsData_DCSWise(selectedDCS){
+        let param = {
+            dcs: selectedDCS
+        }
+        return API.post('/getApplicationStatisticsData_DCSWise', {param})
+    },
     getAllDCS_DistrictWise(selectedDistrict){
         let param = {
             disctrict: selectedDistrict

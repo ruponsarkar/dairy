@@ -234,6 +234,33 @@ module.exports = {
       }
     });
   },
+  getApplicationStatisticsData_DCSWise(dcs, callback) {
+    try{
+      let query = `SELECT * FROM forms WHERE registration_no_of_co_operatice_society=?`;
+      db.query(query, [dcs], (err, results) => {
+        if (err) {
+          console.error("Database error:", err);
+          callback && callback({
+            status: 400,
+            message: "failed",
+            data: null
+          });
+        } else {
+          callback && callback({
+            status: 200,
+            message: "success",
+            data: results
+          });
+        }
+      });
+    }catch(error){
+      callback && callback({
+        status: 400,
+        message: "failed",
+        data: null
+      });
+    }
+  },
   getAllDCS_DistrictWise(district, callback) {
     let query = `SELECT * FROM dcs WHERE district=? AND status = 1`;
 
