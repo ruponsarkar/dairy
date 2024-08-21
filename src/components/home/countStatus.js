@@ -17,7 +17,6 @@ const CountStatus = () => {
     api
       .countStatus()
       .then((res) => {
-        console.log("count: ", res.data.message);
         setCount(res.data.message);
       })
       .catch((err) => {

@@ -129,12 +129,15 @@ const DashboardPage = () => {
 
     const init = () => {
         let districts = JSON.parse(sessionStorage.getItem('user'));
+        console.log("districts==", districts.district);
         if (districts?.district?.toUpperCase() == 'ALL') {
             setUserDistrict(allDistricts);
         } else {
             setUserDistrict([districts?.district]);
         }
+        console.log("user districts==", userDistrict);
         setSelectedDistrict(userDistrict[0]);
+        console.log("Selected District==", selectedDistrict);
     }
 
     const getApplicationStatisticsData_DistrictWise = () => {
@@ -142,7 +145,7 @@ const DashboardPage = () => {
         api
             .getApplicationStatisticsData_DistrictWise(selectedDistrict)
             .then((res) => {
-                if(res.status===200){
+                if (res.status == 200) {
                     dataFormatter_Chart1(res.data.data);
                 }
                 setLoading(false)
@@ -153,26 +156,26 @@ const DashboardPage = () => {
             });
     };
 
-    const dataFormatter_Chart1 = (data) =>{
+    const dataFormatter_Chart1 = (data) => {
         let total = 0;
         let approved = 0;
         let rejected = 0;
         let draft = 0;
         let incomplete = 0;
-        if(data?.length>0){
-            data.map(item=>{
-                total+=1;
-                if(item.status=='Approve'){
-                    approved+=1;
+        if (data?.length > 0) {
+            data.map(item => {
+                total += 1;
+                if (item.status == 'Approve') {
+                    approved += 1;
                 }
-                if(item.status=='Reject'){
-                    rejected+=1;
+                if (item.status == 'Reject') {
+                    rejected += 1;
                 }
-                if(item.status=='Draft'){
-                    draft+=1;
+                if (item.status == 'Draft') {
+                    draft += 1;
                 }
-                if(item.status=='Incompleted'){
-                    incomplete+=1;
+                if (item.status == 'Incompleted') {
+                    incomplete += 1;
                 }
             });
         }
@@ -222,10 +225,10 @@ const DashboardPage = () => {
         api
             .getAllDCS_DistrictWise(selectedDistrict)
             .then((res) => {
-                if(res.status===200){
+                if (res.status == 200) {
                     initDCSDropdown(res.data.data);
-                }else{
-                    initDCSDropdown([]); 
+                } else {
+                    initDCSDropdown([]);
                 }
                 setLoading(false);
             })
@@ -235,11 +238,11 @@ const DashboardPage = () => {
             });
     }
 
-    const initDCSDropdown = (data) =>{
-        let dcsOptions=[];
-        if(data?.length>0){
-            data.map(item=>{
-                dcsOptions.push({id:item.id, name:item.name, registration: item.registration_no});
+    const initDCSDropdown = (data) => {
+        let dcsOptions = [];
+        if (data?.length > 0) {
+            data.map(item => {
+                dcsOptions.push({ id: item.id, name: item.name, registration: item.registration_no });
             });
         }
         setSelectedDCS(dcsOptions[0]?.registration);
@@ -247,43 +250,41 @@ const DashboardPage = () => {
     }
 
     const getApplicationStatisticsData_DCSWise = () => {
-        setLoading(true)
+        setLoading(true);
         api
             .getApplicationStatisticsData_DCSWise(selectedDCS)
             .then((res) => {
-                console.log('DCSData***=====', res);
-                
-                if(res.status===200){
+                if (res.status === 200) {
                     dataFormatter_Chart2(res.data.data);
                 }
-                setLoading(false)
+                setLoading(false);
             })
             .catch((err) => {
-                setLoading(false)
+                setLoading(false);
                 console.log("err: ", err);
             });
     };
 
-    const dataFormatter_Chart2 = (data) =>{
+    const dataFormatter_Chart2 = (data) => {
         let total = 0;
         let approved = 0;
         let rejected = 0;
         let draft = 0;
         let incomplete = 0;
-        if(data?.length>0){
-            data.map(item=>{
-                total+=1;
-                if(item.status=='Approve'){
-                    approved+=1;
+        if (data?.length > 0) {
+            data.map(item => {
+                total += 1;
+                if (item.status == 'Approve') {
+                    approved += 1;
                 }
-                if(item.status=='Reject'){
-                    rejected+=1;
+                if (item.status == 'Reject') {
+                    rejected += 1;
                 }
-                if(item.status=='Draft'){
-                    draft+=1;
+                if (item.status == 'Draft') {
+                    draft += 1;
                 }
-                if(item.status=='Incompleted'){
-                    incomplete+=1;
+                if (item.status == 'Incompleted') {
+                    incomplete += 1;
                 }
             });
         }
@@ -329,11 +330,11 @@ const DashboardPage = () => {
         });
     }
 
-    const onChangeDistrict = (district) =>{
+    const onChangeDistrict = (district) => {
         setSelectedDistrict(district);
     }
 
-    const onChangeDCS = (dcs) =>{
+    const onChangeDCS = (dcs) => {
         setSelectedDCS(dcs.registration);
     }
 
@@ -370,7 +371,7 @@ const DashboardPage = () => {
                                         </h5>
                                     </div>
                                     <div class="panel-body">
-                                            <BarChart chartData={chartData1} />
+                                        <BarChart chartData={chartData1} />
                                     </div>
 
                                 </div>
@@ -389,7 +390,7 @@ const DashboardPage = () => {
                                                 <div style={{ float: 'right' }}>
                                                     DCS Wise &nbsp;&nbsp;
                                                     <select onChange={(e) => onChangeDCS(e.target.value)}>
-                                                    {dcsList &&
+                                                        {dcsList &&
                                                             dcsList.map((dcs) => (
                                                                 <option value={dcs.registration}>{dcs.name}</option>
                                                             ))}

@@ -56,9 +56,7 @@ module.exports = {
   },
 
   addOrUpdateAdmin(form, callback) {
-
     console.log("form ==>", form);
-
 
     let insertQuery = `
   INSERT INTO admins (uid, name, mobileNumber, email, role, district, password, status) 
@@ -144,10 +142,11 @@ module.exports = {
     db.query(dcsQuery, dcsparams, (err, result) => {
       if (err) {
         console.error("Database error:", err);
-        callback && callback({
-          status: 400,
-          message: "failed"
-        });
+        callback &&
+          callback({
+            status: 400,
+            message: "failed",
+          });
         return; // Exit early on error
       }
 
@@ -192,28 +191,42 @@ module.exports = {
     });
   },
 
-  getAllDCS(callback) {
-    let query = `
+  getAllDCS(user, callback) {
+    let dlc_id = "";
+    let query = "";
+    if (user.role === "DLC") {
+      console.log("uid", user.uid);
+      dlc_id = user.uid;
+      query = `
+    SELECT * FROM dcs WHERE status = 1 AND dlc_id = ${dlc_id}
+  `;
+    } else {
+      query = `
     SELECT * FROM dcs WHERE status = 1
   `;
+    }
 
     db.query(query, (err, results) => {
       if (err) {
         console.error("Database error:", err);
-        callback && callback({
-          status: 400,
-          message: "failed",
-          data: null
-        });
+        callback &&
+          callback({
+            status: 400,
+            message: "failed",
+            data: null,
+          });
       } else {
-        callback && callback({
-          status: 200,
-          message: "success",
-          data: results
-        });
+        callback &&
+          callback({
+            status: 200,
+            message: "success",
+            data: results,
+          });
       }
     });
   },
+
+
   getApplicationStatisticsData_DistrictWise(district, callback) {
     let query = `SELECT * FROM forms WHERE district=?`;
 
@@ -285,6 +298,7 @@ module.exports = {
 
 
 };
+
 
 function generateAccessToken(username) {
   return jwt.sign({ name: username }, process.env.TOKEN_SECRET, {

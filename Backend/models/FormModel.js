@@ -306,8 +306,8 @@ module.exports = {
     });
   },
 
-   getAllFarmers(dsc,callback) {
-    console.log("dsc ==> ", dsc);
+   getAllFarmers(dsc, user, callback) {
+    console.log("user ==> ", user);
     let offset = '0';
     let limit = '100';
     let query = `
@@ -326,6 +326,10 @@ module.exports = {
     if (dsc) {
         query += ` WHERE dcs.uid = ?`;
     }
+
+    if (user.role === 'DLC') {
+      query += ` WHERE dcs.dlc_id = ${user.uid}`;
+  }
 
     query += ` LIMIT ${limit} OFFSET ${offset}`;
 

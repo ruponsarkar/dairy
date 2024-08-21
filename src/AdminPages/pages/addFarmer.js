@@ -11,6 +11,7 @@ import Breadcrumbs from "@mui/material/Breadcrumbs";
 import Chip from "@mui/material/Chip";
 import HomeIcon from "@mui/icons-material/Home";
 import Loader from "../../components/pannel/loader";
+import CancelIcon from '@mui/icons-material/Cancel';
 
 const StyledBreadcrumb = styled(Chip)(({ theme }) => {
     const backgroundColor =
@@ -852,6 +853,7 @@ export default function AddFarmer() {
         regno: '',
         dcs: ''
     })
+    const [isSearch, setIsSearch] = useState(false)
 
     const [formData, setFormData] = useState({
         dcsID: JSON.parse(sessionStorage.getItem("user")).uid,
@@ -888,8 +890,9 @@ export default function AddFarmer() {
 
     const getAllFarmers = () => {
         setLoading(true)
+        if(user){
         api
-            .getAllFarmers(dsc)
+            .getAllFarmers(dsc, user)
             .then((res) => {
                 console.log("res :", res);
                 setData(res.data.data);
@@ -899,14 +902,21 @@ export default function AddFarmer() {
             .catch((err) => {
                 console.log("err ", err);
             });
+        }
     };
 
 
     const searchFarmer=()=>{
         console.log("search :", search);
+        if(!search.dcs && !search.regno){
+            console.log("Both can't be null");
+            return;
+        }
         api.searchFarmer(search).then((res)=>{
             console.log("res", res);
             setData(res.data.data)
+            setIsSearch(true)
+
         })
         .catch((err)=>{
             console.log("err: ", err);
@@ -1190,6 +1200,15 @@ export default function AddFarmer() {
         );
     };
 
+    const cancelSearch = ()=>{
+        setIsSearch(false)
+        setData(temp)
+        setSearch({
+            regno: '',
+            dcs: ''
+        })
+    }
+
     return (
         <>
             <Loader open={loading} />
@@ -1252,10 +1271,14 @@ export default function AddFarmer() {
 
 
                                 <div className="d-flex gap-2">
-                                    <input type="text" placeholder="Search by DCS" onChange={(e)=>setSearch({...search, dcs: e.target.value})} className="form-control col-6" name="" id="" />
-                                    <input type="text" placeholder="Search by Reg. no" onChange={(e)=>setSearch({...search, regno: e.target.value})} className="form-control col-6" name="" id="" />
+                                    <input type="text" placeholder="Search by DCS" value={search.dcs} onChange={(e)=>setSearch({...search, dcs: e.target.value})} className="form-control col-6" name="" id="" />
+                                    <input type="text" placeholder="Search by Reg. no" value={search.regno} onChange={(e)=>setSearch({...search, regno: e.target.value})} className="form-control col-6" name="" id="" />
                                     <div>
+                                        {isSearch ? 
+                                        <Button variant="contained" onClick={cancelSearch}><CancelIcon /></Button>
+                                        :
                                         <Button variant="contained" onClick={searchFarmer}><SearchIcon /></Button>
+                                    }
                                     </div>
 
                                 </div>

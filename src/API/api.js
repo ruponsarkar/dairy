@@ -67,8 +67,8 @@ export default {
     createDCS(formData, user){
         return API.post('/createDCS', {formData, user})
     },
-    getAllDCS(){
-        return API.post('/getAllDCS')
+    getAllDCS(user){
+        return API.post('/getAllDCS', {user})
     },
     getApplicationStatisticsData_DistrictWise(selectedDistrict){
         let param = {
@@ -91,8 +91,8 @@ export default {
     createFarmer(formData){
         return API.post('/createFarmer', {formData})
     },
-    getAllFarmers(dsc){
-        return API.post('/getAllFarmers', {dsc})
+    getAllFarmers(dsc, user){
+        return API.post('/getAllFarmers', {dsc, user})
     },
     searchFarmer(search){
         return API.post('/searchFarmer', {search})

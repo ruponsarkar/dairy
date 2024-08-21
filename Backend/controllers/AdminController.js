@@ -35,7 +35,8 @@ module.exports = {
     });
   },
   getAllDCS(req, res) {
-    AdminModel.getAllDCS((result) => {
+    let user = req.body.user;
+    AdminModel.getAllDCS(user, (result) => {
       res.status(200).send(result);
     });
   },
