@@ -71,6 +71,7 @@ const defaultChartData = [
 ];
 const DashboardPage = () => {
     const [loading, setLoading] = useState(false);
+    const [user, setUser] = useState(JSON.parse(sessionStorage.getItem("user")));
     const [userDistrict, setUserDistrict] = useState([]);
     const [selectedDistrict, setSelectedDistrict] = useState('');
     const [selectedDCS, setSelectedDCS] = useState('');
@@ -116,7 +117,7 @@ const DashboardPage = () => {
 
     useEffect(() => {
         init();
-    }, []);
+    }, [user]);
 
     useEffect(() => {
         getApplicationStatisticsData_DistrictWise();
@@ -129,15 +130,12 @@ const DashboardPage = () => {
 
     const init = () => {
         let districts = JSON.parse(sessionStorage.getItem('user'));
-        console.log("districts==", districts.district);
         if (districts?.district?.toUpperCase() == 'ALL') {
             setUserDistrict(allDistricts);
         } else {
             setUserDistrict([districts?.district]);
         }
-        console.log("user districts==", userDistrict);
         setSelectedDistrict(userDistrict[0]);
-        console.log("Selected District==", selectedDistrict);
     }
 
     const getApplicationStatisticsData_DistrictWise = () => {
@@ -343,7 +341,7 @@ const DashboardPage = () => {
             <div className="container">
                 <div className="row">
                     <div className="col-md-12 p-1">
-                        <CountStatus />
+                        <CountStatus user={user}/>
                     </div>
                 </div>
 

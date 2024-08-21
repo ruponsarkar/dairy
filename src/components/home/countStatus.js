@@ -6,21 +6,19 @@ import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import { Container, Row, Col } from 'react-bootstrap';
 
-const CountStatus = () => {
+const CountStatus = ({user}) => {
   // countStatus
 
   const [count, setCount] = useState({});
-  const [user, setUser] = useState(JSON.parse(sessionStorage.getItem("user")));
-
-  
-
+  // const [user, setUser] = useState(JSON.parse(sessionStorage.getItem("user")));
   useEffect(() => {
     if(user){
-      console.log("user ", user);
     api
       .countStatus(user)
       .then((res) => {
-        setCount(res.data.message);
+        if(res.status==200 && res.data.message){
+          setCount(res.data.message);
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -29,10 +27,10 @@ const CountStatus = () => {
   }, [user]);
 
   const cardsData = [
-    { color: '#66BB6A', icon: 'fa fa-file', title: 'Total Farmer', total: count.farmers },
-    { color: '#AB47BC', icon: 'fa fa-check',title: 'Total milk collection', total: count.tot_milk_amount },
-    { color: '#42A5F5', icon: 'fa fa-plus',title: 'Total amount',total: count.total_amount, },
-    { color: '#FFCA28', icon: 'fa fa-refresh',title: 'Current month milk', total: count?.current_month_milk },
+    { color: '#66BB6A', icon: 'fa fa-file', title: 'DCS/Dairy Farmers', total: count.farmers+'/'+count.farmers+'Nos.' },
+    { color: '#AB47BC', icon: 'fa fa-check',title: 'Milk Collection', total: count.tot_milk_amount+'L' },
+    { color: '#42A5F5', icon: 'fa fa-plus',title: 'Subsidy Amount',total: '₹'+count.total_amount+'.00', },
+    { color: '#ffa500', icon: 'fa fa-refresh',title: 'Current Months Milk', total: count?.current_month_milk+'L' },
   ];
 
   return (
@@ -46,7 +44,7 @@ const CountStatus = () => {
                 <Typography variant="h6" component="div">
                   {card.title}
                 </Typography>
-                <Typography variant="h3" component="div">
+                <Typography variant="h4" component="div">
                   {card.total}
                 </Typography>
                 {/* <Typography variant="body2">

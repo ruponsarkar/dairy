@@ -212,10 +212,8 @@ module.exports = {
       }
     });
   },
-
-  countStatus(user, callback) {
-    console.log("user ==>", user);
   
+  countStatus(user, callback) {
     // Get the current month in 'YYYY-MM' format
     let currentMonth = new Date().toISOString().slice(0, 7);
   
@@ -303,7 +301,6 @@ module.exports = {
         callback && callback({ status: 400, message: err });
       });
   },
-  
 
   // createFarmer
   createFarmer(form, callback) {
