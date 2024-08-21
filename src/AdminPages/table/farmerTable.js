@@ -45,7 +45,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 
 
-export default function FarmerTable({ data, getAdmins }) {
+export default function FarmerTable({ data, getAdmins, setModalOpen, setApplicationId }) {
 
   const [selectedRow, setSelectedRow] = useState(null);
   const [open, setOpen] = useState(false);
@@ -60,6 +60,11 @@ export default function FarmerTable({ data, getAdmins }) {
     setOpen(false);
     // setSelectedRow(null);
   };
+
+  const updateFile=()=>{
+    setApplicationId(data[0].applicationId)
+    setModalOpen(true)
+  }
 
 
   return (
@@ -183,6 +188,12 @@ export default function FarmerTable({ data, getAdmins }) {
                     </div>
                   </div>
                 )}
+
+                <div>
+                  <div className="text-center">
+                    <Button onClick={updateFile}>Want to Update Files ?</Button>
+                  </div>
+                </div>
 
                 {/* <div className="d-flex justify-content-center gap-3 m-3">
                 <div>

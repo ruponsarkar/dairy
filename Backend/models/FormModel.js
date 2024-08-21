@@ -61,24 +61,25 @@ module.exports = {
       }
     });
   },
-  updateFilePath(mobileNumber, fileType, filePath, callback) {
+  updateFilePath(applicationId, fileType, filePath, callback) {
+    // console.log("applicationId, fileType, filePath :", applicationId, fileType, filePath);
     let updateQuery = "";
     switch (fileType) {
       case "passbook":
-        updateQuery = `UPDATE forms SET passbook = ? WHERE mobileNumber = ?`;
+        updateQuery = `UPDATE farmers SET passbook = ? WHERE applicationId = ?`;
         break;
       case "panCard":
-        updateQuery = `UPDATE forms SET panCard = ? WHERE mobileNumber = ?`;
+        updateQuery = `UPDATE farmers SET panCard = ? WHERE applicationId = ?`;
         break;
       case "aadhaarCard":
-        updateQuery = `UPDATE forms SET aadharCard = ? WHERE mobileNumber = ?`;
+        updateQuery = `UPDATE farmers SET aadharCard = ? WHERE applicationId = ?`;
         break;
       case "arcs_drcs":
-        updateQuery = `UPDATE forms SET arcs_drcs = ? WHERE mobileNumber = ?`;
+        updateQuery = `UPDATE farmers SET arcs_drcs = ? WHERE applicationId = ?`;
         break;
     }
 
-    db.query(updateQuery, [filePath, mobileNumber], (err, result) => {
+    db.query(updateQuery, [filePath, applicationId], (err, result) => {
       if (!err) {
         callback && callback({ status: 200, message: "success" });
       } else {
@@ -193,16 +194,16 @@ module.exports = {
 
   updateFormStatus(data, callback) {
     let status = data.status;
-    let mobileNumber = data.mobileNumber;
-    let remark = data.remark;
+    let applicationId = data.applicationId;
+    // let remark = data.remark;
 
-    if (remark) {
-      updateQuery = `UPDATE forms SET status = ?, remark = ? WHERE mobileNumber = ?`;
-      queryData = [status, remark, mobileNumber];
-    } else {
-      updateQuery = `UPDATE forms SET status = ? WHERE mobileNumber = ?`;
-      queryData = [status, mobileNumber];
-    }
+    // if (remark) {
+    //   updateQuery = `UPDATE forms SET status = ?, remark = ? WHERE applicationId = ?`;
+    //   queryData = [status, remark, applicationId];
+    // } else {
+      updateQuery = `UPDATE farmers SET status = ? WHERE applicationId = ?`;
+      queryData = [status, applicationId];
+    // }
 
     db.query(updateQuery, queryData, (err, result) => {
       if (!err) {

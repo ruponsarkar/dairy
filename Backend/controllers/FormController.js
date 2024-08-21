@@ -18,7 +18,7 @@ module.exports = {
       destination: function (req, file, callback) {
         let dest = path.join(
           process.env.FILE_UPLOAD_PATH,
-          req.body.mobileNumber
+          req.body.applicationId
         );
         
         module.exports.checkDirectory(dest, () => {
@@ -46,13 +46,13 @@ module.exports = {
     });
   },
   saveToDb(req, res) {
-    let mobileNumber = req.body.mobileNumber;
+    let applicationId = req.body.applicationId;
     let fileName = req.body.fileName;
     let fileType = req.body.fileType;
     let fileSize = req.body.fileSize;
-    let filePath = path.join(process.env.FILE_UPLOAD_PATH, mobileNumber);
+    let filePath = path.join(process.env.FILE_UPLOAD_PATH, applicationId);
     filePath = path.join(filePath, fileName);
-    FormModel.updateFilePath(mobileNumber, fileType, filePath, (result) => {
+    FormModel.updateFilePath(applicationId, fileType, filePath, (result) => {
       res.status(200).send(result);
     });
   },
