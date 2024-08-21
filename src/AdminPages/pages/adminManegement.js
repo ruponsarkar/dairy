@@ -298,7 +298,7 @@ const AdminCategory = () => {
                 <div className="m-2">
                   <h4> Admin list</h4>
                   <Typography>
-                    All admina are available here. You can create/delete/suspend
+                    All admins are available here. You can create/delete/suspend
                     from the action button.
                   </Typography>
                 </div>

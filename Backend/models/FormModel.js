@@ -213,16 +213,66 @@ module.exports = {
     });
   },
 
-  countStatus(callback) {
+  countStatus(user, callback) {
+    console.log("user ==>", user);
+  
+    // Get the current month in 'YYYY-MM' format
+    let currentMonth = new Date().toISOString().slice(0, 7);
+  
     // Define your queries
     let queries = {
-      approve: `SELECT COUNT(*) AS count FROM forms WHERE status = 'Approve';`,
-      draft: `SELECT COUNT(*) AS count FROM forms WHERE status = 'Draft';`,
-      rejected: `SELECT COUNT(*) AS count FROM forms WHERE status = 'Reject';`,
-      incompleted: `SELECT COUNT(*) AS count FROM forms WHERE status = 'Incompleted';`,
-      total: `SELECT COUNT(*) AS count FROM forms;`,
+      farmers: `SELECT COUNT(*) AS count FROM farmers `,
+      tot_milk_amount: `SELECT SUM(litter) AS count FROM monthly_reports `,
+      total_amount: `SELECT SUM(amount) AS count FROM monthly_reports `,
+      current_month_milk: `SELECT SUM(litter) AS count FROM monthly_reports `,
     };
 
+    // Modify queries if the user's role is 'dcs'
+  if (user.role === 'DCS') {
+    queries.farmers += `JOIN dcs ON farmers.dcsID = dcs.uid WHERE dcs.uid = ${user.uid}`;
+    queries.tot_milk_amount += ` 
+    JOIN farmers ON farmers.applicationId = monthly_reports.applicationId 
+    JOIN dcs ON dcs.uid = farmers.dcsID
+     WHERE dcs.uid = ${user.uid}`;
+     queries.total_amount += ` 
+    JOIN farmers ON farmers.applicationId = monthly_reports.applicationId 
+    JOIN dcs ON dcs.uid = farmers.dcsID
+     WHERE dcs.uid = ${user.uid}`;
+     queries.current_month_milk += ` 
+     JOIN farmers ON farmers.applicationId = monthly_reports.applicationId 
+     JOIN dcs ON dcs.uid = farmers.dcsID
+     AND dcs.uid = ${user.uid}`;
+  }
+
+  if (user.role === 'DLC') {
+    queries.farmers += `JOIN dcs ON farmers.dcsID = dcs.uid WHERE dcs.dlc_id = ${user.uid}`;
+    queries.tot_milk_amount += ` 
+    JOIN farmers ON farmers.applicationId = monthly_reports.applicationId 
+    JOIN dcs ON dcs.uid = farmers.dcsID
+     WHERE dcs.dlc_id = ${user.uid}`;
+     queries.total_amount += ` 
+    JOIN farmers ON farmers.applicationId = monthly_reports.applicationId 
+    JOIN dcs ON dcs.uid = farmers.dcsID
+     WHERE dcs.dlc_id= ${user.uid}`;
+     queries.current_month_milk += ` 
+     JOIN farmers ON farmers.applicationId = monthly_reports.applicationId 
+     JOIN dcs ON dcs.uid = farmers.dcsID
+     AND dcs.dlc_id = ${user.uid}`;
+  }
+
+
+
+
+
+
+
+  queries.current_month_milk += ` WHERE month='${currentMonth}'`
+
+
+
+
+
+  
     // Execute all queries using promises
     let promises = Object.keys(queries).map((key) => {
       return new Promise((resolve, reject) => {
@@ -235,7 +285,7 @@ module.exports = {
         });
       });
     });
-
+  
     // Handle all promises
     Promise.all(promises)
       .then((results) => {
@@ -244,7 +294,7 @@ module.exports = {
         results.forEach((result) => {
           statusCounts[result.key] = result.count;
         });
-
+  
         // Return the results via callback
         callback && callback({ status: 200, message: statusCounts });
       })
@@ -253,6 +303,7 @@ module.exports = {
         callback && callback({ status: 400, message: err });
       });
   },
+  
 
   // createFarmer
   createFarmer(form, callback) {

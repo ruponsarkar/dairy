@@ -646,7 +646,7 @@ const Dashboard = (props) => {
               </>
             )}
 
-            <List component="div" disablePadding>
+            {/* <List component="div" disablePadding>
               <ListItemButton
                 sx={{ pl: 4 }}
                 onClick={() => navigate("/admin/AddDCS")}
@@ -656,7 +656,7 @@ const Dashboard = (props) => {
                 </ListItemIcon>
                 <ListItemText primary="Add DCS" />
               </ListItemButton>
-            </List>
+            </List> */}
           </Collapse>
 
           {/* <ListItem disablePadding onClick={() => navigate("/admin/Grievance")}>

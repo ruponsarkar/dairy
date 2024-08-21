@@ -13,7 +13,7 @@ module.exports = (app) => {
   app.post("/upload", FormController.upload_config.single("file"), FormController.saveToDb);
   app.post("/getFormByMobileNumber",FormController.getFormByMobileNumber);
   app.post("/updateFormStatus",FormController.updateFormStatus);
-  app.get("/countStatus",FormController.countStatus);
+  app.post("/countStatus",FormController.countStatus);
 
 
   // Admin Panel API's

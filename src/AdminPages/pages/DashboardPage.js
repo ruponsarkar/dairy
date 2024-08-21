@@ -413,7 +413,7 @@ const DashboardPage = () => {
                 </div>
                 <div className="row">
                     <div className="col-md-12 p-1">
-                        <DashboardTable />
+                        {/* <DashboardTable /> */}
                     </div>
                 </div>
 
