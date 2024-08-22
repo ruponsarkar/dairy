@@ -45,7 +45,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 
 
-export default function FarmerTable({ data, getAdmins }) {
+export default function FarmerTable({ data, getAdmins, setModalOpen, setApplicationId }) {
 
   const [selectedRow, setSelectedRow] = useState(null);
   const [open, setOpen] = useState(false);
@@ -60,6 +60,11 @@ export default function FarmerTable({ data, getAdmins }) {
     setOpen(false);
     // setSelectedRow(null);
   };
+
+  const updateFile=()=>{
+    setApplicationId(data[0].applicationId)
+    setModalOpen(true)
+  }
 
 
   return (
@@ -139,15 +144,15 @@ export default function FarmerTable({ data, getAdmins }) {
                   <div className="documents d-flex justify-content-center border p-3 gap-4">
                     <div className="text-center card">
                       <h3>Pan Card</h3>
-                      {/* <a href={`http://localhost:8800/${selectedRow.panCard}`}> */}
+                      {/* <a href={`https://milksubsidydairyassam.com:8800/${selectedRow.panCard}`}> */}
                       <img
-                        src={`http://localhost:8800/${selectedRow.panCard}`}
+                        src={`https://milksubsidydairyassam.com:8800/${selectedRow.panCard}`}
                         className="img"
                         alt=""
                         onClick={() => {
                           setOpenImgView(true);
                           setSelectedImg(
-                            `http://localhost:8800/${selectedRow.panCard}`
+                            `https://milksubsidydairyassam.com:8800/${selectedRow.panCard}`
                           );
                         }}
                       />
@@ -156,13 +161,13 @@ export default function FarmerTable({ data, getAdmins }) {
                     <div className="text-center card">
                       <h3>Aadhar Card</h3>
                       <img
-                        src={`http://localhost:8800/${selectedRow.aadharCard}`}
+                        src={`https://milksubsidydairyassam.com:8800/${selectedRow.aadharCard}`}
                         className="img"
                         alt=""
                         onClick={() => {
                           setOpenImgView(true);
                           setSelectedImg(
-                            `http://localhost:8800/${selectedRow.aadharCard}`
+                            `https://milksubsidydairyassam.com:8800/${selectedRow.aadharCard}`
                           );
                         }}
                       />
@@ -170,19 +175,25 @@ export default function FarmerTable({ data, getAdmins }) {
                     <div className="text-center card">
                       <h3>Passbook</h3>
                       <img
-                        src={`http://localhost:8800/${selectedRow.passbook}`}
+                        src={`https://milksubsidydairyassam.com:8800/${selectedRow.passbook}`}
                         className="img"
                         alt=""
                         onClick={() => {
                           setOpenImgView(true);
                           setSelectedImg(
-                            `http://localhost:8800/${selectedRow.passbook}`
+                            `https://milksubsidydairyassam.com:8800/${selectedRow.passbook}`
                           );
                         }}
                       />
                     </div>
                   </div>
                 )}
+
+                <div>
+                  <div className="text-center">
+                    <Button onClick={updateFile}>Want to Update Files ?</Button>
+                  </div>
+                </div>
 
                 {/* <div className="d-flex justify-content-center gap-3 m-3">
                 <div>

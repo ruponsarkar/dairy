@@ -80,7 +80,7 @@ const OverviewScheme = () => {
         </div>
       </div>
 
-      <CountStatus user={{"role": "Super Admin" }} />
+      <CountStatus user={{"role": "Super Admin", "district":"All" }} />
 
       <Row>
         <Col md={12}>

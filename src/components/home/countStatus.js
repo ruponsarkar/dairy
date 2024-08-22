@@ -9,7 +9,13 @@ import { Container, Row, Col } from 'react-bootstrap';
 const CountStatus = ({user}) => {
   // countStatus
 
-  const [count, setCount] = useState({});
+  const [count, setCount] = useState({
+    dcs:0,
+    farmers:0,
+    tot_milk_amount:0,
+    total_amount:0,
+    current_month_milk:0
+  });
   // const [user, setUser] = useState(JSON.parse(sessionStorage.getItem("user")));
   useEffect(() => {
     if(user){
@@ -27,7 +33,7 @@ const CountStatus = ({user}) => {
   }, [user]);
 
   const cardsData = [
-    { color: '#66BB6A', icon: 'fa fa-file', title: 'DCS/Dairy Farmers', total: count.farmers+'/'+count.farmers+'Nos.' },
+    { color: '#66BB6A', icon: 'fa fa-file', title: 'DCS/Dairy Farmers', total: count.dcs+'/'+count.farmers+'Nos.' },
     { color: '#AB47BC', icon: 'fa fa-check',title: 'Milk Collection', total: count.tot_milk_amount+'L' },
     { color: '#42A5F5', icon: 'fa fa-plus',title: 'Subsidy Amount',total: '₹'+count.total_amount+'.00', },
     { color: '#ffa500', icon: 'fa fa-refresh',title: 'Current Months Milk', total: count?.current_month_milk+'L' },

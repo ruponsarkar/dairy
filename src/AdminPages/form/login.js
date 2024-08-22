@@ -62,7 +62,7 @@ const Login = () => {
             <div className='col-12 pt-3 text-center'>
                 <h2><i>Providing Rs. 5 subsidy to farmers pouring milk to Dairy Co-operative Societies</i></h2>
                 <br />
-                <h2 className='text-white bg-warning'>ADMIN LOGIN/SUPER ADMIN/FINANCE</h2>
+                <h2 className='text-white bg-warning'>DCS/DLC/SLSC/Finance LOGIN</h2>
             </div>
                 <section>
                     <div class="container">
