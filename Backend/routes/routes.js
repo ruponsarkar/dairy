@@ -14,6 +14,9 @@ module.exports = (app) => {
   app.post("/getFormByMobileNumber",FormController.getFormByMobileNumber);
   app.post("/updateFormStatus",FormController.updateFormStatus);
   app.post("/countStatus",FormController.countStatus);
+  
+  app.post("/uploadDaybook", FormController.upload_config_for_daybook.single("file"), FormController.saveDaybook);
+  app.post("/getDocuments",FormController.getDocuments);
 
 
   // Admin Panel API's

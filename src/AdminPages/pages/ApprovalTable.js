@@ -45,6 +45,7 @@ import FileDownloadOutlinedIcon from "@mui/icons-material/FileDownloadOutlined";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
 import Chip from "@mui/material/Chip";
 import HomeIcon from "@mui/icons-material/Home";
+import UploadFile from "../../components/upload/upload";
 
 const StyledBreadcrumb = styled(Chip)(({ theme }) => {
     const backgroundColor =
@@ -143,6 +144,7 @@ const ApprovalTable = () => {
     const [month, setMonth] = useState();
     const [amountPerLitter, setAmountPerLitter] = useState(5);
     const [user, setUser] = useState();
+    const [daybook, setDaybook] = useState();
 
     function getCurrentMonth() {
         const now = new Date();
@@ -191,6 +193,8 @@ const ApprovalTable = () => {
         // getFrom();
         getMasterWithReport();
     }, [month, user?.uid]);
+
+    // useEffect(())
 
     const openFile = () => {
         fileInput.current.click()
@@ -315,6 +319,8 @@ const ApprovalTable = () => {
                 console.log("getMasterWithReport", res.data.data);
                 setData(res.data.data);
                 setLoading(false);
+                getDocuments();
+
             })
             .catch((err) => {
                 setLoading(false);
@@ -322,11 +328,42 @@ const ApprovalTable = () => {
             });
     };
 
+    const getDocuments=()=>{
+        // role, month, admin_id 
+        let data = {
+            role: user.role, 
+            month: month, 
+            admin_id : user.uid
+        }
+        api.getDocuments(data).then((res)=>{
+            console.log("res : ", res);
+            setDaybook(res.data.data)
+        })
+        .catch((err)=>{
+            console.log("err : ", err);
+        })
+    }
+
     const handleFileChange = event => {
         console.log("Make something", event.target.files[0])
         let file = event.target.files[0];
         const Data = new FormData();
+        Data.append('month', month);
+        Data.append('role', user.role);
+        Data.append('id', user.uid);
+        Data.append("fileName", month + "." + file.name.split(".")[1]);
+        Data.append('type', 'daybook');
+        Data.append('title', 'Daybook From '+user.name);
         Data.append('file', file);
+
+        api
+            .uploadDaybook(Data).then((res)=>{
+                console.log("res ", res);
+                getDocuments();
+            })
+            .catch((err)=>{
+                console.log("errr ", err);
+            })
 
         // make upload api here 
 
@@ -390,18 +427,11 @@ const ApprovalTable = () => {
                             id=""
                             onChange={(e) => handleChangeMonth(e)}
                         />
-                        <div className="col-3">
-                            <input
-                                type="file"
-                                onChange={(e) => handleFileChange(e)}
-                                ref={fileInput}
-                                style={{ display: 'none' }}
-                            />
-                            <Button variant="outlined" onClick={() => openFile()}>
 
-                                <AddAPhotoIcon />
-                            </Button>
-                        </div>
+
+                        <UploadFile handleFileChange={handleFileChange} daybook={daybook}/>
+
+
                         <div className="col-6">
                             <Button variant="contained" onClick={handleApproveAll}>
                                 Approve and sent to DLC

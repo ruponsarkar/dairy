@@ -201,8 +201,8 @@ module.exports = {
     //   updateQuery = `UPDATE forms SET status = ?, remark = ? WHERE applicationId = ?`;
     //   queryData = [status, remark, applicationId];
     // } else {
-      updateQuery = `UPDATE farmers SET status = ? WHERE applicationId = ?`;
-      queryData = [status, applicationId];
+    updateQuery = `UPDATE farmers SET status = ? WHERE applicationId = ?`;
+    queryData = [status, applicationId];
     // }
 
     db.query(updateQuery, queryData, (err, result) => {
@@ -216,10 +216,10 @@ module.exports = {
 
   countStatus(user, callback) {
     console.log("user ==>", user);
-  
+
     // Get the current month in 'YYYY-MM' format
     let currentMonth = new Date().toISOString().slice(0, 7);
-  
+
     // Define your queries
     let queries = {
       farmers: `SELECT COUNT(*) AS count FROM farmers `,
@@ -229,51 +229,40 @@ module.exports = {
     };
 
     // Modify queries if the user's role is 'dcs'
-  if (user.role === 'DCS') {
-    queries.farmers += `JOIN dcs ON farmers.dcsID = dcs.uid WHERE dcs.uid = ${user.uid}`;
-    queries.tot_milk_amount += ` 
+    if (user.role === "DCS") {
+      queries.farmers += `JOIN dcs ON farmers.dcsID = dcs.uid WHERE dcs.uid = ${user.uid}`;
+      queries.tot_milk_amount += ` 
     JOIN farmers ON farmers.applicationId = monthly_reports.applicationId 
     JOIN dcs ON dcs.uid = farmers.dcsID
      WHERE dcs.uid = ${user.uid}`;
-     queries.total_amount += ` 
+      queries.total_amount += ` 
     JOIN farmers ON farmers.applicationId = monthly_reports.applicationId 
     JOIN dcs ON dcs.uid = farmers.dcsID
      WHERE dcs.uid = ${user.uid}`;
-     queries.current_month_milk += ` 
+      queries.current_month_milk += ` 
      JOIN farmers ON farmers.applicationId = monthly_reports.applicationId 
      JOIN dcs ON dcs.uid = farmers.dcsID
      AND dcs.uid = ${user.uid}`;
-  }
+    }
 
-  if (user.role === 'DLC') {
-    queries.farmers += `JOIN dcs ON farmers.dcsID = dcs.uid WHERE dcs.dlc_id = ${user.uid}`;
-    queries.tot_milk_amount += ` 
+    if (user.role === "DLC") {
+      queries.farmers += `JOIN dcs ON farmers.dcsID = dcs.uid WHERE dcs.dlc_id = ${user.uid}`;
+      queries.tot_milk_amount += ` 
     JOIN farmers ON farmers.applicationId = monthly_reports.applicationId 
     JOIN dcs ON dcs.uid = farmers.dcsID
      WHERE dcs.dlc_id = ${user.uid}`;
-     queries.total_amount += ` 
+      queries.total_amount += ` 
     JOIN farmers ON farmers.applicationId = monthly_reports.applicationId 
     JOIN dcs ON dcs.uid = farmers.dcsID
      WHERE dcs.dlc_id= ${user.uid}`;
-     queries.current_month_milk += ` 
+      queries.current_month_milk += ` 
      JOIN farmers ON farmers.applicationId = monthly_reports.applicationId 
      JOIN dcs ON dcs.uid = farmers.dcsID
      AND dcs.dlc_id = ${user.uid}`;
-  }
+    }
 
+    queries.current_month_milk += ` WHERE month='${currentMonth}'`;
 
-
-
-
-
-
-  queries.current_month_milk += ` WHERE month='${currentMonth}'`
-
-
-
-
-
-  
     // Execute all queries using promises
     let promises = Object.keys(queries).map((key) => {
       return new Promise((resolve, reject) => {
@@ -286,7 +275,7 @@ module.exports = {
         });
       });
     });
-  
+
     // Handle all promises
     Promise.all(promises)
       .then((results) => {
@@ -295,7 +284,7 @@ module.exports = {
         results.forEach((result) => {
           statusCounts[result.key] = result.count;
         });
-  
+
         // Return the results via callback
         callback && callback({ status: 200, message: statusCounts });
       })
@@ -304,7 +293,6 @@ module.exports = {
         callback && callback({ status: 400, message: err });
       });
   },
-  
 
   // createFarmer
   createFarmer(form, callback) {
@@ -358,10 +346,10 @@ module.exports = {
     });
   },
 
-   getAllFarmers(dsc, user, callback) {
+  getAllFarmers(dsc, user, callback) {
     console.log("user ==> ", user);
-    let offset = '0';
-    let limit = '100';
+    let offset = "0";
+    let limit = "100";
     let query = `
         SELECT 
             farmers.*, 
@@ -376,37 +364,36 @@ module.exports = {
     `;
 
     if (dsc) {
-        query += ` WHERE dcs.uid = ?`;
+      query += ` WHERE dcs.uid = ?`;
     }
 
-    if (user.role === 'DLC') {
+    if (user.role === "DLC") {
       query += ` WHERE dcs.dlc_id = ${user.uid}`;
-  }
+    }
 
     query += ` LIMIT ${limit} OFFSET ${offset}`;
 
-    const params = [dsc].filter(param => param !== undefined);
+    const params = [dsc].filter((param) => param !== undefined);
 
     db.query(query, params, (err, results) => {
-        if (err) {
-            console.error("Database error:", err);
-            callback &&
-                callback({
-                    status: 400,
-                    message: "failed",
-                    data: null,
-                });
-        } else {
-            callback &&
-                callback({
-                    status: 200,
-                    message: "success",
-                    data: results,
-                });
-        }
+      if (err) {
+        console.error("Database error:", err);
+        callback &&
+          callback({
+            status: 400,
+            message: "failed",
+            data: null,
+          });
+      } else {
+        callback &&
+          callback({
+            status: 200,
+            message: "success",
+            data: results,
+          });
+      }
     });
-},
-
+  },
 
   // searchFarmer
   // searchFarmer(dcsIds, registrationNos, callback) {
@@ -474,13 +461,106 @@ module.exports = {
     `;
 
     db.query(query, (err, result) => {
-        if (err) {
-            console.log("Error executing query: ", err);
-            callback && callback({ message: "Error occurred", error: err });
+      if (err) {
+        console.log("Error executing query: ", err);
+        callback && callback({ message: "Error occurred", error: err });
+      } else {
+        callback && callback({ message: "success", data: result });
+      }
+    });
+  },
+
+  updateDaybook(data, callback) {
+    console.log("data=> ", data);
+
+    // First, check if the record with the same month and admin_id already exists
+    let checkQuery = `SELECT * FROM documents WHERE month = ? AND admin_id = ?`;
+
+    db.query(checkQuery, [data.month, data.admin_id], (checkErr, checkResult) => {
+        if (checkErr) {
+            callback && callback({
+                status: 400,
+                message: "Failed to check existing record"
+            });
+            return;
+        }
+
+        if (checkResult.length > 0) {
+            // If record exists, update it
+            let updateQuery = `UPDATE documents SET title = ?, type = ?, role = ?, month = ?, file = ? WHERE id = ?`;
+
+            let updateValues = [
+                data.title,
+                data.type,
+                data.role,
+                data.month,
+                data.filePath, // New file path to be updated
+                checkResult[0].id // Use the id from the found record to update
+            ];
+
+            console.log("Update values ==========>>>>>", updateValues);
+
+            db.query(updateQuery, updateValues, (updateErr, updateResult) => {
+                if (updateErr) {
+                    console.log(updateErr);
+                    callback && callback({
+                        status: 400,
+                        message: "Failed to update record"
+                    });
+                } else {
+                    callback && callback({
+                        status: 200,
+                        message: "Record updated successfully"
+                    });
+                }
+            });
         } else {
-            callback && callback({ message: "success", data: result });
+            // If record does not exist, insert a new one
+            let insertQuery = `INSERT INTO documents (title, type, role, admin_id, file, month) VALUES (?, ?, ?, ?, ?, ?)`;
+
+            let insertValues = [
+                data.title,
+                data.type,
+                data.role,
+                data.admin_id,
+                data.filePath,
+                data.month
+            ];
+
+            db.query(insertQuery, insertValues, (insertErr, insertResult) => {
+                if (insertErr) {
+                    callback && callback({
+                        status: 400,
+                        message: "Failed to insert record"
+                    });
+                } else {
+                    callback && callback({
+                        status: 200,
+                        message: "Record inserted successfully"
+                    });
+                }
+            });
         }
     });
+},
+
+
+getDocuments(data, callback) {
+
+  // role, month, admin_id, 
+  let query = `SELECT * FROM documents WHERE role = ? AND month = ? AND admin_id = ?`;
+
+  let values = [data.role, data.month, data.admin_id];
+
+  db.query(query, values, (err, results) => {
+      if (err) {
+          console.log(err);
+          callback && callback({ status: 400, message: "Failed to retrieve documents", error: err });
+      } else {
+          callback && callback({ status: 200, message: "Documents retrieved successfully", data: results[0] });
+      }
+  });
 }
+
 
 };

@@ -94,6 +94,12 @@ export default {
     dcsData(){
         return API.post('/dcsData')
     },
+    getDocuments(data){
+        return API.post('/getDocuments', {data})
+    },
+    uploadDaybook(formData) {
+        return uploadAPI.post('/uploadDaybook', formData);
+    },
 
 
     
