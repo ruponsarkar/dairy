@@ -27,8 +27,8 @@ const Footer = () => {
                                     </ul>
                                 </div>
                                 <footer>
-                                    <p>All rights reserved. MILK SUBSIDY DAIRY ASSAM, Copyright &copy; 2024 </p>
-                                    <p>Design and developed by <b>Skaplink technologies.</b></p>
+                                    <p>All rights reserved. MILK SUBSIDY DAIRY ASSAM | <a href="/#/admin">ADMIN </a>, Copyright &copy; 2024 </p>
+                                    <p>Designed and Developed By <b>Skaplink Technologies Pvt. Ltd.</b></p>
             </footer>
                             </div>
                         </div>

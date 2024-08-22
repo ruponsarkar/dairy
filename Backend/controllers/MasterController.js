@@ -42,6 +42,7 @@ module.exports = {
     let month = req.body.month;
     let amountPerLitter = req.body.amountPerLitter;
     let approveBy = req.body.approveBy;
+    console.log("approveBy==>", approveBy);
     MasterModel.updateMonthlyReport(data, month, amountPerLitter, approveBy, (result) => {
       res.status(200).send(result);
     });
@@ -65,8 +66,9 @@ module.exports = {
   getRangeSubsidy(req, res) {
     let from = req.body.from;
     let to = req.body.to;
-    let district = req.body.district;
-    MasterModel.getRangeSubsidy(from, to, district, (result) => {
+    let id = req.body.id;
+    let role = req.body.role;
+    MasterModel.getRangeSubsidy(from, to, id, role, (result) => {
       res.status(200).send(result);
     });
   },

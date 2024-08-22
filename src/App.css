@@ -170,7 +170,12 @@ thead tr th{
 td, th {
   border: 1px solid #dddddd;
   text-align: left;
-  padding: 8px;
+  /* padding: 8px; */
+}
+td {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding-bottom: 12px;
 }
 tr{
   text-align: left;
@@ -53296,4 +53301,8 @@ a.text-muted:hover {
   width: 300px; /* You can set the dimensions to whatever you want */
   height: 200px;
   object-fit: cover;
+}
+
+tr{
+  padding-top: 10px;
 }

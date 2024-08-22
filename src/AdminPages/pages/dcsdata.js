@@ -76,25 +76,24 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
 
 
 
-const Grievance = () => {
+const DCSData = () => {
 
     const [data, setData] = useState();
     const [loading, setLoading] = useState(false)
 
     useEffect(()=>{
-        getGrievance();
+        dcsData()
     },[])
 
-    const getGrievance=()=>{
-        setLoading(true)
-        api.getGrievance().then((res)=>{
-            console.log("res", res.data.data);
+ 
+
+    const dcsData = ()=>{
+        api.dcsData().then((res)=>{
+            console.log("res", res);
             setData(res.data.data)
-            setLoading(false)
         })
         .catch((err)=>{
-            setLoading(false)
-            console.log("err", err);
+            console.log("err ", err);
         })
     }
 
@@ -114,7 +113,7 @@ const Grievance = () => {
                 },
                 }}>
                 <Typography sx={{ display: "flex", gap: 2 }} variant="h6" id="tableTitle" component="div">
-                Grievance
+                DCS 
                 </Typography>
                 <div role="presentation" >
                 <Breadcrumbs aria-label="breadcrumb">
@@ -125,7 +124,7 @@ const Grievance = () => {
                     icon={<HomeIcon fontSize="small" />}
                 />
                 {/* <StyledBreadcrumb component="a" href="#" label="Catalog" /> */}
-                <StyledBreadcrumb label="Grievance"/>
+                <StyledBreadcrumb label="DCS"/>
                 </Breadcrumbs>
                 </div>
                 </Toolbar>
@@ -148,10 +147,10 @@ const Grievance = () => {
                     <TableHead>
                         <TableRow>
                             <StyledTableCell>#</StyledTableCell>
-                            <StyledTableCell>Applicant ID</StyledTableCell>
-                            <StyledTableCell>Applicant Name</StyledTableCell>
-                            <StyledTableCell>Type</StyledTableCell>
-                            <StyledTableCell>Details</StyledTableCell>
+                            <StyledTableCell align="center">DISTRICT</StyledTableCell>
+                            <StyledTableCell align="center">TOTAL DCS</StyledTableCell>
+                            <StyledTableCell align="center">TOTAL SHAREHOLDERS</StyledTableCell>
+                            <StyledTableCell align="center"> TOTAL MILK SALE</StyledTableCell>
                             {/* <StyledTableCell align="center">Action</StyledTableCell> */}
                         </TableRow>
                     </TableHead>
@@ -161,15 +160,15 @@ const Grievance = () => {
                             data.map((row, index) => {
                                 return (
                                     <TableRow hover tabIndex={-1} key={row.name}>
-                                        <TableCell>{index + 1}</TableCell>
-                                        <TableCell component="th" scope="row">
-                                            {row.userId}
+                                        <TableCell align="center">{index + 1}</TableCell>
+                                        <TableCell component="th" scope="row" align="center">
+                                            {row.DISTRICT}
                                         </TableCell>
-                                        <TableCell component="th" scope="row">
-                                            {row.userName}
+                                        <TableCell component="th" scope="row" align="center">
+                                            {row.TOTAL_DCS}
                                         </TableCell>
-                                        <TableCell>{row.type}</TableCell>
-                                        <TableCell>{row.details}</TableCell>
+                                        <TableCell align="center">{row.TOTAL_MILK_SALE}</TableCell>
+                                        <TableCell align="center">{row.TOTAL_SHAREHOLDERS}</TableCell>
                                      
                                        
                                     </TableRow>
@@ -199,4 +198,4 @@ const Grievance = () => {
     );
 };
 
-export default Grievance;
+export default DCSData;

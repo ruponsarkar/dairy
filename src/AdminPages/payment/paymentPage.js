@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { styled } from "@mui/material/styles";
+import { styled, emphasize } from "@mui/material/styles";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
 import BasicMenu from "../../ui-component/menu";
-import { Button } from "@mui/material";
+import { Button, Paper, Toolbar,
+  Typography } from "@mui/material";
 import Checkbox from "@mui/material/Checkbox";
 import Swal from "sweetalert2";
 import PaymentsIcon from "@mui/icons-material/Payments";
@@ -16,6 +16,31 @@ import { CSVLink, CSVDownload } from "react-csv";
 import api from "../../API/api";
 import SearchIcon from '@mui/icons-material/Search';
 import Loader from "../../components/pannel/loader";
+
+
+import Breadcrumbs from '@mui/material/Breadcrumbs';
+import Chip from '@mui/material/Chip';
+import HomeIcon from '@mui/icons-material/Home';
+
+const StyledBreadcrumb = styled(Chip)(({ theme }) => {
+    const backgroundColor =
+      theme.palette.mode === 'light'
+        ? theme.palette.grey[100]
+        : theme.palette.grey[800];
+    return {
+      backgroundColor,
+      height: theme.spacing(3),
+      color: theme.palette.text.primary,
+      fontWeight: theme.typography.fontWeightRegular,
+      '&:hover, &:focus': {
+        backgroundColor: emphasize(backgroundColor, 0.06),
+      },
+      '&:active': {
+        boxShadow: theme.shadows[1],
+        backgroundColor: emphasize(backgroundColor, 0.12),
+      },
+    };
+  });
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -88,7 +113,10 @@ export default function PaymentPage() {
   // };
 
 
-
+  useEffect(()=>{
+    handleViewBeneficiary();
+  },[data]);
+  
   const [selectAll, setSelectAll] = useState(false);
   const handeSelectAll = () => {
     const newSelectAll = !selectAll;
@@ -132,7 +160,99 @@ export default function PaymentPage() {
       })
   }
 
+  const handleViewBeneficiary = () => {
+    api.viewBeneficiary(data).then((res) => {
+     let beneficiaries= res.data.data;
+     if(data?.length>0 && beneficiaries?.length>0){
+      data.map(item1=>{
+        let flag = false;
+        beneficiaries.map(item2=>{
+          let beneficiary_id = 'Beneficiary_'+item1?.bank_account_no+'_'+item1?.id;
+          if(item2.beneficiary_id==beneficiary_id){
+            flag = true;
+          }
+        });
+        item1.isBeneficiary = flag?true:false;
+      });
+      console.log("DATA===",data);
+      setData(data);
+     }
+    })
+      .catch((err) => {
+        console.log("err : ", err);
+      })
+  }
+
+  const handleCreateBeneficiary = (farmer) => {
+    console.log(farmer);
+    
+    let beneficiary_id = 'Beneficiary_' + farmer?.bank_account_no + '_' + farmer?.id;
+    const data = {
+      beneficiaryData: {
+        beneficiary_id: beneficiary_id,
+        beneficiary_name: farmer?.bank_account_holder_name,
+        beneficiary_contact_details: {
+          beneficiary_email: farmer?.bank_account_no + '@milksubsidydairyassam.com',
+          beneficiary_phone: farmer?.mobile || '',
+          beneficiary_country_code: '+91',
+          beneficiary_address: farmer?.district,
+          beneficiary_city: farmer?.district,
+          beneficiary_postal_code: farmer?.postal_code || '',
+        },
+        beneficiary_instrument_details: {
+          bank_account_number: farmer?.bank_account_no,
+          bank_ifsc: farmer?.ifsc_code,
+          vpa: 'test@upi'
+        }
+      },
+      additionalData: {
+        farmer_id: farmer?.id,
+        api_request_id: Math.floor(Math.random() * 10000000000000001)
+      }
+    }
+    console.log("data=", data);
+    api.createBeneficiary(data).then((res) => {
+      Swal.fire('Beneficiary created successfully !');
+      handleViewBeneficiary();
+    })
+      .catch((err) => {
+        console.log("err : ", err);
+        Swal.fire('Something went wrong !');
+      })
+  }
+
   return (
+    <>
+    <Paper className="p-1 mb-3">
+                <Toolbar sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                flexWrap: "wrap",
+                "@media (max-width: 600px)": {
+                flexDirection: "column",
+                alignItems: "flex-start",
+                },
+                }}>
+                <Typography sx={{ display: "flex", gap: 2 }} variant="h6" id="tableTitle" component="div">
+                Payment
+                </Typography>
+                <div role="presentation" >
+                <Breadcrumbs aria-label="breadcrumb">
+                <StyledBreadcrumb
+                    component="a"
+                    href="/#/admin/dashboard"
+                    label="Home"
+                    icon={<HomeIcon fontSize="small" />}
+                />
+                {/* <StyledBreadcrumb component="a" href="#" label="Catalog" /> */}
+                <StyledBreadcrumb label="Payment"/>
+                </Breadcrumbs>
+                </div>
+                </Toolbar>
+
+            </Paper>
+
     <Paper className="p-2">
       <Loader open={loading}/>
       <div className="my-3 d-flex gap-3">
@@ -179,20 +299,20 @@ export default function PaymentPage() {
         <Table sx={{ minWidth: 700 }} aria-label="customized table">
           <TableHead>
             <TableRow>
-              <StyledTableCell>
+              <StyledTableCell className="text-center p-2">
                 <Checkbox
                   checked={selectAll ? true : false}
                   onClick={handeSelectAll}
                 />
               </StyledTableCell>
-              <StyledTableCell>Name</StyledTableCell>
-              <StyledTableCell>Name of DCS</StyledTableCell>
-              <StyledTableCell>Registration No </StyledTableCell>
-              <StyledTableCell>Subsidy Details</StyledTableCell>
-              <StyledTableCell>Quantity of milk(in Litres)</StyledTableCell>
-              <StyledTableCell>Ammount(in Rs)</StyledTableCell>
-              <StyledTableCell>Bank Account No</StyledTableCell>
-              <StyledTableCell>Payment Status</StyledTableCell>
+              <StyledTableCell className="text-center p-2">Name</StyledTableCell>
+              <StyledTableCell className="text-center p-2">Name of DCS</StyledTableCell>
+              <StyledTableCell className="text-center p-2">Registration No </StyledTableCell>
+              <StyledTableCell className="text-center p-2">Subsidy Details</StyledTableCell>
+              <StyledTableCell className="text-center p-2">Quantity of milk(in Litres)</StyledTableCell>
+              <StyledTableCell className="text-center p-2">Ammount(in Rs)</StyledTableCell>
+              <StyledTableCell className="text-center p-2">Bank Account No</StyledTableCell>
+              <StyledTableCell className="text-center p-2">Payment Status</StyledTableCell>
               {/* <StyledTableCell>Action</StyledTableCell> */}
             </TableRow>
           </TableHead>
@@ -200,29 +320,40 @@ export default function PaymentPage() {
             {data &&
               data.map((row, index) => (
                 <StyledTableRow key={row.id}>
-                  <StyledTableCell component="th" scope="row">
+                  <StyledTableCell className="text-center p-2" component="th" scope="row">
                     <Checkbox
                       checked={row.selected ? true : false}
                       onClick={() => handleSelect(row.id)}
                     />
                   </StyledTableCell>
-                  <StyledTableCell>{row.name}</StyledTableCell>
-                  <StyledTableCell>
+                  <StyledTableCell className="text-center p-2">{row.name}</StyledTableCell>
+                  <StyledTableCell className="text-center p-2">
                     {row.name_of_co_operatice_society}
                   </StyledTableCell>
-                  <StyledTableCell>
+                  <StyledTableCell className="text-center p-2">
                     {row.registration_no_of_co_operatice_society}
                   </StyledTableCell>
                  
-                  <StyledTableCell width={200}>{row.subsidy_details}</StyledTableCell>
+                  <StyledTableCell className="text-center p-2" width={200}>{row.subsidy_details}</StyledTableCell>
 
-                  <StyledTableCell align="center"> <strong> {row.quantity} </strong> </StyledTableCell>
-                  <StyledTableCell align="center"> <strong> {row.total_amount} </strong> </StyledTableCell>
-                  <StyledTableCell>{row.bank_account_no}</StyledTableCell>
-                  <StyledTableCell>
+                  <StyledTableCell className="text-center p-2" align="center"> <strong> {row.quantity} </strong> </StyledTableCell>
+                  <StyledTableCell className="text-center p-2" align="center"> <strong> {row.total_amount} </strong> </StyledTableCell>
+                  <StyledTableCell className="text-center p-2">{row.bank_account_no}</StyledTableCell>
+                  <StyledTableCell className="text-center p-2">
                     <span className={`${row.paymentStatus === 'Pending' ? 'bg-warning' : 'bg-success'} rounded px-2`}>
                       {row.paymentStatus}
                     </span>
+                  </StyledTableCell>
+                  <StyledTableCell>
+                    {!row.isBeneficiary &&
+                    <Button
+                      variant="outlined"
+                      color="primary"
+                      size="small"
+                      onClick={() => handleCreateBeneficiary(row)}
+                    >
+                      Add as Beneficiary
+                    </Button>}
                   </StyledTableCell>
                 </StyledTableRow>
               ))
@@ -234,16 +365,22 @@ export default function PaymentPage() {
 
         </Table>
         <div>
-          {!data &&
-            <div className="text-center">
-              <h3>Data not found</h3>
-            </div>
-          }
-        </div>
+                    {!data && (
+                        <div className="text-center p-5">
+                        <img
+                        src="../assets/noData.png"
+                        alt="no data"
+                        className="govt-logo"
+                    />
+                        <p>Data not found</p>
+                        </div>
+                    )}
+                    </div>
 
 
 
       </TableContainer>
     </Paper>
+    </>
   );
 }

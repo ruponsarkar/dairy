@@ -18,8 +18,8 @@ function Nav2() {
       <section className="wrapper d-flex align-items-center" >
         <div class="container header-container">
           <h1 class="logo">
-            <a class="main_gov grey-text" target="_blank" href="http://assam.gov.in">Government Of Assam</a>
-            <a class="main_dept brown-text" href="https://animalhusbandry.assam.gov.in/" target="_blank">Animal Husbandry &amp; Veterinary</a>			<a class="sub_dept" href="https://dairy.assam.gov.in/">Directorate of Dairy Development</a>
+            <a class="main_gov grey-text" target="_blank" href="http://assam.gov.in" target="_blank">Government Of Assam</a>
+            <a class="main_dept brown-text" href="https://animalhusbandry.assam.gov.in/" target="_blank">Animal Husbandry &amp; Veterinary</a>			<a class="sub_dept" href="https://dairy.assam.gov.in/" target="_blank">Directorate of Dairy Development</a>
           </h1>
 
         </div>
@@ -34,7 +34,7 @@ function Nav2() {
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="me-auto">
               <Link to="/" className='nav-link'>About</Link>
-              <Link to="/RegisterPage" className='nav-link'>Download Certificate</Link>
+              {/* <Link to="/RegisterPage" className='nav-link'>Download Certificate</Link> */}
               <a class="nav-link" target="_blank" href="assets/userManual/AHVD.pdf">User Manual</a>
               <a class="nav-link" target="_blank" href="https://youtu.be/k5wOrv534z0">YouTube Video Link</a>
               {/* <Link to="/Certificate" className='nav-link'>Certificate</Link> */}

@@ -29,17 +29,33 @@ module.exports = {
 
   createDCS(req, res) {
     let data = req.body.formData;
-    AdminModel.createDCS(data, (result) => {
+    let user = req.body.user;
+    AdminModel.createDCS(data, user, (result) => {
       res.status(200).send(result);
     });
   },
   getAllDCS(req, res) {
-    AdminModel.getAllDCS((result) => {
+    let user = req.body.user;
+    AdminModel.getAllDCS(user, (result) => {
       res.status(200).send(result);
     });
   },
-
-
-
-
+  getApplicationStatisticsData_DistrictWise(req, res) {
+    let disctrict = req.body.param.disctrict;
+    AdminModel.getApplicationStatisticsData_DistrictWise(disctrict, (result) => {
+      res.status(200).send(result);
+    });
+  },
+  getApplicationStatisticsData_DCSWise(req, res) {
+    let dcs = req.body.param.dcs;
+    AdminModel.getApplicationStatisticsData_DCSWise(dcs, (result) => {
+      res.status(200).send(result);
+    });
+  },
+  getAllDCS_DistrictWise(req, res) {
+    let disctrict = req.body.param.disctrict;
+    AdminModel.getAllDCS_DistrictWise(disctrict, (result) => {
+      res.status(200).send(result);
+    });
+  }
 };

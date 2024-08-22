@@ -35,6 +35,12 @@ import NewReleasesIcon from "@mui/icons-material/NewReleases";
 import { useNavigate, Outlet } from "react-router-dom";
 import AuthUser from "../../API/token";
 import SummarizeIcon from "@mui/icons-material/Summarize";
+import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
+import CurrencyRupeeOutlinedIcon from "@mui/icons-material/CurrencyRupeeOutlined";
+import FolderSharedOutlinedIcon from "@mui/icons-material/FolderSharedOutlined";
+import AdminPanelSettingsOutlinedIcon from "@mui/icons-material/AdminPanelSettingsOutlined";
+import ContentPasteOutlinedIcon from "@mui/icons-material/ContentPasteOutlined";
+import LiveHelpOutlinedIcon from "@mui/icons-material/LiveHelpOutlined";
 
 const drawerWidth = 240;
 
@@ -49,7 +55,7 @@ const settings = ["Profile", "Account", "Dashboard", "Logout"];
 const pages = [];
 
 const Dashboard = (props) => {
-  const { token, logout, user } = AuthUser();
+  const { token, logout } = AuthUser();
 
   const logoutuser = () => {
     // if (token != undefined) {
@@ -91,6 +97,7 @@ const Dashboard = (props) => {
   const [openBlog, setBlogOpen] = React.useState(false);
   const [openPay, setOpenPay] = React.useState(false);
   const [role, setRole] = useState();
+  const [user, setUser] = useState();
 
   const handleClick = () => {
     setOpen(!open);
@@ -103,81 +110,76 @@ const Dashboard = (props) => {
     setBlogOpen(!openBlog);
   };
 
+  const [currentDateTime, setCurrentDateTime] = useState(new Date());
+
+  // Format date to dd/mm/yyyy
+  const formattedDate = `${currentDateTime
+    .getDate()
+    .toString()
+    .padStart(2, "0")}/${(currentDateTime.getMonth() + 1)
+    .toString()
+    .padStart(2, "0")}/${currentDateTime.getFullYear()}`;
+
+  // Format time to hh:mm:ss
+  const formattedTime = `${currentDateTime
+    .getHours()
+    .toString()
+    .padStart(2, "0")}:${currentDateTime
+    .getMinutes()
+    .toString()
+    .padStart(2, "0")}:${currentDateTime
+    .getSeconds()
+    .toString()
+    .padStart(2, "0")}`;
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentDateTime(new Date());
+    }, 1000); // Update every second
+
+    return () => clearInterval(timer); // Cleanup the interval on component unmount
+  }, []);
+
   useEffect(() => {
     // if (JSON.parse(sessionStorage.getItem('user')).role === 'Admin') {
     setRole(JSON.parse(sessionStorage.getItem("user")).role);
     // }
   }, []);
+  useEffect(() => {
+    setUser(JSON.parse(sessionStorage.getItem("user")));
+  }, []);
 
   const drawer = (
     <div>
-      <Toolbar className="shadow p-1">
-        <a className="text-dark header-name text-center" href="/admin">
-          <h4>DCS Admin Panel</h4>
+      <Toolbar className="shadow text-center p-1">
+        <a className="text-dark header-name text-center" href="javascript:;" onClick={() => navigate("/admin/dashboard")}>
+          <h4>Admin Panel</h4>
         </a>
       </Toolbar>
       <Divider />
-      <List>
-        <ListItem disablePadding onClick={() => navigate("/admin")}>
-          <ListItemButton>
-            <ListItemIcon>
-              <LeaderboardSharpIcon />
-            </ListItemIcon>
-            <ListItemText>Dashboard</ListItemText>
-          </ListItemButton>
-        </ListItem>
 
-        {/* <ListItem disablePadding onClick={() => navigate("/admin/MasterTable")}>
-          <ListItemButton>
-            <ListItemIcon>
-              <BackupTableIcon />
-            </ListItemIcon>
-            <ListItemText>Master Table</ListItemText>
-          </ListItemButton>
-        </ListItem> */}
-
-        {/* <ListItemButton onClick={handleClick}>
-          <ListItemIcon>
-            <LibraryBooksIcon />
-          </ListItemIcon>
-          <ListItemText primary="Request" />
-          {open ? <ExpandLess /> : <ExpandMore />}
-        </ListItemButton> */}
-        {/* 
-        <Collapse in={open} timeout="auto" unmountOnExit>
-          <List component="div" disablePadding>
-            <ListItemButton
-              sx={{ pl: 4 }}
-              onClick={() => navigate("/admin/newRequest")}
-            >
+      {/* DCS ADMIN SIDES  */}
+      {role === "DCS" && (
+        <List>
+          <ListItem disablePadding onClick={() => navigate("/admin/dashboard")}>
+            <ListItemButton>
               <ListItemIcon>
-                <SubdirectoryArrowRightIcon />
+                <LeaderboardSharpIcon />
               </ListItemIcon>
-              <ListItemText primary="New Request" />
+              <ListItemText>Dashboard</ListItemText>
             </ListItemButton>
-            <ListItemButton
-              sx={{ pl: 4 }}
-              onClick={() => navigate("/admin/ApprovalTable")}
-            >
-              <ListItemIcon>
-                <SubdirectoryArrowRightIcon />
-              </ListItemIcon>
-              <ListItemText primary="Approval Table" />
-            </ListItemButton>
-          </List>
-        </Collapse> */}
+          </ListItem>
 
-        <ListItemButton onClick={handleClick1}>
-          <ListItemIcon>
-            <LibraryBooksIcon />
-          </ListItemIcon>
-          <ListItemText primary="Farmer" />
-          {open1 ? <ExpandLess /> : <ExpandMore />}
-        </ListItemButton>
+          <ListItemButton onClick={handleClick1}>
+            <ListItemIcon>
+              <FolderSharedOutlinedIcon />
+            </ListItemIcon>
+            <ListItemText primary="Farmer" />
+            {open1 ? <ExpandLess /> : <ExpandMore />}
+          </ListItemButton>
 
-        <Collapse in={open1} timeout="auto" unmountOnExit>
-          <List component="div" disablePadding>
-            {role === "DCS"  && (
+          <Collapse in={open1} timeout="auto" unmountOnExit>
+            <List component="div" disablePadding>
               <>
                 <ListItemButton
                   sx={{ pl: 4 }}
@@ -186,7 +188,7 @@ const Dashboard = (props) => {
                   <ListItemIcon>
                     <SubdirectoryArrowRightIcon />
                   </ListItemIcon>
-                  <ListItemText primary="Add Farmer" />
+                  <ListItemText primary="Farmer details" />
                 </ListItemButton>
 
                 <ListItemButton
@@ -199,111 +201,484 @@ const Dashboard = (props) => {
                   <ListItemText primary="Add milk amount" />
                 </ListItemButton>
               </>
-             )}
 
-            {role === "SLSC" && (
+              {/* <ListItemButton
+                sx={{ pl: 4 }}
+                onClick={() => navigate("/admin/DLCApproval")}
+              >
+                <ListItemIcon>
+                  <SubdirectoryArrowRightIcon />
+                </ListItemIcon>
+                <ListItemText primary={`DLC Approval`} />
+              </ListItemButton> */}
+
+              {/* <ListItemButton
+                sx={{ pl: 4 }}
+                onClick={() => navigate("/admin/SLSCApproval")}
+              >
+                <ListItemIcon>
+                  <SubdirectoryArrowRightIcon />
+                </ListItemIcon>
+                <ListItemText primary="SLSC Approval" />
+              </ListItemButton> */}
+            </List>
+          </Collapse>
+
+          <ListItem disablePadding onClick={() => navigate("/admin/report")}>
+            <ListItemButton>
+              <ListItemIcon>
+                <ContentPasteOutlinedIcon />
+              </ListItemIcon>
+              <ListItemText>Reports</ListItemText>
+            </ListItemButton>
+          </ListItem>
+
+          {/* <ListItem disablePadding onClick={() => navigate("/admin/Grievance")}>
+            <ListItemButton>
+              <ListItemIcon>
+                <LiveHelpOutlinedIcon />
+              </ListItemIcon>
+              <ListItemText>Grievance</ListItemText>
+            </ListItemButton>
+          </ListItem> */}
+
+          <ListItem disablePadding onClick={logout}>
+            <ListItemButton>
+              <ListItemIcon>
+                <LogoutRoundedIcon />
+              </ListItemIcon>
+              <ListItemText>Logout</ListItemText>
+            </ListItemButton>
+          </ListItem>
+        </List>
+      )}
+
+      {/* DLC ADMIN SIDES  */}
+      {role === "DLC" && (
+        <List>
+          <ListItem disablePadding onClick={() => navigate("/admin/dashboard")}>
+            <ListItemButton>
+              <ListItemIcon>
+                <LeaderboardSharpIcon />
+              </ListItemIcon>
+              <ListItemText>Dashboard</ListItemText>
+            </ListItemButton>
+          </ListItem>
+
+          <ListItemButton onClick={handleClick1}>
+            <ListItemIcon>
+              <FolderSharedOutlinedIcon />
+            </ListItemIcon>
+            <ListItemText primary="Farmer" />
+            {open1 ? <ExpandLess /> : <ExpandMore />}
+          </ListItemButton>
+
+          <Collapse in={open1} timeout="auto" unmountOnExit>
+            <List component="div" disablePadding>
               <>
                 <ListItemButton
                   sx={{ pl: 4 }}
-                  onClick={() => navigate("/admin/SLSCApproval")}
+                  onClick={() => navigate("/admin/AddFarmer")}
                 >
                   <ListItemIcon>
                     <SubdirectoryArrowRightIcon />
                   </ListItemIcon>
-                  <ListItemText primary="View Farmers" />
+                  <ListItemText primary="Farmer details" />
                 </ListItemButton>
+
+                {/* <ListItemButton
+                    sx={{ pl: 4 }}
+                    onClick={() => navigate("/admin/ApprovalTable")}
+                  >
+                    <ListItemIcon>
+                      <SubdirectoryArrowRightIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="Add milk amount" />
+                  </ListItemButton> */}
+              </>
+
+              <ListItemButton
+                sx={{ pl: 4 }}
+                onClick={() => navigate("/admin/DLCApproval")}
+              >
+                <ListItemIcon>
+                  <SubdirectoryArrowRightIcon />
+                </ListItemIcon>
+                <ListItemText primary={`DLC Approval`} />
+              </ListItemButton>
+
+              {/* <ListItemButton
+                sx={{ pl: 4 }}
+                onClick={() => navigate("/admin/SLSCApproval")}
+              >
+                <ListItemIcon>
+                  <SubdirectoryArrowRightIcon />
+                </ListItemIcon>
+                <ListItemText primary="SLSC Approval" />
+              </ListItemButton> */}
+            </List>
+          </Collapse>
+
+          <ListItem disablePadding onClick={() => navigate("/admin/report")}>
+            <ListItemButton>
+              <ListItemIcon>
+                <ContentPasteOutlinedIcon />
+              </ListItemIcon>
+              <ListItemText>Reports</ListItemText>
+            </ListItemButton>
+          </ListItem>
+
+          {/* <ListItem disablePadding onClick={() => navigate("/admin/DCSData")}>
+            <ListItemButton>
+              <ListItemIcon>
+                <ContentPasteOutlinedIcon />
+              </ListItemIcon>
+              <ListItemText>DCS Data</ListItemText>
+            </ListItemButton>
+          </ListItem> */}
+
+          <ListItemButton onClick={blogClick}>
+            <ListItemIcon>
+              <AdminPanelSettingsOutlinedIcon />
+            </ListItemIcon>
+            <ListItemText primary="Admin" />
+            {openBlog ? <ExpandLess /> : <ExpandMore />}
+          </ListItemButton>
+
+          <Collapse in={openBlog} timeout="auto" unmountOnExit>
+            {role === "Super Admin" && (
+              <>
+                <List component="div" disablePadding>
+                  <ListItemButton
+                    sx={{ pl: 4 }}
+                    onClick={() => navigate("/admin/adminManagement")}
+                  >
+                    <ListItemIcon>
+                      <SubdirectoryArrowRightIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="Add Admin" />
+                  </ListItemButton>
+                </List>
               </>
             )}
-          </List>
-        </Collapse>
 
-        {role === "Super Admin" && (
-          <>
-            <ListItemButton onClick={() => setOpenPay(!openPay)}>
+            <List component="div" disablePadding>
+              <ListItemButton
+                sx={{ pl: 4 }}
+                onClick={() => navigate("/admin/AddDCS")}
+              >
+                <ListItemIcon>
+                  <SubdirectoryArrowRightIcon />
+                </ListItemIcon>
+                <ListItemText primary="Add DCS" />
+              </ListItemButton>
+            </List>
+          </Collapse>
+
+          {/* <ListItem disablePadding onClick={() => navigate("/admin/Grievance")}>
+            <ListItemButton>
               <ListItemIcon>
-                <RedeemIcon />
+                <LiveHelpOutlinedIcon />
               </ListItemIcon>
-              <ListItemText primary="Subsidy" />
-              {openPay ? <ExpandLess /> : <ExpandMore />}
+              <ListItemText>Grievance</ListItemText>
             </ListItemButton>
+          </ListItem> */}
 
-            <Collapse in={openPay} timeout="auto" unmountOnExit>
-              <List component="div" disablePadding>
-                <ListItemButton
-                  sx={{ pl: 4 }}
-                  onClick={() => navigate("/admin/PaymentPage")}
-                >
-                  <ListItemIcon>
-                    <SubdirectoryArrowRightIcon />
-                  </ListItemIcon>
-                  <ListItemText primary="Finance report" />
-                </ListItemButton>
-              </List>
-            </Collapse>
-
-            <ListItemButton onClick={blogClick}>
+          <ListItem disablePadding onClick={logout}>
+            <ListItemButton>
               <ListItemIcon>
-                <ClassIcon />
+                <LogoutRoundedIcon />
               </ListItemIcon>
-              <ListItemText primary="Admin" />
-              {openBlog ? <ExpandLess /> : <ExpandMore />}
+              <ListItemText>Logout</ListItemText>
             </ListItemButton>
+          </ListItem>
+        </List>
+      )}
 
-            <Collapse in={openBlog} timeout="auto" unmountOnExit>
-              <List component="div" disablePadding>
+      {/* SLSC ADMIN SIDES  */}
+      {role === "SLSC" && (
+        <List>
+          <ListItem disablePadding onClick={() => navigate("/admin/dashboard")}>
+            <ListItemButton>
+              <ListItemIcon>
+                <LeaderboardSharpIcon />
+              </ListItemIcon>
+              <ListItemText>Dashboard</ListItemText>
+            </ListItemButton>
+          </ListItem>
+
+          <ListItemButton onClick={handleClick1}>
+            <ListItemIcon>
+              <FolderSharedOutlinedIcon />
+            </ListItemIcon>
+            <ListItemText primary="Farmer" />
+            {open1 ? <ExpandLess /> : <ExpandMore />}
+          </ListItemButton>
+
+          <Collapse in={open1} timeout="auto" unmountOnExit>
+            <List component="div" disablePadding>
+              <>
                 <ListItemButton
                   sx={{ pl: 4 }}
-                  onClick={() => navigate("/admin/adminManagement")}
+                  onClick={() => navigate("/admin/AddFarmer")}
                 >
                   <ListItemIcon>
                     <SubdirectoryArrowRightIcon />
                   </ListItemIcon>
-                  <ListItemText primary="Add Admin" />
+                  <ListItemText primary="Farmer details" />
                 </ListItemButton>
-              </List>
+              </>
 
-              <List component="div" disablePadding>
+              <ListItemButton
+                sx={{ pl: 4 }}
+                onClick={() => navigate("/admin/SLSCApproval")}
+              >
+                <ListItemIcon>
+                  <SubdirectoryArrowRightIcon />
+                </ListItemIcon>
+                <ListItemText primary="SLSC Approval" />
+              </ListItemButton>
+            </List>
+          </Collapse>
+
+          <ListItem disablePadding onClick={() => navigate("/admin/report")}>
+            <ListItemButton>
+              <ListItemIcon>
+                <ContentPasteOutlinedIcon />
+              </ListItemIcon>
+              <ListItemText>Reports</ListItemText>
+            </ListItemButton>
+          </ListItem>
+
+          <ListItem disablePadding onClick={() => navigate("/admin/DCSData")}>
+            <ListItemButton>
+              <ListItemIcon>
+                <ContentPasteOutlinedIcon />
+              </ListItemIcon>
+              <ListItemText>DCS Data</ListItemText>
+            </ListItemButton>
+          </ListItem>
+
+        
+
+          {/* <ListItem disablePadding onClick={() => navigate("/admin/Grievance")}>
+            <ListItemButton>
+              <ListItemIcon>
+                <LiveHelpOutlinedIcon />
+              </ListItemIcon>
+              <ListItemText>Grievance</ListItemText>
+            </ListItemButton>
+          </ListItem> */}
+
+          <ListItem disablePadding onClick={logout}>
+            <ListItemButton>
+              <ListItemIcon>
+                <LogoutRoundedIcon />
+              </ListItemIcon>
+              <ListItemText>Logout</ListItemText>
+            </ListItemButton>
+          </ListItem>
+        </List>
+      )}
+
+      {/* FINANCE ADMIN SIDES  */}
+      {role === "Finance" && (
+        <List>
+          <ListItem disablePadding onClick={() => navigate("/admin/dashboard")}>
+            <ListItemButton>
+              <ListItemIcon>
+                <LeaderboardSharpIcon />
+              </ListItemIcon>
+              <ListItemText>Dashboard</ListItemText>
+            </ListItemButton>
+          </ListItem>
+
+          <ListItemButton onClick={handleClick1}>
+            <ListItemIcon>
+              <FolderSharedOutlinedIcon />
+            </ListItemIcon>
+            <ListItemText primary="Farmer" />
+            {open1 ? <ExpandLess /> : <ExpandMore />}
+          </ListItemButton>
+
+          <Collapse in={open1} timeout="auto" unmountOnExit>
+            <List component="div" disablePadding>
+              <>
                 <ListItemButton
                   sx={{ pl: 4 }}
-                  onClick={() => navigate("/admin/AddDCS")}
+                  onClick={() => navigate("/admin/AddFarmer")}
                 >
                   <ListItemIcon>
                     <SubdirectoryArrowRightIcon />
                   </ListItemIcon>
-                  <ListItemText primary="Add DCS" />
+                  <ListItemText primary="Farmer details" />
                 </ListItemButton>
-              </List>
-            </Collapse>
-          </>
-        )}
+              </>
+            </List>
+          </Collapse>
 
-        <ListItem disablePadding onClick={() => navigate("/admin/report")}>
-          <ListItemButton>
-            <ListItemIcon>
-              <SummarizeIcon />
-            </ListItemIcon>
-            <ListItemText>Report</ListItemText>
-          </ListItemButton>
-        </ListItem>
+          <ListItem disablePadding onClick={() => navigate("/admin/report")}>
+            <ListItemButton>
+              <ListItemIcon>
+                <ContentPasteOutlinedIcon />
+              </ListItemIcon>
+              <ListItemText>Reports</ListItemText>
+            </ListItemButton>
+          </ListItem>
 
-        <ListItem disablePadding onClick={() => navigate("/admin/Grievance")}>
-          <ListItemButton>
-            <ListItemIcon>
-              <NewReleasesIcon />
-            </ListItemIcon>
-            <ListItemText>Grievance</ListItemText>
-          </ListItemButton>
-        </ListItem>
+          {/* <ListItem disablePadding onClick={() => navigate("/admin/Grievance")}>
+            <ListItemButton>
+              <ListItemIcon>
+                <LiveHelpOutlinedIcon />
+              </ListItemIcon>
+              <ListItemText>Grievance</ListItemText>
+            </ListItemButton>
+          </ListItem> */}
 
-        <ListItem disablePadding onClick={logout}>
-          <ListItemButton>
+          <ListItem disablePadding onClick={logout}>
+            <ListItemButton>
+              <ListItemIcon>
+                <LogoutRoundedIcon />
+              </ListItemIcon>
+              <ListItemText>Logout</ListItemText>
+            </ListItemButton>
+          </ListItem>
+        </List>
+      )}
+
+      {/* Super Admin ADMIN SIDES  */}
+      {role === "Super Admin" && (
+        <List>
+          <ListItem disablePadding onClick={() => navigate("/admin/dashboard")}>
+            <ListItemButton>
+              <ListItemIcon>
+                <LeaderboardSharpIcon />
+              </ListItemIcon>
+              <ListItemText>Dashboard</ListItemText>
+            </ListItemButton>
+          </ListItem>
+
+          <ListItemButton onClick={handleClick1}>
             <ListItemIcon>
-              <AccountCircleIcon />
+              <FolderSharedOutlinedIcon />
             </ListItemIcon>
-            <ListItemText>Logout</ListItemText>
+            <ListItemText primary="Farmer" />
+            {open1 ? <ExpandLess /> : <ExpandMore />}
           </ListItemButton>
-        </ListItem>
-      </List>
+
+          <Collapse in={open1} timeout="auto" unmountOnExit>
+            <List component="div" disablePadding>
+              <>
+                <ListItemButton
+                  sx={{ pl: 4 }}
+                  onClick={() => navigate("/admin/AddFarmer")}
+                >
+                  <ListItemIcon>
+                    <SubdirectoryArrowRightIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Farmer details" />
+                </ListItemButton>
+
+                {/* <ListItemButton
+                    sx={{ pl: 4 }}
+                    onClick={() => navigate("/admin/ApprovalTable")}
+                  >
+                    <ListItemIcon>
+                      <SubdirectoryArrowRightIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="Add milk amount" />
+                  </ListItemButton> */}
+              </>
+
+              {/* <ListItemButton
+                sx={{ pl: 4 }}
+                onClick={() => navigate("/admin/DLCApproval")}
+              >
+                <ListItemIcon>
+                  <SubdirectoryArrowRightIcon />
+                </ListItemIcon>
+                <ListItemText primary={`DLC Approval`} />
+              </ListItemButton> */}
+
+              {/* <ListItemButton
+                sx={{ pl: 4 }}
+                onClick={() => navigate("/admin/SLSCApproval")}
+              >
+                <ListItemIcon>
+                  <SubdirectoryArrowRightIcon />
+                </ListItemIcon>
+                <ListItemText primary="SLSC Approval" />
+              </ListItemButton> */}
+            </List>
+          </Collapse>
+
+          <ListItem disablePadding onClick={() => navigate("/admin/report")}>
+            <ListItemButton>
+              <ListItemIcon>
+                <ContentPasteOutlinedIcon />
+              </ListItemIcon>
+              <ListItemText>Reports</ListItemText>
+            </ListItemButton>
+          </ListItem>
+
+          <ListItemButton onClick={blogClick}>
+            <ListItemIcon>
+              <AdminPanelSettingsOutlinedIcon />
+            </ListItemIcon>
+            <ListItemText primary="Admin" />
+            {openBlog ? <ExpandLess /> : <ExpandMore />}
+          </ListItemButton>
+
+          <Collapse in={openBlog} timeout="auto" unmountOnExit>
+            {role === "Super Admin" && (
+              <>
+                <List component="div" disablePadding>
+                  <ListItemButton
+                    sx={{ pl: 4 }}
+                    onClick={() => navigate("/admin/adminManagement")}
+                  >
+                    <ListItemIcon>
+                      <SubdirectoryArrowRightIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="Add Admin" />
+                  </ListItemButton>
+                </List>
+              </>
+            )}
+
+            {/* <List component="div" disablePadding>
+              <ListItemButton
+                sx={{ pl: 4 }}
+                onClick={() => navigate("/admin/AddDCS")}
+              >
+                <ListItemIcon>
+                  <SubdirectoryArrowRightIcon />
+                </ListItemIcon>
+                <ListItemText primary="Add DCS" />
+              </ListItemButton>
+            </List> */}
+          </Collapse>
+
+          {/* <ListItem disablePadding onClick={() => navigate("/admin/Grievance")}>
+            <ListItemButton>
+              <ListItemIcon>
+                <LiveHelpOutlinedIcon />
+              </ListItemIcon>
+              <ListItemText>Grievance</ListItemText>
+            </ListItemButton>
+          </ListItem> */}
+
+          <ListItem disablePadding onClick={logout}>
+            <ListItemButton>
+              <ListItemIcon>
+                <LogoutRoundedIcon />
+              </ListItemIcon>
+              <ListItemText>Logout</ListItemText>
+            </ListItemButton>
+          </ListItem>
+        </List>
+      )}
+
       <Divider />
     </div>
   );
@@ -348,11 +723,7 @@ const Dashboard = (props) => {
               <MenuIcon />
             </IconButton>
 
-
-            <Typography>
-              DCS Name
-            </Typography>
-
+            <Typography>{role}</Typography>
 
             <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
               <Menu
@@ -396,8 +767,19 @@ const Dashboard = (props) => {
               <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                   {/* <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" /> */}
-                  <AccountCircleIcon fontSize="large" style={{ color: 'white' }} />
-                  <Typography color={"white"}> Arnab</Typography>
+                  <Typography
+                    className="p-2 rounded"
+                    color={"white"}
+                    backgroundColor={"#0a56a1"}
+                  >
+                    {formattedDate} - {formattedTime}
+                  </Typography>
+                  &nbsp;
+                  <AccountCircleIcon
+                    fontSize="large"
+                    style={{ color: "white" }}
+                  />
+                  <Typography color={"white"}> {user?.name}</Typography>
                 </IconButton>
               </Tooltip>
               <Menu
@@ -468,7 +850,7 @@ const Dashboard = (props) => {
         component="main"
         sx={{
           flexGrow: 1,
-          p: 3,
+          p: 2,
           width: { sm: `calc(100% - ${drawerWidth}px)` },
         }}
       >

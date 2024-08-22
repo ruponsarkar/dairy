@@ -259,6 +259,8 @@ const NewRequest = () => {
 
   }
 
+ 
+
   const getFrom = () => {
     // const data = {
     //   limit: 10,
@@ -308,7 +310,7 @@ const NewRequest = () => {
       <Breadcrumbs aria-label="breadcrumb">
         <StyledBreadcrumb
           component="a"
-          href="/admin"
+          href="/#/admin/dashboard"
           label="Home"
           icon={<HomeIcon fontSize="small" />}
         />
@@ -368,6 +370,11 @@ const NewRequest = () => {
                 </MenuItem>
               ))}
             </Select>
+          </FormControl>
+          <FormControl>
+            <IconButton>
+              <CancelIcon />
+            </IconButton>
           </FormControl>
           {requestData.filterBy &&
             <IconButton onClick={handleClearFilter}>
@@ -474,29 +481,29 @@ const NewRequest = () => {
                   <div className="text-center card">
                     <h3>Pan Card</h3>
                     {/* <a href={`http://localhost:8800/${selectedRow.panCard}`}> */}
-                    <img src={`http://localhost:8800/${selectedRow.panCard}`} className="img" alt=""
+                    <img src={`https://milksubsidydairyassam.com:8800/${selectedRow.panCard}`} className="img" alt=""
                       onClick={() => {
                         setOpenImgView(true);
-                        setSelectedImg(`http://localhost:8800/${selectedRow.panCard}`)
+                        setSelectedImg(`https://milksubsidydairyassam.com:8800/${selectedRow.panCard}`)
                       }} />
                     {/* </a> */}
                   </div>
                   <div className="text-center card">
                     <h3>Aadhar Card</h3>
-                    <img src={`http://localhost:8800/${selectedRow.aadharCard}`} className="img" alt=""
+                    <img src={`https://milksubsidydairyassam.com:8800/${selectedRow.aadharCard}`} className="img" alt=""
                       onClick={() => {
                         setOpenImgView(true);
-                        setSelectedImg(`http://localhost:8800/${selectedRow.aadharCard}`)
+                        setSelectedImg(`https://milksubsidydairyassam.com:8800/${selectedRow.aadharCard}`)
                       }} />
                   </div>
                   <div className="text-center card">
                     <h3>
                       Passbook
                     </h3>
-                    <img src={`http://localhost:8800/${selectedRow.passbook}`} className="img" alt=""
+                    <img src={`https://milksubsidydairyassam.com:8800/${selectedRow.passbook}`} className="img" alt=""
                       onClick={() => {
                         setOpenImgView(true);
-                        setSelectedImg(`http://localhost:8800/${selectedRow.passbook}`)
+                        setSelectedImg(`https://milksubsidydairyassam.com:8800/${selectedRow.passbook}`)
                       }} />
                   </div>
                 </div>

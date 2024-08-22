@@ -71,10 +71,10 @@ const Verify = ({ setIsVerified, setMobileNumber, setShowFileInput }) => {
     <>
       <div className="container">
         <div className="py-4">
-          <h2>
-            Providing Rs. 5 subsidy to farmers pouring milk to Dairy
-            Co-operative Societies
-          </h2>
+          <h5>
+          Providing Rs. 5 subsidy to farmers pouring milk to Dairy
+          Co-operative Societies
+          </h5>
 
           <Paper elevation={4}>
             <div className="row p-4">
@@ -126,6 +126,7 @@ const Verify = ({ setIsVerified, setMobileNumber, setShowFileInput }) => {
           </Paper>
         </div>
       </div>
+      
     </>
   );
 };

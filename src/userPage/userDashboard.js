@@ -218,7 +218,7 @@ const [farmer, setFarmer] = useState(JSON.parse(sessionStorage.getItem('farmer')
 
         <Collapse in={openBlog} timeout="auto" unmountOnExit>
           <List component="div" disablePadding>
-            <ListItemButton sx={{ pl: 4 }} onClick={() => navigate("/admin/adminManagement")}>
+            <ListItemButton sx={{ pl: 4 }} onClick={() => navigate("/#/admin/adminManagement")}>
               <ListItemIcon>
                 <SubdirectoryArrowRightIcon />
               </ListItemIcon>

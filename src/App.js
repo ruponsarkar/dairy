@@ -23,8 +23,8 @@ import Report from './AdminPages/pages/report';
 import AddDCS from './AdminPages/pages/addDCS';
 import AddFarmer from './AdminPages/pages/addFarmer';
 import SLSCApproval from './AdminPages/pages/slscApproval';
-
-
+import DLCApproval from './AdminPages/pages/dlcApproval';
+import DCSData from './AdminPages/pages/dcsdata';
 
 
 import ApplyForm from './userPage/applyForm';
@@ -87,9 +87,8 @@ function App() {
       {user === 'admin' &&
         <Routes>
           {/* admin  */}
-          <Route path='/admin' element={<Dashboard />}>
-            
-            <Route path='/admin' element={<DashboardPage />} />
+          <Route path='admin' element={<Dashboard />}>
+            <Route path='dashboard' element={<DashboardPage />} />
             <Route path='newRequest' element={<NewRequest />} />
             <Route path='AdminManagement' element={<AdminManagement />} />
             <Route path='PaymentPage' element={<PaymentPage />} />
@@ -100,6 +99,8 @@ function App() {
             <Route path='AddDCS' element={<AddDCS />} />
             <Route path='AddFarmer' element={<AddFarmer />} />
             <Route path='SLSCApproval' element={<SLSCApproval />} />
+            <Route path='DLCApproval' element={<DLCApproval />} />
+            <Route path='DCSData' element={<DCSData />} />
 
           </Route>
 

@@ -26,7 +26,7 @@ module.exports = {
     let response = {};
     db.query(selectQuery, [email, password], (err, result) => {
       if (!err) {
-        if (result?.length >= 1) {
+        if (result.length >= 1) {
           response = {
             status: 200,
             authenticated: true,
@@ -56,9 +56,7 @@ module.exports = {
   },
 
   addOrUpdateAdmin(form, callback) {
-
     console.log("form ==>", form);
-
 
     let insertQuery = `
   INSERT INTO admins (uid, name, mobileNumber, email, role, district, password, status) 
@@ -123,16 +121,17 @@ module.exports = {
     });
   },
 
-  createDCS(form, callback) {
+  createDCS(form, user, callback) {
     let uid = Date.now();
 
     let dcsQuery = `
-    INSERT INTO dcs (uid, name, registration_no, district, address, status) 
-    VALUES (?, ?, ?, ?, ?, ?)
+    INSERT INTO dcs (uid, dlc_id, name, registration_no, district, address, status) 
+    VALUES (?, ?, ?, ?, ?, ?, ?)
   `;
 
     let dcsparams = [
       uid,
+      user.uid,
       form.name,
       form.registration_no,
       form.district,
@@ -143,10 +142,11 @@ module.exports = {
     db.query(dcsQuery, dcsparams, (err, result) => {
       if (err) {
         console.error("Database error:", err);
-        callback && callback({
-          status: 400,
-          message: "failed"
-        });
+        callback &&
+          callback({
+            status: 400,
+            message: "failed",
+          });
         return; // Exit early on error
       }
 
@@ -167,7 +167,7 @@ module.exports = {
         null,
         uid,
         "DCS",
-        null,
+        form.district,
         form.password,
         form.status,
       ];
@@ -191,34 +191,114 @@ module.exports = {
     });
   },
 
-  getAllDCS(callback) {
-    let query = `
+  getAllDCS(user, callback) {
+    let dlc_id = "";
+    let query = "";
+    if (user.role === "DLC") {
+      console.log("uid", user.uid);
+      dlc_id = user.uid;
+      query = `
+    SELECT * FROM dcs WHERE status = 1 AND dlc_id = ${dlc_id}
+  `;
+    } else {
+      query = `
     SELECT * FROM dcs WHERE status = 1
   `;
+    }
 
     db.query(query, (err, results) => {
-        if (err) {
-            console.error("Database error:", err);
-            callback && callback({
-                status: 400,
-                message: "failed",
-                data: null
-            });
-        } else {
-            callback && callback({
-                status: 200,
-                message: "success",
-                data: results
-            });
-        }
+      if (err) {
+        console.error("Database error:", err);
+        callback &&
+          callback({
+            status: 400,
+            message: "failed",
+            data: null,
+          });
+      } else {
+        callback &&
+          callback({
+            status: 200,
+            message: "success",
+            data: results,
+          });
+      }
     });
-}
+  },
 
 
+  getApplicationStatisticsData_DistrictWise(district, callback) {
+    let query = `SELECT * FROM forms WHERE district=?`;
+
+    db.query(query, [district], (err, results) => {
+      if (err) {
+        console.error("Database error:", err);
+        callback && callback({
+          status: 400,
+          message: "failed",
+          data: null
+        });
+      } else {
+        callback && callback({
+          status: 200,
+          message: "success",
+          data: results
+        });
+      }
+    });
+  },
+  getApplicationStatisticsData_DCSWise(dcs, callback) {
+    try{
+      let query = `SELECT * FROM forms WHERE registration_no_of_co_operatice_society=?`;
+      db.query(query, [dcs], (err, results) => {
+        if (err) {
+          console.error("Database error:", err);
+          callback && callback({
+            status: 400,
+            message: "failed",
+            data: null
+          });
+        } else {
+          callback && callback({
+            status: 200,
+            message: "success",
+            data: results
+          });
+        }
+      });
+    }catch(error){
+      callback && callback({
+        status: 400,
+        message: "failed",
+        data: null
+      });
+    }
+  },
+  getAllDCS_DistrictWise(district, callback) {
+    let query = `SELECT * FROM dcs WHERE district=? AND status = 1`;
+
+    db.query(query, [district], (err, results) => {
+      if (err) {
+        console.error("Database error:", err);
+        callback && callback({
+          status: 400,
+          message: "failed",
+          data: null
+        });
+      } else {
+        callback && callback({
+          status: 200,
+          message: "success",
+          data: results
+        });
+      }
+    });
+  }
 
 
 
 };
+
 
 function generateAccessToken(username) {
   return jwt.sign({ name: username }, process.env.TOKEN_SECRET, {

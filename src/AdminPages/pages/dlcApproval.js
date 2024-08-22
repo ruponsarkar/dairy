@@ -29,7 +29,7 @@ import {
   Link,
 } from "@mui/material";
 import { tableCellClasses } from "@mui/material/TableCell";
-import { styled } from "@mui/material/styles";
+import { styled, emphasize } from "@mui/material/styles";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import Application from "../../components/register/application";
 import api from "../../API/api";
@@ -39,6 +39,33 @@ import Checkbox from "@mui/material/Checkbox";
 import { CSVLink, CSVDownload } from "react-csv";
 import PaymentsIcon from "@mui/icons-material/Payments";
 import Loader from "../../components/pannel/loader";
+
+
+import Breadcrumbs from "@mui/material/Breadcrumbs";
+import Chip from "@mui/material/Chip";
+import HomeIcon from "@mui/icons-material/Home";
+import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined';
+
+const StyledBreadcrumb = styled(Chip)(({ theme }) => {
+  const backgroundColor =
+      theme.palette.mode === "light"
+          ? theme.palette.grey[100]
+          : theme.palette.grey[800];
+  return {
+      backgroundColor,
+      height: theme.spacing(3),
+      color: theme.palette.text.primary,
+      fontWeight: theme.typography.fontWeightRegular,
+      "&:hover, &:focus": {
+          backgroundColor: emphasize(backgroundColor, 0.06),
+      },
+      "&:active": {
+          boxShadow: theme.shadows[1],
+          backgroundColor: emphasize(backgroundColor, 0.12),
+      },
+  };
+});
+
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -88,7 +115,7 @@ const defaultdistricts = [
 
 const statuses = ["Approve", "Reject", "Draft", "Incompleted"];
 
-const SLSCApproval = () => {
+const DLCApproval = () => {
   const [selectedDistrict, setSelectedDistrict] = useState("");
   const [selectedStatus, setSelectedStatus] = useState("");
   const [loading, setLoading] = useState(false);
@@ -183,38 +210,23 @@ const SLSCApproval = () => {
     getMasterWithReport();
   }, [month]);
 
-  const handleAddLitter = (id, litter) => {
-    const updatedItems = data.map((item) =>
-      item.id === id ? { ...item, litter: litter } : item
-    );
-    setData(updatedItems);
-  };
-
   const handleApproveAll = () => {
-
-    console.log(month);
-    console.log(data);
-    let selectedData = data.filter((e) => e.selected && e.approveBy == 2);
-    let needUpdatesData = data.filter(
-      (e) => e.litter && e.isApprove == "Pending"
-    );
-
+    let selectedData = data.filter((e) => e.selected && e.approveBy == 1);
+    // let needUpdatesData = data.filter(
+    //   (e) => e.litter && e.isApprove == "Pending"
+    // );
     console.log("selectedData", selectedData);
 
     if (!month || !selectedData.length) {
-        Swal.fire({
-          title: "No data selected !",
-          text: "You must selct a data!",
-          icon: "warning",
-        });
-        return;
-      }
+      Swal.fire({
+        title: "No data selected !",
+        text: "You must selct a data!",
+        icon: "warning",
+      });
+      return;
+    }
 
-
-
-    // return;
-
-    let approveBy = 3;
+    let approveBy = 2;
     updateMonthlyReport(selectedData, approveBy);
 
     return;
@@ -276,10 +288,10 @@ const SLSCApproval = () => {
       .then((res) => {
         console.log("updateMonthlyReport: ", res);
         Swal.fire({
-            title: "Approved!",
-            text: "Data approved!",
-            icon: "success",
-          });
+          title: "Approved!",
+          text: "Data approved!",
+          icon: "success",
+        });
 
         setLoading(false);
         getMasterWithReport();
@@ -303,7 +315,6 @@ const SLSCApproval = () => {
     }
     console.log(user);
     setLoading(true);
-    console.log("selectedDistrict ", selectedDistrict);
     api
       .getMasterWithReport(month, selectedDistrict, user)
       .then((res) => {
@@ -334,9 +345,81 @@ const SLSCApproval = () => {
     setSelectAll(allSelected);
   };
 
+  const [openDaybook, setOpenDaybook] = useState(false);
+
+  const [daybook, setDaybook] = useState();
+
+  const handleGetDaybook = (data) => {
+    console.log("data", data);
+    let requestData = {
+      admin_id: data.dcsID,
+      role: "DCS",
+      month: month,
+    };
+    // console.log("r daat", requestData);
+    getDocuments(requestData);
+  };
+
+  const getDocuments = (data) => {
+    // role, month, admin_id
+    console.log("data", data);
+    api
+      .getDocuments(data)
+      .then((res) => {
+        console.log("res daybook: ", res);
+        setDaybook(res.data.data);
+        setOpenDaybook(true);
+      })
+      .catch((err) => {
+        console.log("err : ", err);
+      });
+  };
+
   return (
+
+    <>
+    <Paper className="p-1 mb-3">
+                <Toolbar
+                    sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "space-between",
+                        flexWrap: "wrap",
+                        "@media (max-width: 600px)": {
+                            flexDirection: "column",
+                            alignItems: "flex-start",
+                        },
+                    }}
+                >
+                    <Typography
+                        sx={{ display: "flex", gap: 2 }}
+                        variant="h6"
+                        id="tableTitle"
+                        component="div"
+                    >
+                        DLC Approval
+                    </Typography>
+                    <div role="presentation">
+                        <Breadcrumbs aria-label="breadcrumb">
+                            <StyledBreadcrumb
+                                component="a"
+                                href="/#/admin/dashboard"
+                                label="Home"
+                                icon={<HomeIcon fontSize="small" />}
+                            />
+                            {/* <StyledBreadcrumb component="a" href="#" label="Catalog" /> */}
+                            <StyledBreadcrumb label="DLC Approval" />
+                        </Breadcrumbs>
+                    </div>
+                </Toolbar>
+              </Paper>
+
+
+
     <Paper className="p-2">
       <Loader open={loading} />
+
+              
 
       <Box
         sx={{
@@ -351,52 +434,14 @@ const SLSCApproval = () => {
           },
         }}
       >
-        {/* <Box sx={{ display: "flex", gap: 2 }}>
-          <FormControl sx={{ minWidth: 180, maxWidth: 200 }} size="small">
-            <InputLabel id="assam-district-label">Select District</InputLabel>
-            <Select
-              labelId="assam-district-label"
-              id="assam-district"
-              value={selectedDistrict}
-              label="Select District"
-              onChange={handleDistrictChange}
-            >
-              {districts &&
-                districts.map((district) => (
-                  <MenuItem key={district} value={district}>
-                    {district}
-                  </MenuItem>
-                ))}
-            </Select>
-          </FormControl>
-          <FormControl sx={{ minWidth: 180, maxWidth: 200 }} size="small">
-            <InputLabel id="status-label">Select Status</InputLabel>
-            <Select
-              labelId="status-label"
-              id="status"
-              value={selectedStatus}
-              label="Select Status"
-              onChange={handleStatusChange}
-            >
-              {statuses.map((status) => (
-                <MenuItem key={status} value={status}>
-                  {status}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-          {requestData.filterBy && (
-            <IconButton onClick={handleClearFilter}>
-              <CancelIcon />
-            </IconButton>
-          )}
-        </Box> */}
-
         <div>
           {data && (
             <div>
               <CSVLink data={data} filename={"AHVD_DATA.csv"}>
-                Download Data
+              <Button variant="contained">
+                        <FileDownloadOutlinedIcon />
+                         Download Data
+                      </Button>
               </CSVLink>
             </div>
           )}
@@ -414,7 +459,7 @@ const SLSCApproval = () => {
         />
         <div>
           <Button variant="contained" onClick={handleApproveAll}>
-            Approve and sent to Finance
+            Approve to SLSC
           </Button>
         </div>
       </div>
@@ -440,7 +485,8 @@ const SLSCApproval = () => {
               <StyledTableCell>Quantity of Milk(in Litres)</StyledTableCell>
               <StyledTableCell>Amount (in Rs)</StyledTableCell>
               <StyledTableCell align="center">Status</StyledTableCell>
-              <StyledTableCell align="center">Action</StyledTableCell>
+              <StyledTableCell align="center">View</StyledTableCell>
+              <StyledTableCell align="center">Daybook</StyledTableCell>
             </TableRow>
           </TableHead>
 
@@ -453,7 +499,7 @@ const SLSCApproval = () => {
                       <Checkbox
                         checked={row.selected ? true : false}
                         onClick={() => handleSelect(row.id)}
-                        disabled={row.approveBy == 3 ? true : false}
+                        disabled={row.approveBy == 2 ? true : false}
                       />
                     </TableCell>
                     <TableCell component="th" scope="row">
@@ -471,10 +517,10 @@ const SLSCApproval = () => {
                     <TableCell>
                       <span
                         className={`${
-                          row.approveBy !== 3 ? "bg-warning" : "bg-success"
+                          row.approveBy !== 2 ? "bg-warning" : "bg-success"
                         } rounded px-2`}
                       >
-                        {row.approveBy === 3 ? "Approved" : "Pending"}
+                        {row.approveBy === 2 ? "Approved" : "Pending"}
                       </span>
                     </TableCell>
                     <TableCell align="center">
@@ -485,6 +531,17 @@ const SLSCApproval = () => {
                         onClick={() => handleClickOpen(row)}
                       >
                         View
+                      </Button>
+                    </TableCell>
+
+                    <TableCell align="center">
+                      <Button
+                        variant="outlined"
+                        color="primary"
+                        size="small"
+                        onClick={() => handleGetDaybook(row)}
+                      >
+                        Daybook
                       </Button>
                     </TableCell>
                   </TableRow>
@@ -521,13 +578,13 @@ const SLSCApproval = () => {
                     <h3>Pan Card</h3>
                     {/* <a href={`http://localhost:8800/${selectedRow.panCard}`}> */}
                     <img
-                      src={`https://milksubsidydairyassam.com:8800/${selectedRow.panCard}`}
+                      src={`http://localhost:8800/${selectedRow.panCard}`}
                       className="img"
                       alt=""
                       onClick={() => {
                         setOpenImgView(true);
                         setSelectedImg(
-                          `https://milksubsidydairyassam.com:8800/${selectedRow.panCard}`
+                          `http://localhost:8800/${selectedRow.panCard}`
                         );
                       }}
                     />
@@ -536,13 +593,13 @@ const SLSCApproval = () => {
                   <div className="text-center card">
                     <h3>Aadhar Card</h3>
                     <img
-                      src={`https://milksubsidydairyassam.com:8800/${selectedRow.aadharCard}`}
+                      src={`http://localhost:8800/${selectedRow.aadharCard}`}
                       className="img"
                       alt=""
                       onClick={() => {
                         setOpenImgView(true);
                         setSelectedImg(
-                          `https://milksubsidydairyassam.com:8800/${selectedRow.aadharCard}`
+                          `http://localhost:8800/${selectedRow.aadharCard}`
                         );
                       }}
                     />
@@ -550,13 +607,13 @@ const SLSCApproval = () => {
                   <div className="text-center card">
                     <h3>Passbook</h3>
                     <img
-                      src={`https://milksubsidydairyassam.com:8800/${selectedRow.passbook}`}
+                      src={`http://localhost:8800/${selectedRow.passbook}`}
                       className="img"
                       alt=""
                       onClick={() => {
                         setOpenImgView(true);
                         setSelectedImg(
-                          `https://milksubsidydairyassam.com:8800/${selectedRow.passbook}`
+                          `http://localhost:8800/${selectedRow.passbook}`
                         );
                       }}
                     />
@@ -626,8 +683,36 @@ const SLSCApproval = () => {
           </DialogContentText>
         </DialogContent>
       </Dialog>
+
+      {/* for daybook  */}
+      <Dialog
+        open={openDaybook}
+        onClose={() => setOpenDaybook(false)}
+        aria-labelledby="protein-modal-title"
+        fullWidth={true}
+        maxWidth={"lg"}
+      >
+        <DialogContent>
+          <DialogContentText>
+            {daybook ? (
+              <div className="text-center">
+                {/* https://milksubsidydairyassam.com:8800/  */}
+               
+                <img
+                  src={`https://milksubsidydairyassam.com:8800/${daybook.file}`}
+                  className="img-fluid"
+                  alt=""
+                />
+              </div>
+            ) : (
+              <>No daybook found</>
+            )}
+          </DialogContentText>
+        </DialogContent>
+      </Dialog>
     </Paper>
+    </>
   );
 };
 
-export default SLSCApproval;
+export default DLCApproval;

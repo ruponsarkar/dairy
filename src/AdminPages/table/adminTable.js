@@ -15,7 +15,7 @@ import api from "../../API/api";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
-    backgroundColor: theme.palette.common.black,
+    backgroundColor: theme.palette.common.blue,
     color: theme.palette.common.white,
   },
   [`&.${tableCellClasses.body}`]: {
@@ -96,15 +96,15 @@ export default function AdminTable({ data, getAdmins }) {
         <Table sx={{ minWidth: 700 }} aria-label="customized table">
           <TableHead>
             <TableRow>
-              <StyledTableCell>SL No</StyledTableCell>
-              <StyledTableCell>Name</StyledTableCell>
-              <StyledTableCell>Email</StyledTableCell>
-              <StyledTableCell>Phone</StyledTableCell>
-              <StyledTableCell>District</StyledTableCell>
-              <StyledTableCell>Role</StyledTableCell>
-              <StyledTableCell>Password</StyledTableCell>
-              <StyledTableCell>Status</StyledTableCell>
-              <StyledTableCell>Action</StyledTableCell>
+              <StyledTableCell className="text-center p-1">SL No</StyledTableCell>
+              <StyledTableCell className="p-2">Name</StyledTableCell>
+              <StyledTableCell className="p-2">Email</StyledTableCell>
+              <StyledTableCell className="text-center p-1">Phone</StyledTableCell>
+              <StyledTableCell className="text-center p-1">District</StyledTableCell>
+              <StyledTableCell className="text-center p-1">Role</StyledTableCell>
+              <StyledTableCell className="text-center p-1">Password</StyledTableCell>
+              <StyledTableCell className="text-center p-1">Status</StyledTableCell>
+              <StyledTableCell className="text-center p-1">Action</StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -114,18 +114,18 @@ export default function AdminTable({ data, getAdmins }) {
                   <StyledTableCell component="th" scope="row">
                     {index + 1}
                   </StyledTableCell>
-                  <StyledTableCell>{row.name}</StyledTableCell>
-                  <StyledTableCell>{row.email}</StyledTableCell>
-                  <StyledTableCell>{row.mobileNumber}</StyledTableCell>
-                  <StyledTableCell>{row.district}</StyledTableCell>
-                  <StyledTableCell>{row.role}</StyledTableCell>
+                  <StyledTableCell className="p-1">{row.name}</StyledTableCell>
+                  <StyledTableCell className="p-1">{row.email}</StyledTableCell>
+                  <StyledTableCell className="text-center p-1">{row.mobileNumber ? row.mobileNumber : '---'}</StyledTableCell>
+                  <StyledTableCell className="text-center p-1">{row.district ? row.district : '---' }</StyledTableCell>
+                  <StyledTableCell className="text-center p-1">{row.role}</StyledTableCell>
 
-                  <StyledTableCell>------</StyledTableCell>
-                  <StyledTableCell>
+                  <StyledTableCell className="text-center p-1">------</StyledTableCell>
+                  <StyledTableCell className="text-center p-1">
                     {row.status === 'Active' && <div className="bg-success text-center text-white rounded">Active</div> }
                     {row.status === 'Inactive' && <div className="bg-danger text-center text-white rounded">Inactive</div> }
                     </StyledTableCell>
-                  <StyledTableCell>
+                  <StyledTableCell className="text-center p-1">
                     <BasicMenu menuItems={menuItems(row)} />
                   </StyledTableCell>
                 </StyledTableRow>

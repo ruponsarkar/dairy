@@ -28,7 +28,8 @@ const Login = () => {
                     if (res.data.authenticated) {
                         console.log("Login success==>", res);
                         setToken(res.data.data, res.data.token);
-                        nagivate('/admin');
+                        window.location.reload();
+                        // nagivate('/admin');
                         setLoading(false);
                     } else {
                         setLoading(false);
@@ -61,7 +62,7 @@ const Login = () => {
             <div className='col-12 pt-3 text-center'>
                 <h2><i>Providing Rs. 5 subsidy to farmers pouring milk to Dairy Co-operative Societies</i></h2>
                 <br />
-                <h2 className='text-white bg-warning'>ADMIN LOGIN/SUPER ADMIN/FINANCE</h2>
+                <h2 className='text-white bg-warning'>DCS/DLC/SLSC/Finance LOGIN</h2>
             </div>
                 <section>
                     <div class="container">
@@ -84,7 +85,7 @@ const Login = () => {
                                                 {/* <form> */}
 
                                                 <div className="inputs">
-                                                    <label>Email Address</label>
+                                                    <label>Email Address or User ID</label>
                                                     <input type="email" className='form-control' value={email} onChange={e => setEmail(e.target.value)} placeholder="enter a valid email address" />
                                                     
                                                     <label>Password</label>
@@ -116,7 +117,7 @@ const Login = () => {
 
                                                 <div class="row mb-4 px-3">
                                                     <label class="font-weight-bold">Don't have an account ?
-                                                        &nbsp;<a class="text-danger" href='/register'>Register</a></label>
+                                                        &nbsp;<a class="text-danger" href='javascript:;'>Register</a></label>
                                                 </div>
                                                 {/* </form> */}
                                             </div>

@@ -242,7 +242,7 @@ const DashboardTable = () => {
     // }
 
     api.getFrom(requestData).then((res) => {
-      console.log("res :", res);
+      // console.log("res :", res);
       setData(res.data.data)
     })
       .catch((err) => {
@@ -312,30 +312,23 @@ const DashboardTable = () => {
                       {row.status === 'Approve' && <span className="bg-success px-3 rounded">Approved</span>}
                       {row.status === 'Reject' && <span className="bg-danger px-3 rounded">Rejected</span>}
                     </TableCell>
-                    {/* <TableCell className="p-1" align="right">
-                      <Button
-                        variant="outlined"
-                        color="primary"
-                        size="small"
-                        onClick={() => handleClickOpen(row)}
-                      >
-                        View
-                      </Button>
-                    </TableCell> */}
-                    {/* <TableCell align="right">
-                      <Button
-                        variant="outlined"
-                        color="success"
-                        size="small"
-                      >
-                        Payout <PaymentsIcon />
-                      </Button>
-                    </TableCell> */}
                   </TableRow>
                 );
               })}
           </TableBody>
         </Table>
+        <div>
+          {!data && (
+            <div className="text-center p-5">
+              <img
+            src="../assets/noData.png"
+            alt="no data"
+            className="govt-logo"
+          />
+              <p>Data not found</p>
+            </div>
+          )}
+        </div>
       </TableContainer>
 
       <Dialog
