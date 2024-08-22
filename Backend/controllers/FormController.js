@@ -20,7 +20,7 @@ module.exports = {
           process.env.FILE_UPLOAD_PATH,
           req.body.applicationId
         );
-        
+
         module.exports.checkDirectory(dest, () => {
           callback(null, dest);
         });
@@ -56,7 +56,65 @@ module.exports = {
       res.status(200).send(result);
     });
   },
-  
+
+  // ******************
+
+  upload_config_for_daybook: multer({
+    storage: multer.diskStorage({
+      destination: function (req, file, callback) {
+        // console.log(" ==>> ", req.body.id);
+        let folderName = "daybook";
+        let dest = path.join(
+          process.env.FILE_UPLOAD_PATH,
+          folderName,
+          req.body.id
+        );
+
+        console.log("dess", dest);
+
+        module.exports.checkDirectory(dest, () => {
+          callback(null, dest);
+        });
+      },
+      filename: function (req, file, callback) {
+        callback(null, req.body.fileName);
+      },
+    }),
+  }),
+
+  saveDaybook(req, res) {
+    let fileName = req.body.fileName;
+
+    let filePath = path.join(process.env.FILE_UPLOAD_PATH, 'daybook');
+    filePath = path.join(filePath, req.body.id, fileName);
+
+    let data = {
+      fileName: req.body.fileName,
+      month: req.body.month,
+      role: req.body.role,
+      admin_id: req.body.id,
+      type: req.body.type,
+      title: req.body.title,
+      filePath: filePath,
+    };
+    console.log("data==>>", data);
+
+    FormModel.updateDaybook(data, (result) => {
+      res.status(200).send(result);
+    });
+  },
+
+  // getDocuments() 
+  getDocuments(req, res) {
+    let data = req.body.data;
+    console.log("data ==>", data);
+    FormModel.getDocuments(data, (result) => {
+      res.status(200).send(result);
+    });
+  },
+
+  // *******************
+
   getFormByMobileNumber(req, res) {
     let data = req.body.mobileNumber;
     // console.log("======>>>", req.body.data.mobileNumber);
@@ -87,30 +145,23 @@ module.exports = {
     });
   },
 
-  updateFormStatus(req, res){
+  updateFormStatus(req, res) {
     console.log(req.body.data);
     let data = req.body.data;
-    FormModel.updateFormStatus(data, (result)=>{
+    FormModel.updateFormStatus(data, (result) => {
       res.status(200).send(result);
-    })
+    });
     return;
   },
-  
-  countStatus(req, res){
+
+  countStatus(req, res) {
     let user = req.body.user;
     // console.log("user ",user);
-    FormModel.countStatus(user, (result)=>{
+    FormModel.countStatus(user, (result) => {
       res.status(200).send(result);
       // res.status()
-    })
+    });
   },
-
-
-  
-
-
-
-
 
   createFarmer(req, res) {
     let form = req.body.formData;
@@ -119,7 +170,7 @@ module.exports = {
       res.status(200).send(result);
     });
   },
-  
+
   getAllFarmers(req, res) {
     let dsc = req.body.dsc;
     let user = req.body.user;
@@ -127,7 +178,6 @@ module.exports = {
       res.status(200).send(result);
     });
   },
-
 
   searchFarmer(req, res) {
     let search = req.body.search;
@@ -140,18 +190,4 @@ module.exports = {
       res.status(200).send(result);
     });
   },
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 };

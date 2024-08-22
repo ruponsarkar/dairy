@@ -6,9 +6,10 @@ import { useLocation } from "react-router-dom";
 import Nav2 from "../common/navbar";
 import Footer from "../common/footer";
 
-const Certificate = () => {
+const Certificate = ({data}) => {
   const params = useLocation();
-  console.log("==>>", params.state.data);
+
+  console.log("=======>>>", data);
 
   const downloadCertificate = () => {
     const input = document.getElementById('certificate');
@@ -40,7 +41,7 @@ const Certificate = () => {
 
   return (
     <>
-    <Nav2/>
+    {/* <Nav2/> */}
     
     <div className="container-fluid">
       <div className="row">
@@ -56,10 +57,10 @@ const Certificate = () => {
         </div>
         <div className="certificate-body pt-2">
           <h2><u>Certificate of Approval</u></h2>
-          <p>This is to certify that <strong> {params.state.data.name} </strong>is eligible for the Milk Subsidy Scheme provided by the Government of Assam.</p>
+          <p>This is to certify that <strong> {data.name} </strong>is eligible for the Milk Subsidy Scheme provided by the Government of Assam.</p>
           <p>This certification is issued based on the fulfillment of all necessary criteria and requirements as stipulated under the scheme guidelines.</p>
         </div>
-        <Application data={params.state.data} />
+        <Application data={data} />
         
         <div className="certificate-footer p-4 text-left">
           <div >
@@ -76,14 +77,7 @@ const Certificate = () => {
             3. ⁠payment is subject to availability of funds
             </p>
           </div>
-          {/* <div className="signatures">
-            <div className="signature">
-              <p>Authority 1</p>
-            </div>
-            <div className="signature">
-              <p>Authority 2</p>
-            </div>
-          </div> */}
+
         </div>
       </div>
     </div>
@@ -95,7 +89,7 @@ const Certificate = () => {
   </div>
   </div>
 
-  <Footer />
+  {/* <Footer /> */}
 
   </>
   );
