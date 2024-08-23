@@ -492,7 +492,7 @@ const ApprovalTable = () => {
                                     (in Litres)
                                 </StyledTableCell>
                                 <StyledTableCell className="text-center p-2">
-                                    Milk Quality
+                                    Milk Quality (Optional)
                                     <br/>
                                     (Fat / SNF / Water Content / Lactometer)
                                 </StyledTableCell>
