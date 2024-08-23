@@ -129,7 +129,7 @@ module.exports = {
   },
 
   async postMonthlyReport(data, month, amountPerLitter, approveBy, callback) {
-    const query = `INSERT INTO monthly_reports (applicationId, month, litter, amount, isApprove, approveBy, paymentStatus) VALUES ?`;
+    const query = `INSERT INTO monthly_reports (applicationId, month, litter, amount, quality, isApprove, approveBy, paymentStatus) VALUES ?`;
     const batchSize = 100;
     let insertedLength = 0;
 
@@ -141,6 +141,7 @@ module.exports = {
           month,
           e.litter,
           e.litter * amountPerLitter,
+          e.quality,
           "Approve",
           approveBy,
           "Pending",
@@ -219,6 +220,7 @@ module.exports = {
         monthly_reports.isApprove,
         monthly_reports.paymentStatus,
         monthly_reports.amount,
+        monthly_reports.quality,
         monthly_reports.month,
         monthly_reports.approveBy,
         dcs.name AS dcs_name,

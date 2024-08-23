@@ -194,14 +194,27 @@ const ApprovalTable = () => {
 
     // useEffect(())
 
-    const openFile = () => {
-        fileInput.current.click()
-    };
 
     const handleAddLitter = (id, litter) => {
+
+        console.log("name : ", );
+
         const updatedItems = data.map((item) =>
             item.id === id ? { ...item, litter: litter } : item
         );
+        console.log("updatedItems : ", updatedItems);
+        setData(updatedItems);
+    };
+
+
+    const handleData = (id, value, name) => {
+
+        console.log("name : ", name);
+
+        const updatedItems = data.map((item) =>
+            item.id === id ? { ...item, [name]: value } : item
+        );
+        console.log("updatedItems : ", updatedItems);
         setData(updatedItems);
     };
 
@@ -221,6 +234,9 @@ const ApprovalTable = () => {
         let needUpdatesData = data.filter(
             (e) => e.litter && e.isApprove == "Pending"
         );
+
+        // console.log("selectedData", selectedData);
+        // return;
 
         console.log("user", user);
         let approveBy = "";
@@ -472,11 +488,19 @@ const ApprovalTable = () => {
                                     District
                                 </StyledTableCell>
                                 <StyledTableCell className="text-center p-2">
-                                    Quantity of Milk(in Litres)
+                                    Quantity of Milk <br/>
+                                    (in Litres)
                                 </StyledTableCell>
+                                <StyledTableCell className="text-center p-2">
+                                    Milk Quality
+                                    <br/>
+                                    (Fat / SNF / Water Content / Lactometer)
+                                </StyledTableCell>
+
                                 <StyledTableCell className="text-center p-2">
                                     Amount (in Rs)
                                 </StyledTableCell>
+                                
                                 <StyledTableCell className="text-center p-2">
                                     Status
                                 </StyledTableCell>
@@ -490,7 +514,7 @@ const ApprovalTable = () => {
                             {data &&
                                 data.map((row, index) => {
                                     return (
-                                        <TableRow hover tabIndex={-1} key={row.name}>
+                                        <TableRow hover tabIndex={-1} key={index}>
                                             <TableCell className="text-center p-2">
                                                 {index + 1}
                                             </TableCell>
@@ -512,16 +536,36 @@ const ApprovalTable = () => {
                                             </TableCell>
                                             <TableCell className="text-center p-2">
                                                 <input
+                                                className="col-6 m-0 p-0"
                                                     type="number"
-                                                    name=""
+                                                    name="litter"
                                                     disabled={row.isApprove === "Approve" ? true : false}
                                                     value={row.litter ? row.litter : ""}
                                                     id=""
+                                                    // onChange={(e) =>
+                                                    //     handleAddLitter(row.id, e.target.value)
+                                                    // }
                                                     onChange={(e) =>
-                                                        handleAddLitter(row.id, e.target.value)
+                                                        handleData(row.id, e.target.value, 'litter')
                                                     }
                                                 />
                                             </TableCell>
+
+                                            <TableCell className="text-center p-2">
+                                                <input
+                                                    type="text"
+                                                    name="quality"
+                                                    id=""
+                                                    disabled={row.isApprove === "Approve" ? true : false}
+                                                    value={row.quality ? row.quality : row.isApprove ? " " : ""}
+                                                    placeholder="Fat/SNF/WC/Lactometer"
+                                                    onChange={(e) =>
+                                                        handleData(row.id, e.target.value, 'quality')
+                                                    }
+                                                    
+                                                />
+                                            </TableCell>
+
                                             <TableCell className="text-center p-2">
                                                 {row.litter ? row.litter * 5 : 0} ₹
                                             </TableCell>
