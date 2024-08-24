@@ -80,6 +80,7 @@ const Dashboard = (props) => {
   };
 
   const handleCloseUserMenu = () => {
+    console.log("Clicked");
     setAnchorElUser(null);
   };
 

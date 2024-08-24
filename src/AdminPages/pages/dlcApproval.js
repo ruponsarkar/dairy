@@ -576,15 +576,15 @@ const DLCApproval = () => {
                 <div className="documents d-flex justify-content-center border p-3 gap-4">
                   <div className="text-center card">
                     <h3>Pan Card</h3>
-                    {/* <a href={`http://localhost:8800/${selectedRow.panCard}`}> */}
+                    {/* <a href={`https://milksubsidydairyassam.com:8800/${selectedRow.panCard}`}> */}
                     <img
-                      src={`http://localhost:8800/${selectedRow.panCard}`}
+                      src={`https://milksubsidydairyassam.com:8800/${selectedRow.panCard}`}
                       className="img"
                       alt=""
                       onClick={() => {
                         setOpenImgView(true);
                         setSelectedImg(
-                          `http://localhost:8800/${selectedRow.panCard}`
+                          `https://milksubsidydairyassam.com:8800/${selectedRow.panCard}`
                         );
                       }}
                     />
@@ -593,13 +593,13 @@ const DLCApproval = () => {
                   <div className="text-center card">
                     <h3>Aadhar Card</h3>
                     <img
-                      src={`http://localhost:8800/${selectedRow.aadharCard}`}
+                      src={`https://milksubsidydairyassam.com:8800/${selectedRow.aadharCard}`}
                       className="img"
                       alt=""
                       onClick={() => {
                         setOpenImgView(true);
                         setSelectedImg(
-                          `http://localhost:8800/${selectedRow.aadharCard}`
+                          `https://milksubsidydairyassam.com:8800/${selectedRow.aadharCard}`
                         );
                       }}
                     />
@@ -607,13 +607,13 @@ const DLCApproval = () => {
                   <div className="text-center card">
                     <h3>Passbook</h3>
                     <img
-                      src={`http://localhost:8800/${selectedRow.passbook}`}
+                      src={`https://milksubsidydairyassam.com:8800/${selectedRow.passbook}`}
                       className="img"
                       alt=""
                       onClick={() => {
                         setOpenImgView(true);
                         setSelectedImg(
-                          `http://localhost:8800/${selectedRow.passbook}`
+                          `https://milksubsidydairyassam.com:8800/${selectedRow.passbook}`
                         );
                       }}
                     />

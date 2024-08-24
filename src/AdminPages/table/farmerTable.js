@@ -122,7 +122,7 @@ export default function FarmerTable({ data, getAdmins, setModalOpen, setApplicat
                         size="small"
                         onClick={() => handleClickOpenCetificate(row)}
                       >
-                        Download
+                        <i className="fa fa-download"></i>
                       </Button>
                     </TableCell>
 
@@ -210,12 +210,14 @@ export default function FarmerTable({ data, getAdmins, setModalOpen, setApplicat
                   </div>
                 </div>
               )}
-
-              <div>
-                <div className="text-center">
-                  <Button onClick={updateFile}>Want to Update Files ?</Button>
+              {JSON.parse(sessionStorage.getItem("user")).role === "DCS" && (
+                <div>
+                  <div className="text-center">
+                    <Button onClick={updateFile}>Want to Update Files ?</Button>
+                  </div>
                 </div>
-              </div>
+              )}
+
 
               {/* <div className="d-flex justify-content-center gap-3 m-3">
                 <div>

@@ -105,7 +105,7 @@ export default function Report() {
   const handleRangeSubsidy = () => {
     let id = '';
 
-    if(JSON.parse(sessionStorage.getItem("user")).role === 'DCS' ){
+    if (JSON.parse(sessionStorage.getItem("user")).role === 'DCS') {
       id = dcsID
     }
 
@@ -119,30 +119,100 @@ export default function Report() {
         console.log("ress ", res);
         setData(res.data.data);
         setAll(res.data.data);
+        if (JSON.parse(sessionStorage.getItem("user")).role == "Finance") {
+          handleViewBeneficiary(res.data.data);
+        }
         setLoading(false);
-        setReport(res.data.data.map((e, i)=> ({
-          'SL No': i+1,
+        setReport(res.data.data.map((e, i) => ({
+          'SL No': i + 1,
           'Name of Applicant': e.name,
           'Name of DCS': e.dcs_name,
           'Registration No': e.dcs_registration_no,
-          'Months' : e.subsidy_details,
+          'Months': e.subsidy_details,
           'Total Milk Quantity(in Liters)': e.quantity,
           'Amount (in Rs)': e.amounts,
           'Total Amount (in Rs)': e.total_amount,
-          'Bank Name' : e.bank_name,
-          'Account Holder Name' : e.bank_account_holder_name,
-          'Bank Account No' : e.bank_account_no,
-          'IFSC Code' : e.ifsc_code
-
-
-          ,
-        })) )
+          'Bank Name': e.bank_name,
+          'Account Holder Name': e.bank_account_holder_name,
+          'Bank Account No': e.bank_account_no,
+          'IFSC Code': e.ifsc_code
+        })))
       })
       .catch((err) => {
         setLoading(false);
         console.log("err e", err);
       });
   };
+
+  const handleCreateBeneficiary = (farmer) => {
+    console.log(farmer);
+    setLoading(true);
+    let beneficiary_id = 'Beneficiary_' + farmer?.bank_account_no;
+    const data = {
+      beneficiaryData: {
+        beneficiary_id: beneficiary_id,
+        beneficiary_name: farmer?.bank_account_holder_name,
+        beneficiary_contact_details: {
+          beneficiary_email: farmer?.bank_account_no + '@milksubsidydairyassam.com',
+          beneficiary_phone: farmer?.mobile || '',
+          beneficiary_country_code: '+91',
+          beneficiary_address: farmer?.district,
+          beneficiary_city: farmer?.district,
+          beneficiary_postal_code: farmer?.postal_code || '',
+        },
+        beneficiary_instrument_details: {
+          bank_account_number: farmer?.bank_account_no,
+          bank_ifsc: farmer?.ifsc_code,
+          vpa: 'test@upi'
+        }
+      },
+      additionalData: {
+        farmer_id: farmer?.applicationId,
+        api_request_id: Math.floor(Math.random() * 10000000000000001)
+      }
+    }
+    console.log("data=", data);
+    api.createBeneficiary(data).then((res) => {
+      Swal.fire('Beneficiary created successfully !');
+      handleViewBeneficiary(data);
+      setLoading(false);
+    })
+      .catch((err) => {
+        console.log("err : ", err);
+        setLoading(false);
+        Swal.fire('Something went wrong !');
+      })
+  }
+
+  useEffect(() => {
+    if (JSON.parse(sessionStorage.getItem("user")).role == "Finance") {
+      handleViewBeneficiary(data);
+    }
+  }, []);
+
+  const handleViewBeneficiary = (actualData) => {
+    api.viewBeneficiary(actualData).then((res) => {
+      let beneficiaries = res.data.data;
+      if (actualData?.length > 0 && beneficiaries?.length > 0) {
+        actualData.map(item1 => {
+          let flag = false;
+          beneficiaries.map(item2 => {
+            let beneficiary_id = 'Beneficiary_' + item1?.bank_account_no;
+            if (item2.beneficiary_id == beneficiary_id) {
+              flag = true;
+            }
+          });
+          item1.isBeneficiary = flag ? true : false;
+        });
+        console.log("DATA===", actualData);
+        // setData(data => ([...[], ...actualData]));
+        setData(actualData);
+      }
+    })
+      .catch((err) => {
+        console.log("err : ", err);
+      })
+  }
 
   return (
     <div>
@@ -181,7 +251,7 @@ export default function Report() {
           </div>
         </Toolbar>
       </Paper>
-      <Paper className="p-2" style={{minHeight: '75vh'}}>
+      <Paper className="p-2" style={{ minHeight: '75vh' }}>
         <Loader open={loading} />
         <div className="my-3 d-flex gap-3"></div>
 
@@ -216,7 +286,7 @@ export default function Report() {
               <div className="">
                 <Button variant="contained">
                   <CSVLink
-                    data={report} 
+                    data={report}
                     filename={"AHVD_SUBSIDYcsv"}
                     className="text-white"
                   >
@@ -244,7 +314,7 @@ export default function Report() {
                 {/* <StyledTableCell>Bank Account No</StyledTableCell> */}
                 <StyledTableCell>Approve By</StyledTableCell>
                 <StyledTableCell>Payment Status</StyledTableCell>
-                {/* <StyledTableCell>Action</StyledTableCell> */}
+                <StyledTableCell>Action</StyledTableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -252,7 +322,7 @@ export default function Report() {
                 data.map((row, index) => (
                   <StyledTableRow key={row.id}>
                     <StyledTableCell component="th" scope="row">
-                      {index+1}
+                      {index + 1}
                     </StyledTableCell>
                     <StyledTableCell>{row.name}</StyledTableCell>
                     <StyledTableCell>{row.dcs_name}</StyledTableCell>
@@ -274,17 +344,27 @@ export default function Report() {
                       {row.approveBy === 1 && 'DCS'}
                       {row.approveBy === 2 && 'DLC'}
                       {row.approveBy === 3 && 'SLSC'}
-                      </StyledTableCell>
+                    </StyledTableCell>
                     <StyledTableCell>
                       <span
-                        className={`${
-                          row.paymentStatus === "Pending"
+                        className={`${row.paymentStatus === "Pending"
                             ? "bg-warning"
                             : "bg-success"
-                        } rounded px-2`}
+                          } rounded px-2`}
                       >
                         {row.paymentStatus}
                       </span>
+                    </StyledTableCell>
+                    <StyledTableCell>
+                      {!row.isBeneficiary && (
+                        <Button
+                          variant="outlined"
+                          color="primary"
+                          size="small"
+                          onClick={() => handleCreateBeneficiary(row)}
+                        >
+                          Add as Beneficiary
+                        </Button>)}
                     </StyledTableCell>
                   </StyledTableRow>
                 ))}
