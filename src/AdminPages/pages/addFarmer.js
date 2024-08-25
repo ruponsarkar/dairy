@@ -6,11 +6,16 @@ import Modal from "../../ui-component/modal";
 import { Button } from "@mui/material";
 import Swal from "sweetalert2";
 import { styled, emphasize } from "@mui/material/styles";
-import SearchIcon from '@mui/icons-material/Search';
+import SearchIcon from "@mui/icons-material/Search";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
 import Chip from "@mui/material/Chip";
 import HomeIcon from "@mui/icons-material/Home";
 import Loader from "../../components/pannel/loader";
+import CancelIcon from "@mui/icons-material/Cancel";
+import DoneAllIcon from "@mui/icons-material/DoneAll";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 const StyledBreadcrumb = styled(Chip)(({ theme }) => {
     const backgroundColor =
@@ -841,19 +846,22 @@ export default function AddFarmer() {
     const [data, setData] = useState();
     const [temp, setTemp] = useState();
     const [modalOpen, setModalOpen] = useState(false);
+    const [user, setUser] = useState(JSON.parse(sessionStorage.getItem("user")));
     const [dsc, setDcs] = useState(
         JSON.parse(sessionStorage.getItem("user")).role === "DCS"
             ? JSON.parse(sessionStorage.getItem("user")).uid
             : ""
     );
-    const [loading, setLoading] = useState(false)
+    const [loading, setLoading] = useState(false);
     const [search, setSearch] = useState({
-        regno: '',
-        dcs: ''
-    })
+        regno: "",
+        dcs: "",
+    });
+    const [isSearch, setIsSearch] = useState(false);
 
     const [formData, setFormData] = useState({
         dcsID: JSON.parse(sessionStorage.getItem("user")).uid,
+        district: JSON.parse(sessionStorage.getItem("user")).district,
     });
 
     useEffect(() => {
@@ -869,16 +877,17 @@ export default function AddFarmer() {
 
     const handleAddFarmer = () => {
         console.log("=>", formData);
-        setLoading(true)
+        setLoading(true);
 
         api
             .createFarmer(formData)
             .then((res) => {
                 console.log("res : ", res);
-                Swal.fire("Farmer added", "", "success");
-                setModalOpen(false);
-                setLoading(false)
-                getAllFarmers();
+                setApplicationId(res.data.applicationId)
+                // Swal.fire("Farmer added", "", "success");
+                // setModalOpen(false);
+                setLoading(false);
+                // getAllFarmers();
             })
             .catch((err) => {
                 console.log("err :", err);
@@ -886,32 +895,256 @@ export default function AddFarmer() {
     };
 
     const getAllFarmers = () => {
-        setLoading(true)
+        setLoading(true);
+        if (user) {
+            api
+                .getAllFarmers(dsc, user)
+                .then((res) => {
+                    console.log("res :", res);
+                    setData(res.data.data);
+                    setTemp(res.data.data);
+                    setLoading(false);
+                })
+                .catch((err) => {
+                    console.log("err ", err);
+                });
+        }
+    };
+
+    const searchFarmer = () => {
+        console.log("search :", search);
+        if (!search.dcs && !search.regno) {
+            console.log("Both can't be null");
+            return;
+        }
         api
-            .getAllFarmers(dsc)
+            .searchFarmer(search)
             .then((res) => {
-                console.log("res :", res);
+                console.log("res", res);
                 setData(res.data.data);
-                setTemp(res.data.data);
-                setLoading(false)
+                setIsSearch(true);
             })
             .catch((err) => {
-                console.log("err ", err);
+                console.log("err: ", err);
+            });
+    };
+
+    const cancelSearch = () => {
+        setIsSearch(false);
+        setData(temp);
+        setSearch({
+            regno: "",
+            dcs: "",
+        });
+    };
+
+
+
+
+    const [isUploaded, setIsuploaded] = useState({
+        passbook: false,
+        panCard: false,
+        aadhaarCard: false,
+        arcs_drcs: false,
+    });
+
+    const [passbook, setPassbook] = useState();
+    const [panCard, setPanCard] = useState();
+    const [aadhaarCard, setAadhaarCard] = useState();
+    const [arcs_drcs, setArcsDrcs] = useState();
+    const [applicationId, setApplicationId] = useState();
+    const [showFileForm, setShowFileForm] = useState(false);
+
+    useEffect(() => {
+        if (applicationId) {
+            setShowFileForm(true)
+        }
+    }, [applicationId])
+
+    const handleFileUpload = (type) => {
+        setLoading(true);
+        if (type === "passbook") {
+            upload(type, passbook, "passbook");
+        }
+        if (type === "panCard") {
+            upload(type, panCard, "pancard");
+        }
+        if (type === "aadhaarCard") {
+            upload(type, aadhaarCard, "aadharcard");
+        }
+        if (type === "arcs_drcs") {
+            upload(type, arcs_drcs, "arcs_drcs");
+        }
+    };
+
+    const upload = (type, file, fileName) => {
+        console.log("Type=", type, "File=", file);
+        console.log("formData.mobileNumber ==>>", formData.mobileNumber);
+        const Data = new FormData();
+        Data.append("applicationId", applicationId);
+        Data.append("mobileNumber", formData.mobileNumber);
+        Data.append("fileType", type);
+        Data.append("fileName", fileName + "." + file.name.split(".")[1]);
+        Data.append("fileSize", file.size);
+        Data.append("file", file);
+        console.log("Data=", Data);
+        api
+            .uploadDocument(Data)
+            .then((res) => {
+                console.log("Response==>", res);
+                toast.success('Uploaded!');
+                switch (type) {
+                    case "passbook":
+                        setIsuploaded({ ...isUploaded, passbook: true });
+                        break;
+                    case "panCard":
+                        setIsuploaded({ ...isUploaded, panCard: true });
+                        break;
+                    case "aadhaarCard":
+                        setIsuploaded({ ...isUploaded, aadhaarCard: true });
+                        break;
+                    case "arcs_drcs":
+                        setIsuploaded({ ...isUploaded, arcs_drcs: true });
+                        break;
+                }
+                setLoading(false);
+            })
+            .catch((err) => {
+                setLoading(false);
+                console.log("error==>", err);
             });
     };
 
 
-    const searchFarmer=()=>{
-        console.log("search :", search);
-        api.searchFarmer(search).then((res)=>{
-            console.log("res", res);
-            setData(res.data.data)
-        })
-        .catch((err)=>{
-            console.log("err: ", err);
-        })
-    }
+    const handleSubmit = () => {
+        if (isUploaded.passbook === false || isUploaded.aadhaarCard === false || isUploaded.panCard === false) {
+          console.log("All file required");
+        //   Swal.fire('All files required !');
+        toast.warn('All file required !');
+          return;
+        }
+    
+        const data = {
+        applicationId: applicationId,
+        status: 1
+        }
+        api.updateFormStatus(data).then((res) => {
+          console.log("final response :", res);
+          setApplicationId('');
+          setModalOpen(false)
+          Swal.fire('Farmer Added successfully !');
+          getAllFarmers();
 
+        })
+          .catch((err) => {
+            console.log("err : ", err);
+            Swal.fire('Something went wrong !');
+          })
+    
+    
+      };
+
+    const fileForm = () => {
+        return (
+            <>
+                <Paper>
+                    <div className="p-3">
+                        <div>
+                            <strong>
+                                Upload Documents for : {formData.name}
+                            </strong>
+                        </div>
+                        <div>
+                            <strong>
+                                Application ID : {applicationId}
+                            </strong>
+                        </div>
+                    </div>
+                    <div className="row p-4">
+                        <div className="col-md-6">
+                            <label htmlFor="">Attach photo of passbook (first page)</label>
+                            <input
+                                type="file"
+                                className="form-control"
+                                onChange={(e) => setPassbook(e.target.files[0])}
+                            />
+                        </div>
+                        <div className="col-md-6 d-flex align-items-center gap-4">
+                            <Button
+                                variant="contained"
+                                onClick={() => handleFileUpload("passbook")}
+                            >
+                                Upload
+                            </Button>{" "}
+                            {isUploaded.passbook && <DoneAllIcon color="success" />}
+                        </div>
+
+                        <div className="col-md-6">
+                            <label htmlFor="">Attach photo of PAN card</label>
+                            <input
+                                type="file"
+                                className="form-control"
+                                onChange={(e) => setPanCard(e.target.files[0])}
+                            />
+                        </div>
+                        <div className="col-md-6 d-flex align-items-center gap-4">
+                            <Button
+                                variant="contained"
+                                onClick={() => handleFileUpload("panCard")}
+                            >
+                                Upload
+                            </Button>{" "}
+                            {isUploaded.panCard && <DoneAllIcon color="success" />}
+                        </div>
+
+                        <div className="col-md-6">
+                            <label htmlFor="">Attach photo of AADHAAR card</label>
+                            <input
+                                type="file"
+                                className="form-control"
+                                onChange={(e) => setAadhaarCard(e.target.files[0])}
+                            />
+                        </div>
+                        <div className="col-md-6 d-flex align-items-center gap-4">
+                            <Button
+                                variant="contained"
+                                onClick={() => handleFileUpload("aadhaarCard")}
+                            >
+                                Upload
+                            </Button>{" "}
+                            {isUploaded.aadhaarCard && <DoneAllIcon color="success" />}
+                        </div>
+
+                        <div className="col-md-6">
+                            <label htmlFor="">Attach photo of ARCS/DRCS</label>
+                            <input
+                                type="file"
+                                className="form-control"
+                                onChange={(e) => setArcsDrcs(e.target.files[0])}
+                            />
+                        </div>
+                        <div className="col-md-6 d-flex align-items-center gap-4">
+                            <Button
+                                variant="contained"
+                                onClick={() => handleFileUpload("arcs_drcs")}
+                            >
+                                Upload
+                            </Button>{" "}
+                            {isUploaded.arcs_drcs && <DoneAllIcon color="success" />}
+                        </div>
+
+                        <div className="col-md-12">
+                            <div className="text-center">
+                                <Button variant="contained" color="success" onClick={handleSubmit}>
+                                    Confirm and Submit
+                                </Button>
+                            </div>
+                        </div>
+                    </div>
+                </Paper>
+            </>
+        );
+    };
 
 
     const addForm = () => {
@@ -1039,7 +1272,9 @@ export default function AddFarmer() {
                                 name="district"
                                 onChange={handleInput}
                                 id=""
+                                defaultValue={formData.district}
                             >
+                                {/* {user && user.dis } */}
                                 <option value="">Please select</option>
                                 {districts &&
                                     districts.map((d) => <option value={d}>{d}</option>)}
@@ -1188,8 +1423,13 @@ export default function AddFarmer() {
         );
     };
 
+
+
+
+
     return (
         <>
+        <ToastContainer />
             <Loader open={loading} />
             <Paper className="p-1 mb-3">
                 <Toolbar
@@ -1216,7 +1456,7 @@ export default function AddFarmer() {
                         <Breadcrumbs aria-label="breadcrumb">
                             <StyledBreadcrumb
                                 component="a"
-                                href="/admin"
+                                href="/#/admin/dashboard"
                                 label="Home"
                                 icon={<HomeIcon fontSize="small" />}
                             />
@@ -1231,43 +1471,62 @@ export default function AddFarmer() {
                 <Modal
                     open={modalOpen}
                     handleClose={() => setModalOpen(false)}
-                    modaldata={addForm()}
+                    modaldata={applicationId ? fileForm() : addForm()}
                     maxWidth="lg"
                 />
 
                 <div>
                     <Paper className="p-2">
-
-                    <Typography className="pt-1 pb-2" variant="h6" id="tableTitle" component="div">
-                    Farmer Data
-                    </Typography>
-                    <Typography className="py-2">
-                    Here is the full registered farmer list
-                    </Typography>
-
                         <div className="py-3">
                             <div className="d-flex justify-content-between">
-
-
                                 <div className="d-flex gap-2">
-                                    <input type="text" placeholder="Search by DCS" onChange={(e)=>setSearch({...search, dcs: e.target.value})} className="form-control col-6" name="" id="" />
-                                    <input type="text" placeholder="Search by Reg. no" onChange={(e)=>setSearch({...search, regno: e.target.value})} className="form-control col-6" name="" id="" />
+                                    <input
+                                        type="text"
+                                        placeholder="Search by DCS"
+                                        value={search.dcs}
+                                        onChange={(e) =>
+                                            setSearch({ ...search, dcs: e.target.value })
+                                        }
+                                        className="form-control col-6"
+                                        name=""
+                                        id=""
+                                    />
+                                    <input
+                                        type="text"
+                                        placeholder="Search by Reg. no"
+                                        value={search.regno}
+                                        onChange={(e) =>
+                                            setSearch({ ...search, regno: e.target.value })
+                                        }
+                                        className="form-control col-6"
+                                        name=""
+                                        id=""
+                                    />
                                     <div>
-                                        <Button variant="contained" onClick={searchFarmer}><SearchIcon /></Button>
+                                        {isSearch ? (
+                                            <Button variant="contained" onClick={cancelSearch}>
+                                                <CancelIcon />
+                                            </Button>
+                                        ) : (
+                                            <Button variant="contained" onClick={searchFarmer}>
+                                                <SearchIcon />
+                                            </Button>
+                                        )}
                                     </div>
-
                                 </div>
 
                                 {JSON.parse(sessionStorage.getItem("user")).role === "DCS" && (
                                     <div className="text-end">
-                                        <Button variant="contained" onClick={() => setModalOpen(true)}>
+                                        <Button
+                                            variant="contained"
+                                            onClick={() => setModalOpen(true)}
+                                        >
                                             +Add Farmer
                                         </Button>
                                     </div>
                                 )}
-
                             </div>
-                            <FarmerTable data={data} />
+                            <FarmerTable data={data} setApplicationId={setApplicationId} setModalOpen={setModalOpen}/>
                         </div>
                     </Paper>
                 </div>

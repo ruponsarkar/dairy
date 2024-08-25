@@ -119,7 +119,7 @@ const DCSData = () => {
                 <Breadcrumbs aria-label="breadcrumb">
                 <StyledBreadcrumb
                     component="a"
-                    href="/admin"
+                    href="/#/admin/dashboard"
                     label="Home"
                     icon={<HomeIcon fontSize="small" />}
                 />

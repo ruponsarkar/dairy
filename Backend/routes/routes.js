@@ -1,5 +1,6 @@
 const FormController = require("../controllers").FormController;
 const AdminController = require("../controllers").AdminController;
+const PaymentController = require("../controllers").PaymentController;
 const MasterController = require("../controllers").MasterController;
 const jwt = require('jsonwebtoken');
 
@@ -12,13 +13,26 @@ module.exports = (app) => {
   app.post("/upload", FormController.upload_config.single("file"), FormController.saveToDb);
   app.post("/getFormByMobileNumber",FormController.getFormByMobileNumber);
   app.post("/updateFormStatus",FormController.updateFormStatus);
-  app.get("/countStatus",FormController.countStatus);
+  app.post("/countStatus",FormController.countStatus);
+  
+  app.post("/uploadDaybook", FormController.upload_config_for_daybook.single("file"), FormController.saveDaybook);
+  app.post("/getDocuments",FormController.getDocuments);
 
 
   // Admin Panel API's
   app.post("/login", AdminController.login);
   app.post("/addOrUpdateAdmin", authenticateToken, AdminController.addOrUpdateAdmin);
   app.get("/getAdmins",authenticateToken, AdminController.getAdmins);
+
+  // Payment API's
+
+  app.post("/createBeneficiary", PaymentController.createBeneficiary);
+  app.post("/viewBeneficiary", PaymentController.view);
+
+   // Payment API's End
+
+
+
   app.post("/saveToMaster", MasterController.saveToMaster);
   app.post("/getMaster", MasterController.getMaster);
   app.post("/postMonthlyReport", MasterController.postMonthlyReport);
@@ -34,6 +48,9 @@ module.exports = (app) => {
 
   app.post("/createDCS", AdminController.createDCS);
   app.post("/getAllDCS", AdminController.getAllDCS);
+  app.post("/getApplicationStatisticsData_DistrictWise", AdminController.getApplicationStatisticsData_DistrictWise);
+  app.post("/getApplicationStatisticsData_DCSWise", AdminController.getApplicationStatisticsData_DCSWise);
+  app.post("/getAllDCS_DistrictWise", AdminController.getAllDCS_DistrictWise);
   app.post("/createFarmer", FormController.createFarmer);
   app.post("/getAllFarmers", FormController.getAllFarmers);
   app.post("/searchFarmer", FormController.searchFarmer);

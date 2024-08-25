@@ -152,7 +152,7 @@ const Dashboard = (props) => {
   const drawer = (
     <div>
       <Toolbar className="shadow text-center p-1">
-        <a className="text-dark header-name text-center" href="/admin">
+        <a className="text-dark header-name text-center" href="javascript:;" onClick={() => navigate("/admin/dashboard")}>
           <h4>Admin Panel</h4>
         </a>
       </Toolbar>
@@ -161,7 +161,7 @@ const Dashboard = (props) => {
       {/* DCS ADMIN SIDES  */}
       {role === "DCS" && (
         <List>
-          <ListItem disablePadding onClick={() => navigate("/admin")}>
+          <ListItem disablePadding onClick={() => navigate("/admin/dashboard")}>
             <ListItemButton>
               <ListItemIcon>
                 <LeaderboardSharpIcon />
@@ -256,7 +256,7 @@ const Dashboard = (props) => {
       {/* DLC ADMIN SIDES  */}
       {role === "DLC" && (
         <List>
-          <ListItem disablePadding onClick={() => navigate("/admin")}>
+          <ListItem disablePadding onClick={() => navigate("/admin/dashboard")}>
             <ListItemButton>
               <ListItemIcon>
                 <LeaderboardSharpIcon />
@@ -328,14 +328,14 @@ const Dashboard = (props) => {
             </ListItemButton>
           </ListItem>
 
-          <ListItem disablePadding onClick={() => navigate("/admin/DCSData")}>
+          {/* <ListItem disablePadding onClick={() => navigate("/admin/DCSData")}>
             <ListItemButton>
               <ListItemIcon>
                 <ContentPasteOutlinedIcon />
               </ListItemIcon>
               <ListItemText>DCS Data</ListItemText>
             </ListItemButton>
-          </ListItem>
+          </ListItem> */}
 
           <ListItemButton onClick={blogClick}>
             <ListItemIcon>
@@ -398,7 +398,7 @@ const Dashboard = (props) => {
       {/* SLSC ADMIN SIDES  */}
       {role === "SLSC" && (
         <List>
-          <ListItem disablePadding onClick={() => navigate("/admin")}>
+          <ListItem disablePadding onClick={() => navigate("/admin/dashboard")}>
             <ListItemButton>
               <ListItemIcon>
                 <LeaderboardSharpIcon />
@@ -484,7 +484,7 @@ const Dashboard = (props) => {
       {/* FINANCE ADMIN SIDES  */}
       {role === "Finance" && (
         <List>
-          <ListItem disablePadding onClick={() => navigate("/admin")}>
+          <ListItem disablePadding onClick={() => navigate("/admin/dashboard")}>
             <ListItemButton>
               <ListItemIcon>
                 <LeaderboardSharpIcon />
@@ -549,7 +549,7 @@ const Dashboard = (props) => {
       {/* Super Admin ADMIN SIDES  */}
       {role === "Super Admin" && (
         <List>
-          <ListItem disablePadding onClick={() => navigate("/admin")}>
+          <ListItem disablePadding onClick={() => navigate("/admin/dashboard")}>
             <ListItemButton>
               <ListItemIcon>
                 <LeaderboardSharpIcon />
@@ -646,7 +646,7 @@ const Dashboard = (props) => {
               </>
             )}
 
-            <List component="div" disablePadding>
+            {/* <List component="div" disablePadding>
               <ListItemButton
                 sx={{ pl: 4 }}
                 onClick={() => navigate("/admin/AddDCS")}
@@ -656,7 +656,7 @@ const Dashboard = (props) => {
                 </ListItemIcon>
                 <ListItemText primary="Add DCS" />
               </ListItemButton>
-            </List>
+            </List> */}
           </Collapse>
 
           {/* <ListItem disablePadding onClick={() => navigate("/admin/Grievance")}>

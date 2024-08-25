@@ -28,7 +28,8 @@ const Login = () => {
                     if (res.data.authenticated) {
                         console.log("Login success==>", res);
                         setToken(res.data.data, res.data.token);
-                        nagivate('/admin');
+                        window.location.reload();
+                        // nagivate('/admin');
                         setLoading(false);
                     } else {
                         setLoading(false);

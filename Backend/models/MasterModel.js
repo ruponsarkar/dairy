@@ -213,14 +213,8 @@ module.exports = {
 
     let query = `
       SELECT 
-        farmers.name, 
-        farmers.bank_name, 
-        farmers.bank_account_holder_name, 
-        farmers.bank_account_no, 
-        farmers.ifsc_code, 
-        farmers.district,
-        farmers.id,
-        farmers.applicationId,
+        farmers.*,
+
         monthly_reports.litter,
         monthly_reports.isApprove,
         monthly_reports.paymentStatus,
@@ -254,7 +248,7 @@ module.exports = {
 
     if (user.role === "DLC") {
       query +=
-        " WHERE monthly_reports.approveBy = 1 OR monthly_reports.approveBy = 2 ";
+        ` WHERE (monthly_reports.approveBy = 1 OR monthly_reports.approveBy = 2) AND dcs.dlc_id = ${user.uid}`;
     }
     if (user.role === "SLSC") {
       query +=

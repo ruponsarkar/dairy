@@ -242,7 +242,7 @@ const DashboardTable = () => {
     // }
 
     api.getFrom(requestData).then((res) => {
-      console.log("res :", res);
+      // console.log("res :", res);
       setData(res.data.data)
     })
       .catch((err) => {

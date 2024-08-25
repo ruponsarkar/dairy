@@ -218,13 +218,13 @@ const DLCApproval = () => {
     console.log("selectedData", selectedData);
 
     if (!month || !selectedData.length) {
-        Swal.fire({
-          title: "No data selected !",
-          text: "You must selct a data!",
-          icon: "warning",
-        });
-        return;
-      }
+      Swal.fire({
+        title: "No data selected !",
+        text: "You must selct a data!",
+        icon: "warning",
+      });
+      return;
+    }
 
     let approveBy = 2;
     updateMonthlyReport(selectedData, approveBy);
@@ -288,8 +288,8 @@ const DLCApproval = () => {
       .then((res) => {
         console.log("updateMonthlyReport: ", res);
         Swal.fire({
-          title: "Approved for Finace!",
-          text: "Data sent for Finance!",
+          title: "Approved!",
+          text: "Data approved!",
           icon: "success",
         });
 
@@ -345,6 +345,36 @@ const DLCApproval = () => {
     setSelectAll(allSelected);
   };
 
+  const [openDaybook, setOpenDaybook] = useState(false);
+
+  const [daybook, setDaybook] = useState();
+
+  const handleGetDaybook = (data) => {
+    console.log("data", data);
+    let requestData = {
+      admin_id: data.dcsID,
+      role: "DCS",
+      month: month,
+    };
+    // console.log("r daat", requestData);
+    getDocuments(requestData);
+  };
+
+  const getDocuments = (data) => {
+    // role, month, admin_id
+    console.log("data", data);
+    api
+      .getDocuments(data)
+      .then((res) => {
+        console.log("res daybook: ", res);
+        setDaybook(res.data.data);
+        setOpenDaybook(true);
+      })
+      .catch((err) => {
+        console.log("err : ", err);
+      });
+  };
+
   return (
 
     <>
@@ -373,7 +403,7 @@ const DLCApproval = () => {
                         <Breadcrumbs aria-label="breadcrumb">
                             <StyledBreadcrumb
                                 component="a"
-                                href="/admin"
+                                href="/#/admin/dashboard"
                                 label="Home"
                                 icon={<HomeIcon fontSize="small" />}
                             />
@@ -388,16 +418,6 @@ const DLCApproval = () => {
 
     <Paper className="p-2">
       <Loader open={loading} />
-      {/* <Toolbar>
-        <Typography variant="h6" id="tableTitle" component="div">
-          Master Data
-        </Typography>
-        <Tooltip title="Filter list">
-          <IconButton aria-label="filter list">
-            <FilterListIcon />
-          </IconButton>
-        </Tooltip>
-      </Toolbar> */}
 
               
 
@@ -465,7 +485,8 @@ const DLCApproval = () => {
               <StyledTableCell>Quantity of Milk(in Litres)</StyledTableCell>
               <StyledTableCell>Amount (in Rs)</StyledTableCell>
               <StyledTableCell align="center">Status</StyledTableCell>
-              <StyledTableCell align="center">Action</StyledTableCell>
+              <StyledTableCell align="center">View</StyledTableCell>
+              <StyledTableCell align="center">Daybook</StyledTableCell>
             </TableRow>
           </TableHead>
 
@@ -478,7 +499,7 @@ const DLCApproval = () => {
                       <Checkbox
                         checked={row.selected ? true : false}
                         onClick={() => handleSelect(row.id)}
-                        disabled ={row.approveBy == 2? true:false}
+                        disabled={row.approveBy == 2 ? true : false}
                       />
                     </TableCell>
                     <TableCell component="th" scope="row">
@@ -510,6 +531,17 @@ const DLCApproval = () => {
                         onClick={() => handleClickOpen(row)}
                       >
                         View
+                      </Button>
+                    </TableCell>
+
+                    <TableCell align="center">
+                      <Button
+                        variant="outlined"
+                        color="primary"
+                        size="small"
+                        onClick={() => handleGetDaybook(row)}
+                      >
+                        Daybook
                       </Button>
                     </TableCell>
                   </TableRow>
@@ -648,6 +680,33 @@ const DLCApproval = () => {
             <div className="text-center">
               <img src={`${selectedImg}`} className="img-fluid" alt="" />
             </div>
+          </DialogContentText>
+        </DialogContent>
+      </Dialog>
+
+      {/* for daybook  */}
+      <Dialog
+        open={openDaybook}
+        onClose={() => setOpenDaybook(false)}
+        aria-labelledby="protein-modal-title"
+        fullWidth={true}
+        maxWidth={"lg"}
+      >
+        <DialogContent>
+          <DialogContentText>
+            {daybook ? (
+              <div className="text-center">
+                {/* https://milksubsidydairyassam.com:8800/  */}
+               
+                <img
+                  src={`https://milksubsidydairyassam.com:8800/${daybook.file}`}
+                  className="img-fluid"
+                  alt=""
+                />
+              </div>
+            ) : (
+              <>No daybook found</>
+            )}
           </DialogContentText>
         </DialogContent>
       </Dialog>

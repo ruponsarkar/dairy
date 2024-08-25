@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { styled } from "@mui/material/styles";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -8,8 +8,17 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import BasicMenu from "../../ui-component/menu";
-import { Button } from "@mui/material";
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+} from "@mui/material";
 
+import Application from "../../components/register/application";
+import Certificate from "../../components/approvel/certificate";
 
 import Swal from "sweetalert2";
 
@@ -36,7 +45,36 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-export default function FarmerTable({ data, getAdmins }) {
+
+
+
+export default function FarmerTable({ data, getAdmins, setModalOpen, setApplicationId }) {
+
+  const [selectedRow, setSelectedRow] = useState(null);
+  const [open, setOpen] = useState(false);
+  const [opencertificate, setOpencertificate] = useState(false);
+  const [openImgView, setOpenImgView] = useState(false);
+  const [selectedImg, setSelectedImg] = useState();
+
+  const handleClickOpen = (row) => {
+    setSelectedRow(row);
+    setOpen(true);
+  };
+  const handleClickOpenCetificate = (row) => {
+    setSelectedRow(row);
+    setOpencertificate(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+    // setSelectedRow(null);
+  };
+
+  const updateFile = () => {
+    setApplicationId(data[0].applicationId)
+    setModalOpen(true)
+  }
+
+
   return (
     <>
       <TableContainer component={Paper}>
@@ -50,6 +88,7 @@ export default function FarmerTable({ data, getAdmins }) {
               <StyledTableCell className="p-2 text-center">District</StyledTableCell>
               {/* <StyledTableCell align="center">Status</StyledTableCell> */}
               <StyledTableCell className="p-2 text-center">Action</StyledTableCell>
+              <StyledTableCell className="p-2 text-center">Certificate</StyledTableCell>
             </TableRow>
           </TableHead>
 
@@ -70,11 +109,24 @@ export default function FarmerTable({ data, getAdmins }) {
                         variant="outlined"
                         color="primary"
                         size="small"
-                        // onClick={() => handleClickOpen(row)}
+                        onClick={() => handleClickOpen(row)}
                       >
                         View
                       </Button>
                     </TableCell>
+
+                    <TableCell className="p-2 text-center">
+                      <Button
+                        variant="outlined"
+                        color="primary"
+                        size="small"
+                        onClick={() => handleClickOpenCetificate(row)}
+                      >
+                        Download
+                      </Button>
+                    </TableCell>
+
+
                   </TableRow>
                 );
               })}
@@ -85,15 +137,165 @@ export default function FarmerTable({ data, getAdmins }) {
           {!data && (
             <div className="text-center p-5">
               <img
-            src="../assets/noData.png"
-            alt="no data"
-            className="govt-logo"
-          />
+                src="../assets/noData.png"
+                alt="no data"
+                className="govt-logo"
+              />
               <p>Data not found</p>
             </div>
           )}
         </div>
       </TableContainer>
+
+
+
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="protein-modal-title"
+        fullWidth={true}
+        maxWidth={"lg"}
+      >
+        <DialogTitle id="protein-modal-title"> Details</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            <div>
+              <Application data={selectedRow} />
+
+              {selectedRow && (
+                <div className="documents d-flex justify-content-center border p-3 gap-4">
+                  <div className="text-center card">
+                    <h3>Pan Card</h3>
+                    {/* <a href={`https://milksubsidydairyassam.com:8800/${selectedRow.panCard}`}> */}
+                    <img
+                      src={`https://milksubsidydairyassam.com:8800/${selectedRow.panCard}`}
+                      className="img"
+                      alt=""
+                      onClick={() => {
+                        setOpenImgView(true);
+                        setSelectedImg(
+                          `https://milksubsidydairyassam.com:8800/${selectedRow.panCard}`
+                        );
+                      }}
+                    />
+                    {/* </a> */}
+                  </div>
+                  <div className="text-center card">
+                    <h3>Aadhar Card</h3>
+                    <img
+                      src={`https://milksubsidydairyassam.com:8800/${selectedRow.aadharCard}`}
+                      className="img"
+                      alt=""
+                      onClick={() => {
+                        setOpenImgView(true);
+                        setSelectedImg(
+                          `https://milksubsidydairyassam.com:8800/${selectedRow.aadharCard}`
+                        );
+                      }}
+                    />
+                  </div>
+                  <div className="text-center card">
+                    <h3>Passbook</h3>
+                    <img
+                      src={`https://milksubsidydairyassam.com:8800/${selectedRow.passbook}`}
+                      className="img"
+                      alt=""
+                      onClick={() => {
+                        setOpenImgView(true);
+                        setSelectedImg(
+                          `https://milksubsidydairyassam.com:8800/${selectedRow.passbook}`
+                        );
+                      }}
+                    />
+                  </div>
+                </div>
+              )}
+
+              <div>
+                <div className="text-center">
+                  <Button onClick={updateFile}>Want to Update Files ?</Button>
+                </div>
+              </div>
+
+              {/* <div className="d-flex justify-content-center gap-3 m-3">
+                <div>
+                  <select
+                    name=""
+                    id=""
+                    onChange={(e) => setStatus(e.target.value)}
+                    className="form-control"
+                  >
+                    <option value="">---select---</option>
+                    <option value="Approve">Approve</option>
+                    <option value="Reject">Reject</option>
+                  </select>
+                </div>
+                {status === "Reject" && (
+                  <div>
+                    <input
+                      type="text"
+                      onChange={(e) => setRemark(e.target.value)}
+                      className="form-control"
+                      placeholder="Remark"
+                      name=""
+                      id=""
+                    />
+                  </div>
+                )}
+                <div>
+                  <Button
+                    variant="contained"
+                    onClick={handleUpdate}
+                    disabled={status ? false : true}
+                  >
+                    Submit
+                  </Button>
+                </div>
+              </div> */}
+            </div>
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} color="primary">
+            Close
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+
+
+      {/* certificate  */}
+
+      <Dialog
+        open={opencertificate}
+        onClose={() => setOpencertificate(false)}
+        aria-labelledby="protein-modal-title"
+        fullWidth={true}
+        maxWidth={"lg"}
+      >
+        <DialogTitle id="protein-modal-title"> Certificate</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            <div>
+              {selectedRow &&
+                <>
+                  <Certificate data={selectedRow} />
+                </>
+              }
+
+
+            </div>
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpencertificate(false)} color="primary">
+            Close
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+
+
     </>
   );
 }

@@ -276,10 +276,10 @@ const SLSCApproval = () => {
       .then((res) => {
         console.log("updateMonthlyReport: ", res);
         Swal.fire({
-          title: "Approved for Finace!",
-          text: "Data sent for Finance!",
-          icon: "success",
-        });
+            title: "Approved!",
+            text: "Data approved!",
+            icon: "success",
+          });
 
         setLoading(false);
         getMasterWithReport();
@@ -521,13 +521,13 @@ const SLSCApproval = () => {
                     <h3>Pan Card</h3>
                     {/* <a href={`http://localhost:8800/${selectedRow.panCard}`}> */}
                     <img
-                      src={`http://localhost:8800/${selectedRow.panCard}`}
+                      src={`https://milksubsidydairyassam.com:8800/${selectedRow.panCard}`}
                       className="img"
                       alt=""
                       onClick={() => {
                         setOpenImgView(true);
                         setSelectedImg(
-                          `http://localhost:8800/${selectedRow.panCard}`
+                          `https://milksubsidydairyassam.com:8800/${selectedRow.panCard}`
                         );
                       }}
                     />
@@ -536,13 +536,13 @@ const SLSCApproval = () => {
                   <div className="text-center card">
                     <h3>Aadhar Card</h3>
                     <img
-                      src={`http://localhost:8800/${selectedRow.aadharCard}`}
+                      src={`https://milksubsidydairyassam.com:8800/${selectedRow.aadharCard}`}
                       className="img"
                       alt=""
                       onClick={() => {
                         setOpenImgView(true);
                         setSelectedImg(
-                          `http://localhost:8800/${selectedRow.aadharCard}`
+                          `https://milksubsidydairyassam.com:8800/${selectedRow.aadharCard}`
                         );
                       }}
                     />
@@ -550,13 +550,13 @@ const SLSCApproval = () => {
                   <div className="text-center card">
                     <h3>Passbook</h3>
                     <img
-                      src={`http://localhost:8800/${selectedRow.passbook}`}
+                      src={`https://milksubsidydairyassam.com:8800/${selectedRow.passbook}`}
                       className="img"
                       alt=""
                       onClick={() => {
                         setOpenImgView(true);
                         setSelectedImg(
-                          `http://localhost:8800/${selectedRow.passbook}`
+                          `https://milksubsidydairyassam.com:8800/${selectedRow.passbook}`
                         );
                       }}
                     />

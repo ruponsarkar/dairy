@@ -27,8 +27,8 @@ export default {
     updateFormStatus(data){
         return API.post('/updateFormStatus', {data})
     },
-    countStatus(){
-        return API.get('countStatus');
+    countStatus(user){
+        return API.post('countStatus', {user});
     },
     saveToMaster(data, user){
         return API.post('saveToMaster', {data, user});
@@ -64,23 +64,47 @@ export default {
         return API.post('getGrievance', {data})
     },
     // createDCS
-    createDCS(formData){
-        return API.post('/createDCS', {formData})
+    createDCS(formData, user){
+        return API.post('/createDCS', {formData, user})
     },
-    getAllDCS(){
-        return API.post('/getAllDCS')
+    getAllDCS(user){
+        return API.post('/getAllDCS', {user})
+    },
+    getApplicationStatisticsData_DistrictWise(selectedDistrict){
+        let param = {
+            disctrict: selectedDistrict
+        }
+        return API.post('/getApplicationStatisticsData_DistrictWise', {param})
+    },
+    getApplicationStatisticsData_DCSWise(selectedDCS){
+        let param = {
+            dcs: selectedDCS
+        }
+        return API.post('/getApplicationStatisticsData_DCSWise', {param})
+    },
+    getAllDCS_DistrictWise(selectedDistrict){
+        let param = {
+            disctrict: selectedDistrict
+        }
+        return API.post('/getAllDCS_DistrictWise', {param})
     },
     createFarmer(formData){
         return API.post('/createFarmer', {formData})
     },
-    getAllFarmers(dsc){
-        return API.post('/getAllFarmers', {dsc})
+    getAllFarmers(dsc, user){
+        return API.post('/getAllFarmers', {dsc, user})
     },
     searchFarmer(search){
         return API.post('/searchFarmer', {search})
     },
     dcsData(){
         return API.post('/dcsData')
+    },
+    getDocuments(data){
+        return API.post('/getDocuments', {data})
+    },
+    uploadDaybook(formData) {
+        return uploadAPI.post('/uploadDaybook', formData);
     },
 
 
@@ -96,9 +120,18 @@ export default {
 
     login(email, password) {
         return API.post('/login', { email, password })
+    },
+
+
+    // Payment 
+
+    createBeneficiary(data) {
+        return API.post('/createBeneficiary', { data });
+    },
+
+    viewBeneficiary(data) {
+        return API.post('/viewBeneficiary', { data });
     }
-
-
 
 
 }

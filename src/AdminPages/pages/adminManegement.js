@@ -245,27 +245,58 @@ const AdminCategory = () => {
             id="tableTitle"
             component="div"
           >
-            Admin details
-          </Typography>
-          <div role="presentation">
+            {/* Admin details */}
             <Breadcrumbs aria-label="breadcrumb">
               <StyledBreadcrumb
                 component="a"
-                href="/admin"
+                href="/#/admin/dashboard"
                 label="Home"
                 icon={<HomeIcon fontSize="small" />}
               />
               {/* <StyledBreadcrumb component="a" href="#" label="Catalog" /> */}
-              <StyledBreadcrumb label="Admin details" />
+              <StyledBreadcrumb label="Admin Details" />
             </Breadcrumbs>
+            
+          </Typography>
+          <div role="presentation">
+          <Typography>
+          <div style={{float:'right'}}>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    sx={{
+                      height: 40,
+                      minWidth: 120,
+                      "@media (max-width: 600px)": {
+                        width: "100%",
+                        marginTop: 1,
+                      },
+                    }}
+                    onClick={() => setOpen(true)}
+                  >
+                    <i className="fa fa-plus"></i> &nbsp; Add New
+                  </Button>
+
+                  <Modal
+                    maxWidth="md"
+                    open={open}
+                    handleClose={() => setOpen(false)}
+                    modaldata={addAdminForm()}
+                  />
+                </div>
+          </Typography>
           </div>
         </Toolbar>
+        
       </Paper>
       <Loader open={loading} />
       <div className="container p-0 m-0">
+      <Typography>
+          <h6 style={{color:'gray'}}><strong>All admins are available here. You can create/delete/suspend from the action button.</strong></h6>
+        </Typography>
         <div>
           <Card>
-            <div className="row">
+            {/* <div className="row">
               <div className="col-6">
                 <div className="m-2">
                   <Button
@@ -292,16 +323,41 @@ const AdminCategory = () => {
                   />
                 </div>
               </div>
-            </div>
+            </div> */}
             <div className="row">
               <div className="col-12">
-                <div className="m-2">
-                  <h4> Admin list</h4>
+                {/* <div className="m-2">
+                  <h4> Admin list
+                  <div className="float-end ">
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    sx={{
+                      height: 40,
+                      minWidth: 120,
+                      "@media (max-width: 600px)": {
+                        width: "100%",
+                        marginTop: 1,
+                      },
+                    }}
+                    onClick={() => setOpen(true)}
+                  >
+                    + Add New Admin
+                  </Button>
+
+                  <Modal
+                    maxWidth="md"
+                    open={open}
+                    handleClose={() => setOpen(false)}
+                    modaldata={addAdminForm()}
+                  />
+                </div>
+                  </h4>
                   <Typography>
-                    All admina are available here. You can create/delete/suspend
+                    All admins are available here. You can create/delete/suspend
                     from the action button.
                   </Typography>
-                </div>
+                </div> */}
 
                 <AdminTable data={data} getAdmins={getAdmins} />
               </div>
