@@ -20,6 +20,7 @@ import Loader from "../../components/pannel/loader";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
 import Chip from "@mui/material/Chip";
 import HomeIcon from "@mui/icons-material/Home";
+import DoneAllIcon from "@mui/icons-material/DoneAll";
 
 const StyledBreadcrumb = styled(Chip)(({ theme }) => {
   const backgroundColor =
@@ -72,7 +73,8 @@ export default function Report() {
   const [loading, setLoading] = useState(false);
   const [dcsID, setDcsID] = useState();
   const [report, setReport] = useState();
-
+  // const [beneficiaries, setBeneficiaries] = useState();
+  let beneficiaries = []
   function getCurrentMonth() {
     const now = new Date();
     const year = now.getFullYear();
@@ -101,6 +103,12 @@ export default function Report() {
   }, [district]);
 
 
+  // useEffect(() => {
+  //   if (JSON.parse(sessionStorage.getItem("user")).role == "Finance") {
+  //     handleViewBeneficiary(data);
+  //   }
+  // }, []);
+
 
   const handleRangeSubsidy = () => {
     let id = '';
@@ -116,12 +124,12 @@ export default function Report() {
     api
       .getRangeSubsidy(from, to, id, role)
       .then((res) => {
-        console.log("ress ", res);
-        setData(res.data.data);
-        setAll(res.data.data);
         if (JSON.parse(sessionStorage.getItem("user")).role == "Finance") {
           handleViewBeneficiary(res.data.data);
+        }else{
+          formatAndSetData(res.data.data, beneficiaries);
         }
+        setAll(res.data.data);
         setLoading(false);
         setReport(res.data.data.map((e, i) => ({
           'SL No': i + 1,
@@ -144,11 +152,36 @@ export default function Report() {
       });
   };
 
+  const formatAndSetData = (farmerData, beneficiaryData) => {
+    if (farmerData?.length > 0) {
+      let count =0;
+      farmerData.map(item1 => {
+        let flag = false;
+        if(beneficiaryData?.length > 0){
+          beneficiaryData.map(item2 => {
+            let beneficiary_id = 'Beneficiary_' + item1?.bank_account_no;
+            if (item2.beneficiary_id == beneficiary_id) {
+              flag = true;
+            }
+          });
+        }
+        item1.isBeneficiary = flag ? true : false;
+        count+=1;
+        if(farmerData.length==count){
+          setData(data=>([...[], ...farmerData]));
+          console.log("DATA===", farmerData);
+        }
+      });
+    }else{
+      setData(farmerData);
+    }
+  }
+
   const handleCreateBeneficiary = (farmer) => {
     console.log(farmer);
     setLoading(true);
     let beneficiary_id = 'Beneficiary_' + farmer?.bank_account_no;
-    const data = {
+    const requestData = {
       beneficiaryData: {
         beneficiary_id: beneficiary_id,
         beneficiary_name: farmer?.bank_account_holder_name,
@@ -171,10 +204,10 @@ export default function Report() {
         api_request_id: Math.floor(Math.random() * 10000000000000001)
       }
     }
-    console.log("data=", data);
-    api.createBeneficiary(data).then((res) => {
+    console.log("data=", requestData);
+    api.createBeneficiary(requestData).then((res) => {
       Swal.fire('Beneficiary created successfully !');
-      handleViewBeneficiary(data);
+      handleRangeSubsidy();
       setLoading(false);
     })
       .catch((err) => {
@@ -184,30 +217,10 @@ export default function Report() {
       })
   }
 
-  useEffect(() => {
-    if (JSON.parse(sessionStorage.getItem("user")).role == "Finance") {
-      handleViewBeneficiary(data);
-    }
-  }, []);
-
   const handleViewBeneficiary = (actualData) => {
     api.viewBeneficiary(actualData).then((res) => {
-      let beneficiaries = res.data.data;
-      if (actualData?.length > 0 && beneficiaries?.length > 0) {
-        actualData.map(item1 => {
-          let flag = false;
-          beneficiaries.map(item2 => {
-            let beneficiary_id = 'Beneficiary_' + item1?.bank_account_no;
-            if (item2.beneficiary_id == beneficiary_id) {
-              flag = true;
-            }
-          });
-          item1.isBeneficiary = flag ? true : false;
-        });
-        console.log("DATA===", actualData);
-        // setData(data => ([...[], ...actualData]));
-        setData(actualData);
-      }
+      beneficiaries = res.data.data;
+      formatAndSetData(actualData, beneficiaries);
     })
       .catch((err) => {
         console.log("err : ", err);
@@ -314,7 +327,8 @@ export default function Report() {
                 {/* <StyledTableCell>Bank Account No</StyledTableCell> */}
                 <StyledTableCell>Approve By</StyledTableCell>
                 <StyledTableCell>Payment Status</StyledTableCell>
-                <StyledTableCell>Action</StyledTableCell>
+                {JSON.parse(sessionStorage.getItem("user")).role === "Finance" && (
+                <StyledTableCell>Action</StyledTableCell>)}
               </TableRow>
             </TableHead>
             <TableBody>
@@ -348,13 +362,14 @@ export default function Report() {
                     <StyledTableCell>
                       <span
                         className={`${row.paymentStatus === "Pending"
-                            ? "bg-warning"
-                            : "bg-success"
+                          ? "bg-warning"
+                          : "bg-success"
                           } rounded px-2`}
                       >
                         {row.paymentStatus}
                       </span>
                     </StyledTableCell>
+                    {JSON.parse(sessionStorage.getItem("user")).role === "Finance" && (
                     <StyledTableCell>
                       {!row.isBeneficiary && (
                         <Button
@@ -365,7 +380,16 @@ export default function Report() {
                         >
                           Add as Beneficiary
                         </Button>)}
-                    </StyledTableCell>
+                        {row.isBeneficiary && (
+                        <Button
+                          variant="outlined"
+                          color="success"
+                          size="small"
+                          onClick={() => {}}
+                        >
+                          <DoneAllIcon color="success" /> Beneficiary
+                        </Button>)}
+                    </StyledTableCell>)}
                   </StyledTableRow>
                 ))}
             </TableBody>

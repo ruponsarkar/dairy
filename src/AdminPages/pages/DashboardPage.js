@@ -143,6 +143,7 @@ const DashboardPage = () => {
         api
             .getApplicationStatisticsData_DistrictWise(selectedDistrict)
             .then((res) => {
+                console.log("getApplicationStatisticsData_DistrictWise==", res.data);
                 if (res.status == 200) {
                     dataFormatter_Chart1(res.data.data);
                 }

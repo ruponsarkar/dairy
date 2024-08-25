@@ -167,8 +167,8 @@ const DCSData = () => {
                                         <TableCell component="th" scope="row" align="center">
                                             {row.TOTAL_DCS}
                                         </TableCell>
-                                        <TableCell align="center">{row.TOTAL_MILK_SALE}</TableCell>
                                         <TableCell align="center">{row.TOTAL_SHAREHOLDERS}</TableCell>
+                                        <TableCell align="center">{row.TOTAL_MILK_SALE}</TableCell>
                                      
                                        
                                     </TableRow>
