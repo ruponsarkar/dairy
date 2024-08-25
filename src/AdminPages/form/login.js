@@ -59,31 +59,35 @@ const Login = () => {
         <>
             <Paper>
             <Nav2 />
-            <div className='col-12 pt-3 text-center'>
+            
+            <div className='col-12 p-0 m-0 pt-2 text-center'>
                 <h2><i>Providing Rs. 5 subsidy to farmers pouring milk to Dairy Co-operative Societies</i></h2>
-                <br />
-                <h2 className='text-white bg-warning'>DCS/DLC/SLSC/Finance LOGIN</h2>
+                
+                {/* <h2 className='text-white bg-warning'>DCS/DLC/SLSC/FINANCE LOGIN</h2> */}
             </div>
+            <div className='bg-image'>
                 <section>
-                    <div class="container">
+
+                
+                    <div class="container-fluid">
                         <div>
                             <div class="row ">
-                                <div class="col-lg-7">
-                                    <div class="card1 pb-5">
+                                <div class="col-lg-8">
+                                    {/* <div class="card1 pb-5">
                                         <div class="row p-3 justify-content-center mt-5 mb-5">
                                             <img src="https://media.istockphoto.com/id/1390481905/photo/multi-factor-authentication-user-login-cybersecurity-privacy-protect-data-internet-network.jpg?s=612x612&w=0&k=20&c=Hqaa0_JZ9j4isOgS3-SKUlDDBnFCgXMeAOykWATzF9I=" class="img-fluid p-0 shadow-lg mb-5 bg-white rounded" />
                                         </div>
-                                    </div>
+                                    </div> */}
                                 </div>
 
-                                <div class="col-lg-5 pt-4">
+                                <div class="col-lg-4 pt-5 ">
                                     <Card>
-                                        <div className='box-form p-5'>
-                                            <div className="right">
-
-
+                                        <div className='d-flex align-items-center justify-content-center pt-4'>
+                                        <div class="form-2-wrapper">
+                                            <h2 class="text-center mb-4">Sign Into Your Account</h2>
+                                            <h6 className='text-white p-1 text-center bg-warning rounded'>DCS/DLC/SLSC/FINANCE LOGIN</h6>
                                                 {/* <form> */}
-
+                                                <br/>
                                                 <div className="inputs">
                                                     <label>Email Address or User ID</label>
                                                     <input type="email" className='form-control' value={email} onChange={e => setEmail(e.target.value)} placeholder="enter a valid email address" />
@@ -93,12 +97,10 @@ const Login = () => {
                                                 </div>
 
 
-                                                <div className="remember-me--forget-password d-flex">
-                                                    <label>
-                                                        <input type="checkbox" name="item" checked /> &nbsp;
-                                                        <span className="text-checkbox">Remember me</span>
-                                                    </label>
-                                                    <p className='px-5'><a href='#'>forget password?</a></p>
+                                                <div class="form-check">
+                                                    <input type="checkbox" class="form-check-input" id="rememberMe" />
+                                                    <label class="form-check-label" for="rememberMe">Remember me</label>
+                                                    <a href="forget-3.html" class="text-decoration-none float-end">Forget Password</a>
                                                 </div>
 
                                                 <br />
@@ -108,17 +110,13 @@ const Login = () => {
 
                                                 {loading ? <Loading /> :
                                                     <div className='text-center'>
-                                                        <button className='px-5 btn btn-primary py-2 submitBtn' onClick={submit}>Login</button>
+                                                        <button className='btn btn-outline-secondary login-btn w-100 mb-3' onClick={submit}>Login</button>
                                                     </div>
                                                 }
 
 
-                                                <br /><br />
 
-                                                <div class="row mb-4 px-3">
-                                                    <label class="font-weight-bold">Don't have an account ?
-                                                        &nbsp;<a class="text-danger" href='javascript:;'>Register</a></label>
-                                                </div>
+                                                <p class="text-center register-test mt-3">Don't have an account? <a href="register-3.html" class="text-decoration-none text-primary">Register here</a></p>
                                                 {/* </form> */}
                                             </div>
                                         </div>
@@ -128,6 +126,7 @@ const Login = () => {
                         </div>
                     </div>
                 </section>
+                </div>
             </Paper>
         </>
     )

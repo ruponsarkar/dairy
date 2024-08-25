@@ -634,7 +634,7 @@ const Dashboard = (props) => {
             <ListItemIcon>
               <AdminPanelSettingsOutlinedIcon />
             </ListItemIcon>
-            <ListItemText primary="Admin" />
+            <ListItemText primary="Admins" />
             {openBlog ? <ExpandLess /> : <ExpandMore />}
           </ListItemButton>
 
