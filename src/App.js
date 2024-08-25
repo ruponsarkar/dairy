@@ -25,6 +25,7 @@ import AddFarmer from './AdminPages/pages/addFarmer';
 import SLSCApproval from './AdminPages/pages/slscApproval';
 import DLCApproval from './AdminPages/pages/dlcApproval';
 import DCSData from './AdminPages/pages/dcsdata';
+import Documents from './AdminPages/documents/documents';
 
 
 import ApplyForm from './userPage/applyForm';
@@ -101,6 +102,7 @@ function App() {
             <Route path='SLSCApproval' element={<SLSCApproval />} />
             <Route path='DLCApproval' element={<DLCApproval />} />
             <Route path='DCSData' element={<DCSData />} />
+            <Route path='documents' element={<Documents />} />
 
           </Route>
 

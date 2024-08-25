@@ -106,7 +106,16 @@ export default {
     uploadDaybook(formData) {
         return uploadAPI.post('/uploadDaybook', formData);
     },
-
+    createFolder(data){
+        return API.post('/createFolder', {data})
+    },
+    uploadDocuments(formData) {
+        return uploadAPI.post('/uploadDocuments', formData);
+    },
+    getFillDocuments(ref_id){
+        return API.post('/getFillDocuments', {ref_id})
+    },
+    
 
     
 

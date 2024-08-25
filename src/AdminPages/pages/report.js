@@ -323,7 +323,7 @@ export default function Report() {
                 <StyledTableCell>Registration No</StyledTableCell>
                 <StyledTableCell>Subsidy Details</StyledTableCell>
                 <StyledTableCell>Quantity of milk(in Litres)</StyledTableCell>
-                <StyledTableCell>Ammount(in Rs)</StyledTableCell>
+                <StyledTableCell>Amount(in Rs)</StyledTableCell>
                 {/* <StyledTableCell>Bank Account No</StyledTableCell> */}
                 <StyledTableCell>Approve By</StyledTableCell>
                 <StyledTableCell>Payment Status</StyledTableCell>

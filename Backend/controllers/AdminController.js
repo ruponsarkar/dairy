@@ -1,4 +1,3 @@
-
 const multer = require("multer");
 const request = require("request");
 const fs = require("fs");
@@ -42,9 +41,12 @@ module.exports = {
   },
   getApplicationStatisticsData_DistrictWise(req, res) {
     let disctrict = req.body.param.disctrict;
-    AdminModel.getApplicationStatisticsData_DistrictWise(disctrict, (result) => {
-      res.status(200).send(result);
-    });
+    AdminModel.getApplicationStatisticsData_DistrictWise(
+      disctrict,
+      (result) => {
+        res.status(200).send(result);
+      }
+    );
   },
   getApplicationStatisticsData_DCSWise(req, res) {
     let dcs = req.body.param.dcs;
@@ -57,5 +59,77 @@ module.exports = {
     AdminModel.getAllDCS_DistrictWise(disctrict, (result) => {
       res.status(200).send(result);
     });
-  }
+  },
+  createFolder(req, res) {
+    let data = req.body.data;
+    console.log("data=>> ", data);
+    // return;
+    AdminModel.createFolder(data, (result) => {
+      res.status(200).send(result);
+    });
+  },
+
+  upload_config_for_upload_docs: multer({
+    storage: multer.diskStorage({
+      destination: function (req, file, callback) {
+        // console.log(" ==>> ", req.body.id);
+        let folderName = "documents";
+        let dest = path.join(process.env.FILE_UPLOAD_PATH, folderName);
+
+        console.log("dess", dest);
+
+        module.exports.checkDirectory(dest, () => {
+          callback(null, dest);
+        });
+      },
+      filename: function (req, file, callback) {
+        callback(null, req.body.fileName);
+      },
+    }),
+  }),
+
+  checkDirectory(directory, callback) {
+    fs.stat(directory, (err, stats) => {
+      if (
+        err &&
+        (err.errno === 34 || err.errno === -4058 || err.errno === -2)
+      ) {
+        fs.mkdir(directory, callback);
+      } else {
+        if (!err) {
+          return callback && callback();
+        }
+        console.log(err);
+      }
+    });
+  },
+
+  // uploadDocuments
+
+  uploadDocuments(req, res) {
+    let data = {
+      name: req.body.originalName,
+      type: "file",
+      ref_id: req.body.ref_id,
+      fileName: req.body.fileName,
+      originalName: req.body.originalName,
+      fileType: req.body.fileType,
+      createdBy: req.body.createdBy,
+    };
+
+    // console.log(data);
+    // return;
+    AdminModel.uploadDocuments(data, (result) => {
+      res.status(200).send(result);
+    });
+  },
+
+  getFillDocuments(req, res) {
+    let ref_id = req.body.ref_id;
+    console.log("ref_id : ", ref_id);
+    // return;
+    AdminModel.getFillDocuments(ref_id, (result) => {
+      res.status(200).send(result);
+    });
+  },
 };

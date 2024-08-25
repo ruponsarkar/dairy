@@ -962,8 +962,11 @@ export default function AddFarmer() {
     }, [applicationId])
 
     const handleFileUpload = (type) => {
-        setLoading(true);
+        console.log(type);
+        
+        
         if (type === "passbook") {
+            console.log("here", type);
             upload(type, passbook, "passbook");
         }
         if (type === "panCard") {
@@ -978,6 +981,12 @@ export default function AddFarmer() {
     };
 
     const upload = (type, file, fileName) => {
+        if(!file){
+            toast.warn('No file chosen !');
+            console.log("file not found");
+            return;
+        }
+        setLoading(true);
         console.log("Type=", type, "File=", file);
         console.log("formData.mobileNumber ==>>", formData.mobileNumber);
         const Data = new FormData();
@@ -1115,14 +1124,14 @@ export default function AddFarmer() {
                             {isUploaded.aadhaarCard && <DoneAllIcon color="success" />}
                         </div>
 
-                        <div className="col-md-6">
+                        {/* <div className="col-md-6">
                             <label htmlFor="">Attach photo of ARCS/DRCS</label>
                             <input
                                 type="file"
                                 className="form-control"
                                 onChange={(e) => setArcsDrcs(e.target.files[0])}
                             />
-                        </div>
+                        </div> */}
                         <div className="col-md-6 d-flex align-items-center gap-4">
                             <Button
                                 variant="contained"
@@ -1134,7 +1143,10 @@ export default function AddFarmer() {
                         </div>
 
                         <div className="col-md-12">
-                            <div className="text-center">
+                            <div className="d-flex justify-content-center gap-3">
+                                <Button variant="outlined" color="success" onClick={()=>setModalOpen(false)}>
+                                    Skip
+                                </Button>
                                 <Button variant="contained" color="success" onClick={handleSubmit}>
                                     Confirm and Submit
                                 </Button>

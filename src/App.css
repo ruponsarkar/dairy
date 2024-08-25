@@ -53306,3 +53306,40 @@ a.text-muted:hover {
 tr{
   padding-top: 10px;
 }
+
+
+
+
+
+.documents{
+  min-height: 70vh;
+}
+
+.folder{
+  background-color: white;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid black;
+  cursor: pointer;
+  margin-bottom: 5px;
+}
+
+.file{
+  color: blue;
+  background-color: white;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid black;
+  cursor: pointer;
+  margin-bottom: 5px;
+}
+
+.folder:hover, .file:hover{
+  background-color: gray;
+  color: white;
+}
+
+.folder.active{
+  background-color: gray;
+  color: white;
+}
