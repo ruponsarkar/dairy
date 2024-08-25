@@ -308,7 +308,7 @@ const DashboardTable = () => {
                     <TableCell className="p-2">{row.village}</TableCell>
                     <TableCell className="p-2" align="center">
                       {row.status === 'Draft' && <span className="bg-secondary px-3 rounded">Draft</span>}
-                      {row.status === 'Incompleted' && <span className="bg-warning px-3 rounded">Incompleted</span>}
+                      {row.status === 'Incompleted' && <span className="bg-warning px-3 rounded">Incomplet</span>}
                       {row.status === 'Approve' && <span className="bg-success px-3 rounded">Approved</span>}
                       {row.status === 'Reject' && <span className="bg-danger px-3 rounded">Rejected</span>}
                     </TableCell>
