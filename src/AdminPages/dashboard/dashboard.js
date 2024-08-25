@@ -327,14 +327,14 @@ const Dashboard = (props) => {
               <ListItemText>Reports</ListItemText>
             </ListItemButton>
           </ListItem>
-          {/* <ListItem disablePadding onClick={() => navigate("/admin/report")}>
+          <ListItem disablePadding onClick={() => navigate("/admin/documents")}>
             <ListItemButton>
               <ListItemIcon>
                 <ContentPasteOutlinedIcon />
               </ListItemIcon>
               <ListItemText>Documents</ListItemText>
             </ListItemButton>
-          </ListItem> */}
+          </ListItem>
 
           {/* <ListItem disablePadding onClick={() => navigate("/admin/DCSData")}>
             <ListItemButton>

@@ -226,52 +226,56 @@ module.exports = {
     });
   },
 
-
   getApplicationStatisticsData_DistrictWise(district, callback) {
     let query = `SELECT * FROM forms WHERE district=?`;
 
     db.query(query, [district], (err, results) => {
       if (err) {
         console.error("Database error:", err);
-        callback && callback({
-          status: 400,
-          message: "failed",
-          data: null
-        });
+        callback &&
+          callback({
+            status: 400,
+            message: "failed",
+            data: null,
+          });
       } else {
-        callback && callback({
-          status: 200,
-          message: "success",
-          data: results
-        });
+        callback &&
+          callback({
+            status: 200,
+            message: "success",
+            data: results,
+          });
       }
     });
   },
   getApplicationStatisticsData_DCSWise(dcs, callback) {
-    try{
+    try {
       let query = `SELECT * FROM forms WHERE registration_no_of_co_operatice_society=?`;
       db.query(query, [dcs], (err, results) => {
         if (err) {
           console.error("Database error:", err);
-          callback && callback({
-            status: 400,
-            message: "failed",
-            data: null
-          });
+          callback &&
+            callback({
+              status: 400,
+              message: "failed",
+              data: null,
+            });
         } else {
-          callback && callback({
-            status: 200,
-            message: "success",
-            data: results
-          });
+          callback &&
+            callback({
+              status: 200,
+              message: "success",
+              data: results,
+            });
         }
       });
-    }catch(error){
-      callback && callback({
-        status: 400,
-        message: "failed",
-        data: null
-      });
+    } catch (error) {
+      callback &&
+        callback({
+          status: 400,
+          message: "failed",
+          data: null,
+        });
     }
   },
   getAllDCS_DistrictWise(district, callback) {
@@ -280,25 +284,129 @@ module.exports = {
     db.query(query, [district], (err, results) => {
       if (err) {
         console.error("Database error:", err);
-        callback && callback({
-          status: 400,
-          message: "failed",
-          data: null
-        });
+        callback &&
+          callback({
+            status: 400,
+            message: "failed",
+            data: null,
+          });
       } else {
-        callback && callback({
-          status: 200,
-          message: "success",
-          data: results
-        });
+        callback &&
+          callback({
+            status: 200,
+            message: "success",
+            data: results,
+          });
       }
     });
-  }
+  },
 
+  createFolder(data, callback) {
+    // console.log("data");
+
+    let values = [];
+    if (data.type === "folder") {
+      values = [
+        data.name,
+        data.type,
+        data.ref_id,
+        null,
+        null,
+        null,
+        data.createdBy,
+        1,
+      ];
+    }
+
+    let query = `INSERT INTO files (name, type, ref_id, fileName, originalName, fileType, createdBy, status) VALUES (?,?,?,?,?,?,?,?)`;
+
+    db.query(query, values, (err, results) => {
+      if (err) {
+        console.error("Database error:", err);
+        callback &&
+          callback({
+            status: 400,
+            message: "failed",
+            data: null,
+          });
+      } else {
+        callback &&
+          callback({
+            status: 200,
+            message: "success",
+            data: results,
+          });
+      }
+    });
+  },
+
+  uploadDocuments(data, callback) {
+    console.log("data===>>>", data);
+
+    let values = [];
+    if (data.type === "file") {
+      values = [
+        data.fileName,
+        data.type,
+        data.ref_id,
+        data.fileName,
+        data.originalName,
+        data.fileType,
+        data.createdBy,
+        1,
+      ];
+    }
+
+    console.log("values =>", values);
+
+    let query = `INSERT INTO files (name, type, ref_id, fileName, originalName, fileType, createdBy, status) VALUES (?,?,?,?,?,?,?,?)`;
+
+    db.query(query, values, (err, results) => {
+      if (err) {
+        console.error("Database error:", err);
+        callback &&
+          callback({
+            status: 400,
+            message: "failed",
+            data: null,
+          });
+      } else {
+        callback &&
+          callback({
+            status: 200,
+            message: "success",
+            data: results,
+          });
+      }
+    });
+  },
+
+  getFillDocuments(ref_id, callback) {
+
+    let query = `SELECT * FROM files WHERE ref_id=? AND status = 1`;
+
+    db.query(query, [ref_id], (err, results) => {
+      if (err) {
+        console.error("Database error:", err);
+        callback &&
+          callback({
+            status: 400,
+            message: "failed",
+            data: null,
+          });
+      } else {
+        callback &&
+          callback({
+            status: 200,
+            message: "success",
+            data: results,
+          });
+      }
+    });
+  },
 
 
 };
-
 
 function generateAccessToken(username) {
   return jwt.sign({ name: username }, process.env.TOKEN_SECRET, {
