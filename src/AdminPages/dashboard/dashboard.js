@@ -51,7 +51,8 @@ const SearchBar = styled("div")(({ theme }) => ({
   width: "40%",
 }));
 
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
+// const settings = ["Profile", "Account", "Dashboard", "Logout"];
+const settings = ["Logout"];
 const pages = [];
 
 const Dashboard = (props) => {
@@ -152,7 +153,11 @@ const Dashboard = (props) => {
   const drawer = (
     <div>
       <Toolbar className="shadow text-center p-1">
-        <a className="text-dark header-name text-center" href="javascript:;" onClick={() => navigate("/admin/dashboard")}>
+        <a
+          className="text-dark header-name text-center"
+          href="javascript:;"
+          onClick={() => navigate("/admin/dashboard")}
+        >
           <h4>Admin Panel</h4>
         </a>
       </Toolbar>
@@ -466,8 +471,6 @@ const Dashboard = (props) => {
               <ListItemText>DCS Data</ListItemText>
             </ListItemButton>
           </ListItem>
-
-        
 
           {/* <ListItem disablePadding onClick={() => navigate("/admin/Grievance")}>
             <ListItemButton>
@@ -807,7 +810,12 @@ const Dashboard = (props) => {
                 onClose={handleCloseUserMenu}
               >
                 {settings.map((setting) => (
-                  <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                  <MenuItem
+                    key={setting}
+                    onClick={
+                      setting === "Logout" ? logout : handleCloseUserMenu
+                    }
+                  >
                     <Typography textAlign="center">{setting}</Typography>
                   </MenuItem>
                 ))}
