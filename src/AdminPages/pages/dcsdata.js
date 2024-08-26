@@ -146,7 +146,7 @@ const DCSData = () => {
 
                     <TableHead>
                         <TableRow>
-                            <StyledTableCell>#</StyledTableCell>
+                            <StyledTableCell>Sl no</StyledTableCell>
                             <StyledTableCell align="center">DISTRICT</StyledTableCell>
                             <StyledTableCell align="center">TOTAL DCS</StyledTableCell>
                             <StyledTableCell align="center">TOTAL SHAREHOLDERS</StyledTableCell>

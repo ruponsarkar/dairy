@@ -41,6 +41,7 @@ import FolderSharedOutlinedIcon from "@mui/icons-material/FolderSharedOutlined";
 import AdminPanelSettingsOutlinedIcon from "@mui/icons-material/AdminPanelSettingsOutlined";
 import ContentPasteOutlinedIcon from "@mui/icons-material/ContentPasteOutlined";
 import LiveHelpOutlinedIcon from "@mui/icons-material/LiveHelpOutlined";
+import TopicIcon from '@mui/icons-material/Topic';
 
 const drawerWidth = 240;
 
@@ -332,14 +333,14 @@ const Dashboard = (props) => {
               <ListItemText>Reports</ListItemText>
             </ListItemButton>
           </ListItem>
-          {/* <ListItem disablePadding onClick={() => navigate("/admin/documents")}>
+          <ListItem disablePadding onClick={() => navigate("/admin/documents")}>
             <ListItemButton>
               <ListItemIcon>
-                <ContentPasteOutlinedIcon />
+                <TopicIcon />
               </ListItemIcon>
               <ListItemText>Documents</ListItemText>
             </ListItemButton>
-          </ListItem> */}
+          </ListItem>
 
           {/* <ListItem disablePadding onClick={() => navigate("/admin/DCSData")}>
             <ListItemButton>
@@ -463,6 +464,15 @@ const Dashboard = (props) => {
             </ListItemButton>
           </ListItem>
 
+          <ListItem disablePadding onClick={() => navigate("/admin/documents")}>
+            <ListItemButton>
+              <ListItemIcon>
+                <TopicIcon />
+              </ListItemIcon>
+              <ListItemText>Documents</ListItemText>
+            </ListItemButton>
+          </ListItem>
+
           <ListItem disablePadding onClick={() => navigate("/admin/DCSData")}>
             <ListItemButton>
               <ListItemIcon>
@@ -534,6 +544,15 @@ const Dashboard = (props) => {
                 <ContentPasteOutlinedIcon />
               </ListItemIcon>
               <ListItemText>Reports</ListItemText>
+            </ListItemButton>
+          </ListItem>
+
+          <ListItem disablePadding onClick={() => navigate("/admin/documents")}>
+            <ListItemButton>
+              <ListItemIcon>
+                <TopicIcon />
+              </ListItemIcon>
+              <ListItemText>Documents</ListItemText>
             </ListItemButton>
           </ListItem>
 
@@ -629,6 +648,15 @@ const Dashboard = (props) => {
                 <ContentPasteOutlinedIcon />
               </ListItemIcon>
               <ListItemText>Reports</ListItemText>
+            </ListItemButton>
+          </ListItem>
+
+          <ListItem disablePadding onClick={() => navigate("/admin/documents")}>
+            <ListItemButton>
+              <ListItemIcon>
+                <TopicIcon />
+              </ListItemIcon>
+              <ListItemText>Documents</ListItemText>
             </ListItemButton>
           </ListItem>
 

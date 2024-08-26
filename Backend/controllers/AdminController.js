@@ -107,14 +107,18 @@ module.exports = {
   // uploadDocuments
 
   uploadDocuments(req, res) {
+    let filePath = path.join(process.env.FILE_UPLOAD_PATH, 'documents');
+    filePath = path.join(filePath, req.body.fileName);
+
     let data = {
       name: req.body.originalName,
       type: "file",
       ref_id: req.body.ref_id,
-      fileName: req.body.fileName,
+      fileName: filePath,
       originalName: req.body.originalName,
       fileType: req.body.fileType,
       createdBy: req.body.createdBy,
+      permissions: req.body.permissions
     };
 
     // console.log(data);

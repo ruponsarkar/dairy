@@ -53316,8 +53316,9 @@ tr{
 }
 
 .folder{
+  font-weight: bold;
   background-color: white;
-  padding: 10px;
+  /* padding: 10px; */
   border-radius: 5px;
   border: 1px solid black;
   cursor: pointer;
@@ -53325,9 +53326,9 @@ tr{
 }
 
 .file{
-  color: blue;
+  color: #4d69e8;
   background-color: white;
-  padding: 10px;
+  /* padding: 10px; */
   border-radius: 5px;
   border: 1px solid black;
   cursor: pointer;
@@ -53335,11 +53336,19 @@ tr{
 }
 
 .folder:hover, .file:hover{
-  background-color: gray;
-  color: white;
+  background-color: #514c4c4f;
+  /* color: white; */
 }
 
 .folder.active{
   background-color: gray;
   color: white;
 }
+
+.permissions{
+  z-index: 999;
+}
+
+/* .permissions:hover{
+  background-color: wheat;
+} */
