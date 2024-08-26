@@ -20,7 +20,30 @@ const Login = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(false);
 
+    const [emailError, setEmailError] = useState('');
+    const [passwordError, setPasswordError] = useState('');
+
     const submit = () => {
+        let valid = true;
+
+        console.log("1");
+        
+    if (!email) {
+      setEmailError('Email cannot be empty.');
+      valid = false;
+      console.log("2");
+    } else {
+      setEmailError('');
+    }
+
+    if (!password) {
+      setPasswordError('Password cannot be empty.');
+      valid = false;
+    } else {
+      setPasswordError('');
+    }
+
+    if (valid) {
         setLoading(true);
         api.login(email, password)
             .then((res) => {
@@ -45,6 +68,7 @@ const Login = () => {
                 setLoading(false);
                 setError(true);
             })
+        }
     }
 
     const Loading = () => {
@@ -104,9 +128,12 @@ const Login = () => {
                                                 </div>
 
                                                 <br />
+                                                {emailError && <Alert severity="error">{emailError}</Alert>}
+                                                {passwordError && <Alert severity="error">{passwordError}</Alert>}
                                                 {error && <Alert severity="error">Something went wrong !</Alert>
                                                 }
 
+                                                <br />
 
                                                 {loading ? <Loading /> :
                                                     <div className='text-center'>

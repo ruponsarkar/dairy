@@ -131,41 +131,6 @@ const OverviewScheme = () => {
                     </Col>
                   </Row>
 
-                  <Row style={customStyle} className="mb-1">
-                    <Col>
-                      <h4>
-                        <u>PROPOSED IMPLEMENTATION STRATEGY FOR THE SCHEME</u>
-                      </h4>
-                      <h5 style={customStyle}>
-                        Proposed Strategy of Implementation:
-                      </h5>
-                      <p style={customStyle}>
-                        <ol>
-                          <li>
-                            The scheme will be implemented in Direct Benefit
-                            Transfer (DBT) mode.
-                          </li>
-                          <li>
-                            Data of the beneficiaries will be collected in
-                            prescribed format and approved by the District Level
-                            Committee (DLC) of respective districts.
-                          </li>
-                          <li>
-                            The final approved list will be uploaded in the
-                            portal.
-                          </li>
-                          <li>
-                            The State Level Selection Committee will accord
-                            final approval.
-                          </li>
-                          <li>
-                            The disbursal of the amount for approved beneficiary
-                            will be done through DBT.
-                          </li>
-                        </ol>
-                      </p>
-                    </Col>
-                  </Row>
 
                   <Row className="mb-1">
                     <Col>

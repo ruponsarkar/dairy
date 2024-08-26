@@ -154,12 +154,8 @@ const Dashboard = (props) => {
   const drawer = (
     <div>
       <Toolbar className="shadow text-center p-1">
-        <a
-          className="text-dark header-name text-center"
-          href="javascript:;"
-          onClick={() => navigate("/admin/dashboard")}
-        >
-          <h4>Admin Panel</h4>
+        <a className="text-dark header-name text-center" href="javascript:;" onClick={() => navigate("/admin/dashboard")}>
+          <h4>{role} Panel</h4>
         </a>
       </Toolbar>
       <Divider />
@@ -735,9 +731,22 @@ const Dashboard = (props) => {
               <MenuIcon />
             </IconButton>
 
-            <Typography>{role}</Typography>
+            {/* <Typography display={{xs: "none", sm: "none", md: "none", lg: "flex"}}>{role}</Typography> */}
 
-            <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
+            <Typography variant="h6" noWrap component="div">
+            <img
+              src="https://dairy.assam.gov.in/sites/all/themes/swf/images/emblem-dark.png"
+              alt="Logo"
+              style={{ width: '30px', marginRight: '10px' }}
+            />
+            </Typography>
+            <Typography>
+            MILK SUBSIDY AND MILK COLLECTION SYSTEM
+            <br />
+            Directorate of Dairy Development, Assam
+          </Typography>
+
+            <Box sx={{ flexGrow: 1, display: { xs: "none", md: "none" } }}>
               <Menu
                 id="menu-appbar"
                 anchorEl={anchorElNav}
@@ -779,7 +788,7 @@ const Dashboard = (props) => {
               <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                   {/* <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" /> */}
-                  <Typography
+                  <Typography display={{xs: "none", sm: "none", md: "none", lg: "flex"}}
                     className="p-2 rounded"
                     color={"white"}
                     backgroundColor={"#0a56a1"}
