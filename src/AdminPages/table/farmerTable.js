@@ -81,7 +81,7 @@ export default function FarmerTable({ data, getAdmins, setModalOpen, setApplicat
         <Table className="table-bordered table-striped">
           <TableHead>
             <TableRow>
-              <StyledTableCell className="p-2 text-center">#</StyledTableCell>
+              <StyledTableCell className="p-2 text-center">Sl No</StyledTableCell>
               <StyledTableCell className="p-2 text-center">Farmer Name</StyledTableCell>
               <StyledTableCell className="p-2 text-center">Name of DCS</StyledTableCell>
               <StyledTableCell className="p-2 text-center">Registration No</StyledTableCell>
@@ -163,7 +163,7 @@ export default function FarmerTable({ data, getAdmins, setModalOpen, setApplicat
               <Application data={selectedRow} />
 
               {selectedRow && (
-                <div className="documents d-flex justify-content-center border p-3 gap-4">
+                <div className=" d-flex justify-content-center border p-3 gap-4">
                   <div className="text-center card">
                     <h3>Pan Card</h3>
                     {/* <a href={`https://milksubsidydairyassam.com:8800/${selectedRow.panCard}`}> */}

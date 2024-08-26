@@ -40,7 +40,7 @@ export default function BasicMenu({menuItems}) {
         aria-haspopup="true"
         onClick={handleClick}
       >
-        <MoreVertIcon />
+        <MoreVertIcon fontSize='small'/>
       </IconButton>
 
 
@@ -58,7 +58,9 @@ export default function BasicMenu({menuItems}) {
         <MenuItem onClick={handleClose}>My account</MenuItem>
         <MenuItem onClick={handleClose}>Logout</MenuItem> */}
         {menuItems && menuItems.map((m)=>(
-            <MenuItem onClick={m.onclick && m.onclick}>{m.name}</MenuItem>
+            <MenuItem onClick={m.onclick && m.onclick}>
+              {m.name}
+            </MenuItem>
         ))}
       </Menu>
     </div>

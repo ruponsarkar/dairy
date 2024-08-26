@@ -302,7 +302,7 @@ module.exports = {
   },
 
   createFolder(data, callback) {
-    // console.log("data");
+    console.log("data: ", data);
 
     let values = [];
     if (data.type === "folder") {
@@ -314,11 +314,12 @@ module.exports = {
         null,
         null,
         data.createdBy,
+        JSON.stringify(data.permissions),
         1,
       ];
     }
 
-    let query = `INSERT INTO files (name, type, ref_id, fileName, originalName, fileType, createdBy, status) VALUES (?,?,?,?,?,?,?,?)`;
+    let query = `INSERT INTO files (name, type, ref_id, fileName, originalName, fileType, createdBy, permissions, status) VALUES (?,?,?,?,?,?,?,?,?)`;
 
     db.query(query, values, (err, results) => {
       if (err) {
@@ -353,13 +354,14 @@ module.exports = {
         data.originalName,
         data.fileType,
         data.createdBy,
+        data.permissions,
         1,
       ];
     }
 
-    console.log("values =>", values);
+    // console.log("values =>", values);
 
-    let query = `INSERT INTO files (name, type, ref_id, fileName, originalName, fileType, createdBy, status) VALUES (?,?,?,?,?,?,?,?)`;
+    let query = `INSERT INTO files (name, type, ref_id, fileName, originalName, fileType, createdBy, permissions, status) VALUES (?,?,?,?,?,?,?,?,?)`;
 
     db.query(query, values, (err, results) => {
       if (err) {
@@ -383,7 +385,15 @@ module.exports = {
 
   getFillDocuments(ref_id, callback) {
 
-    let query = `SELECT * FROM files WHERE ref_id=? AND status = 1`;
+    // let query = `SELECT * FROM files WHERE ref_id=? AND status = 1 ORDER BY type DESC`;
+
+    let query = `
+        SELECT files.*, admins.name AS approved_by, admins.role AS role 
+        FROM files 
+        LEFT JOIN admins ON admins.id = files.createdBy 
+        WHERE files.ref_id = ? AND files.status = 1 
+        ORDER BY files.type DESC
+    `;
 
     db.query(query, [ref_id], (err, results) => {
       if (err) {
@@ -404,6 +414,9 @@ module.exports = {
       }
     });
   },
+
+
+  // updateFileDocument 
 
 
 };

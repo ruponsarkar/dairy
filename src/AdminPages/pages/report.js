@@ -316,7 +316,7 @@ export default function Report() {
             <TableHead>
               <TableRow>
                 <StyledTableCell>
-                  #
+                Sl no
                 </StyledTableCell>
                 <StyledTableCell>Name of Applicant</StyledTableCell>
                 <StyledTableCell>Name of DCS</StyledTableCell>

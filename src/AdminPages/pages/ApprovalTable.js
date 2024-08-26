@@ -474,7 +474,7 @@ const ApprovalTable = () => {
                     >
                         <TableHead>
                             <TableRow>
-                                <StyledTableCell className="text-center p-2">#</StyledTableCell>
+                                <StyledTableCell className="text-center p-2">Sl no</StyledTableCell>
                                 <StyledTableCell className="text-center p-2">
                                     Applicant Name
                                 </StyledTableCell>

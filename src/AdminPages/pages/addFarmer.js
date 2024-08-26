@@ -1053,6 +1053,14 @@ export default function AddFarmer() {
     
       };
 
+
+      const handleSkip=()=>{
+        setModalOpen(false);
+        getAllFarmers();
+        setApplicationId('');
+
+      }
+
     const fileForm = () => {
         return (
             <>
@@ -1132,7 +1140,7 @@ export default function AddFarmer() {
                                 onChange={(e) => setArcsDrcs(e.target.files[0])}
                             />
                         </div> */}
-                        <div className="col-md-6 d-flex align-items-center gap-4">
+                        {/* <div className="col-md-6 d-flex align-items-center gap-4">
                             <Button
                                 variant="contained"
                                 onClick={() => handleFileUpload("arcs_drcs")}
@@ -1140,11 +1148,11 @@ export default function AddFarmer() {
                                 Upload
                             </Button>{" "}
                             {isUploaded.arcs_drcs && <DoneAllIcon color="success" />}
-                        </div>
+                        </div> */}
 
                         <div className="col-md-12">
                             <div className="d-flex justify-content-center gap-3">
-                                <Button variant="outlined" color="success" onClick={()=>setModalOpen(false)}>
+                                <Button variant="outlined" color="success" onClick={()=>handleSkip()}>
                                     Skip
                                 </Button>
                                 <Button variant="contained" color="success" onClick={handleSubmit}>
