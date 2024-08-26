@@ -338,7 +338,7 @@ const Dashboard = (props) => {
               <ListItemIcon>
                 <TopicIcon />
               </ListItemIcon>
-              <ListItemText>Documents</ListItemText>
+              <ListItemText>Documents/Minutes</ListItemText>
             </ListItemButton>
           </ListItem>
 
@@ -469,7 +469,7 @@ const Dashboard = (props) => {
               <ListItemIcon>
                 <TopicIcon />
               </ListItemIcon>
-              <ListItemText>Documents</ListItemText>
+              <ListItemText>Documents/Minutes</ListItemText>
             </ListItemButton>
           </ListItem>
 
@@ -552,7 +552,7 @@ const Dashboard = (props) => {
               <ListItemIcon>
                 <TopicIcon />
               </ListItemIcon>
-              <ListItemText>Documents</ListItemText>
+              <ListItemText>Documents/Minutes</ListItemText>
             </ListItemButton>
           </ListItem>
 
@@ -656,7 +656,7 @@ const Dashboard = (props) => {
               <ListItemIcon>
                 <TopicIcon />
               </ListItemIcon>
-              <ListItemText>Documents</ListItemText>
+              <ListItemText>Documents/Minutes</ListItemText>
             </ListItemButton>
           </ListItem>
 
