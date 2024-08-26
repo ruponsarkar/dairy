@@ -7,6 +7,8 @@ import Swal from "sweetalert2";
 import Loader from "../../components/pannel/loader";
 import api from "../../API/api";
 
+import Breadcrumb from "../../ui-component/breadcrumbs";
+
 import { styled, emphasize } from "@mui/material/styles";
 import {
   Paper,
@@ -18,29 +20,8 @@ import {
   Button,
 } from "@mui/material";
 
-import Breadcrumbs from "@mui/material/Breadcrumbs";
-import Chip from "@mui/material/Chip";
 import HomeIcon from "@mui/icons-material/Home";
 
-const StyledBreadcrumb = styled(Chip)(({ theme }) => {
-  const backgroundColor =
-    theme.palette.mode === "light"
-      ? theme.palette.grey[100]
-      : theme.palette.grey[800];
-  return {
-    backgroundColor,
-    height: theme.spacing(3),
-    color: theme.palette.text.primary,
-    fontWeight: theme.typography.fontWeightRegular,
-    "&:hover, &:focus": {
-      backgroundColor: emphasize(backgroundColor, 0.06),
-    },
-    "&:active": {
-      boxShadow: theme.shadows[1],
-      backgroundColor: emphasize(backgroundColor, 0.12),
-    },
-  };
-});
 
 const districts = [
   "Baksa",
@@ -122,6 +103,17 @@ const AdminCategory = () => {
         setLoading(false);
       });
   };
+
+
+  const test = [{
+    href: "q1",
+    label: "Home",
+    icon: <HomeIcon fontSize="small" />
+  },
+  {
+    label: "admin page",
+  },
+]
 
   const addAdminForm = () => {
     return (
@@ -245,17 +237,8 @@ const AdminCategory = () => {
             id="tableTitle"
             component="div"
           >
-            {/* Admin details */}
-            <Breadcrumbs aria-label="breadcrumb">
-              <StyledBreadcrumb
-                component="a"
-                href="/#/admin/dashboard"
-                label="Home"
-                icon={<HomeIcon fontSize="small" />}
-              />
-              {/* <StyledBreadcrumb component="a" href="#" label="Catalog" /> */}
-              <StyledBreadcrumb label="Admin Details" />
-            </Breadcrumbs>
+            {/* <Breadcrumb label={"Admin Details"} home={"Home"} /> */}
+            <Breadcrumb labels={test}  />
             
           </Typography>
           <div role="presentation">
