@@ -58,6 +58,7 @@ module.exports = (app) => {
   app.post("/createFolder", AdminController.createFolder);
   app.post("/uploadDocuments", AdminController.upload_config_for_upload_docs.single("file"), AdminController.uploadDocuments);
   app.post("/getFillDocuments", AdminController.getFillDocuments);
+  app.post("/updateDocuments", AdminController.updateDocuments);
 };
 
 function authenticateToken(req, res, next) {

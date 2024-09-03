@@ -29,10 +29,19 @@ const OverviewScheme = () => {
     <Container>
       <Col md={12} className="pt-3 text-center">
         <h2>
-          <i>
-            Providing Rs. 5 subsidy to farmers pouring milk to Dairy
-            Co-operative Societies
-          </i>
+          <div>
+
+            <i>
+              Providing Rs. 5 subsidy to farmers pouring milk to Dairy
+              Co-operative Societies
+            </i>
+          </div>
+          <div>
+
+            <i>
+              দুগ্ধ সমবায় সমিতিক গাখীৰ  যোগান ধৰি থকা কৃষকসকলক 5 টকাৰ ৰাজসাহায্য প্ৰদান কৰা
+            </i>
+          </div>
         </h2>
       </Col>
 
@@ -80,7 +89,7 @@ const OverviewScheme = () => {
         </div>
       </div>
 
-      <CountStatus user={{"role": "Super Admin", "district":"All" }} />
+      <CountStatus user={{ "role": "Super Admin", "district": "All" }} />
 
       <Row>
         <Col md={12}>

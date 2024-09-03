@@ -115,6 +115,9 @@ export default {
     getFillDocuments(ref_id){
         return API.post('/getFillDocuments', {ref_id})
     },
+    updateDocuments(data){
+        return API.post('/updateDocuments', {data})
+    },
     
 
     

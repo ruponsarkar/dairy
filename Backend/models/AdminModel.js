@@ -341,6 +341,7 @@ module.exports = {
     });
   },
 
+
   uploadDocuments(data, callback) {
     console.log("data===>>>", data);
 
@@ -415,6 +416,31 @@ module.exports = {
     });
   },
 
+  updateDocuments(data, callback){
+    console.log("data here ", JSON.stringify(data.permissions));
+    let query = `UPDATE files
+    SET permissions = '${JSON.stringify(data.permissions)}'
+    WHERE id = ${data.id};`
+
+    db.query(query, (err, results) => {
+      if (err) {
+        console.error("Database error:", err);
+        callback &&
+          callback({
+            status: 400,
+            message: "failed",
+            data: null,
+          });
+      } else {
+        callback &&
+          callback({
+            status: 200,
+            message: "success",
+            data: 'Updated',
+          });
+      }
+    });
+  }
 
   // updateFileDocument 
 

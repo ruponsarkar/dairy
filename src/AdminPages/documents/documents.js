@@ -8,8 +8,11 @@ import { useNavigate, useLocation, useParams } from "react-router-dom";
 import api from '../../API/api';
 import BasicMenu from '../../ui-component/menu';
 import Checkbox from '@mui/material/Checkbox';
+import axios from 'axios'
+import Test from './test';
 
 
+const user = JSON.parse(sessionStorage.getItem("user"))
 
 const Documents = () => {
 
@@ -38,8 +41,8 @@ const Documents = () => {
     const getFillDocuments = (ref_id) => {
         setLoading(true)
         api.getFillDocuments(ref_id).then((res) => {
-            console.log("res :", res);
-            setData(res.data.data);
+            console.log("res files :", res.data.data.map((e) => ({ ...e, permissions: JSON.parse(e.permissions), })));
+            setData(res.data.data.map((e) => ({ ...e, permissions: JSON.parse(e.permissions), })))
             setLoading(false)
         })
             .catch((err) => {
@@ -66,7 +69,7 @@ const Documents = () => {
         });
     }
 
-    const handleFileChange = (e) => {
+    const handleFileChange = async (e) => {
         // console.log(e.target.files[0]);
 
         let file = e.target.files[0];
@@ -98,26 +101,41 @@ const Documents = () => {
 
         });
 
+
+        // const response = await axios.post('http://127.0.0.1:8800/uploadDocuments', Data, {
+        //     headers: {
+        //         "Content-Type": "multipart/form-data",
+        //     },
+        //     onUploadProgress: (progressEvent) => {
+        //         const percentage = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+        //         // setUploadProgress(percentage);
+        //         console.log("percentage: ", percentage);
+        //     },
+        // })
+
+        // console.log("Response here : ", response);
+
+        // .then((response) => {
+        //     // setUploadStatus("Upload successful!");
+        //     console.log(response.data);
+        // })
+        // .catch((error) => {
+        //     // setUploadStatus("Upload failed. Please try again.");
+        //     console.error("Error uploading file:", error);
+        // });
+
     }
 
     const updateFileDocument = (data) => {
         console.log("data id : ", data);
-        let reqData = {
-            // type: data.type,
-            name: folderName,
-            ref_id: param,
-            // createdBy: JSON.parse(sessionStorage.getItem("user")).id,
-            permissions: permissions
-        }
-
-
+        api.updateDocuments(data[0]).then((res)=>{
+            console.log("res ", res);
+        })
+        .catch((err)=>{
+            console.log("err ", err);
+        })
 
     }
-
-    // useEffect((()=>{
-    //     updateFileDocument(permissions);
-    // }),[])
-
 
 
 
@@ -150,17 +168,12 @@ const Documents = () => {
 
     const handleViewFile = (file) => {
         console.log("file", file);
-        // let api = 'http://localhost:8800/'
-        let api = 'https://milksubsidydairyassam.com:8800/'
+        let api = 'http://localhost:8800/'
+        // let api = 'https://milksubsidydairyassam.com:8800/'
         window.open(api + file, '_blank');
     }
 
-    // const [permissions, setPermissions] = useState({
-    //     onlyme: true,
-    //     dlc: false,
-    //     slsc: false,
-    //     finance: false
-    // })
+
     const [permissions, setPermissions] = useState({
         onlyme: false,
         dlc: true,
@@ -168,79 +181,98 @@ const Documents = () => {
         finance: true
     })
 
-    const handleCheck = (type) => {
+    const handleCheck = (type, id) => {
+        console.log(type, id);
+
+        let selectRow;
+
+        if (type === "onlyme") {
+             selectRow = data.map((e) =>
+                e.id === id
+                    ? {
+                        ...e,
+                        permissions: {
+                            ...e.permissions,
+                            [type]: !e.permissions[type],
+                            dlc: false,
+                            slsc: false,
+                            finance: false
+                        },
+                    }
+                    : e
+            );
+        }
+        else{
+            selectRow = data.map((e) =>
+            e.id === id
+                ? {
+                    ...e,
+                    permissions: {
+                        ...e.permissions,
+                        [type]: !e.permissions[type],
+                        onlyme: false,
+                    },
+                }
+                : e
+        );
+        }
+        
+        
+        setData(selectRow)
+        console.log("selectRow ", selectRow);
+
+        updateFileDocument(selectRow.filter((e)=> e.id === id))
+
+
         return;
-        let editPermission = { ...permissions };
+     
 
-        if (type === 'dlc') {
-            editPermission.onlyme = false;
-            editPermission.dlc = !permissions.dlc;
-        }
-        if (type === 'slsc') {
-            editPermission.onlyme = false;
-            editPermission.slsc = !permissions.slsc;
-        }
-        if (type === 'finance') {
-            editPermission.onlyme = false;
-            editPermission.finance = !permissions.finance;
-        }
-        if (type === 'onlyme') {
-            editPermission.onlyme = true;
-            editPermission.dlc = false;
-            editPermission.slsc = false;
-            editPermission.finance = false
-        }
-
-        setPermissions(editPermission);
+        // setPermissions(editPermission);
         // console.log("permissionss ==>> : ", editPermission);
         console.log("permissions ==>> : ", permissions);
-        updatePermisions(permissions);
 
     }
 
-    const updatePermisions = (permissions) => {
-        let data = {
-
-        }
-        updateFileDocument()
-
+    const updatePermisions = (data) => {
+       console.log("data : ", data);
     }
 
 
 
-    const menuItems = [
-        // {
-        //     name: 'Delete',
-        // },
-        {
-            name: (
-                <div>
-                    <div className="text-secondary">
-                        <small>Permissions</small>
+    const menuItems = (data) => {
+        let permissions = data.permissions;
+        // console.log("permissions ======>>", permissions);
+        return (
+            <div>
+                <div className="text-secondary">
+                    <small>Permissions</small>
+                </div>
+                <div className='d-flex gap-3'>
+                    <div>
+                        <small>Only me:<Checkbox disabled= {user.id !== data.createdBy } checked={permissions.onlyme} onClick={(e) => handleCheck('onlyme', data.id)} /></small>
                     </div>
-                    <div className='d-flex gap-3'>
-                        <div>
-                            <small>Only me:<Checkbox checked={permissions.onlyme} onClick={(e) => handleCheck('onlyme')} /></small>
-                        </div>
-                        <div>
-                            <small>DLC:<Checkbox checked={permissions.dlc} onClick={(e) => handleCheck('dlc')} /></small>
-                        </div>
-                        <div>
-                            <small>SLSC:<Checkbox checked={permissions.slsc} onClick={(e) => handleCheck('slsc')} /></small>
-                        </div>
-                        <div>
-                            <small>FINANCE:<Checkbox checked={permissions.finance} onClick={(e) => handleCheck('finance')} /></small>
-                        </div>
+                    <div>
+                        <small>DLC:<Checkbox disabled= {user.id !== data.createdBy } checked={permissions.dlc} onClick={(e) => handleCheck('dlc', data.id)} /></small>
+                    </div>
+                    <div>
+                        <small>SLSC:<Checkbox disabled= {user.id !== data.createdBy } checked={permissions.slsc} onClick={(e) => handleCheck('slsc', data.id)} /></small>
+                    </div>
+                    <div>
+                        <small>FINANCE:<Checkbox disabled= {user.id !== data.createdBy } checked={permissions.finance} onClick={(e) => handleCheck('finance', data.id)} /></small>
                     </div>
                 </div>
-            ),
-        },
-    ]
+            </div>
+        )
+    }
+
 
 
 
     return (
         <div>
+
+
+
 
             <Modal open={open} maxWidth='xs' modaldata={createFoler()} handleClose={() => setOpen(false)} onSubmit={handleCreateFolder} disabledBtn={loading} />
 
@@ -297,15 +329,16 @@ const Documents = () => {
                         <hr className='m-0 p-0 text-secondary' />
 
                         <div>
+                            {/* {user.role.toLowerCase()} */}
                             <div className='p-2'>
 
-                                {data && data.map((file) => (
+                                {data && data.filter((item) => item.permissions[user.role.toLowerCase()] === true || item.createdBy === user.id).map((file) => (
                                     <>
                                         {file.type === 'folder' &&
                                             <div className='folder d-flex justify-content-between' >
                                                 <div className='col-md-10 d-flex justify-content-between align-items-center' role='button' onClick={() => handleFolderNavigation(file.id)}>
                                                     <div className='col-md-6'>
-                                                        <FolderIcon /> {file.name}
+                                                        <FolderIcon /> {file.name} 
                                                     </div>
                                                     <div className='col-md-2 text-secondary'>
                                                         <small>
@@ -339,7 +372,7 @@ const Documents = () => {
                                                     </div>
                                                     <div className='text-secondary col-md-2 text-right'>
                                                         <small>
-                                                           {file.role}
+                                                            {file.role}
                                                         </small>
                                                     </div>
                                                     <div className='text-secondary col-md-2 text-right'>
@@ -358,7 +391,10 @@ const Documents = () => {
                                                 <div className='permissions' role='button' onClick={() => console.log("kk")}>
                                                     <small>
                                                         {/* <PublicIcon /> */}
-                                                        <BasicMenu menuItems={menuItems} />
+
+                                                       
+                                                        <BasicMenu disabled menuItems={menuItems(file)} />
+
                                                     </small>
                                                 </div>
                                             </div>
@@ -371,106 +407,14 @@ const Documents = () => {
 
 
 
-
-                                {/* <div className='folder'>
-                                    <div className='d-flex justify-content-between'>
-                                        <div>
-                                            <FolderIcon /> My Folder2
-                                        </div>
-                                        <div className='text-secondary'>
-                                            <small>
-                                                DCS
-                                            </small>
-                                        </div>
-                                        <div className='text-secondary'>
-                                            <small>
-
-                                                10 Aug, 24
-                                            </small>
-                                        </div>
-                                        <div>
-                                            <small>
-                                                <PublicIcon />
-                                            </small>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className='folder'>
-                                    <div className='d-flex justify-content-between'>
-                                        <div>
-                                            <FolderIcon /> My File1
-                                        </div>
-                                        <div className='text-secondary'>
-                                            <small>
-                                                DCS
-                                            </small>
-                                        </div>
-                                        <div className='text-secondary'>
-                                            <small>
-
-                                                10 Aug, 24
-                                            </small>
-                                        </div>
-                                        <div>
-                                            <small>
-                                                <PublicIcon />
-                                            </small>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className='folder'>
-                                    <div className='d-flex justify-content-between'>
-                                        <div>
-                                            <FolderIcon /> My File
-                                        </div>
-                                        <div className='text-secondary'>
-                                            <small>
-                                                DCS
-                                            </small>
-                                        </div>
-                                        <div className='text-secondary'>
-                                            <small>
-
-                                                10 Aug, 24
-                                            </small>
-                                        </div>
-                                        <div>
-                                            <small>
-                                                <PublicIcon />
-                                            </small>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className='file'>
-                                    <div className='d-flex justify-content-between'>
-                                        <div>
-                                            <DescriptionIcon /> My File.png
-                                        </div>
-                                        <div className='text-secondary'>
-                                            <small>
-                                                DCS
-                                            </small>
-                                        </div>
-                                        <div className='text-secondary'>
-                                            <small>
-
-                                                10 Aug, 24
-                                            </small>
-                                        </div>
-                                        <div>
-                                            <small>
-                                                <PublicIcon />
-                                            </small>
-                                        </div>
-                                    </div>
-                                </div> */}
-
                             </div>
                         </div>
 
                     </div>
                 </Paper>
             </div>
+
+
 
         </div>
     )

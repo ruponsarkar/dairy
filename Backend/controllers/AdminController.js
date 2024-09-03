@@ -128,6 +128,19 @@ module.exports = {
     });
   },
 
+
+  updateDocuments(req, res) {
+    let data = req.body.data
+
+    console.log("data==>>", data);
+    // return;
+    AdminModel.updateDocuments(data, (result) => {
+      res.status(200).send(result);
+    });
+  },
+
+
+
   getFillDocuments(req, res) {
     let ref_id = req.body.ref_id;
     console.log("ref_id : ", ref_id);
