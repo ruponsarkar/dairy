@@ -168,8 +168,8 @@ const Documents = () => {
 
     const handleViewFile = (file) => {
         console.log("file", file);
-        let api = 'http://localhost:8800/'
-        // let api = 'https://milksubsidydairyassam.com:8800/'
+        // let api = 'http://localhost:8800/'
+        let api = 'https://milksubsidydairyassam.com:8800/'
         window.open(api + file, '_blank');
     }
 
