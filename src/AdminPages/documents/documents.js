@@ -128,12 +128,12 @@ const Documents = () => {
 
     const updateFileDocument = (data) => {
         console.log("data id : ", data);
-        api.updateDocuments(data[0]).then((res)=>{
+        api.updateDocuments(data[0]).then((res) => {
             console.log("res ", res);
         })
-        .catch((err)=>{
-            console.log("err ", err);
-        })
+            .catch((err) => {
+                console.log("err ", err);
+            })
 
     }
 
@@ -187,7 +187,7 @@ const Documents = () => {
         let selectRow;
 
         if (type === "onlyme") {
-             selectRow = data.map((e) =>
+            selectRow = data.map((e) =>
                 e.id === id
                     ? {
                         ...e,
@@ -202,30 +202,30 @@ const Documents = () => {
                     : e
             );
         }
-        else{
+        else {
             selectRow = data.map((e) =>
-            e.id === id
-                ? {
-                    ...e,
-                    permissions: {
-                        ...e.permissions,
-                        [type]: !e.permissions[type],
-                        onlyme: false,
-                    },
-                }
-                : e
-        );
+                e.id === id
+                    ? {
+                        ...e,
+                        permissions: {
+                            ...e.permissions,
+                            [type]: !e.permissions[type],
+                            onlyme: false,
+                        },
+                    }
+                    : e
+            );
         }
-        
-        
+
+
         setData(selectRow)
         console.log("selectRow ", selectRow);
 
-        updateFileDocument(selectRow.filter((e)=> e.id === id))
+        updateFileDocument(selectRow.filter((e) => e.id === id))
 
 
         return;
-     
+
 
         // setPermissions(editPermission);
         // console.log("permissionss ==>> : ", editPermission);
@@ -234,7 +234,7 @@ const Documents = () => {
     }
 
     const updatePermisions = (data) => {
-       console.log("data : ", data);
+        console.log("data : ", data);
     }
 
 
@@ -249,16 +249,16 @@ const Documents = () => {
                 </div>
                 <div className='d-flex gap-3'>
                     <div>
-                        <small>Only me:<Checkbox disabled= {user.id !== data.createdBy } checked={permissions.onlyme} onClick={(e) => handleCheck('onlyme', data.id)} /></small>
+                        <small>Only me:<Checkbox disabled={user.id !== data.createdBy} checked={permissions.onlyme} onClick={(e) => handleCheck('onlyme', data.id)} /></small>
                     </div>
                     <div>
-                        <small>DLC:<Checkbox disabled= {user.id !== data.createdBy } checked={permissions.dlc} onClick={(e) => handleCheck('dlc', data.id)} /></small>
+                        <small>DLC:<Checkbox disabled={user.id !== data.createdBy} checked={permissions.dlc} onClick={(e) => handleCheck('dlc', data.id)} /></small>
                     </div>
                     <div>
-                        <small>SLSC:<Checkbox disabled= {user.id !== data.createdBy } checked={permissions.slsc} onClick={(e) => handleCheck('slsc', data.id)} /></small>
+                        <small>SLSC:<Checkbox disabled={user.id !== data.createdBy} checked={permissions.slsc} onClick={(e) => handleCheck('slsc', data.id)} /></small>
                     </div>
                     <div>
-                        <small>FINANCE:<Checkbox disabled= {user.id !== data.createdBy } checked={permissions.finance} onClick={(e) => handleCheck('finance', data.id)} /></small>
+                        <small>FINANCE:<Checkbox disabled={user.id !== data.createdBy} checked={permissions.finance} onClick={(e) => handleCheck('finance', data.id)} /></small>
                     </div>
                 </div>
             </div>
@@ -338,7 +338,7 @@ const Documents = () => {
                                             <div className='folder d-flex justify-content-between' >
                                                 <div className='col-md-10 d-flex justify-content-between align-items-center' role='button' onClick={() => handleFolderNavigation(file.id)}>
                                                     <div className='col-md-6'>
-                                                        <FolderIcon /> {file.name} 
+                                                        <FolderIcon /> {file.name}
                                                     </div>
                                                     <div className='col-md-2 text-secondary'>
                                                         <small>
@@ -392,18 +392,33 @@ const Documents = () => {
                                                     <small>
                                                         {/* <PublicIcon /> */}
 
-                                                       
+
                                                         <BasicMenu disabled menuItems={menuItems(file)} />
 
                                                     </small>
                                                 </div>
                                             </div>
                                         }
+
+
                                     </>
 
 
                                 ))}
 
+
+                                <div>
+                                    {data && !data.filter((item) => item.permissions[user.role.toLowerCase()] === true || item.createdBy === user.id).length && (
+                                    <div className="text-center p-5">
+                                        <img
+                                            src="/assets/noData.png"
+                                            alt="no data"
+                                            className="govt-logo"
+                                        />
+                                        <p>Data not found</p>
+                                    </div>
+                                    )}
+                                </div>
 
 
 
