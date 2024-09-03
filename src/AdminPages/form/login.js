@@ -61,8 +61,10 @@ const Login = () => {
             <Nav2 />
             <div className='col-12 pt-3 text-center'>
                 <h2><i>Providing Rs. 5 subsidy to farmers pouring milk to Dairy Co-operative Societies</i></h2>
+                <h2><i>দুগ্ধ সমবায় সমিতিক গাখীৰ যোগান ধৰি থকা কৃষকসকলক 5 টকাৰ ৰাজসাহায্য প্ৰদান কৰা</i></h2>
                 <br />
-                <h2 className='text-white bg-warning'>DCS/DLC/SLSC/Finance LOGIN</h2>
+                <h2 className='text-white bg-warning'>DCS/DLC/SLSC/Finance LOGIN (ডিচিএছ/ডিএলচি/এছএলএছচি/বিত্ত লগইন।)</h2>
+                {/* <h2 className='text-white bg-warning'>ডিচিএছ/ডিএলচি/এছএলএছচি/বিত্ত লগইন।</h2> */}
             </div>
                 <section>
                     <div class="container">
@@ -85,7 +87,7 @@ const Login = () => {
                                                 {/* <form> */}
 
                                                 <div className="inputs">
-                                                    <label>Email Address or User ID</label>
+                                                    <label>Email Address or User ID </label>
                                                     <input type="email" className='form-control' value={email} onChange={e => setEmail(e.target.value)} placeholder="enter a valid email address" />
                                                     
                                                     <label>Password</label>

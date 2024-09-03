@@ -29,6 +29,8 @@ export default function BasicMenu({menuItems}) {
 //     },
 //   ];
 
+
+
   return (
     <div>
 
@@ -54,14 +56,16 @@ export default function BasicMenu({menuItems}) {
           'aria-labelledby': 'basic-button',
         }}
       >
-        {/* <MenuItem onClick={handleClose}>Profile</MenuItem>
-        <MenuItem onClick={handleClose}>My account</MenuItem>
-        <MenuItem onClick={handleClose}>Logout</MenuItem> */}
-        {menuItems && menuItems.map((m)=>(
+        <MenuItem onClick={()=> ''}>
+              {menuItems}
+            </MenuItem>
+
+
+        {/* {menuItems && menuItems.map((m)=>(
             <MenuItem onClick={m.onclick && m.onclick}>
               {m.name}
             </MenuItem>
-        ))}
+        ))} */}
       </Menu>
     </div>
   );
