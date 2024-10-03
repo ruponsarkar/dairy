@@ -91,8 +91,8 @@ export default {
     createFarmer(formData){
         return API.post('/createFarmer', {formData})
     },
-    getAllFarmers(dsc, user){
-        return API.post('/getAllFarmers', {dsc, user})
+    getAllFarmers(dsc, user, limit, offset){
+        return API.post('/getAllFarmers', {dsc, user, limit, offset})
     },
     searchFarmer(search){
         return API.post('/searchFarmer', {search})

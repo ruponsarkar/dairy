@@ -353,17 +353,18 @@ module.exports = {
     });
   },
 
-  getAllFarmers(dsc, user, callback) {
+  getAllFarmers(dsc, user, limit, offset, callback) {
     console.log("user ==> ", user);
-    let offset = "0";
-    let limit = "100";
+    // let offset = "0";
+    // let limit = "100";
     let query = `
         SELECT 
             farmers.*, 
             dcs.name AS dcs_name, 
             dcs.registration_no AS dcs_registration_no, 
             dcs.address AS dcs_address,
-            dcs.status AS dcs_status
+            dcs.status AS dcs_status,
+            COUNT(*) OVER() AS total_count -- Adds the total count
         FROM 
             farmers
         JOIN 
@@ -392,11 +393,13 @@ module.exports = {
             data: null,
           });
       } else {
+        const totalCount = results.length > 0 ? results[0].total_count : 0;
         callback &&
           callback({
             status: 200,
             message: "success",
             data: results,
+            totalCount: totalCount
           });
       }
     });

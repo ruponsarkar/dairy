@@ -842,7 +842,7 @@ const bankName = [
 ];
 
 export default function AddFarmer() {
-  const [data, setData] = useState();
+  const [data, setData] = useState([]);
   const [temp, setTemp] = useState();
   const [modalOpen, setModalOpen] = useState(false);
   const [user, setUser] = useState(JSON.parse(sessionStorage.getItem("user")));
@@ -863,9 +863,9 @@ export default function AddFarmer() {
     district: JSON.parse(sessionStorage.getItem("user")).district,
   });
 
-  useEffect(() => {
-    getAllFarmers();
-  }, []);
+  // useEffect(() => {
+  //   getAllFarmers();
+  // }, []);
 
   const handleInput = (e) => {
     setFormData({
@@ -910,23 +910,23 @@ export default function AddFarmer() {
     }
   };
 
-  const searchFarmer = () => {
-    console.log("search :", search);
-    if (!search.dcs && !search.regno) {
-      console.log("Both can't be null");
-      return;
-    }
-    api
-      .searchFarmer(search)
-      .then((res) => {
-        console.log("res", res);
-        setData(res.data.data);
-        setIsSearch(true);
-      })
-      .catch((err) => {
-        console.log("err: ", err);
-      });
-  };
+  // const searchFarmer = () => {
+  //   console.log("search :", search);
+  //   if (!search.dcs && !search.regno) {
+  //     console.log("Both can't be null");
+  //     return;
+  //   }
+  //   api
+  //     .searchFarmer(search)
+  //     .then((res) => {
+  //       console.log("res", res);
+  //       setData(res.data.data);
+  //       setIsSearch(true);
+  //     })
+  //     .catch((err) => {
+  //       console.log("err: ", err);
+  //     });
+  // };
 
   const cancelSearch = () => {
     setIsSearch(false);
@@ -1454,6 +1454,12 @@ export default function AddFarmer() {
     );
   };
 
+
+  const [searchStatus, setSearchStatus]= useState();
+  const handleSearch=(status)=>{
+    setSearchStatus(status)
+  }
+
   return (
     <>
       <ToastContainer />
@@ -1530,12 +1536,14 @@ export default function AddFarmer() {
                     id=""
                   />
                   <div>
-                    {isSearch ? (
-                      <Button variant="contained" onClick={cancelSearch}>
+                    {searchStatus === "search"? (
+                      <Button variant="contained" onClick={()=>handleSearch('cancel')}>
+                      {/* <Button variant="contained" onClick={cancelSearch}> */}
                         <CancelIcon />
                       </Button>
                     ) : (
-                      <Button variant="contained" onClick={searchFarmer}>
+                      <Button variant="contained" onClick={()=>handleSearch('search')}>
+                      {/* <Button variant="contained" onClick={searchFarmer}> */}
                         <SearchIcon />
                       </Button>
                     )}
@@ -1557,6 +1565,10 @@ export default function AddFarmer() {
                 data={data}
                 setApplicationId={setApplicationId}
                 setModalOpen={setModalOpen}
+                search={search}
+                setSearch={setSearch}
+                // searchFarmer={searchFarmer}
+                searchStatus={searchStatus}
               />
             </div>
           </Paper>

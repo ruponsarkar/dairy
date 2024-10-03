@@ -174,7 +174,9 @@ module.exports = {
   getAllFarmers(req, res) {
     let dsc = req.body.dsc;
     let user = req.body.user;
-    FormModel.getAllFarmers(dsc, user, (result) => {
+    let limit= req.body.limit;
+    let offset = req.body.offset;
+    FormModel.getAllFarmers(dsc, user, limit, offset, (result) => {
       res.status(200).send(result);
     });
   },
